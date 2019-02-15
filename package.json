@@ -1,0 +1,21 @@
+{
+  "name": "near-cli",
+  "version": "1.0.0",
+  "description": "Command line utilities to interact with near blockchain",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo \"Error: not implemented\" && exit 1",
+    "deploy" : "echo \"Error: not implemented\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nearprotocol/near-cli.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nearprotocol/near-cli/issues"
+  },
+  "homepage": "https://github.com/nearprotocol/near-cli#readme"
+}
