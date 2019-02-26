@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+const commandLineArgs = require('command-line-args');
+const nearLib = require('nearlib');
+const gulp = require('gulp');
+const gulpfile = require('./gulpfile') // import the gulp file
+
+require('yargs') // eslint-disable-line
+  .command('build', 'build your smart contract', (yargs) => {
+
+  }, (argv) => {
+    if (argv.verbose) console.info(`build contract on :${argv.port}`)
+    if (gulp.task('build')) {
+      const result = gulp.task('build')();
+    }
+  })
+  .command('deploy', 'deploy your smart contract', (yargs) => {
+    yargs
+      .positional('contract_name', {
+        describe: 'Name of the contract to deploy',
+        default: 'default'
+      })
+  }, (argv) => {
+    if (argv.verbose) console.info(`deploy contract`)
+    console.log('NOT IMPLEMENTED YET')
+  })
+  .argv;
