@@ -1,12 +1,15 @@
 # Near command line interface
 
-##Installation
+## Installation
+```
 npm install -g near-shell
+```
 
-##Usage
+## Usage
 In command line, from directory with your project:
-
-near command
+```
+near <command>
+```
 
 ### Commands:
   near create_account:  create a developer account\
