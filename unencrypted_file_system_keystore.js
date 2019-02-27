@@ -2,6 +2,7 @@ const fs = require('fs');
 const keyDir = './neardev';
 const keyFile = 'devkey.json';
 const KeyPair = require('nearlib/signing/key_pair')
+const {promisify} = require('util');
 
 /**
  * Unencrypted file system key store.
@@ -10,23 +11,23 @@ class UnencryptedFileSystemKeyStore {
     constructor() {}
 
     async setKey(accountId, keypair) {
-        if (!fs.existsSync(keyDir)){
-            fs.mkdirSync(keyDir);
+        if (!await promisify(fs.exists)(keyDir)){
+            await promisify(fs.mkdir)(keyDir);
         }
         const keyFileContent = {
             public_key: keypair.getPublicKey(),
             secret_key: keypair.getSecretKey(),
             account_id: accountId
         };
-        const writeResult = await fs.writeFileSync(this.getKeyFilePath(), JSON.stringify(keyFileContent));
+        await promisify(fs.writeFile)(this.getKeyFilePath(), JSON.stringify(keyFileContent));
     }
 
     async getKey(accountId) {
         // Find keys/account id
-        if (!fs.existsSync(this.getKeyFilePath())) {
+        if (!await promisify(fs.exists)(this.getKeyFilePath())) {
             throw 'Key lookup failed. Please make sure you set up an account.';
         }
-        const rawKey = JSON.parse(fs.readFileSync(this.getKeyFilePath()));
+        const rawKey = await this.getRawKey();
         if (!rawKey.public_key || !rawKey.secret_key || !rawKey.account_id) {
             throw 'Deployment failed. neardev/devkey.json format problem. Please make sure file contains public_key, secret_key, and account_id".';
         }
@@ -41,10 +42,10 @@ class UnencryptedFileSystemKeyStore {
      * Returns all account ids.
      */
     async getAccountIds() {
-        if (!fs.existsSync(this.getKeyFilePath())) {
+        if (!await promisify(fs.exists)(this.getKeyFilePath())) {
             return [];
         }
-        const rawKey = JSON.parse(fs.readFileSync(this.getKeyFilePath()));
+        const rawKey = await this.getRawKey();
         if (!rawKey.public_key || !rawKey.secret_key || !rawKey.account_id) {
             return [];
         }
@@ -58,6 +59,10 @@ class UnencryptedFileSystemKeyStore {
     // TODO: make this configurable
     getKeyFilePath() {
         return keyDir + "/" + keyFile;
+    }
+
+    async getRawKey() {
+        return JSON.parse(await promisify(fs.readFile)(this.getKeyFilePath()));
     }
 }
 
