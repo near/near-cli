@@ -1,6 +1,6 @@
 {
   "name": "near-shell",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "description": "Command line utilities to interact with near blockchain",
   "main": "index.js",
   "scripts": {
@@ -10,22 +10,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nearprotocol/near-cli.git"
+    "url": "git+https://github.com/nearprotocol/near-shell.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nearprotocol/near-cli/issues"
+    "url": "https://github.com/nearprotocol/near-shell/issues"
   },
-  "homepage": "https://github.com/nearprotocol/near-cli#readme",
-  "devDependencies": {
+  "homepage": "https://github.com/nearprotocol/near-shell#readme",
+  "bin": {
+    "near": "near"
+  },
+  "devDependencies": {},
+  "dependencies": {
     "assemblyscript": "github:nearprotocol/assemblyscript",
-    "command-line-args": "^5.0.2",
     "fs": "0.0.1-security",
     "gulp": "^4.0.0",
-    "nearlib": "^0.3.1",
+    "nearlib": "file:../nearcore/nearlib",
     "run-sequence": "^2.2.1",
     "yargs": "^13.2.1"
-  },
-  "dependencies": {}
+  }
 }

@@ -1,27 +1,78 @@
 #!/usr/bin/env node
 
-const commandLineArgs = require('command-line-args');
-const nearLib = require('nearlib');
 const gulp = require('gulp');
 const gulpfile = require('./gulpfile') // import the gulp file
+const yargs = require('yargs');
 
-require('yargs') // eslint-disable-line
-  .command('build', 'build your smart contract', (yargs) => {
+const deploy = {
+  command: 'deploy',
+  desc: 'deploy your smart contract',
+  builder: (yargs) => yargs
+    .option('contract_name', {
+      desc: 'Contract name',
+      type: 'string',
+      required: true
+    })
+    .option('node_url', {
+      desc: 'Near node url',
+      type: 'string',
+      default: 'http://localhost:3030'
+    })
+    .option('account_id', {
+      desc: 'Your developer account id. If you have only one account, that one will be selected by default',
+      type: 'string',
+    })
+    ,
+  handler: (argv) => {
+    if (gulp.task('deploy')) {
+      const result = gulp.task('deploy')(argv);
+    } else {
+      throw "Unexpected error: deploy task not found in gulpfile."
+    }
+  }
+};
 
-  }, (argv) => {
-    if (argv.verbose) console.info(`build contract on :${argv.port}`)
+const build = {
+  command: 'build',
+  desc: 'build your smart contract',
+  builder: (yargs) => yargs,
+  handler: (argv) => {
     if (gulp.task('build')) {
       const result = gulp.task('build')();
+    } else {
+      throw "Unexpected error: build task not found in gulpfile."
     }
-  })
-  .command('deploy', 'deploy your smart contract', (yargs) => {
-    yargs
-      .positional('contract_name', {
-        describe: 'Name of the contract to deploy',
-        default: 'default'
-      })
-  }, (argv) => {
-    if (argv.verbose) console.info(`deploy contract`)
-    console.log('NOT IMPLEMENTED YET')
-  })
+  }
+};
+
+const createAccount = {
+  command: 'create_account',
+  desc: 'create a developer account',
+  builder: (yargs) => yargs
+    .option('node_url', {
+      desc: 'Near node url',
+      type: 'string',
+      default: 'http://localhost:3030'
+    })
+    .option('account_id', {
+      desc: 'Unique identifier for the new account',
+      type: 'string',
+      required: true
+    })
+  ,
+  handler: (argv) => {
+    if (gulp.task('createDevAccount')) {
+      const result = gulp.task('createDevAccount')(argv);
+    } else {
+      throw "Unexpected error: createDevAccount task not found in gulpfile."
+    }
+  }
+};
+
+yargs // eslint-disable-line
+  .command(createAccount)
+  .command(build)
+  .command(deploy)
+  .demandCommand(1, 'Please enter a command')
   .argv;
+
