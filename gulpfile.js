@@ -4,7 +4,7 @@ const neardev = require('nearlib/dev');
 const UnencryptedFileSystemKeyStore = require('./unencrypted_file_system_keystore');
 const fs = require('fs');
 
-gulp.task("build:model",  function (done) {
+gulp.task("build:model", async function (done) {
   const asc = require("assemblyscript/bin/asc");
   asc.main([
     "model.ts",
@@ -14,8 +14,7 @@ gulp.task("build:model",  function (done) {
   ], done);
 });
 
-gulp.task("build:bindings",  function (done) {
-  console.log('bb1')
+gulp.task("build:bindings", async function (done) {
   const asc = require('assemblyscript/bin/asc');
   asc.main([
     "main.ts",
@@ -26,16 +25,24 @@ gulp.task("build:bindings",  function (done) {
   ], done);
 });
 
-gulp.task("build:all", gulp.series('build:model', 'build:bindings', function (done) {
-  done();
+gulp.task("build:all", gulp.series('build:model', 'build:bindings', async function (done) {
+  const asc = require("assemblyscript/bin/asc");
+  asc.main([
+    "../out/main.near.ts",
+    "--baseDir", "./out",
+    "-O3",
+    "--binaryFile", "../out/main.wasm",
+    "--sourceMap",
+    "--measure"
+  ], done);
 }));
 
-gulp.task('copyfiles', function(done) {
-  return gulp.src('./assembly/**/*')
+gulp.task('copyfiles', async function(done) {
+  return await gulp.src('./assembly/**/*')
       .pipe(gulp.dest('./out/'));
 });
 
-gulp.task('build', gulp.series('copyfiles', 'build:all', function(done) {
+gulp.task('build', gulp.series('copyfiles', 'build:all', async function(done) {
   done();
 }));
 
@@ -93,12 +100,11 @@ gulp.task('deploy', async function(argv) {
 
     const near = await neardev.connect(options);
     const contractData = [...fs.readFileSync(argv.wasm_file)];
-    console.log("deploying file " + argv.wasm_file);
 
     // Contract name
     const contractName = argv.contract_name;
     console.log(
-        "Starting deployment. Account id " + accountId + ", contract " + contractName + ", url " + nodeUrl);
+        "Starting deployment. Account id " + accountId + ", contract " + contractName + ", url " + nodeUrl, ", file " + argv.wasm_file);
     const res = await deployContractAndWaitForTransaction(
         accountId, contractName, contractData, near);
     if (res.status == "Completed") {
