@@ -63,7 +63,7 @@ gulp.task('createDevAccount', async function(argv) {
 
 
 async function deployContractAndWaitForTransaction(accountId, contractName, data, near) {
-    const deployContractResult = await near.deployContract(accountId, contractName, data);
+    const deployContractResult = await near.deployContract(contractName, data);
     const waitResult = await near.waitForTransactionResult(deployContractResult);
     return waitResult;
 }
@@ -92,8 +92,9 @@ gulp.task('deploy', async function(argv) {
     };
 
     const near = await neardev.connect(options);
-    const contractData = [...fs.readFileSync('./out/main.wasm')];
-  
+    const contractData = [...fs.readFileSync(argv.wasm_file)];
+    console.log("deploying file " + argv.wasm_file);
+
     // Contract name
     const contractName = argv.contract_name;
     console.log(

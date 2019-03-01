@@ -4,6 +4,7 @@ const gulp = require('gulp');
 const gulpfile = require('./gulpfile') // import the gulp file
 const yargs = require('yargs');
 
+
 const deploy = {
   command: 'deploy',
   desc: 'deploy your smart contract',
@@ -17,6 +18,11 @@ const deploy = {
       desc: 'Near node url',
       type: 'string',
       default: 'http://localhost:3030'
+    })
+    .option('wasm_file', {
+      desc: 'Path to wasm file to deploy',
+      type: 'string',
+      default: './out/main.wasm'
     })
     .option('account_id', {
       desc: 'Your developer account id. If you have only one account, that one will be selected by default',
