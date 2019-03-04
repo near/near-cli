@@ -5,43 +5,6 @@ const UnencryptedFileSystemKeyStore = require('./unencrypted_file_system_keystor
 const fs = require('fs');
 const yargs = require('yargs');
 
-
-/* 
-gulp.task("build:model", callback => {
-  const asc = require("assemblyscript/bin/asc");
-  asc.main([
-    "model.ts",
-    "--baseDir", "./out",
-    "--nearFile", "../out/model.near.ts",
-    "--measure"
-  ], callback);
-});
-
-gulp.task("build:bindings", ["build:model"], callback => {
-  const asc = require("assemblyscript/bin/asc");
-  asc.main([
-    "main.ts",
-    "--baseDir", "./out",
-    "--binaryFile", "../out/main.wasm",
-    "--nearFile", "../out/main.near.ts",
-    "--measure"
-  ], callback);
-});
-
-gulp.task("build:all", ["build:bindings"], callback => {
-  const asc = require("assemblyscript/bin/asc");
-  asc.main([
-    "../out/main.near.ts",
-    "--baseDir", "./out",
-    "-O3",
-    "--binaryFile", "../out/main.wasm",
-    "--sourceMap",
-    "--measure"
-  ], callback);
-});
-
-*/
-
 gulp.task("build:model", function (done) {
   const asc = require("assemblyscript/bin/asc");
   asc.main([
@@ -57,7 +20,7 @@ gulp.task("build:bindings", function (done) {
   const asc = require("assemblyscript/bin/asc");
   asc.main([
     "main.ts",
-    "--baseDir", "./out",
+    "--baseDir", yargs.argv.out_dir,
     "--binaryFile", "../out/main.wasm",
     "--nearFile", "../out/main.near.ts",
     "--measure"
@@ -68,9 +31,9 @@ gulp.task("build:all", gulp.series('build:model', 'build:bindings', function (do
   const asc = require("assemblyscript/bin/asc");
   asc.main([
     "../out/main.near.ts",
-    "--baseDir", "./out",
+    "--baseDir", yargs.argv.out_dir,
     "-O3",
-    "--binaryFile", "../out/main.wasm",
+    "--binaryFile", yargs.argv.out_file,
     "--sourceMap",
     "--measure"
   ], done);
