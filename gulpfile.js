@@ -7,22 +7,26 @@ const yargs = require('yargs');
 
 gulp.task("build:model", function (done) {
   const asc = require("assemblyscript/bin/asc");
-  asc.main([
-    "model.ts",
-    "--baseDir", yargs.argv.out_dir,
-    "--nearFile", "../out/model.near.ts",
-    "--measure"
-  ], done);
+
+  const buildModelFn = function(fileName) {
+    asc.main([
+      fileName,
+      "--baseDir", yargs.argv.out_dir,
+      "--nearFile", generateNearFileFullPath(fileName),
+      "--measure"
+    ], done);
+  };
+  yargs.argv.model_files.forEach(buildModelFn);
   done();
 });
 
 gulp.task("build:bindings", function (done) {
   const asc = require("assemblyscript/bin/asc");
   asc.main([
-    "main.ts",
+    yargs.argv.contract_file,
     "--baseDir", yargs.argv.out_dir,
-    "--binaryFile", "../out/main.wasm",
-    "--nearFile", "../out/main.near.ts",
+    "--binaryFile", yargs.argv.out_file,
+    "--nearFile", generateNearFileFullPath(yargs.argv.contract_file),
     "--measure"
   ], done);
 });
@@ -86,15 +90,15 @@ async function deployContractAndWaitForTransaction(accountId, contractName, data
     return waitResult;
 }
 
+
+function generateNearFileFullPath(fileName) {
+  return "../" + yargs.argv.out_dir + "/" + generateNearFileName(fileName);
+}
+
+
 // converts file.ts to file.near.ts
 function generateNearFileName(fileName) {
-  const splitFileName = fileName.split('.');
-  if (splitFileName.pop() != 'ts') {
-    throw 'Invalid file type. Expecting .ts.'
-  }
-  splitFileName.push('near');
-  splitFileName.push('ts');
-  return splitFileName.join('.');
+  return fileName.replace(/.ts$/, '.near.ts');
 }
 
 gulp.task('deploy', async function(argv) {
