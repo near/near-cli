@@ -45,6 +45,7 @@ gulp.task("build:all", gulp.series('build:model', 'build:bindings', function (do
 }));
 
 gulp.task('copyfiles', async function(done) {
+  // Need to wait for the copy to finish, otherwise next tasks do not find files.
   console.log("Copying files to build directory");
   const copyFileFn = () => { 
       return new Promise(resolve => {
