@@ -3,6 +3,7 @@
 const gulp = require('gulp');
 const gulpfile = require('./gulpfile') // import the gulp file
 const yargs = require('yargs');
+const NearTools = require('./near_tools')
 
 
 const deploy = {
@@ -72,8 +73,8 @@ const build = {
     }),
   handler: (argv) => {
     gulp.on('error', function(e) {
-      console.log("Build failed. Error:")
-      console.log(e.error);
+        console.log("Build failed. Error:")
+        console.log(e.error);
     });
     if (gulp.task('build')) {
       const t = gulp.task('build')();
