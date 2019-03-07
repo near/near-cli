@@ -4,10 +4,12 @@ const neardev = require('nearlib/dev');
 const UnencryptedFileSystemKeyStore = require('./unencrypted_file_system_keystore');
 const fs = require('fs');
 const yargs = require('yargs');
-
-gulp.task("build:model", function (done) {
+var ncp = require('ncp').ncp;
+ 
+ncp.limit = 16;
+ 
+gulp.task("build:model", async function (done) {
   const asc = require("assemblyscript/bin/asc");
-
   const buildModelFn = function(fileName) {
     asc.main([
       fileName,
@@ -17,10 +19,9 @@ gulp.task("build:model", function (done) {
     ], done);
   };
   yargs.argv.model_files.forEach(buildModelFn);
-  done();
 });
 
-gulp.task("build:bindings", function (done) {
+gulp.task("build:bindings", async function (done) {
   const asc = require("assemblyscript/bin/asc");
   asc.main([
     yargs.argv.contract_file,
@@ -44,22 +45,18 @@ gulp.task("build:all", gulp.series('build:model', 'build:bindings', function (do
 }));
 
 gulp.task('copyfiles', async function(done) {
-  await gulp.src(yargs.argv.src_dir + "/" + yargs.argv.contract_file)
-    .pipe(gulp.dest(yargs.argv.out_dir));
-  await gulp.src(yargs.argv.src_dir + "/**/*")
-    .pipe(gulp.dest(yargs.argv.out_dir));
-  if (yargs.argv.model_files) {
-    await gulp.src(yargs.argv.src_dir + "/" + yargs.argv.model_files)
-      .pipe(gulp.dest(yargs.argv.out_dir));
-  }
-  console.log("Copy files complete")
+  // Need to wait for the copy to finish, otherwise next tasks do not find files.
+  console.log("Copying files to build directory");
+  const copyFileFn = () => { 
+      return new Promise(resolve => {
+          ncp (yargs.argv.src_dir, yargs.argv.out_dir, response => resolve(response));
+  })};
+  await copyFileFn();
+  console.log("Copying files complete");
   done();
 });
 
-gulp.task('build', gulp.series('copyfiles', 'build:all', function(done) {
-  console.log("Build task complete");
-  done();
-}))
+gulp.task('build', gulp.series('copyfiles', 'build:all'));
 
 // Only works for dev environments
 gulp.task('createDevAccount', async function(argv) {
@@ -94,7 +91,6 @@ async function deployContractAndWaitForTransaction(accountId, contractName, data
 function generateNearFileFullPath(fileName) {
   return "../" + yargs.argv.out_dir + "/" + generateNearFileName(fileName);
 }
-
 
 // converts file.ts to file.near.ts
 function generateNearFileName(fileName) {

@@ -72,8 +72,8 @@ const build = {
     }),
   handler: (argv) => {
     gulp.on('error', function(e) {
-      console.log("Build failed. Error:")
-      console.log(e.error);
+        console.log("Build failed. Error:")
+        console.log(e.error);
     });
     if (gulp.task('build')) {
       const t = gulp.task('build')();
