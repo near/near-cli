@@ -3,7 +3,6 @@
 const gulp = require('gulp');
 const gulpfile = require('./gulpfile') // import the gulp file
 const yargs = require('yargs');
-const NearTools = require('./near_tools')
 
 
 const deploy = {
