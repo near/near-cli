@@ -45,15 +45,34 @@ gulp.task("build:all", gulp.series('build:model', 'build:bindings', function (do
   ], done);
 }));
 
+async function ensureDir (dirPath) {
+  try {
+    await new Promise((resolve, reject) => {
+      fs.mkdir(dirPath, { recursive: true }, err => err ? reject(err) : resolve())
+    })
+  } catch (err) {
+    if (err.code !== 'EEXIST') throw err
+  }
+}
+
 gulp.task('copyfiles', async function(done) {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
-  console.log("Copying files to build directory");
-  const copyFileFn = () => { 
+  console.log("Copying files to build directory v2");
+  const copyDirFn = () => { 
       return new Promise(resolve => {
           ncp (yargs.argv.src_dir, yargs.argv.out_dir, response => resolve(response));
   })};
-  await copyFileFn();
-  console.log("Copying files complete");
+  await copyDirFn();
+
+  // find the dependencies
+  const copyFileFn = (from, to) => { 
+    return new Promise(resolve => {
+        ncp (from, to, response => resolve(response));
+  })};
+  await copyFileFn("./node_modules/near-runtime-ts/near.ts", yargs.argv.out_dir + "/near.ts");
+  await ensureDir(yargs.argv.out_dir + "/json");
+  await copyFileFn("./node_modules/assemblyscript-json/assembly/encoder.ts", yargs.argv.out_dir + "/json/encoder.ts");
+  await copyFileFn("./node_modules/assemblyscript-json/assembly/decoder.ts", yargs.argv.out_dir + "/json/decoder.ts");
   done();
 });
 
