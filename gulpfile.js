@@ -4,7 +4,8 @@ const neardev = require('nearlib/dev');
 const UnencryptedFileSystemKeyStore = require('./unencrypted_file_system_keystore');
 const fs = require('fs');
 const yargs = require('yargs');
-var ncp = require('ncp').ncp;
+const ncp = require('ncp').ncp;
+const rimraf = require('rimraf');
  
 ncp.limit = 16;
  
@@ -56,7 +57,7 @@ gulp.task('copyfiles', async function(done) {
   done();
 });
 
-gulp.task('build', gulp.series('copyfiles', 'build:all'));
+gulp.task('build', gulp.series('clean', 'copyfiles', 'build:all'));
 
 // Only works for dev environments
 gulp.task('createDevAccount', async function(argv) {
@@ -80,6 +81,13 @@ gulp.task('createDevAccount', async function(argv) {
     keyStore.setKey(accountId, keyPair);
 });
 
+gulp.task('clean', async function(argv) {
+  const rmDirFn = () => { 
+      return new Promise(resolve => {
+      rimraf(argv.out_dir, response => resolve(response));
+  })};
+  await rmDirFn();
+});
 
 async function deployContractAndWaitForTransaction(accountId, contractName, data, near) {
     const deployContractResult = await near.deployContract(contractName, data);
