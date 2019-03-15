@@ -57,6 +57,16 @@ gulp.task('copyfiles', async function(done) {
   done();
 });
 
+gulp.task('clean', async function(done) {
+  const rmDirFn = () => {
+      return new Promise(resolve => {
+      rimraf(yargs.argv.out_dir, response => resolve(response));
+  })};
+  await rmDirFn();
+  console.log("clean done");
+  done();
+});
+
 gulp.task('build', gulp.series('clean', 'copyfiles', 'build:all'));
 
 // Only works for dev environments
@@ -79,14 +89,6 @@ gulp.task('createDevAccount', async function(argv) {
     await neardev.createAccountWithLocalNodeConnection(accountId, keyPair.getPublicKey());
     const keyStore = new UnencryptedFileSystemKeyStore();
     keyStore.setKey(accountId, keyPair);
-});
-
-gulp.task('clean', async function(argv) {
-  const rmDirFn = () => { 
-      return new Promise(resolve => {
-      rimraf(argv.out_dir, response => resolve(response));
-  })};
-  await rmDirFn();
 });
 
 async function deployContractAndWaitForTransaction(accountId, contractName, data, near) {
