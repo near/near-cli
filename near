@@ -111,10 +111,34 @@ const createAccount = {
   }
 };
 
+const clean = {
+  command: 'clean',
+  desc: 'clean the build environment',
+  builder: (yargs) => yargs
+    .option('out_dir', {
+      desc: 'build directory',
+      type: 'string',
+      default: './out'
+    })
+  ,
+  handler: (argv) => {
+    gulp.on('error', function(e) {
+      console.log("Clean failed. Error:")
+      console.log(e.error);
+    });
+    if (gulp.task('clean')) {
+      const result = gulp.task('clean')(argv).catch(console.log);
+    } else {
+      throw "Unexpected error: clean task not found in gulpfile."
+    }
+  }
+};
+
 yargs // eslint-disable-line
   .command(createAccount)
   .command(build)
   .command(deploy)
+  .command(clean)
   .demandCommand(1, 'Please enter a command')
   .argv;
 
