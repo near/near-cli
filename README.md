@@ -1,4 +1,7 @@
-# Near command line interface
+# NEAR command line interface
+
+The [NEAR](https://near.ai/npm) protocol library as CLI tool.
+More documentation [here](https://near.ai/readme)
 
 ## Installation
 ```
@@ -7,15 +10,17 @@ npm install -g near-shell
 
 ## Usage
 In command line, from directory with your project:
-```
+```Bash
 near <command>
 ```
-
 ### Commands:
-  near create_account:  create a developer account\
-  near build:           build your smart contract\
-  near deploy:          deploy your smart contract
-
+```Bash
+  near create_account  # create a developer account
+  near build           # build your smart contract
+  near deploy          # deploy your smart contract
+```
 ### Options:
-  --help:   Show help                                                 [boolean] \
-  --version:  Show version number                                       [boolean] 
+| Option        | Description         | Type      |
+| ------------- |:-------------------:| :---------|
+| --help        | Show help           | [boolean] |
+| --version     | Show version number | [boolean] |
