@@ -24,6 +24,8 @@
   "devDependencies": {},
   "dependencies": {
     "assemblyscript": "github:nearprotocol/assemblyscript",
+    "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
+    "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
     "fs": "0.0.1-security",
     "gulp": "^4.0.0",
     "ncp": "^2.0.0",
