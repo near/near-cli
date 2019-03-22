@@ -13,6 +13,6 @@ import { Greeter } from "./model.near";
 
 export function hello(): string {
   let greeter = new Greeter("Hello");
-  return greeter.greet(context.sender);
+  return greeter.greet("world");
 }
 // << hello-snippet

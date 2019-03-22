@@ -7,11 +7,11 @@
     "test": "jest test --env=./local_test_environment.js"
   },
   "devDependencies": {
-    "assemblyscript": "github:nearprotocol/assemblyscript.git#wasm-new-read-api",
+    "assemblyscript": "github:nearprotocol/assemblyscript.git",
     "gulp": "^3",
     "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
     "jest-environment-node": "^24.5.0",
-    "near-runtime-ts": "github:nearprotocol/near-runtime-ts#wasm-new-read-api",
+    "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
     "near-shell": "0.0.10"
   },
   "wasmStudio": {

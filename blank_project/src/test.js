@@ -34,7 +34,7 @@ describe("Greeter", function() {
 
       it("get hello message", async function() {
         const result = await contract.hello();
-        expect(result).toBe("Hello, " + accountId);
+        expect(result).toBe("Hello, world");
       });
   });
 });
