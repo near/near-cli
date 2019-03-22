@@ -9,11 +9,6 @@ const deploy = {
   command: 'deploy',
   desc: 'deploy your smart contract',
   builder: (yargs) => yargs
-    .option('contract_name', {
-      desc: 'Contract name',
-      type: 'string',
-      required: true
-    })
     .option('node_url', {
       desc: 'Near node url',
       type: 'string',
