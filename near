@@ -134,11 +134,36 @@ const clean = {
   }
 };
 
+const newProject = {
+  command: 'new_project',
+  desc: 'create a new blank project',
+  builder: (yargs) => yargs
+    .option('project_dir', {
+      desc: 'project directory',
+      type: 'string',
+      default: '.'
+    })
+  ,
+  handler: (argv) => {
+    console.log(__dirname);
+    gulp.on('error', function(e) {
+      console.log("Create new project failed. Error:")
+      console.log(e.error);
+    });
+    if (gulp.task('newProject')) {
+      const result = gulp.task('newProject')(argv).catch(console.log);
+    } else {
+      throw "Unexpected error: clean task not found in gulpfile."
+    }
+  }
+};
+
 yargs // eslint-disable-line
   .command(createAccount)
   .command(build)
   .command(deploy)
   .command(clean)
+  .command(newProject)
   .demandCommand(1, 'Please enter a command')
   .argv;
 
