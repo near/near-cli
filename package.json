@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/nearprotocol/near-shell.git"
   },
-  "author": "",
+  "author": "Jane Degtiareva",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nearprotocol/near-shell/issues"
@@ -33,5 +33,13 @@
     "rimraf": "^2.6.3",
     "run-sequence": "^2.2.1",
     "yargs": "^13.2.1"
-  }
+  },
+  "keywords": [
+    "blockchain",
+    "crypto",
+    "dapps",
+    "distributed",
+    "applications",
+    "distributed applications"
+  ]
 }
