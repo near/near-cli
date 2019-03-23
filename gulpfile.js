@@ -122,8 +122,8 @@ gulp.task('createDevAccount', async function(argv) {
     keyStore.setKey(accountId, keyPair);
 });
 
-async function deployContractAndWaitForTransaction(accountId, contractName, data, near) {
-    const deployContractResult = await near.deployContract(contractName, data);
+async function deployContractAndWaitForTransaction(accountId, data, near) {
+    const deployContractResult = await near.deployContract(accountId, data);
     const waitResult = await near.waitForTransactionResult(deployContractResult);
     return waitResult;
 }
@@ -165,11 +165,11 @@ gulp.task('deploy', async function(argv) {
     const contractData = [...fs.readFileSync(argv.wasm_file)];
 
     // Contract name
-    const contractName = argv.contract_name;
+    const contractName = accountId;
     console.log(
-        "Starting deployment. Account id " + accountId + ", contract " + contractName + ", url " + nodeUrl, ", file " + argv.wasm_file);
+        "Starting deployment. Account id " + accountId + ", contract " + accountId + ", url " + nodeUrl, ", file " + argv.wasm_file);
     const res = await deployContractAndWaitForTransaction(
-        accountId, contractName, contractData, near);
+        accountId, contractData, near);
     if (res.status == "Completed") {
         console.log("Deployment succeeded.");
     } else {
