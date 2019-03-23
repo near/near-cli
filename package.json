@@ -23,7 +23,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "assemblyscript": "github:nearprotocol/assemblyscript",
+    "assemblyscript": "github:nearprotocol/assemblyscript#remove-result",
     "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
     "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
     "fs": "0.0.1-security",
