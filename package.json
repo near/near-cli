@@ -1,7 +1,7 @@
 {
   "name": "near-shell",
-  "version": "0.0.9",
-  "description": "Command line utilities to interact with near blockchain. NEAR cli.",
+  "version": "0.0.11",
+  "description": "Command line utilities to interact with near blockchain",
   "main": "index.js",
   "scripts": {
     "build": "echo \"Error: not implemented\" && exit 1",
@@ -24,6 +24,8 @@
   "devDependencies": {},
   "dependencies": {
     "assemblyscript": "github:nearprotocol/assemblyscript",
+    "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
+    "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
     "fs": "0.0.1-security",
     "gulp": "^4.0.0",
     "ncp": "^2.0.0",

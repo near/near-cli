@@ -12,12 +12,14 @@ ncp.limit = 16;
 gulp.task("build:model", async function (done) {
   const asc = require("assemblyscript/bin/asc");
   const buildModelFn = function(fileName) {
-    asc.main([
-      fileName,
-      "--baseDir", yargs.argv.out_dir,
-      "--nearFile", generateNearFileFullPath(fileName),
-      "--measure"
-    ], done);
+    if (fs.existsSync(yargs.argv.out_dir + "/"  + fileName)){
+      asc.main([
+        fileName,
+        "--baseDir", yargs.argv.out_dir,
+        "--nearFile", generateNearFileFullPath(fileName),
+        "--measure"
+      ], done);
+    }
   };
   yargs.argv.model_files.forEach(buildModelFn);
 });
@@ -57,7 +59,7 @@ async function ensureDir (dirPath) {
 
 gulp.task('copyfiles', async function(done) {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
-  console.log("Copying files to build directory v2");
+  console.log("Copying files to build directory");
   const copyDirFn = () => { 
       return new Promise(resolve => {
           ncp (yargs.argv.src_dir, yargs.argv.out_dir, response => resolve(response));
@@ -74,6 +76,16 @@ gulp.task('copyfiles', async function(done) {
   await copyFileFn("./node_modules/assemblyscript-json/assembly/encoder.ts", yargs.argv.out_dir + "/json/encoder.ts");
   await copyFileFn("./node_modules/assemblyscript-json/assembly/decoder.ts", yargs.argv.out_dir + "/json/decoder.ts");
   done();
+});
+
+gulp.task('newProject', async function(done) {
+  // Need to wait for the copy to finish, otherwise next tasks do not find files.
+  console.log("Copying files to new project directory");
+  const copyDirFn = () => {
+      return new Promise(resolve => {
+          ncp (__dirname + "/blank_project", yargs.argv.project_dir, response => resolve(response));
+  })};
+  await copyDirFn();
 });
 
 gulp.task('clean', async function(done) {
