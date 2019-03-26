@@ -97,7 +97,7 @@ gulp.task('clean', async function(done) {
       rimraf(yargs.argv.out_dir, response => resolve(response));
   })};
   await rmDirFn();
-  console.log("clean done");
+  console.log("Clean complete.");
   done();
 });
 
@@ -130,7 +130,6 @@ async function deployContractAndWaitForTransaction(accountId, data, near) {
     const waitResult = await near.waitForTransactionResult(deployContractResult);
     return waitResult;
 }
-
 
 function generateNearFileFullPath(fileName) {
   return "../" + yargs.argv.out_dir + "/" + generateNearFileName(fileName);

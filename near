@@ -122,7 +122,8 @@ const clean = {
       console.log(e.error);
     });
     if (gulp.task('clean')) {
-      const result = gulp.task('clean')(argv).catch(console.log);
+      const result = gulp.task('clean')(() => {})
+        .catch(console.log);
     } else {
       throw "Unexpected error: clean task not found in gulpfile."
     }
