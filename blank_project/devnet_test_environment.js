@@ -16,7 +16,7 @@ class LocalTestEnvironment extends NodeEnvironment {
         this.global.testSettings = {
             contractName: "test" + Date.now(),
             accountId: "test" + Date.now(),
-            nodeUrl: "http://localhost:3030",
+            nodeUrl: "https://studio.nearprotocol.com/devnet",
             deps: {
                 storage:  this.createFakeStorage(),
                 keyStore: new nearlib.InMemoryKeyStore(),
