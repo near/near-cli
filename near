@@ -159,6 +159,8 @@ yargs // eslint-disable-line
   .command(deploy)
   .command(clean)
   .command(newProject)
+  .showHelpOnFail(true)
   .demandCommand(1, 'Please enter a command')
+  .strict()
   .argv;
 
