@@ -80,12 +80,15 @@ gulp.task('copyfiles', async function(done) {
 
 gulp.task('newProject', async function(done) {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
-  console.log("Copying files to new project directory");
+  const proj_dir = yargs.argv.project_dir;
+  const source_dir = __dirname + "/blank_project";
+  console.log(`Copying files to new project directory (${proj_dir}) from template source (${source_dir}).`);
   const copyDirFn = () => {
       return new Promise(resolve => {
-          ncp (__dirname + "/blank_project", yargs.argv.project_dir, response => resolve(response));
+          ncp (source_dir, yargs.argv.project_dir, response => resolve(response));
   })};
   await copyDirFn();
+  console.log('Copying project files complete.')
 });
 
 gulp.task('clean', async function(done) {
