@@ -1,6 +1,6 @@
 {
   "name": "near-shell",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Command line utilities to interact with near blockchain",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "fs": "0.0.1-security",
     "gulp": "^4.0.0",
     "ncp": "^2.0.0",
-    "nearlib": "^0.3.4",
+    "nearlib": "^0.4.2",
     "rimraf": "^2.6.3",
     "run-sequence": "^2.2.1",
     "yargs": "^13.2.1"
