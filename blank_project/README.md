@@ -19,7 +19,7 @@ const contractName = "contractId"; /* TODO: fill this in! */
 ```
 
 Step 3:
-Open src/main.html in your browser.
+Open src/index.html in your browser.
 That's it!
 
 
@@ -34,6 +34,6 @@ npm test
 ## To Explore
 
 - `assembly/main.ts` for the contract code
-- `src/main.html` for the front-end HTML
+- `src/index.html` for the front-end HTML
 - `src/main.js` for the JavaScript front-end code and how to integrate contracts
 - `src/test.js` for the JS tests for the contract
