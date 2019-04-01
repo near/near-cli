@@ -2,5 +2,5 @@ const settings = {
   deps: {
     createAccount: nearlib.dev.createAccountWithLocalNodeConnection
   },
+  contractName: "hellotest" /* TODO: fill this in! */
 };
-const contractName = "contract2"; /* TODO: fill this in! */

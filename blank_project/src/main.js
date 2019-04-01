@@ -10,7 +10,7 @@ async function doInitContract() {
   window.near = await nearlib.dev.connect(settings);
 
   // Initializing our contract APIs by contract name and configuration.
-  window.contract = await near.loadContract(contractName, {
+  window.contract = await near.loadContract(settings.contractName, {
     // NOTE: This configuration only needed while NEAR is still in development
     // View methods are read only. They don't modify the state, but usually return some value.
     viewMethods: ["hello"],
