@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "node_modules/near-shell/near build",
-    "test": "jest test --env=./local_test_environment.js",
-    "test-on-devnet": "jest test --env=./devnet_test_environment.js"
+    "test": "jest test --env=./src/local_test_environment.js",
+    "test-on-devnet": "jest test --env=./src/devnet_test_environment.js"
   },
   "devDependencies": {
     "assemblyscript": "github:nearprotocol/assemblyscript.git",
