@@ -25,9 +25,10 @@
   "dependencies": {
     "assemblyscript": "github:nearprotocol/assemblyscript",
     "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
-    "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
     "gulp": "^4.0.0",
+    "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
+    "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
     "nearlib": "^0.4.2",
     "rimraf": "^2.6.3",
     "yargs": "^13.2.1"
