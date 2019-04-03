@@ -36,47 +36,6 @@ const deploy = {
   }
 };
 
-const build = {
-  command: 'build',
-  desc: 'build your smart contract',
-  builder: (yargs) => yargs
-    .option('src_dir', {
-      desc: 'Source directory',
-      type: 'string',
-      default: './assembly'
-    })
-    .option('out_dir', {
-      desc: 'Output directory',
-      type: 'string',
-      default: './out'
-    })
-    .option('out_file', {
-      desc: 'Output file',
-      type: 'string',
-      default: 'main.wasm'
-    })
-    .option('model_files', {
-      desc: 'Path to model files (additional classes used in contract)',
-      type: 'array',
-      default: ['model.ts']
-    })
-    .option('contract_file', {
-      desc: 'Path to main contract file',
-      type: 'string',
-      default: 'main.ts'
-    }),
-  handler: (argv) => {
-    gulp.on('error', function(e) {
-        console.log("Build failed. Error:")
-        console.log(e.error);
-    });
-    if (gulp.task('build')) {
-      const t = gulp.task('build')();
-    } else {
-      throw "Unexpected error: build task not found in gulpfile."
-    }
-  }
-};
 
 const createAccount = {
   command: 'create_account',
@@ -156,7 +115,6 @@ const newProject = {
 
 yargs // eslint-disable-line
   .command(createAccount)
-  .command(build)
   .command(deploy)
   .command(clean)
   .command(newProject)

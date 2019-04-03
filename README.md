@@ -16,7 +16,6 @@ near <command>
 ### Commands:
 ```Bash
   near create_account  # create a developer account
-  near build           # build your smart contract
   near deploy          # deploy your smart contract
 ```
 ### Options:

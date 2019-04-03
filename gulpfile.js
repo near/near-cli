@@ -9,44 +9,6 @@ const rimraf = require('rimraf');
  
 ncp.limit = 16;
  
-gulp.task("build:model", async function (done) {
-  const asc = require("assemblyscript/bin/asc");
-  const buildModelFn = function(fileName) {
-    if (fs.existsSync(yargs.argv.out_dir + "/"  + fileName)){
-      asc.main([
-        fileName,
-        "--baseDir", yargs.argv.out_dir,
-        "--nearFile", generateNearFileFullPath(fileName),
-        "--measure"
-      ], done);
-    }
-  };
-  yargs.argv.model_files.forEach(buildModelFn);
-});
-
-gulp.task("build:bindings", async function (done) {
-  const asc = require("assemblyscript/bin/asc");
-  asc.main([
-    yargs.argv.contract_file,
-    "--baseDir", yargs.argv.out_dir,
-    "--binaryFile", yargs.argv.out_file,
-    "--nearFile", generateNearFileFullPath(yargs.argv.contract_file),
-    "--measure"
-  ], done);
-});
-
-gulp.task("build:all", gulp.series('build:model', 'build:bindings', function (done) {
-  const asc = require("assemblyscript/bin/asc");
-  asc.main([
-    "../out/main.near.ts",
-    "--baseDir", yargs.argv.out_dir,
-    "-O3",
-    "--binaryFile", yargs.argv.out_file,
-    "--sourceMap",
-    "--measure"
-  ], done);
-}));
-
 async function ensureDir (dirPath) {
   try {
     await new Promise((resolve, reject) => {
@@ -56,27 +18,6 @@ async function ensureDir (dirPath) {
     if (err.code !== 'EEXIST') throw err
   }
 }
-
-gulp.task('copyfiles', async function(done) {
-  // Need to wait for the copy to finish, otherwise next tasks do not find files.
-  console.log("Copying files to build directory");
-  const copyDirFn = () => { 
-      return new Promise(resolve => {
-          ncp (yargs.argv.src_dir, yargs.argv.out_dir, response => resolve(response));
-  })};
-  await copyDirFn();
-
-  // find the dependencies
-  const copyFileFn = (from, to) => { 
-    return new Promise(resolve => {
-        ncp (from, to, response => resolve(response));
-  })};
-  await copyFileFn("./node_modules/near-runtime-ts/near.ts", yargs.argv.out_dir + "/near.ts");
-  await ensureDir(yargs.argv.out_dir + "/json");
-  await copyFileFn("./node_modules/assemblyscript-json/assembly/encoder.ts", yargs.argv.out_dir + "/json/encoder.ts");
-  await copyFileFn("./node_modules/assemblyscript-json/assembly/decoder.ts", yargs.argv.out_dir + "/json/decoder.ts");
-  done();
-});
 
 gulp.task('newProject', async function(done) {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
@@ -100,8 +41,6 @@ gulp.task('clean', async function(done) {
   console.log("Clean complete.");
   done();
 });
-
-gulp.task('build', gulp.series('clean', 'copyfiles', 'build:all'));
 
 // Only works for dev environments
 gulp.task('createDevAccount', async function(argv) {
