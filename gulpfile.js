@@ -1,5 +1,5 @@
 const gulp = require("gulp");
-const { SimpleKeyStoreSigner, InMemoryKeyStore, KeyPair, LocalNodeConnection, NearClient, Near } = require('nearlib');
+const { InMemoryKeyStore, KeyPair } = require('nearlib');
 const neardev = require('nearlib/dev');
 const UnencryptedFileSystemKeyStore = require('./unencrypted_file_system_keystore');
 const fs = require('fs');
@@ -9,17 +9,7 @@ const rimraf = require('rimraf');
  
 ncp.limit = 16;
  
-async function ensureDir (dirPath) {
-  try {
-    await new Promise((resolve, reject) => {
-      fs.mkdir(dirPath, { recursive: true }, err => err ? reject(err) : resolve())
-    })
-  } catch (err) {
-    if (err.code !== 'EEXIST') throw err
-  }
-}
-
-gulp.task('newProject', async function(done) {
+gulp.task('newProject', async function() {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
   const proj_dir = yargs.argv.project_dir;
   const source_dir = __dirname + "/blank_project";
@@ -58,7 +48,7 @@ gulp.task('createDevAccount', async function(argv) {
         }
     };
 
-    const near = await neardev.connect(options);
+    await neardev.connect(options);
     await neardev.createAccountWithLocalNodeConnection(accountId, keyPair.getPublicKey());
     const keyStore = new UnencryptedFileSystemKeyStore();
     keyStore.setKey(accountId, keyPair);
@@ -68,15 +58,6 @@ async function deployContractAndWaitForTransaction(accountId, data, near) {
     const deployContractResult = await near.deployContract(accountId, data);
     const waitResult = await near.waitForTransactionResult(deployContractResult);
     return waitResult;
-}
-
-function generateNearFileFullPath(fileName) {
-  return "../" + yargs.argv.out_dir + "/" + generateNearFileName(fileName);
-}
-
-// converts file.ts to file.near.ts
-function generateNearFileName(fileName) {
-  return fileName.replace(/.ts$/, '.near.ts');
 }
 
 gulp.task('deploy', async function(argv) {
@@ -105,8 +86,6 @@ gulp.task('deploy', async function(argv) {
     const near = await neardev.connect(options);
     const contractData = [...fs.readFileSync(argv.wasm_file)];
 
-    // Contract name
-    const contractName = accountId;
     console.log(
         "Starting deployment. Account id " + accountId + ", contract " + accountId + ", url " + nodeUrl, ", file " + argv.wasm_file);
     const res = await deployContractAndWaitForTransaction(
