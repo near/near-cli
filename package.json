@@ -25,11 +25,12 @@
   "dependencies": {
     "assemblyscript": "github:nearprotocol/assemblyscript",
     "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
-    "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
+    "depd": "^2.0.0",
     "fs": "0.0.1-security",
     "gulp": "^4.0.0",
     "ncp": "^2.0.0",
-    "nearlib": "^0.4.2",
+    "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
+    "nearlib": "file:../nearcore/nearlib",
     "rimraf": "^2.6.3",
     "run-sequence": "^2.2.1",
     "yargs": "^13.2.1"

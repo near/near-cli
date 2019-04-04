@@ -11,8 +11,15 @@
     <h1 id="contract-message"></h1>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/nearlib@0.4.2/dist/nearlib.js"></script>
-  <script src="./settings_devnet.js"></script>
+  <script type="text/javascript" src="config/local.json"></script>
+             <script type="text/javascript" >
+                function load() {
+                     window.config = JSON.parse(data);
+                     
+                 }
+        </script>
   <script src="./main.js"></script>
+  
 </body>
 </html>
 <!-- << markup-snippet -->

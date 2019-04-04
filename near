@@ -4,15 +4,14 @@ const gulp = require('gulp');
 const gulpfile = require('./gulpfile') // import the gulp file
 const yargs = require('yargs');
 
-
 const deploy = {
   command: 'deploy',
   desc: 'deploy your smart contract',
   builder: (yargs) => yargs
-    .option('node_url', {
+    .option('config_file', {
       desc: 'Near node url',
       type: 'string',
-      default: 'http://localhost:3030'
+      default: 'src/config/local.json'
     })
     .option('wasm_file', {
       desc: 'Path to wasm file to deploy',
@@ -82,10 +81,10 @@ const createAccount = {
   command: 'create_account',
   desc: 'create a developer account',
   builder: (yargs) => yargs
-    .option('node_url', {
+    .option('config_file', {
       desc: 'Near node url',
       type: 'string',
-      default: 'http://localhost:3030'
+      default: 'src/config/local.json'
     })
     .option('account_id', {
       desc: 'Unique identifier for the new account',

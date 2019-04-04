@@ -1,14 +1,13 @@
 const gulp = require("gulp");
-const { SimpleKeyStoreSigner, InMemoryKeyStore, KeyPair, LocalNodeConnection, NearClient, Near } = require('nearlib');
+const { SimpleKeyStoreSigner, InMemoryKeyStore, KeyPair, LocalNodeConnection, NearClient, Near, UnencryptedFileSystemKeyStore } = require('nearlib');
 const neardev = require('nearlib/dev');
-const UnencryptedFileSystemKeyStore = require('./unencrypted_file_system_keystore');
 const fs = require('fs');
 const yargs = require('yargs');
 const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
  
 ncp.limit = 16;
- 
+
 gulp.task("build:model", async function (done) {
   const asc = require("assemblyscript/bin/asc");
   const buildModelFn = function(fileName) {
@@ -107,21 +106,18 @@ gulp.task('build', gulp.series('clean', 'copyfiles', 'build:all'));
 gulp.task('createDevAccount', async function(argv) {
     const keyPair = await KeyPair.fromRandomSeed();
     const accountId = argv.account_id;
-    const nodeUrl = argv.node_url;
 
-    const options = {
-        nodeUrl,
-        accountId,
-        useDevAccount: true,
-        deps: {
-            keyStore: new InMemoryKeyStore(),
-            storage: {},
-        }
+    const config = readConfigFile();
+    config.accountId = accountId;
+    config.useDevAccount = true;
+    config.deps = {
+      keyStore: new InMemoryKeyStore(config.networkId),
+      storage: {},
     };
 
-    const near = await neardev.connect(options);
+    const near = await neardev.connect(config);
     await neardev.createAccountWithLocalNodeConnection(accountId, keyPair.getPublicKey());
-    const keyStore = new UnencryptedFileSystemKeyStore();
+    const keyStore = new UnencryptedFileSystemKeyStore("neardev", config.networkId);
     keyStore.setKey(accountId, keyPair);
 });
 
@@ -137,11 +133,19 @@ function generateNearFileFullPath(fileName) {
 
 // converts file.ts to file.near.ts
 function generateNearFileName(fileName) {
-  return fileName.replace(/.ts$/, '.near.ts');
+    return fileName.replace(/.ts$/, '.near.ts');
+}
+
+function readConfigFile() {
+    const file = fs.readFileSync(yargs.argv.config_file, "utf8");
+    const json = JSON.parse(file);
+    return json;
 }
 
 gulp.task('deploy', async function(argv) {
-    const keyStore = new UnencryptedFileSystemKeyStore();
+    const config = readConfigFile();
+    config.useDevAccount = true;
+    const keyStore = new UnencryptedFileSystemKeyStore("neardev", config.networkId);
     let accountId = argv.account_id;
     if (!accountId) {
         // see if we only have one account in keystore and just use that.
@@ -153,23 +157,18 @@ gulp.task('deploy', async function(argv) {
     if (!accountId) {
         throw 'Please provide account id and make sure you created an account using near create_account'; 
     }
-    const nodeUrl = argv.node_url;
-    const options = {
-        nodeUrl,
-        accountId,
-        deps: {
-          keyStore,
-          storage: {},
-        }
+    config.deps = {
+      keyStore,
+      storage: {},
     };
-
-    const near = await neardev.connect(options);
+    config.accountId = accountId;
+    const near = await neardev.connect(config);
     const contractData = [...fs.readFileSync(argv.wasm_file)];
 
     // Contract name
     const contractName = accountId;
     console.log(
-        "Starting deployment. Account id " + accountId + ", contract " + accountId + ", url " + nodeUrl, ", file " + argv.wasm_file);
+        "Starting deployment. Account id " + accountId + ", contract " + accountId + ", url " + config.nodeUrl, ", file " + argv.wasm_file);
     const res = await deployContractAndWaitForTransaction(
         accountId, contractData, near);
     if (res.status == "Completed") {

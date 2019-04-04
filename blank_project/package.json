@@ -4,14 +4,15 @@
   "version": "1.0.0",
   "scripts": {
     "build": "node_modules/near-shell/near build",
+    "pretest": "npm run-script build",
     "test": "jest test --env=./src/local_test_environment.js",
     "test-on-devnet": "jest test --env=./src/devnet_test_environment.js"
   },
   "devDependencies": {
     "assemblyscript": "github:nearprotocol/assemblyscript.git",
-    "gulp": "^3",
     "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
-    "jest": "^22.4.4",
+    "gulp": "^4.0.0",
+    "jest": "^24.7.0",
     "jest-environment-node": "^24.5.0",
     "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
     "near-shell": "github:nearprotocol/near-shell"

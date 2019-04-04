@@ -3,7 +3,6 @@ const dev = require('nearlib/dev');
 const fs = require('fs');
 const nearlib = require('nearlib');
 
-
 class LocalTestEnvironment extends NodeEnvironment {
     constructor(config) {
         super(config);
@@ -13,16 +12,17 @@ class LocalTestEnvironment extends NodeEnvironment {
         this.global.nearlib = require('nearlib');
         this.global.nearlib.dev = require('nearlib/dev');
         this.global.window = {};
-        this.global.testSettings = {
-            contractName: "test" + Date.now(),
-            accountId: "test" + Date.now(),
-            nodeUrl: "http://localhost:3030",
-            deps: {
-                storage:  this.createFakeStorage(),
-                keyStore: new nearlib.InMemoryKeyStore(),
-                createAccount: dev.createAccountWithLocalNodeConnection
-            }
+
+        const config = JSON.parse(fs.readFileSync('./src/config/local.json', "utf8"));
+        config.contractName = "test" + Date.now();
+        config.accountId = "test" + Date.now();
+        config.deps = {
+            storage:  this.createFakeStorage(),
+            keyStore: new nearlib.InMemoryKeyStore(config.networkId),
+            createAccount: dev.createAccountWithLocalNodeConnection
         };
+
+        this.global.testSettings = config;
         const near = await dev.connect(this.global.testSettings);
 
         const keyWithRandomSeed = await nearlib.KeyPair.fromRandomSeed();

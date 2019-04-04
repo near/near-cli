@@ -1,0 +1,5 @@
+{
+  "networkId": "local",
+  "contractName": "hellotest",
+  "nodeUrl": "http://localhost:3030"
+}

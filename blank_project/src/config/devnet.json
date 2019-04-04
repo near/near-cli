@@ -1,0 +1,6 @@
+{
+  "networkId": "devnet",
+  "contractName": "hellotest",
+  "nodeUrl": "https://studio.nearprotocol.com/devnet",
+  "baseUrl": "https://studio.nearprotocol.com/contract-api"
+}
