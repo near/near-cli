@@ -6,9 +6,26 @@ const fs = require('fs');
 const yargs = require('yargs');
 const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
- 
+
 ncp.limit = 16;
- 
+
+// TODO: Fix promisified wrappers to handle error properly
+const copyFileFn = (from, to) => {
+    return new Promise(resolve => {
+        ncp(from, to, response => resolve(response));
+    })
+};
+
+async function ensureDir(dirPath) {
+    try {
+        await new Promise((resolve, reject) => {
+            fs.mkdir(dirPath, { recursive: true }, err => err ? reject(err) : resolve())
+        })
+    } catch (err) {
+        if (err.code !== 'EEXIST') throw err
+    }
+} ``
+
 gulp.task('newProject', async function() {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
   const proj_dir = yargs.argv.project_dir;
@@ -19,6 +36,11 @@ gulp.task('newProject', async function() {
           ncp (source_dir, yargs.argv.project_dir, response => resolve(response));
   })};
   await copyDirFn();
+  let assemblyDir = proj_dir + "/assembly";
+  await copyFileFn("./node_modules/near-runtime-ts/near.ts", assemblyDir + "/near.ts");
+  await ensureDir(assemblyDir + "/json");
+  await copyFileFn("./node_modules/assemblyscript-json/assembly/encoder.ts", assemblyDir + "/json/encoder.ts");
+  await copyFileFn("./node_modules/assemblyscript-json/assembly/decoder.ts", assemblyDir + "/json/decoder.ts");
   console.log('Copying project files complete.')
 });
 
@@ -71,7 +93,7 @@ gulp.task('deploy', async function(argv) {
         }
     }
     if (!accountId) {
-        throw 'Please provide account id and make sure you created an account using near create_account'; 
+        throw 'Please provide account id and make sure you created an account using near create_account';
     }
     const nodeUrl = argv.node_url;
     const options = {
