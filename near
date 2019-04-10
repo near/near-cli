@@ -36,45 +36,21 @@ const deploy = {
   }
 };
 
+const { spawn } = require('child_process');
 const build = {
   command: 'build',
   desc: 'build your smart contract',
-  builder: (yargs) => yargs
-    .option('src_dir', {
-      desc: 'Source directory',
-      type: 'string',
-      default: './assembly'
-    })
-    .option('out_dir', {
-      desc: 'Output directory',
-      type: 'string',
-      default: './out'
-    })
-    .option('out_file', {
-      desc: 'Output file',
-      type: 'string',
-      default: 'main.wasm'
-    })
-    .option('model_files', {
-      desc: 'Path to model files (additional classes used in contract)',
-      type: 'array',
-      default: ['model.ts']
-    })
-    .option('contract_file', {
-      desc: 'Path to main contract file',
-      type: 'string',
-      default: 'main.ts'
-    }),
   handler: (argv) => {
-    gulp.on('error', function(e) {
-        console.log("Build failed. Error:")
-        console.log(e.error);
+    const gulp = spawn('gulp');
+    gulp.stdout.on('data', function (data) {
+      console.log(data.toString());
     });
-    if (gulp.task('build')) {
-      const t = gulp.task('build')();
-    } else {
-      throw "Unexpected error: build task not found in gulpfile."
-    }
+    gulp.stderr.on('data', function (data) {
+      console.log(data.toString());
+    });
+    gulp.on('exit', function (code) {
+      process.exit(code);
+    });
   }
 };
 

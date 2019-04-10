@@ -1,0 +1,26 @@
+image: node:latest
+
+stages:
+  - build
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: build
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+run_tests:
+  stage: test
+  script:
+    - mkdir tmp-project
+    - cd tmp-project
+    - ../near new_project
+    - npm install
+    - npm run build
