@@ -36,6 +36,23 @@ const deploy = {
   }
 };
 
+const { spawn } = require('child_process');
+const build = {
+  command: 'build',
+  desc: 'build your smart contract',
+  handler: (argv) => {
+    const gulp = spawn('gulp');
+    gulp.stdout.on('data', function (data) {
+      console.log(data.toString());
+    });
+    gulp.stderr.on('data', function (data) {
+      console.log(data.toString());
+    });
+    gulp.on('exit', function (code) {
+      process.exit(code);
+    });
+  }
+};
 
 const createAccount = {
   command: 'create_account',
@@ -115,6 +132,7 @@ const newProject = {
 
 yargs // eslint-disable-line
   .command(createAccount)
+  .command(build)
   .command(deploy)
   .command(clean)
   .command(newProject)

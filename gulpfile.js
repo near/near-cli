@@ -24,7 +24,7 @@ async function ensureDir(dirPath) {
     } catch (err) {
         if (err.code !== 'EEXIST') throw err
     }
-} ``
+}
 
 gulp.task('newProject', async function() {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
