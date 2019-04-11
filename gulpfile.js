@@ -36,11 +36,6 @@ gulp.task('newProject', async function() {
           ncp (source_dir, yargs.argv.project_dir, response => resolve(response));
   })};
   await copyDirFn();
-  let assemblyDir = proj_dir + "/assembly";
-  await copyFileFn("./node_modules/near-runtime-ts/near.ts", assemblyDir + "/near.ts");
-  await ensureDir(assemblyDir + "/json");
-  await copyFileFn("./node_modules/assemblyscript-json/assembly/encoder.ts", assemblyDir + "/json/encoder.ts");
-  await copyFileFn("./node_modules/assemblyscript-json/assembly/decoder.ts", assemblyDir + "/json/decoder.ts");
   console.log('Copying project files complete.')
 });
 
