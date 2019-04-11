@@ -49,6 +49,19 @@ function getAsc() {
         } else if (path.startsWith(baseDir) && path.indexOf(".near.ts") != -1) {
           path = path.replace(new RegExp("^" + baseDir), "out");
         }
+
+        if (!fs.existsSync(path)) {
+          // TODO: Try node_modules instead of fixed hardcode
+          const mapping = {
+            "assembly/near.ts" : "./node_modules/near-runtime-ts/near.ts",
+            "assembly/json/encoder.ts" : "./node_modules/assemblyscript-json/assembly/encoder.ts",
+            "assembly/json/decoder.ts" : "./node_modules/assemblyscript-json/assembly/decoder.ts",
+          }
+          if (path in mapping) {
+            path =  mapping[path]
+          }
+        }
+
         return fs.readFileSync(path).toString("utf8");
       },
       writeFile: (filename, contents) => {

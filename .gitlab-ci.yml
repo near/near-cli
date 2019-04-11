@@ -23,4 +23,6 @@ run_tests:
     - cd tmp-project
     - ../near new_project
     - npm install
+    - npm uninstall near-shell
+    - npm install ../
     - npm run build
