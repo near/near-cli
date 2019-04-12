@@ -21,7 +21,7 @@ run_tests:
   script:
     - mkdir tmp-project
     - cd tmp-project
-    - ../near new_project
+    - ../bin/near new_project
     - npm install
     - npm uninstall near-shell
     - npm install ../
