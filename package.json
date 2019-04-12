@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/nearprotocol/near-shell#readme",
   "bin": {
-    "near": "near"
+    "near": "./bin/near"
   },
   "devDependencies": {},
   "dependencies": {
