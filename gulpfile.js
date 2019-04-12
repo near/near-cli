@@ -10,21 +10,6 @@ const rimraf = require('rimraf');
 ncp.limit = 16;
 
 // TODO: Fix promisified wrappers to handle error properly
-const copyFileFn = (from, to) => {
-    return new Promise(resolve => {
-        ncp(from, to, response => resolve(response));
-    })
-};
-
-async function ensureDir(dirPath) {
-    try {
-        await new Promise((resolve, reject) => {
-            fs.mkdir(dirPath, { recursive: true }, err => err ? reject(err) : resolve())
-        })
-    } catch (err) {
-        if (err.code !== 'EEXIST') throw err
-    }
-}
 
 gulp.task('newProject', async function() {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
