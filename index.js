@@ -1,4 +1,3 @@
-const gulp = require("gulp");
 const { InMemoryKeyStore, KeyPair } = require('nearlib');
 const neardev = require('nearlib/dev');
 const UnencryptedFileSystemKeyStore = require('./unencrypted_file_system_keystore');
@@ -11,7 +10,7 @@ ncp.limit = 16;
 
 // TODO: Fix promisified wrappers to handle error properly
 
-gulp.task('newProject', async function() {
+exports.newProject = async function() {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
   const proj_dir = yargs.argv.project_dir;
   const source_dir = __dirname + "/blank_project";
@@ -22,20 +21,19 @@ gulp.task('newProject', async function() {
   })};
   await copyDirFn();
   console.log('Copying project files complete.')
-});
+};
 
-gulp.task('clean', async function(done) {
+exports.clean = async function() {
   const rmDirFn = () => {
       return new Promise(resolve => {
       rimraf(yargs.argv.out_dir, response => resolve(response));
   })};
   await rmDirFn();
   console.log("Clean complete.");
-  done();
-});
+};
 
 // Only works for dev environments
-gulp.task('createDevAccount', async function(argv) {
+exports.createDevAccount = async function(argv) {
     const keyPair = await KeyPair.fromRandomSeed();
     const accountId = argv.account_id;
     const nodeUrl = argv.node_url;
@@ -54,7 +52,7 @@ gulp.task('createDevAccount', async function(argv) {
     await neardev.createAccountWithLocalNodeConnection(accountId, keyPair.getPublicKey());
     const keyStore = new UnencryptedFileSystemKeyStore();
     keyStore.setKey(accountId, keyPair);
-});
+};
 
 async function deployContractAndWaitForTransaction(accountId, data, near) {
     const deployContractResult = await near.deployContract(accountId, data);
@@ -62,7 +60,7 @@ async function deployContractAndWaitForTransaction(accountId, data, near) {
     return waitResult;
 }
 
-gulp.task('deploy', async function(argv) {
+exports.deploy = async function(argv) {
     const keyStore = new UnencryptedFileSystemKeyStore();
     let accountId = argv.account_id;
     if (!accountId) {
@@ -96,5 +94,6 @@ gulp.task('deploy', async function(argv) {
         console.log("Deployment succeeded.");
     } else {
         console.log("Deployment transaction did not succeed: ", res);
+        process.exit(1);
     }
-});
+};
