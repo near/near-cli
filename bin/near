@@ -1,9 +1,16 @@
 #!/usr/bin/env node
 
-const gulp = require('gulp');
-const gulpfile = require('./gulpfile') // import the gulp file
 const yargs = require('yargs');
+const main = require('../');
 
+const exitOnError = async function(promise) {
+  try {
+    await promise;
+  } catch (e) {
+    console.log("Error: ", e);
+    process.exit(1);
+  }
+}
 
 const deploy = {
   command: 'deploy',
@@ -23,17 +30,7 @@ const deploy = {
       desc: 'Your developer account id. If you have only one account, that one will be selected by default',
       type: 'string',
     }),
-  handler: (argv) => {
-    gulp.on('error', function(e) {
-      console.log("Deploy failed. Error:")
-      console.log(e.error);
-    });
-    if (gulp.task('deploy')) {
-      const result = gulp.task('deploy')(argv).catch(console.log);
-    } else {
-      throw "Unexpected error: deploy task not found in gulpfile."
-    }
-  }
+  handler: (argv) => exitOnError(main.deploy(argv))
 };
 
 const { spawn } = require('child_process');
@@ -67,19 +64,8 @@ const createAccount = {
       desc: 'Unique identifier for the new account',
       type: 'string',
       required: true
-    })
-  ,
-  handler: (argv) => {
-    gulp.on('error', function(e) {
-      console.log("Create account failed. Error:")
-      console.log(e.error);
-    });
-    if (gulp.task('createDevAccount')) {
-      const result = gulp.task('createDevAccount')(argv).catch(console.log);
-    } else {
-      throw "Unexpected error: createDevAccount task not found in gulpfile."
-    }
-  }
+    }),
+  handler: (argv) => exitOnError(main.createDevAccount(argv))
 };
 
 const clean = {
@@ -90,20 +76,8 @@ const clean = {
       desc: 'build directory',
       type: 'string',
       default: './out'
-    })
-  ,
-  handler: (argv) => {
-    gulp.on('error', function(e) {
-      console.log("Clean failed. Error:")
-      console.log(e.error);
-    });
-    if (gulp.task('clean')) {
-      const result = gulp.task('clean')(() => {})
-        .catch(console.log);
-    } else {
-      throw "Unexpected error: clean task not found in gulpfile."
-    }
-  }
+    }),
+  handler: (argv) => exitOnError(main.clean(argv))
 };
 
 const newProject = {
@@ -114,20 +88,8 @@ const newProject = {
       desc: 'project directory',
       type: 'string',
       default: '.'
-    })
-  ,
-  handler: (argv) => {
-    console.log(__dirname);
-    gulp.on('error', function(e) {
-      console.log("Create new project failed. Error:")
-      console.log(e.error);
-    });
-    if (gulp.task('newProject')) {
-      const result = gulp.task('newProject')(argv).catch(console.log);
-    } else {
-      throw "Unexpected error: clean task not found in gulpfile."
-    }
-  }
+    }),
+  handler: (argv) => exitOnError(main.newProject(argv))
 };
 
 yargs // eslint-disable-line

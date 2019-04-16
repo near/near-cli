@@ -19,13 +19,12 @@
   },
   "homepage": "https://github.com/nearprotocol/near-shell#readme",
   "bin": {
-    "near": "near"
+    "near": "./bin/near"
   },
   "devDependencies": {},
   "dependencies": {
     "assemblyscript": "github:nearprotocol/assemblyscript",
     "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
-    "gulp": "^4.0.0",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
     "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
