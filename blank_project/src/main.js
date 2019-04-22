@@ -2,15 +2,12 @@
 
 // >> frontend-snippet
 
-async function doInitContract() {
-  // Getting config from cookies that are provided by the NEAR Studio.
-  const config = await nearlib.dev.getConfig();
-
+async function initContract() {
   // Initializing connection to the NEAR DevNet.
-  window.near = await nearlib.dev.connect(settings);
+  window.near = await nearlib.dev.connect(nearConfig);
 
   // Initializing our contract APIs by contract name and configuration.
-  window.contract = await near.loadContract(settings.contractName, {
+  window.contract = await near.loadContract(nearConfig.contractName, {
     // NOTE: This configuration only needed while NEAR is still in development
     // View methods are read only. They don't modify the state, but usually return some value.
     viewMethods: ["hello"],
@@ -20,9 +17,6 @@ async function doInitContract() {
     // For devnet we create accounts on demand. See other examples on how to authorize accounts.
     sender: nearlib.dev.myAccountId
   });
-
-  // Once everything is ready, we can start using contract
-  return doWork();
 }
 
 // Using initialized contract
@@ -37,6 +31,8 @@ async function doWork() {
 // COMMON CODE BELOW:
 // Loads nearlib and this contract into window scope.
 
-window.nearInitPromise = doInitContract().catch(console.error);
+window.nearInitPromise = initContract()
+  .then(doWork)
+  .catch(console.error);
 
 // << frontend-snippet
