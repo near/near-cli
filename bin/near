@@ -16,17 +16,17 @@ const deploy = {
   command: 'deploy',
   desc: 'deploy your smart contract',
   builder: (yargs) => yargs
-    .option('node_url', {
+    .option('nodeUrl', {
       desc: 'Near node url',
       type: 'string',
       default: 'http://localhost:3030'
     })
-    .option('wasm_file', {
+    .option('wasmFile', {
       desc: 'Path to wasm file to deploy',
       type: 'string',
       default: './out/main.wasm'
     })
-    .option('account_id', {
+    .option('accountId', {
       desc: 'Your developer account id. If you have only one account, that one will be selected by default',
       type: 'string',
     }),
@@ -55,12 +55,12 @@ const createAccount = {
   command: 'create_account',
   desc: 'create a developer account',
   builder: (yargs) => yargs
-    .option('node_url', {
+    .option('nodeUrl', {
       desc: 'Near node url',
       type: 'string',
       default: 'http://localhost:3030'
     })
-    .option('account_id', {
+    .option('accountId', {
       desc: 'Unique identifier for the new account',
       type: 'string',
       required: true
@@ -72,7 +72,7 @@ const clean = {
   command: 'clean',
   desc: 'clean the build environment',
   builder: (yargs) => yargs
-    .option('out_dir', {
+    .option('outDir', {
       desc: 'build directory',
       type: 'string',
       default: './out'
@@ -84,7 +84,7 @@ const newProject = {
   command: 'new_project',
   desc: 'create a new blank project',
   builder: (yargs) => yargs
-    .option('project_dir', {
+    .option('projectDir', {
       desc: 'project directory',
       type: 'string',
       default: '.'
@@ -98,6 +98,13 @@ yargs // eslint-disable-line
   .command(deploy)
   .command(clean)
   .command(newProject)
+  .alias({
+    'accountId': ['account_id', 'contractName', 'contract_name'],
+    'nodeUrl': 'node_url',
+    'wasmFile': 'wasm_file',
+    'projectDir': 'project_dir',
+    'outDir': 'out_dir'
+  })
   .showHelpOnFail(true)
   .demandCommand(1, 'Please enter a command')
   .strict()

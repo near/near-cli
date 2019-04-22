@@ -12,12 +12,12 @@ ncp.limit = 16;
 
 exports.newProject = async function() {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
-  const proj_dir = yargs.argv.project_dir;
-  const source_dir = __dirname + "/blank_project";
-  console.log(`Copying files to new project directory (${proj_dir}) from template source (${source_dir}).`);
+  const projectDir = yargs.argv.projectDir;
+  const sourceDir = __dirname + "/blank_project";
+  console.log(`Copying files to new project directory (${projectDir}) from template source (${sourceDir}).`);
   const copyDirFn = () => {
       return new Promise(resolve => {
-          ncp (source_dir, yargs.argv.project_dir, response => resolve(response));
+          ncp (sourceDir, yargs.argv.projectDir, response => resolve(response));
   })};
   await copyDirFn();
   console.log('Copying project files complete.')
@@ -26,7 +26,7 @@ exports.newProject = async function() {
 exports.clean = async function() {
   const rmDirFn = () => {
       return new Promise(resolve => {
-      rimraf(yargs.argv.out_dir, response => resolve(response));
+      rimraf(yargs.argv.outDir, response => resolve(response));
   })};
   await rmDirFn();
   console.log("Clean complete.");
@@ -35,8 +35,8 @@ exports.clean = async function() {
 // Only works for dev environments
 exports.createDevAccount = async function(argv) {
     const keyPair = await KeyPair.fromRandomSeed();
-    const accountId = argv.account_id;
-    const nodeUrl = argv.node_url;
+    const accountId = argv.accountId;
+    const nodeUrl = argv.nodeUrl;
 
     const options = {
         nodeUrl,
@@ -62,7 +62,7 @@ async function deployContractAndWaitForTransaction(accountId, data, near) {
 
 exports.deploy = async function(argv) {
     const keyStore = new UnencryptedFileSystemKeyStore();
-    let accountId = argv.account_id;
+    let accountId = argv.accountId;
     if (!accountId) {
         // see if we only have one account in keystore and just use that.
         const accountIds = await keyStore.getAccountIds();
@@ -71,9 +71,9 @@ exports.deploy = async function(argv) {
         }
     }
     if (!accountId) {
-        throw 'Please provide account id and make sure you created an account using near create_account';
+        throw new Error('Please provide account id and make sure you created an account using near create_account');
     }
-    const nodeUrl = argv.node_url;
+    const nodeUrl = argv.nodeUrl;
     const options = {
         nodeUrl,
         accountId,
@@ -84,10 +84,10 @@ exports.deploy = async function(argv) {
     };
 
     const near = await neardev.connect(options);
-    const contractData = [...fs.readFileSync(argv.wasm_file)];
+    const contractData = [...fs.readFileSync(argv.wasmFile)];
 
     console.log(
-        "Starting deployment. Account id " + accountId + ", contract " + accountId + ", url " + nodeUrl, ", file " + argv.wasm_file);
+        "Starting deployment. Account id " + accountId + ", contract " + accountId + ", url " + nodeUrl, ", file " + argv.wasmFile);
     const res = await deployContractAndWaitForTransaction(
         accountId, contractData, near);
     if (res.status == "Completed") {
