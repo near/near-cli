@@ -16,19 +16,10 @@ const deploy = {
   command: 'deploy',
   desc: 'deploy your smart contract',
   builder: (yargs) => yargs
-    .option('nodeUrl', {
-      desc: 'Near node url',
-      type: 'string',
-      default: 'http://localhost:3030'
-    })
     .option('wasmFile', {
       desc: 'Path to wasm file to deploy',
       type: 'string',
       default: './out/main.wasm'
-    })
-    .option('accountId', {
-      desc: 'Your developer account id. If you have only one account, that one will be selected by default',
-      type: 'string',
     }),
   handler: (argv) => exitOnError(main.deploy(argv))
 };
@@ -54,17 +45,7 @@ const build = {
 const createAccount = {
   command: 'create_account',
   desc: 'create a developer account',
-  builder: (yargs) => yargs
-    .option('nodeUrl', {
-      desc: 'Near node url',
-      type: 'string',
-      default: 'http://localhost:3030'
-    })
-    .option('accountId', {
-      desc: 'Unique identifier for the new account',
-      type: 'string',
-      required: true
-    }),
+  builder: (yargs) => yargs,
   handler: (argv) => exitOnError(main.createDevAccount(argv))
 };
 
@@ -92,12 +73,29 @@ const newProject = {
   handler: (argv) => exitOnError(main.newProject(argv))
 };
 
+const config = require(process.cwd() + '/src/config')(process.env.NODE_ENV || 'development');
 yargs // eslint-disable-line
+  .option('nodeUrl', {
+    desc: 'NEAR node URL',
+    type: 'string',
+    default: 'http://localhost:3030'
+  })
+  .option('helperUrl', {
+    desc: 'NEAR contract helper URL',
+    type: 'string',
+    default: 'http://localhost:3030'
+  })
+  .option('accountId', {
+    desc: 'Unique identifier for the new account',
+    type: 'string',
+    required: true
+  })
   .command(createAccount)
   .command(build)
   .command(deploy)
   .command(clean)
   .command(newProject)
+  .config(config)
   .alias({
     'accountId': ['account_id', 'contractName', 'contract_name'],
     'nodeUrl': 'node_url',

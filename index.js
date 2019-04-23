@@ -33,25 +33,19 @@ exports.clean = async function() {
 };
 
 // Only works for dev environments
-exports.createDevAccount = async function(argv) {
+exports.createDevAccount = async function(options) {
     const keyPair = await KeyPair.fromRandomSeed();
-    const accountId = argv.accountId;
-    const nodeUrl = argv.nodeUrl;
 
-    const options = {
-        nodeUrl,
-        accountId,
-        useDevAccount: true,
-        deps: {
-            keyStore: new InMemoryKeyStore(),
-            storage: {},
-        }
+    options.useDevAccount = true;
+    options.deps = {
+        keyStore: new InMemoryKeyStore(),
+        storage: {},
     };
 
     await neardev.connect(options);
-    await neardev.createAccountWithLocalNodeConnection(accountId, keyPair.getPublicKey());
+    await options.deps.createAccount(options.accountId, keyPair.getPublicKey());
     const keyStore = new UnencryptedFileSystemKeyStore();
-    keyStore.setKey(accountId, keyPair);
+    keyStore.setKey(options.accountId, keyPair);
 };
 
 async function deployContractAndWaitForTransaction(accountId, data, near) {
@@ -60,36 +54,30 @@ async function deployContractAndWaitForTransaction(accountId, data, near) {
     return waitResult;
 }
 
-exports.deploy = async function(argv) {
+exports.deploy = async function(options) {
+    console.log('deploy', options);
     const keyStore = new UnencryptedFileSystemKeyStore();
-    let accountId = argv.accountId;
-    if (!accountId) {
+    if (!options.accountId) {
         // see if we only have one account in keystore and just use that.
         const accountIds = await keyStore.getAccountIds();
         if (accountIds.length == 1) {
-            accountId = accountIds[0];
+            options.accountId = accountIds[0];
         }
     }
-    if (!accountId) {
-        throw new Error('Please provide account id and make sure you created an account using near create_account');
+    if (!options.accountId) {
+        throw new Error('Please provide account id and make sure you created an account using `near create_account`');
     }
-    const nodeUrl = argv.nodeUrl;
-    const options = {
-        nodeUrl,
-        accountId,
-        deps: {
-          keyStore,
-          storage: {},
-        }
+    options.deps = {
+        keyStore,
+        storage: {},
     };
 
     const near = await neardev.connect(options);
-    const contractData = [...fs.readFileSync(argv.wasmFile)];
+    const contractData = [...fs.readFileSync(options.wasmFile)];
 
     console.log(
-        "Starting deployment. Account id " + accountId + ", contract " + accountId + ", url " + nodeUrl, ", file " + argv.wasmFile);
-    const res = await deployContractAndWaitForTransaction(
-        accountId, contractData, near);
+        `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
+    const res = await deployContractAndWaitForTransaction(options.accountId, contractData, near);
     if (res.status == "Completed") {
         console.log("Deployment succeeded.");
     } else {

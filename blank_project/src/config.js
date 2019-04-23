@@ -8,20 +8,13 @@
             case 'development':
                 return {
                     nodeUrl: 'https://studio.nearprotocol.com/devnet',
-                    baseUrl: 'https://studio.nearprotocol.com/contract-api',
+                    helperUrl: 'https://studio.nearprotocol.com/contract-api',
                     contractName: CONTRACT_NAME,
-                    deps: {
-                        createAccount: (accountId, publicKey) =>
-                            nearlib.dev.createAccountWithContractHelper(
-                                { baseUrl: 'https://studio.nearprotocol.com/contract-api' }, accountId, publicKey)
-                    }
                 };
             case 'local':
             case 'test':
                 return {
-                    deps: {
-                        createAccount: nearlib.dev.createAccountWithLocalNodeConnection
-                    },
+                    nodeUrl: 'http://localhost:8080',
                     contractName: CONTRACT_NAME
                 };
             default:
@@ -29,7 +22,7 @@
         }
     }
 
-    const cookieConfig = Cookies.getJSON('fiddleConfig');
+    const cookieConfig = typeof Cookies != 'undefined' && Cookies.getJSON('fiddleConfig');
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = getConfig;
     } else {
