@@ -12,12 +12,12 @@ ncp.limit = 16;
 
 exports.newProject = async function() {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
-  const proj_dir = yargs.argv.project_dir;
-  const source_dir = __dirname + "/blank_project";
-  console.log(`Copying files to new project directory (${proj_dir}) from template source (${source_dir}).`);
+  const projectDir = yargs.argv.projectDir;
+  const sourceDir = __dirname + "/blank_project";
+  console.log(`Copying files to new project directory (${projectDir}) from template source (${sourceDir}).`);
   const copyDirFn = () => {
       return new Promise(resolve => {
-          ncp (source_dir, yargs.argv.project_dir, response => resolve(response));
+          ncp (sourceDir, yargs.argv.projectDir, response => resolve(response));
   })};
   await copyDirFn();
   console.log('Copying project files complete.')
@@ -26,32 +26,26 @@ exports.newProject = async function() {
 exports.clean = async function() {
   const rmDirFn = () => {
       return new Promise(resolve => {
-      rimraf(yargs.argv.out_dir, response => resolve(response));
+      rimraf(yargs.argv.outDir, response => resolve(response));
   })};
   await rmDirFn();
   console.log("Clean complete.");
 };
 
 // Only works for dev environments
-exports.createDevAccount = async function(argv) {
+exports.createDevAccount = async function(options) {
     const keyPair = await KeyPair.fromRandomSeed();
-    const accountId = argv.account_id;
-    const nodeUrl = argv.node_url;
 
-    const options = {
-        nodeUrl,
-        accountId,
-        useDevAccount: true,
-        deps: {
-            keyStore: new InMemoryKeyStore(),
-            storage: {},
-        }
+    options.useDevAccount = true;
+    options.deps = {
+        keyStore: new InMemoryKeyStore(),
+        storage: {},
     };
 
     await neardev.connect(options);
-    await neardev.createAccountWithLocalNodeConnection(accountId, keyPair.getPublicKey());
+    await options.deps.createAccount(options.accountId, keyPair.getPublicKey());
     const keyStore = new UnencryptedFileSystemKeyStore();
-    keyStore.setKey(accountId, keyPair);
+    keyStore.setKey(options.accountId, keyPair);
 };
 
 async function deployContractAndWaitForTransaction(accountId, data, near) {
@@ -60,36 +54,30 @@ async function deployContractAndWaitForTransaction(accountId, data, near) {
     return waitResult;
 }
 
-exports.deploy = async function(argv) {
+exports.deploy = async function(options) {
+    console.log('deploy', options);
     const keyStore = new UnencryptedFileSystemKeyStore();
-    let accountId = argv.account_id;
-    if (!accountId) {
+    if (!options.accountId) {
         // see if we only have one account in keystore and just use that.
         const accountIds = await keyStore.getAccountIds();
         if (accountIds.length == 1) {
-            accountId = accountIds[0];
+            options.accountId = accountIds[0];
         }
     }
-    if (!accountId) {
-        throw 'Please provide account id and make sure you created an account using near create_account';
+    if (!options.accountId) {
+        throw new Error('Please provide account id and make sure you created an account using `near create_account`');
     }
-    const nodeUrl = argv.node_url;
-    const options = {
-        nodeUrl,
-        accountId,
-        deps: {
-          keyStore,
-          storage: {},
-        }
+    options.deps = {
+        keyStore,
+        storage: {},
     };
 
     const near = await neardev.connect(options);
-    const contractData = [...fs.readFileSync(argv.wasm_file)];
+    const contractData = [...fs.readFileSync(options.wasmFile)];
 
     console.log(
-        "Starting deployment. Account id " + accountId + ", contract " + accountId + ", url " + nodeUrl, ", file " + argv.wasm_file);
-    const res = await deployContractAndWaitForTransaction(
-        accountId, contractData, near);
+        `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
+    const res = await deployContractAndWaitForTransaction(options.accountId, contractData, near);
     if (res.status == "Completed") {
         console.log("Deployment succeeded.");
     } else {
