@@ -45,7 +45,12 @@ const build = {
 const createAccount = {
   command: 'create_account',
   desc: 'create a developer account',
-  builder: (yargs) => yargs,
+  builder: (yargs) => yargs
+    .option('accountId', {
+      desc: 'Unique identifier for the newly created account',
+      type: 'string',
+      required: true
+    }),
   handler: (argv) => exitOnError(main.createDevAccount(argv))
 };
 
@@ -89,16 +94,14 @@ yargs // eslint-disable-line
   .option('helperUrl', {
     desc: 'NEAR contract helper URL',
     type: 'string',
-    default: 'http://localhost:3030'
   })
   .option('useDevAccount', {
     desc: 'Forces use of special "developer" account (only works on local node)',
     type: 'boolean',
   })
   .option('accountId', {
-    desc: 'Unique identifier for the new account',
+    desc: 'Unique identifier for the account',
     type: 'string',
-    required: true
   })
   .command(createAccount)
   .command(build)
