@@ -91,6 +91,10 @@ yargs // eslint-disable-line
     type: 'string',
     default: 'http://localhost:3030'
   })
+  .option('useDevAccount', {
+    desc: 'Forces use of special "developer" account (only works on local node)',
+    type: 'boolean',
+  })
   .option('accountId', {
     desc: 'Unique identifier for the new account',
     type: 'string',
