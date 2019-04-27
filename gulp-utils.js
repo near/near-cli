@@ -12,6 +12,7 @@ function compile(inputFile, outputFile, callback) {
   const asc = getAsc();
   asc.main([
     inputFile,
+    "-O3",
     "--baseDir", "assembly",
     "--binaryFile", outputFile,
     "--sourceMap",
