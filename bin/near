@@ -78,13 +78,7 @@ const newProject = {
   handler: (argv) => exitOnError(main.newProject(argv))
 };
 
-const configPath = process.cwd() + '/src/config';
-let config = {};
-try {
-  config = require(configPath)(process.env.NODE_ENV || 'development');
-} catch (e) {
-  console.log(`Didn't find config at ${configPath}\n`);
-}
+let config = require('../get-config')();
 yargs // eslint-disable-line
   .option('nodeUrl', {
     desc: 'NEAR node URL',
