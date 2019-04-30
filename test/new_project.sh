@@ -7,5 +7,4 @@ cd tmp-project
 npm install
 npm uninstall near-shell
 npm install ../
-npm run build
-npm run test-on-devnet
+NODE_ENV=development npm run test

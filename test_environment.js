@@ -13,26 +13,26 @@ class LocalTestEnvironment extends NodeEnvironment {
         this.global.nearlib = require('nearlib');
         this.global.nearlib.dev = require('nearlib/dev');
         this.global.window = {};
-        this.global.testSettings = {
+        let config = require('./get-config')();
+        this.global.testSettings = config;
+        config = Object.assign(config, {
             contractName: "test" + Date.now(),
-            accountId: "test" + Date.now(),
-            nodeUrl: "https://studio.nearprotocol.com/devnet",
-            deps: {
-                storage:  this.createFakeStorage(),
-                keyStore: new nearlib.InMemoryKeyStore(),
-                createAccount: dev.createAccountWithLocalNodeConnection
-            }
-        };
-        const near = await dev.connect(this.global.testSettings);
+            accountId: "test" + Date.now()
+        });
+        config.deps = Object.assign(config.deps || {}, {
+            storage:  this.createFakeStorage(),
+            keyStore: new nearlib.InMemoryKeyStore(),
+        });
+        const near = await dev.connect(config);
 
         const keyWithRandomSeed = await nearlib.KeyPair.fromRandomSeed();
-        await dev.createAccountWithLocalNodeConnection(this.global.testSettings.contractName, keyWithRandomSeed.getPublicKey());
-        this.global.testSettings.deps.keyStore.setKey(this.global.testSettings.contractName, keyWithRandomSeed);
+        await config.deps.createAccount(config.contractName, keyWithRandomSeed.getPublicKey());
+        config.deps.keyStore.setKey(config.contractName, keyWithRandomSeed);
 
         // deploy contract
         const data = [...fs.readFileSync('./out/main.wasm')];
         await near.waitForTransactionResult(
-            await near.deployContract(this.global.testSettings.contractName, data));
+            await near.deployContract(config.contractName, data));
 
         await super.setup();
     }
