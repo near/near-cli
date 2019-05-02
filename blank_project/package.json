@@ -12,7 +12,6 @@
     "test": "npm run build && jest test --env=near-shell/test_environment"
   },
   "devDependencies": {
-    "assemblyscript": "github:nearprotocol/assemblyscript.git",
     "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
     "gh-pages": "^2.0.1",
     "gulp": "^3",
