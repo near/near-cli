@@ -14,7 +14,7 @@
             case 'local':
             case 'test':
                 return {
-                    nodeUrl: 'http://localhost:8080',
+                    nodeUrl: 'http://localhost:3030',
                     contractName: CONTRACT_NAME
                 };
             default:
