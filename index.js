@@ -1,6 +1,6 @@
 const { InMemoryKeyStore, KeyPair } = require('nearlib');
 const neardev = require('nearlib/dev');
-const UnencryptedFileSystemKeyStore = require('./unencrypted_file_system_keystore');
+const UnencryptedFileSystemKeyStore = require('nearlib/signing/unencrypted_file_system_keystore');
 const fs = require('fs');
 const yargs = require('yargs');
 const ncp = require('ncp').ncp;
