@@ -27,9 +27,6 @@ function getAsc() {
   }
 
   asc = require("assemblyscript/bin/asc");
-  if (asc.runningInStudio) {
-    return asc;
-  }
 
   const fs = require("fs");
   const pathModule = require("path");
@@ -39,9 +36,10 @@ function getAsc() {
       options = undefined;
     }
 
+    const logLn = process.browser ? window.logLn : console.log;
     return main(args, options || {
-      stdout: process.stdout,
-      stderr: process.stderr,
+      stdout: process.stdout || asc.createMemoryStream(),
+      stderr: process.stderr || asc.createMemoryStream(logLn),
       readFile: (filename, baseDir) => {
         baseDir = pathModule.relative(process.cwd(), baseDir);
         let path = pathModule.join(baseDir, filename);
