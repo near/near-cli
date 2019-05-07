@@ -46,6 +46,7 @@ exports.createDevAccount = async function(options) {
     await options.deps.createAccount(options.accountId, keyPair.getPublicKey());
     const keyStore = new UnencryptedFileSystemKeyStore();
     keyStore.setKey(options.accountId, keyPair);
+    console.log("Create account complete.");
 };
 
 async function deployContractAndWaitForTransaction(accountId, data, near) {

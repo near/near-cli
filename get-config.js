@@ -4,7 +4,7 @@ module.exports = function getConfig() {
     try {
         return require(configPath)(process.env.NODE_ENV || 'development');
     } catch (e) {
-        console.log(`Didn't find config at ${configPath}\n`);
+        console.log(`[WARNING] Didn't find config at ${configPath}\n`);
         return {};
     }
 }
