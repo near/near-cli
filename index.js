@@ -56,7 +56,6 @@ async function deployContractAndWaitForTransaction(accountId, data, near) {
 }
 
 exports.deploy = async function(options) {
-    console.log('deploy', options);
     const keyStore = new UnencryptedFileSystemKeyStore();
     if (!options.accountId) {
         // see if we only have one account in keystore and just use that.
