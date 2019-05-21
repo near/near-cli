@@ -102,6 +102,11 @@ yargs // eslint-disable-line
     type: 'string',
     default: 'http://localhost:3030'
   })
+  .option('networkId', {
+    desc: 'NEAR network ID, allows using different keys based on network',
+    type: 'string',
+    default: 'default'
+  })
   .option('helperUrl', {
     desc: 'NEAR contract helper URL',
     type: 'string',
@@ -125,12 +130,12 @@ yargs // eslint-disable-line
   .alias({
     'accountId': ['account_id'],
     'nodeUrl': 'node_url',
+    'networkId': ['network_id'],
     'wasmFile': 'wasm_file',
     'projectDir': 'project_dir',
     'outDir': 'out_dir'
   })
   .showHelpOnFail(true)
   .demandCommand(1, 'Please enter a command')
-  .strict()
   .argv;
 

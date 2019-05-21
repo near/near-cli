@@ -44,13 +44,13 @@ exports.createDevAccount = async function(options) {
 
     await neardev.connect(options);
     await options.deps.createAccount(options.accountId, keyPair.getPublicKey());
-    const keyStore = new UnencryptedFileSystemKeyStore();
+    const keyStore = new UnencryptedFileSystemKeyStore('./', options.networkId);
     keyStore.setKey(options.accountId, keyPair);
     console.log("Create account complete.");
 };
 
 async function connect(options) {
-    const keyStore = new UnencryptedFileSystemKeyStore();
+    const keyStore = new UnencryptedFileSystemKeyStore('./', options.networkId);
     if (!options.accountId) {
         // see if we only have one account in keystore and just use that.
         const accountIds = await keyStore.getAccountIds();
