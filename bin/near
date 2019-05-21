@@ -34,6 +34,13 @@ const scheduleFunctionCall = {
   handler: (argv) => exitOnError(main.scheduleFunctionCall(argv))
 };
 
+const callViewFunction = {
+  command: 'call_view_function <contractName> <methodName> [args]',
+  desc: 'make smart contract call which can view state',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.callViewFunction(argv))
+};
+
 const { spawn } = require('child_process');
 const build = {
   command: 'build',
@@ -111,6 +118,7 @@ yargs // eslint-disable-line
   .command(build)
   .command(deploy)
   .command(scheduleFunctionCall)
+  .command(callViewFunction)
   .command(clean)
   .command(newProject)
   .config(config)
