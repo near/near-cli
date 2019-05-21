@@ -20,8 +20,18 @@ const deploy = {
       desc: 'Path to wasm file to deploy',
       type: 'string',
       default: './out/main.wasm'
+    })
+    .alias({
+      'accountId': ['account_id', 'contractName', 'contract_name'],
     }),
   handler: (argv) => exitOnError(main.deploy(argv))
+};
+
+const scheduleFunctionCall = {
+  command: 'schedule_function_call <contractName> <methodName> [args]',
+  desc: 'schedule smart contract call which can modify state',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.scheduleFunctionCall(argv))
 };
 
 const { spawn } = require('child_process');
@@ -100,11 +110,12 @@ yargs // eslint-disable-line
   .command(createAccount)
   .command(build)
   .command(deploy)
+  .command(scheduleFunctionCall)
   .command(clean)
   .command(newProject)
   .config(config)
   .alias({
-    'accountId': ['account_id', 'contractName', 'contract_name'],
+    'accountId': ['account_id'],
     'nodeUrl': 'node_url',
     'wasmFile': 'wasm_file',
     'projectDir': 'project_dir',
