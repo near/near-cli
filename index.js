@@ -96,6 +96,5 @@ exports.scheduleFunctionCall = async function(options) {
 exports.callViewFunction = async function(options) {
     console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
     const near = await connect(options);
-    console.log('Result:', await near.waitForTransactionResult(
-        await near.callViewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
+    console.log('Result:', await near.callViewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}')));
 };
