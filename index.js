@@ -44,19 +44,13 @@ exports.createDevAccount = async function(options) {
 
     await neardev.connect(options);
     await options.deps.createAccount(options.accountId, keyPair.getPublicKey());
-    const keyStore = new UnencryptedFileSystemKeyStore();
+    const keyStore = new UnencryptedFileSystemKeyStore('./', options.networkId);
     keyStore.setKey(options.accountId, keyPair);
     console.log("Create account complete.");
 };
 
-async function deployContractAndWaitForTransaction(accountId, data, near) {
-    const deployContractResult = await near.deployContract(accountId, data);
-    const waitResult = await near.waitForTransactionResult(deployContractResult);
-    return waitResult;
-}
-
-exports.deploy = async function(options) {
-    const keyStore = new UnencryptedFileSystemKeyStore();
+async function connect(options) {
+    const keyStore = new UnencryptedFileSystemKeyStore('./', options.networkId);
     if (!options.accountId) {
         // see if we only have one account in keystore and just use that.
         const accountIds = await keyStore.getAccountIds();
@@ -72,16 +66,35 @@ exports.deploy = async function(options) {
         storage: {},
     };
 
-    const near = await neardev.connect(options);
-    const contractData = [...fs.readFileSync(options.wasmFile)];
+    return await neardev.connect(options);
+}
 
+exports.deploy = async function(options) {
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
-    const res = await deployContractAndWaitForTransaction(options.accountId, contractData, near);
+    const near = await connect(options);
+    const contractData = [...fs.readFileSync(options.wasmFile)];
+    const res = await near.waitForTransactionResult(
+        await near.deployContract(options.accountId, contractData));
     if (res.status == "Completed") {
         console.log("Deployment succeeded.");
     } else {
         console.log("Deployment transaction did not succeed: ", res);
         process.exit(1);
     }
+};
+
+exports.scheduleFunctionCall = async function(options) {
+    console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
+        (options.amount ? ` with attached ${options.amount} NEAR` : ''));
+    const near = await connect(options);
+    console.log('Result:', await near.waitForTransactionResult(
+        await near.scheduleFunctionCall(options.amount, options.accountId,
+            options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
+};
+
+exports.callViewFunction = async function(options) {
+    console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
+    const near = await connect(options);
+    console.log('Result:', await near.callViewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}')));
 };
