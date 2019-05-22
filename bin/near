@@ -28,14 +28,14 @@ const deploy = {
 };
 
 const scheduleFunctionCall = {
-  command: 'schedule_function_call <contractName> <methodName> [args]',
+  command: 'call <contractName> <methodName> [args]',
   desc: 'schedule smart contract call which can modify state',
   builder: (yargs) => yargs,
   handler: (argv) => exitOnError(main.scheduleFunctionCall(argv))
 };
 
 const callViewFunction = {
-  command: 'call_view_function <contractName> <methodName> [args]',
+  command: 'view <contractName> <methodName> [args]',
   desc: 'make smart contract call which can view state',
   builder: (yargs) => yargs,
   handler: (argv) => exitOnError(main.callViewFunction(argv))
