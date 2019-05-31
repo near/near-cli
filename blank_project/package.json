@@ -8,7 +8,7 @@
     "deploy:pages": "gh-pages -d src",
     "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
     "prestart": "npm run build && npm run deploy:contract",
-    "start": "python3 -mhttp.server --directory src",
+    "start": "serve src",
     "test": "npm run build && jest test --env=near-shell/test_environment"
   },
   "devDependencies": {
@@ -25,5 +25,7 @@
     "description": "The contract implements a single function to return \"Hello, World!\" using AssemblyScript",
     "icon": "typescript-lang-file-icon"
   },
-  "dependencies": {}
+  "dependencies": {
+    "serve": "^11.0.1"
+  }
 }
