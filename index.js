@@ -10,14 +10,14 @@ ncp.limit = 16;
 
 // TODO: Fix promisified wrappers to handle error properly
 
-exports.newProject = async function() {
+exports.newProject = async function(options) {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
-  const projectDir = yargs.argv.projectDir;
+  const projectDir = options.projectDir;
   const sourceDir = __dirname + "/blank_project";
   console.log(`Copying files to new project directory (${projectDir}) from template source (${sourceDir}).`);
   const copyDirFn = () => {
       return new Promise(resolve => {
-          ncp (sourceDir, yargs.argv.projectDir, response => resolve(response));
+          ncp (sourceDir, options.projectDir, response => resolve(response));
   })};
   await copyDirFn();
   console.log('Copying project files complete.')
@@ -35,7 +35,7 @@ exports.clean = async function() {
 // Only works for dev environments
 exports.createDevAccount = async function(options) {
     const keyPair = await KeyPair.fromRandomSeed();
-
+    let accountId = options.accountId;
     options.useDevAccount = true;
     options.deps = {
         keyStore: new InMemoryKeyStore(),
@@ -43,10 +43,10 @@ exports.createDevAccount = async function(options) {
     };
 
     await neardev.connect(options);
-    await options.deps.createAccount(options.accountId, keyPair.getPublicKey());
+    await options.deps.createAccount(accountId, keyPair.getPublicKey());
     const keyStore = new UnencryptedFileSystemKeyStore('./', options.networkId);
-    keyStore.setKey(options.accountId, keyPair);
-    console.log("Create account complete.");
+    keyStore.setKey(accountId, keyPair);
+    console.log("Create account complete for " + accountId);
 };
 
 async function connect(options) {

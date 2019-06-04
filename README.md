@@ -15,8 +15,9 @@ near <command>
 ```
 ### Commands:
 ```Bash
-  near create_account  # create a developer account
-  near deploy          # deploy your smart contract
+  near create_account  <account_id>            # create a developer account
+  near new_project [dir]
+  near deploy                                  # deploy your smart contract
   near call <contractName> <methodName> [args] # submits transaction, can change state, account required
   near view <contractName> <methodName> [args] # cannot change state, account is contract name
 ```

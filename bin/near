@@ -60,7 +60,7 @@ const build = {
 };
 
 const createAccount = {
-  command: 'create_account',
+  command: 'create_account <accountId>',
   desc: 'create a developer account',
   builder: (yargs) => yargs
     .option('accountId', {
@@ -84,7 +84,7 @@ const clean = {
 };
 
 const newProject = {
-  command: 'new_project',
+  command: 'new_project [projectDir]',
   desc: 'create a new blank project',
   builder: (yargs) => yargs
     .option('projectDir', {
