@@ -35,7 +35,7 @@ exports.clean = async function() {
 // Only works for dev environments
 exports.createDevAccount = async function(options) {
     const keyPair = await KeyPair.fromRandomSeed();
-    let accountId = options.accountId;
+    const { accountId } = options;
     options.useDevAccount = true;
     options.deps = {
         keyStore: new InMemoryKeyStore(),
