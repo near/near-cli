@@ -30,7 +30,12 @@ const deploy = {
 const scheduleFunctionCall = {
   command: 'call <contractName> <methodName> [args]',
   desc: 'schedule smart contract call which can modify state',
-  builder: (yargs) => yargs,
+  builder: (yargs) => yargs
+    .option('amount', {
+      desc: 'Number of tokens to attach',
+      type: 'string',
+      default: '1000000000'
+    }),
   handler: (argv) => exitOnError(main.scheduleFunctionCall(argv))
 };
 
