@@ -25,4 +25,5 @@ if test -f "$FILE"; then
   echo "${GREEN}$FILE exists. Have a cookie!"
 else
   echo "${RED}ERROR: file not found."
+  exit 1
 fi
