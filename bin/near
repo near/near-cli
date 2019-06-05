@@ -30,7 +30,12 @@ const deploy = {
 const scheduleFunctionCall = {
   command: 'call <contractName> <methodName> [args]',
   desc: 'schedule smart contract call which can modify state',
-  builder: (yargs) => yargs,
+  builder: (yargs) => yargs
+    .option('amount', {
+      desc: 'Number of tokens to attach',
+      type: 'string',
+      default: '1000000000'
+    }),
   handler: (argv) => exitOnError(main.scheduleFunctionCall(argv))
 };
 
@@ -39,6 +44,13 @@ const callViewFunction = {
   desc: 'make smart contract call which can view state',
   builder: (yargs) => yargs,
   handler: (argv) => exitOnError(main.callViewFunction(argv))
+};
+
+const sendTokens = {
+  command: 'send <receiver> <amount>',
+  desc: 'send tokens to given receiver',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.sendTokens(argv))
 };
 
 const { spawn } = require('child_process');
@@ -124,6 +136,7 @@ yargs // eslint-disable-line
   .command(deploy)
   .command(scheduleFunctionCall)
   .command(callViewFunction)
+  .command(sendTokens)
   .command(clean)
   .command(newProject)
   .config(config)
