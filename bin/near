@@ -109,6 +109,7 @@ const newProject = {
 
 let config = require('../get-config')();
 yargs // eslint-disable-line
+  .strict()
   .option('nodeUrl', {
     desc: 'NEAR node URL',
     type: 'string',
