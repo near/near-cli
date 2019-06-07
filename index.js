@@ -105,3 +105,10 @@ exports.callViewFunction = async function(options) {
     const near = await connect(options);
     console.log('Result:', await near.callViewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}')));
 };
+
+exports.viewAccount = async function(options) {
+    const { accountId } = options;
+    console.log(`View account: ${accountId}`);
+    const near = await connect(options);
+    console.log('Result:', await near.nearClient.viewAccount(accountId));
+};
