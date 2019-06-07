@@ -68,7 +68,7 @@ const createAccount = {
       type: 'string',
       required: true
     }),
-  handler: (argv) => exitOnError(main.createDevAccount(argv))
+  handler: (argv) => exitOnError(main.createAccount(argv))
 };
 
 const clean = {

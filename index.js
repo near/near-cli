@@ -1,6 +1,6 @@
-const { InMemoryKeyStore, KeyPair } = require('nearlib');
-const neardev = require('nearlib/dev');
-const UnencryptedFileSystemKeyStore = require('nearlib/signing/unencrypted_file_system_keystore');
+const nearjs = require('nearlib');
+const { KeyPair, keyStores } = require('nearlib');
+const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 const fs = require('fs');
 const yargs = require('yargs');
 const ncp = require('ncp').ncp;
@@ -32,28 +32,11 @@ exports.clean = async function() {
   console.log("Clean complete.");
 };
 
-// Only works for dev environments
-exports.createDevAccount = async function(options) {
-    const keyPair = await KeyPair.fromRandomSeed();
-
-    options.useDevAccount = true;
-    options.deps = {
-        keyStore: new InMemoryKeyStore(),
-        storage: {},
-    };
-
-    await neardev.connect(options);
-    await options.deps.createAccount(options.accountId, keyPair.getPublicKey());
-    const keyStore = new UnencryptedFileSystemKeyStore('./', options.networkId);
-    keyStore.setKey(options.accountId, keyPair);
-    console.log("Create account complete.");
-};
-
 async function connect(options) {
-    const keyStore = new UnencryptedFileSystemKeyStore('./', options.networkId);
+    const keyStore = new UnencryptedFileSystemKeyStore('./');
     if (!options.accountId) {
         // see if we only have one account in keystore and just use that.
-        const accountIds = await keyStore.getAccountIds();
+        const accountIds = await keyStore.getAccounts(options.networkId);
         if (accountIds.length == 1) {
             options.accountId = accountIds[0];
         }
@@ -63,10 +46,18 @@ async function connect(options) {
     }
     options.deps = {
         keyStore,
-        storage: {},
     };
 
-    return await neardev.connect(options);
+    return await nearjs.connect(options);
+}
+
+exports.createAccount = async function(options) {
+    let near = await connect(options);
+    const keyPair = await KeyPair.fromRandom('ed25519');
+    await near.createAccount(options.accountId, keyPair.getPublicKey());
+    const keyStore = new UnencryptedFileSystemKeyStore('./');
+    keyStore.setKey(options.networkId, options.accountId, keyPair);
+    console.log(`Account ${options.accountId} for ${options.networkId} was created.`);
 }
 
 exports.deploy = async function(options) {

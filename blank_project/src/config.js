@@ -17,6 +17,7 @@
                 return {
                     networkId: 'local',
                     nodeUrl: 'http://localhost:3030',
+                    keyPath: '~/.near/validator_key.json',
                     contractName: CONTRACT_NAME
                 };
             default:
