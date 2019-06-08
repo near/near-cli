@@ -2,5 +2,5 @@
 cd tmp-project
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp
-../bin/near create_account --account_id $testaccount
+../bin/near create_account $testaccount
 
