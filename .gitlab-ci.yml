@@ -1,22 +1,10 @@
 image: node:10
 
 stages:
-  - build
   - test
-
-cache:
-  paths:
-    - node_modules/
-
-install_dependencies:
-  stage: build
-  script:
-    - npm install
-  artifacts:
-    paths:
-      - node_modules/
 
 run_tests:
   stage: test
   script:
-    - npm test
+    - yarn
+    - yarn test
