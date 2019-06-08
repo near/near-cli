@@ -4,7 +4,7 @@
 
 async function initContract() {
   // Initializing connection to the NEAR DevNet.
-  window.near = await nearlib.dev.connect(nearConfig);
+  window.near = await nearlib.connect(nearConfig);
 
   // Initializing our contract APIs by contract name and configuration.
   window.contract = await near.loadContract(nearConfig.contractName, {
