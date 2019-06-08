@@ -10,14 +10,14 @@ ncp.limit = 16;
 
 // TODO: Fix promisified wrappers to handle error properly
 
-exports.newProject = async function() {
+exports.newProject = async function(options) {
   // Need to wait for the copy to finish, otherwise next tasks do not find files.
-  const projectDir = yargs.argv.projectDir;
+  const projectDir = options.projectDir;
   const sourceDir = __dirname + "/blank_project";
   console.log(`Copying files to new project directory (${projectDir}) from template source (${sourceDir}).`);
   const copyDirFn = () => {
       return new Promise(resolve => {
-          ncp (sourceDir, yargs.argv.projectDir, response => resolve(response));
+          ncp (sourceDir, options.projectDir, response => resolve(response));
   })};
   await copyDirFn();
   console.log('Copying project files complete.')
@@ -33,21 +33,15 @@ exports.clean = async function() {
 };
 
 async function connect(options) {
-    const keyStore = new UnencryptedFileSystemKeyStore('./');
-    if (!options.accountId) {
-        // see if we only have one account in keystore and just use that.
-        const accountIds = await keyStore.getAccounts(options.networkId);
-        if (accountIds.length == 1) {
-            options.accountId = accountIds[0];
-        }
+    if (options.keyPath === undefined && options.helperUrl === undefined) {
+        const homeDir = options.homeDir || `${process.env.HOME}/.near`;
+        options.keyPath = `${homeDir}/validator_key.json`;
     }
-    if (!options.accountId) {
-        throw new Error('Please provide account id and make sure you created an account using `near create_account`');
-    }
+    // TODO: search for key store.
+    const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
     options.deps = {
         keyStore,
     };
-
     return await nearjs.connect(options);
 }
 
@@ -55,9 +49,16 @@ exports.createAccount = async function(options) {
     let near = await connect(options);
     const keyPair = await KeyPair.fromRandom('ed25519');
     await near.createAccount(options.accountId, keyPair.getPublicKey());
-    const keyStore = new UnencryptedFileSystemKeyStore('./');
-    keyStore.setKey(options.networkId, options.accountId, keyPair);
-    console.log(`Account ${options.accountId} for ${options.networkId} was created.`);
+    near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
+    console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
+}
+
+exports.viewAccount = async function(options) {
+    let near = await connect(options);
+    let account = await near.account(options.accountId);
+    let state = await account.state();
+    console.log(`Account ${options.accountId}`);
+    console.log(state);
 }
 
 exports.deploy = async function(options) {
@@ -82,6 +83,13 @@ exports.scheduleFunctionCall = async function(options) {
     console.log('Result:', await near.waitForTransactionResult(
         await near.scheduleFunctionCall(options.amount, options.accountId,
             options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
+};
+
+exports.sendTokens = async function(options) {
+    console.log(`Sending ${options.amount} NEAR to ${options.receiver}`);
+    const near = await connect(options);
+    await near.waitForTransactionResult(
+        await near.sendTokens(options.amount, options.accountId, options.receiver));
 };
 
 exports.callViewFunction = async function(options) {

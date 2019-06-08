@@ -30,7 +30,12 @@ const deploy = {
 const scheduleFunctionCall = {
   command: 'call <contractName> <methodName> [args]',
   desc: 'schedule smart contract call which can modify state',
-  builder: (yargs) => yargs,
+  builder: (yargs) => yargs
+    .option('amount', {
+      desc: 'Number of tokens to attach',
+      type: 'string',
+      default: '1000000000'
+    }),
   handler: (argv) => exitOnError(main.scheduleFunctionCall(argv))
 };
 
@@ -39,6 +44,13 @@ const callViewFunction = {
   desc: 'make smart contract call which can view state',
   builder: (yargs) => yargs,
   handler: (argv) => exitOnError(main.callViewFunction(argv))
+};
+
+const sendTokens = {
+  command: 'send <receiver> <amount>',
+  desc: 'send tokens to given receiver',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.sendTokens(argv))
 };
 
 const { spawn } = require('child_process');
@@ -60,7 +72,7 @@ const build = {
 };
 
 const createAccount = {
-  command: 'create_account',
+  command: 'create_account <accountId>',
   desc: 'create a developer account',
   builder: (yargs) => yargs
     .option('accountId', {
@@ -69,6 +81,18 @@ const createAccount = {
       required: true
     }),
   handler: (argv) => exitOnError(main.createAccount(argv))
+};
+
+const viewAccount = {
+  command: 'state <accountId>',
+  desc: 'view account',
+  builder: (yargs) => yargs
+    .option('accountId', {
+      desc: 'Account to view',
+      type: 'string',
+      required: true
+    }),
+  handler: (argv) => exitOnError(main.viewAccount(argv))
 };
 
 const clean = {
@@ -84,7 +108,7 @@ const clean = {
 };
 
 const newProject = {
-  command: 'new_project',
+  command: 'new_project [projectDir]',
   desc: 'create a new blank project',
   builder: (yargs) => yargs
     .option('projectDir', {
@@ -111,6 +135,15 @@ yargs // eslint-disable-line
     desc: 'NEAR contract helper URL',
     type: 'string',
   })
+  .option('keyPath', {
+    desc: 'Path to master account key',
+    type: 'string',
+  })
+  .option('homeDir', {
+    desc: 'Where to look for master account, default is ~/.near',
+    type: 'string',
+    default: `${process.env.HOME}/.near`,
+  })
   .option('useDevAccount', {
     desc: 'Forces use of special "developer" account (only works on local node)',
     type: 'boolean',
@@ -120,10 +153,12 @@ yargs // eslint-disable-line
     type: 'string',
   })
   .command(createAccount)
+  .command(viewAccount)
   .command(build)
   .command(deploy)
   .command(scheduleFunctionCall)
   .command(callViewFunction)
+  .command(sendTokens)
   .command(clean)
   .command(newProject)
   .config(config)
