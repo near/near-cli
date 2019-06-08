@@ -10,7 +10,7 @@ cd tmp-project
 ../bin/near new_project
 yarn
 yarn remove near-shell
-yarn add ../../
+yarn add ../
 NODE_ENV=development yarn test
 cd ..
 rm  -rf tmp-project
