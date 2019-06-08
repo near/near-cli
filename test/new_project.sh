@@ -1,5 +1,6 @@
 #!/bin/sh
 set -ex
+env
 
 cd test/
 
@@ -10,10 +11,10 @@ rm  -rf tmp-project
 mkdir tmp-project
 cd tmp-project
 ../../bin/near new_project
-yarn
-yarn remove near-shell
-yarn add ../../
-NODE_ENV=development yarn test
+#yarn
+#yarn remove near-shell
+#yarn add ../../
+#NODE_ENV=development yarn test
 cd ..
 rm  -rf tmp-project
 
