@@ -1,9 +1,6 @@
 #!/bin/sh
 set -ex
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-
 cd test/
 
 # remove temporary blank project
@@ -13,10 +10,10 @@ rm  -rf tmp-project
 mkdir tmp-project
 cd tmp-project
 ../../bin/near new_project
-npm install
-npm uninstall near-shell
-npm install ../../
-NODE_ENV=development npm run test
+yarn
+yarn remove near-shell
+yarn add ../../
+NODE_ENV=development yarn test
 cd ..
 rm  -rf tmp-project
 
@@ -25,8 +22,8 @@ rm  -rf tmp-project
 cd tmp-project
 FILE=package.json
 if test -f "$FILE"; then
-  echo "${GREEN}$FILE exists. Have a cookie!"
+  echo "$FILE exists. Have a cookie!"
 else
-  echo "${RED}ERROR: file not found."
+  echo "ERROR: $FILE not found."
   exit 1
 fi
