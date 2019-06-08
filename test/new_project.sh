@@ -4,9 +4,11 @@ set -ex
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 
-# remove temporary blank project
-rm  -rf test/tmp-project
 cd test/
+
+# remove temporary blank project
+rm  -rf tmp-project
+
 # test generating new project in cwd
 mkdir tmp-project
 cd tmp-project
@@ -17,6 +19,7 @@ npm install ../../
 NODE_ENV=development npm run test
 cd ..
 rm  -rf tmp-project
+
 # test generating new project in new dir
 ../bin/near new_project 'tmp-project'
 cd tmp-project

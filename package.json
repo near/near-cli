@@ -6,7 +6,7 @@
   "scripts": {
     "build": "echo \"Error: not implemented\" && exit 1",
     "deploy": "echo \"Error: not implemented\" && exit 1",
-    "test": "./test/new_project.sh; ./test/create_account.sh"
+    "test": "./test/new_project.sh && ./test/create_account.sh"
   },
   "repository": {
     "type": "git",
