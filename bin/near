@@ -30,7 +30,12 @@ const deploy = {
 const scheduleFunctionCall = {
   command: 'call <contractName> <methodName> [args]',
   desc: 'schedule smart contract call which can modify state',
-  builder: (yargs) => yargs,
+  builder: (yargs) => yargs
+    .option('amount', {
+      desc: 'Number of tokens to attach',
+      type: 'string',
+      default: '1000000000'
+    }),
   handler: (argv) => exitOnError(main.scheduleFunctionCall(argv))
 };
 
@@ -39,6 +44,20 @@ const callViewFunction = {
   desc: 'make smart contract call which can view state',
   builder: (yargs) => yargs,
   handler: (argv) => exitOnError(main.callViewFunction(argv))
+};
+
+const viewAccount = {
+  command: 'view_account <accountId>',
+  desc: 'view given account/contract state',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.viewAccount(argv))
+};
+
+const sendTokens = {
+  command: 'send <receiver> <amount>',
+  desc: 'send tokens to given receiver',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.sendTokens(argv))
 };
 
 const { spawn } = require('child_process');
@@ -60,7 +79,7 @@ const build = {
 };
 
 const createAccount = {
-  command: 'create_account',
+  command: 'create_account <accountId>',
   desc: 'create a developer account',
   builder: (yargs) => yargs
     .option('accountId', {
@@ -84,7 +103,7 @@ const clean = {
 };
 
 const newProject = {
-  command: 'new_project',
+  command: 'new_project [projectDir]',
   desc: 'create a new blank project',
   builder: (yargs) => yargs
     .option('projectDir', {
@@ -124,6 +143,8 @@ yargs // eslint-disable-line
   .command(deploy)
   .command(scheduleFunctionCall)
   .command(callViewFunction)
+  .command(viewAccount)
+  .command(sendTokens)
   .command(clean)
   .command(newProject)
   .config(config)
