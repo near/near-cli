@@ -119,6 +119,28 @@ const newProject = {
   handler: (argv) => exitOnError(main.newProject(argv))
 };
 
+const stake = {
+  command: 'stake [accountId] [publicKey] [amount]',
+  desc: 'create staking transaction',
+  builder: (yargs) => yargs
+    .option('accountId', {
+      desc: 'Account to stake on',
+      type: 'string',
+      required: true,
+    })
+    .option('publicKey', {
+      descr: 'Public key to stake with (base58 encoded)',
+      type: 'string',
+      required: true,
+    })
+    .option('amount', {
+      descr: 'Amount to stake',
+      type: 'string',
+      required: true,
+    }),
+    handler: (argv) => exitOnError(main.stake(argv))
+}
+
 let config = require('../get-config')();
 yargs // eslint-disable-line
   .option('nodeUrl', {
@@ -162,6 +184,7 @@ yargs // eslint-disable-line
   .command(sendTokens)
   .command(clean)
   .command(newProject)
+  .command(stake)
   .config(config)
   .alias({
     'accountId': ['account_id'],
