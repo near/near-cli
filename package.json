@@ -1,12 +1,12 @@
 {
   "name": "near-shell",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Command line utilities to interact with near blockchain",
   "main": "index.js",
   "scripts": {
     "build": "echo \"Error: not implemented\" && exit 1",
     "deploy": "echo \"Error: not implemented\" && exit 1",
-    "test": "./test/new_project.sh"
+    "test": "./test/index.sh"
   },
   "repository": {
     "type": "git",

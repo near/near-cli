@@ -1,5 +1,5 @@
 {
-  "name": "@wasm/hello_world_ts",
+  "name": "hello_world_ts",
   "description": "",
   "version": "0.0.1",
   "scripts": {

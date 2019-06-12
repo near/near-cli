@@ -46,6 +46,13 @@ const callViewFunction = {
   handler: (argv) => exitOnError(main.callViewFunction(argv))
 };
 
+const viewAccount = {
+  command: 'view_account <accountId>',
+  desc: 'view given account/contract state',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.viewAccount(argv))
+};
+
 const sendTokens = {
   command: 'send <receiver> <amount>',
   desc: 'send tokens to given receiver',
@@ -158,6 +165,7 @@ yargs // eslint-disable-line
   .command(deploy)
   .command(scheduleFunctionCall)
   .command(callViewFunction)
+  .command(viewAccount)
   .command(sendTokens)
   .command(clean)
   .command(newProject)
