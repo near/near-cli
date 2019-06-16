@@ -12,12 +12,12 @@
     "test": "npm run build && jest test --env=near-shell/test_environment"
   },
   "devDependencies": {
-    "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
+    "assemblyscript-json": "github:nearprotocol/assemblyscript-json#update-as",
     "gh-pages": "^2.0.1",
     "gulp": "^3",
     "jest": "^22.4.4",
     "jest-environment-node": "^24.5.0",
-    "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
+    "near-runtime-ts": "github:nearprotocol/near-runtime-ts#update-as1",
     "near-shell": "github:nearprotocol/near-shell"
   },
   "wasmStudio": {

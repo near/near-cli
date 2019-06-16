@@ -1,6 +1,3 @@
-import "allocator/arena";
-export { memory };
-
 import { context, storage, near } from "./near";
 
 import { Greeter } from "./model.near";
