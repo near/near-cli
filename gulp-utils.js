@@ -17,7 +17,8 @@ function compile(inputFile, outputFile, callback) {
     "--baseDir", "assembly",
     "--binaryFile", outputFile,
     "--sourceMap",
-    "--measure"
+    "--measure",
+    "--runtime", "stub"
   ], callback);
 }
 
