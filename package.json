@@ -23,7 +23,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "assemblyscript": "github:nearprotocol/assemblyscript",
+    "assemblyscript": "github:nearprotocol/assemblyscript#assemblyscript-update",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
     "nearlib": "github:nearprotocol/nearlib#nightshade",

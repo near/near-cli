@@ -1,6 +1,3 @@
-import "allocator/arena";
-export { memory };
-
 import { context, storage, near } from "./near";
 
 import { Greeter } from "./model.near";
@@ -12,7 +9,7 @@ import { Greeter } from "./model.near";
 // using `export` keyword.
 
 export function hello(): string {
-  let greeter = new Greeter("Hello");
+  let greeter = new Greeter("hello");
   return greeter.greet("world");
 }
 // << hello-snippet
