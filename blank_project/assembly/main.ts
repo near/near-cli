@@ -9,7 +9,7 @@ import { Greeter } from "./model.near";
 // using `export` keyword.
 
 export function hello(): string {
-  let greeter = new Greeter("hello");
+  let greeter = new Greeter("Hello");
   return greeter.greet("world");
 }
 // << hello-snippet
