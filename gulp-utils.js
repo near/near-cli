@@ -57,9 +57,11 @@ function getAsc() {
             "assembly/near.ts" : "./node_modules/near-runtime-ts/near.ts",
             "assembly/json/encoder.ts" : "./node_modules/assemblyscript-json/assembly/encoder.ts",
             "assembly/json/decoder.ts" : "./node_modules/assemblyscript-json/assembly/decoder.ts",
-          }
+          };
           if (path in mapping) {
             path =  mapping[path]
+          } else if (path.startsWith("assembly/node_modules/bignum/assembly")) {
+            path = path.replace("assembly", ".");
           }
         }
 
