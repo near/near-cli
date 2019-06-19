@@ -61,7 +61,10 @@ function getAsc() {
           if (path in mapping) {
             path =  mapping[path]
           } else if (path.startsWith("assembly/node_modules/bignum/assembly")) {
+            // TODO: resolve two ways of importing bignum due to need to test near-runtime-ts separately
             path = path.replace("assembly", ".");
+          } else if (path.startsWith("assembly/bignum")) {
+            path = path.replace("assembly/bignum", "./node_modules/bignum/assembly");
           }
         }
 
