@@ -13,13 +13,19 @@
                     contractName: CONTRACT_NAME,
                 };
             case 'local':
-            case 'test':
                 return {
                     networkId: 'local',
                     nodeUrl: 'http://localhost:3030',
                     keyPath: '~/.near/validator_key.json',
                     contractName: CONTRACT_NAME
                 };
+            case 'test':
+                return {
+                    networkId: 'local',
+                    nodeUrl: 'http://localhost:3030',
+                    contractName: CONTRACT_NAME,
+                    masterAccount: 'test.near',
+                }
             default:
                 throw Error(`Unconfigured environment '${env}'. Can be configured in src/config.js.`);
         }
