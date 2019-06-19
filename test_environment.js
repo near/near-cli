@@ -29,8 +29,8 @@ class LocalTestEnvironment extends NodeEnvironment {
         const masterAccount = await near.account(testAccountName);
         const randomKey = await nearlib.KeyPair.fromRandom('ed25519');
         const data = [...fs.readFileSync('./out/main.wasm')];
+        await config.deps.keyStore.setKey(config.networkId, config.contractName, randomKey);
         await masterAccount.createAndDeployContract(config.contractName, randomKey.getPublicKey(), data, 1000000); 
-        config.deps.keyStore.setKey(config.networkId, config.contractName, randomKey);
 
         await super.setup();
     }
