@@ -18,7 +18,7 @@ class LocalTestEnvironment extends NodeEnvironment {
             contractName: "test" + Date.now(),
             accountId: "test" + Date.now()
         });
-        const keyStore = new nearlib.keyStore.UnencryptedFileSystemKeyStore('./nearlib');
+        const keyStore = new nearlib.keyStores.UnencryptedFileSystemKeyStore('./neardev');
         await keyStore.setKey(config.networkId, testAccountName, nearlib.utils.KeyPair.fromString('ed25519:2wyRcSwSuHtRVmkMCGjPwnzZmQLeXLzLLyED1NDMt4BjnKgQL6tF85yBx6Jr26D2dUNeC716RBoTxntVHsegogYw'));
         config.deps = Object.assign(config.deps || {}, {
             storage:  this.createFakeStorage(),
