@@ -18,7 +18,7 @@
     "jest": "^22.4.4",
     "jest-environment-node": "^24.5.0",
     "near-runtime-ts": "github:nearprotocol/near-runtime-ts#update-as",
-    "near-shell": "github:nearprotocol/near-shell",
+    "near-shell": "github:nearprotocol/near-shell#nightshade",
     "bignum": "github:MaxGraey/bignum.wasm"
   },
   "wasmStudio": {
