@@ -68,6 +68,10 @@ function getAsc() {
           }
         }
 
+        if (!fs.existsSync(path)) {
+            return null;
+        }
+
         return fs.readFileSync(path).toString("utf8");
       },
       writeFile: (filename, contents) => {
