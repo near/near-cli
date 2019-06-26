@@ -9,7 +9,7 @@ run_tests:
     - node --version
     - npm --version
     - env
-    - npm cache clean
+    - npm cache clean --force
     - npm install github:nearprotocol/nearlib#nightshade
     - ls -lh node_modules/nearlib/lib
     - npm install
