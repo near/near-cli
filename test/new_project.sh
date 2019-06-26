@@ -7,7 +7,8 @@ rm  -rf tmp-project
 # test generating new project in cwd
 mkdir tmp-project
 cd tmp-project
-../bin/near new_project
+npm install -g ../
+near new_project
 npm install
 npm remove near-shell
 npm install ../
