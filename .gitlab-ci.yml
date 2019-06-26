@@ -10,8 +10,8 @@ run_tests:
     - npm --version
     - env
     #- npm install github:nearprotocol/nearlib#nightshade
-    #- ls -lh node_modules/nearlib
     - npm install 
+    - ls -lh node_modules/nearlib/lib
     - ./bin/near state test.near
     #- npm install
     #- npm run test
