@@ -8,9 +8,9 @@
             case 'development':
                 return {
                     networkId: 'default',
-                    nodeUrl: 'https://studio.nearprotocol.com/devnet',
-                    helperUrl: 'https://studio.nearprotocol.com/contract-api',
+                    nodeUrl: 'http://34.94.13.241:3030',
                     contractName: CONTRACT_NAME,
+                    masterAccount: 'test.near',
                 };
             case 'local':
                 return {
