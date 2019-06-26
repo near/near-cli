@@ -8,5 +8,7 @@ run_tests:
   script:
     - node --version
     - npm --version
+    - npm install github:nearprotocol/nearlib#nightshade
+    - ls -lh node_modules/nearlib
     - npm install
     - npm run test
