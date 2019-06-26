@@ -6,5 +6,7 @@ stages:
 run_tests:
   stage: test
   script:
+    - node --version
+    - npm --version
     - npm install
     - npm run test
