@@ -9,4 +9,4 @@ run_tests:
     - gcloud
   script:
     - npm install
-    - npm run test
+    - NODE_ENV=development npm run test
