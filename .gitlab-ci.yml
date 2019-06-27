@@ -6,13 +6,5 @@ stages:
 run_tests:
   stage: test
   script:
-    - node --version
-    - npm --version
-    - env
-    - npm cache clean --force
-    - npm install github:nearprotocol/nearlib#nightshade
-    - ls -lh node_modules/nearlib/lib
     - npm install
-    - ./bin/near state test.near
-    #- npm install
-    #- npm run test
+    - npm run test
