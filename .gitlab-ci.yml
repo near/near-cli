@@ -5,7 +5,8 @@ stages:
 
 run_tests:
   stage: test
-  tag: gcloud
+  tags: 
+    - gcloud
   script:
     - npm install
     - npm run test
