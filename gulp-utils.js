@@ -40,7 +40,7 @@ function getAsc() {
 
     const logLn = process.browser ? window.logLn : console.log;
     return main(args, options || {
-      stdout: process.stdout || asc.createMemoryStream(),
+      stdout: process.stdout || asc.createMemoryStream(logLn),
       stderr: process.stderr || asc.createMemoryStream(logLn),
       readFile: (filename, baseDir) => {
         baseDir = pathModule.relative(process.cwd(), baseDir);
