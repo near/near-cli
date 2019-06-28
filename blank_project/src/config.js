@@ -25,7 +25,15 @@
                     nodeUrl: 'http://localhost:3030',
                     contractName: CONTRACT_NAME,
                     masterAccount: 'test.near',
-                }
+                };
+            case 'test-remote':
+            case 'ci':
+                return {
+                    networkId: 'local',
+                    nodeUrl: 'http://34.94.13.241:3030',
+                    contractName: CONTRACT_NAME,
+                    masterAccount: 'test.near',
+                };
             default:
                 throw Error(`Unconfigured environment '${env}'. Can be configured in src/config.js.`);
         }
