@@ -8,7 +8,7 @@
             case 'development':
                 return {
                     networkId: 'default',
-                    nodeUrl: 'http://34.94.13.241:3030',
+                    nodeUrl: 'http://34.94.33.164:3030',
                     contractName: CONTRACT_NAME,
                     masterAccount: 'test.near',
                 };
