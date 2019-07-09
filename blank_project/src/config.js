@@ -10,7 +10,7 @@
                     networkId: 'default',
                     nodeUrl: 'http://34.94.13.241:3030',
                     contractName: CONTRACT_NAME,
-                    masterAccount: 'test.near',
+                    walletUrl: 'https://wallet.nearprotocol.com',
                 };
             case 'local':
                 return {

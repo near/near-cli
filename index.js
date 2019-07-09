@@ -105,3 +105,14 @@ exports.stake = async function(options) {
     const result = await account.stake(options.publicKey, BigInt(options.amount));
     console.log('Result: ', JSON.stringify(result));
 }
+
+exports.login = async function(options) {
+    if (!options.walletUrl) {
+        console.log("Log in is not needed on this environment. Please use appropriate master account for shell operations.")
+    } else {
+        const title = 'Near Shell';
+        const keyPair = await KeyPair.fromRandom('ed25519');
+        console.log(`Please navigate to this url and follow the insturctions to log in: ` +
+            `${options.walletUrl}/login/?title=${title}&public_key=${keyPair.getPublicKey()}&account_id=${options.accountId}`);
+    }
+}
