@@ -110,9 +110,12 @@ exports.login = async function(options) {
     if (!options.walletUrl) {
         console.log("Log in is not needed on this environment. Please use appropriate master account for shell operations.")
     } else {
-        const title = 'Near Shell';
+        const newUrl = new URL(options.walletUrl);
+        const title = 'NEAR Shell';
+        newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
-        console.log(`Please navigate to this url and follow the insturctions to log in: ` +
-            `${options.walletUrl}/login/?title=${title}&public_key=${keyPair.getPublicKey()}&account_id=${options.accountId}`);
+        newUrl.searchParams.set('public_key', keyPair.getPublicKey());
+        newUrl.searchParams.set('account_id', options.accountId)
+        console.log(`Please navigate to this url and follow the insturctions to log in: ${newUrl.toString()}`);
     }
 }
