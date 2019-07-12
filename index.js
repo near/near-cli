@@ -5,6 +5,7 @@ const fs = require('fs');
 const yargs = require('yargs');
 const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
+const readline = require('readline')
 
 ncp.limit = 16;
 
@@ -110,12 +111,22 @@ exports.login = async function(options) {
     if (!options.walletUrl) {
         console.log("Log in is not needed on this environment. Please use appropriate master account for shell operations.")
     } else {
-        const newUrl = new URL(options.walletUrl);
+        const newUrl = new URL(options.walletUrl + "/login/");
         const title = 'NEAR Shell';
         newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
-        newUrl.searchParams.set('account_id', options.accountId)
         console.log(`Please navigate to this url and follow the insturctions to log in: ${newUrl.toString()}`);
+
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+          
+        rl.question('Please enter the accountId that you logged in with:', (accountId) => {
+            const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
+            keyStore.setKey(options.networkId, accountId, keyPair);
+            console.log(`Logged in with ${accountId}`);
+        });
     }
 }

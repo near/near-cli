@@ -84,19 +84,9 @@ const createAccount = {
 };
 
 const login = {
-  command: 'login <accountId>',
+  command: 'login',
   desc: 'create a developer account',
-  builder: (yargs) => yargs
-    .option('walletUrl', {
-      desc: 'Wallet URL to use for login',
-      type: 'string',
-      default: 'https://wallet.nearprotocol.com',
-    })
-    .option('accountId', {
-      desc: 'Unique identifier for the account to log in with',
-      type: 'string',
-      required: true
-    }),
+  builder: (yargs) => yargs,
   handler: (argv) => exitOnError(main.login(argv))
 };
 
