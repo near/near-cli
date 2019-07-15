@@ -3,6 +3,7 @@ const { KeyPair, keyStores } = require('nearlib');
 const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 const fs = require('fs');
 const yargs = require('yargs');
+const bs58 = require('bs58');
 const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
 const readline = require('readline')
@@ -60,6 +61,13 @@ exports.viewAccount = async function(options) {
     let state = await account.state();
     console.log(`Account ${options.accountId}`);
     console.log(state);
+}
+
+exports.txStatus = async function(options) {
+    let near = await connect(options);
+    let status = await near.connection.provider.txStatus(bs58.decode(options.hash));
+    console.log(`Transaction ${options.hash}`);
+    console.log(status);
 }
 
 exports.deploy = async function(options) {

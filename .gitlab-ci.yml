@@ -8,5 +8,5 @@ run_tests:
   tags: 
     - gcloud
   script:
-    - npm install
-    - NODE_ENV=development npm run test
+    - yarn
+    - NODE_ENV=ci yarn test

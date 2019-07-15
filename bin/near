@@ -102,6 +102,18 @@ const viewAccount = {
   handler: (argv) => exitOnError(main.viewAccount(argv))
 };
 
+const txStatus = {
+  command: 'tx-status <hash>',
+  desc: 'lookup transaction status by hash',
+  builder: (yargs) => yargs
+    .option('hash', {
+      desc: 'base58-encoded hash',
+      type: 'string',
+      required: true
+    }),
+  handler: (argv) => exitOnError(main.txStatus(argv))
+};
+
 const clean = {
   command: 'clean',
   desc: 'clean the build environment',
@@ -179,6 +191,7 @@ yargs // eslint-disable-line
   })
   .command(createAccount)
   .command(viewAccount)
+  .command(txStatus)
   .command(build)
   .command(deploy)
   .command(scheduleFunctionCall)

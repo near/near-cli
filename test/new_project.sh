@@ -8,10 +8,10 @@ rm  -rf tmp-project
 mkdir tmp-project
 cd tmp-project
 ../bin/near new_project
-npm install
-npm remove near-shell
-npm install ../
-npm run test
+yarn
+yarn remove near-shell
+yarn add ../
+yarn test
 cd ..
 rm  -rf tmp-project
 
