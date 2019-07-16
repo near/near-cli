@@ -83,6 +83,13 @@ const createAccount = {
   handler: (argv) => exitOnError(main.createAccount(argv))
 };
 
+const login = {
+  command: 'login',
+  desc: 'create a developer account',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.login(argv))
+};
+
 const viewAccount = {
   command: 'state <accountId>',
   desc: 'view account',
@@ -178,10 +185,6 @@ yargs // eslint-disable-line
     type: 'string',
     default: `${process.env.HOME}/.near`,
   })
-  .option('useDevAccount', {
-    desc: 'Forces use of special "developer" account (only works on local node)',
-    type: 'boolean',
-  })
   .option('accountId', {
     desc: 'Unique identifier for the account',
     type: 'string',
@@ -198,6 +201,7 @@ yargs // eslint-disable-line
   .command(clean)
   .command(newProject)
   .command(stake)
+  .command(login)
   .config(config)
   .alias({
     'accountId': ['account_id'],

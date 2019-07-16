@@ -6,6 +6,7 @@ const yargs = require('yargs');
 const bs58 = require('bs58');
 const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
+const readline = require('readline')
 
 ncp.limit = 16;
 
@@ -112,4 +113,28 @@ exports.stake = async function(options) {
     const account = await near.account(options.accountId);
     const result = await account.stake(options.publicKey, BigInt(options.amount));
     console.log('Result: ', JSON.stringify(result));
+}
+
+exports.login = async function(options) {
+    if (!options.walletUrl) {
+        console.log("Log in is not needed on this environment. Please use appropriate master account for shell operations.")
+    } else {
+        const newUrl = new URL(options.walletUrl + "/login/");
+        const title = 'NEAR Shell';
+        newUrl.searchParams.set('title', title);
+        const keyPair = await KeyPair.fromRandom('ed25519');
+        newUrl.searchParams.set('public_key', keyPair.getPublicKey());
+        console.log(`Please navigate to this url and follow the insturctions to log in: ${newUrl.toString()}`);
+
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+          
+        rl.question('Please enter the accountId that you logged in with:', (accountId) => {
+            const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
+            keyStore.setKey(options.networkId, accountId, keyPair);
+            console.log(`Logged in with ${accountId}`);
+        });
+    }
 }
