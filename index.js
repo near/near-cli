@@ -117,7 +117,6 @@ exports.stake = async function(options) {
 }
 
 exports.login = async function(options) {
-    console.log(options);
     if (!options.walletUrl) {
         console.log("Log in is not needed on this environment. Please use appropriate master account for shell operations.")
     } else {
@@ -126,7 +125,7 @@ exports.login = async function(options) {
         newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
-        console.log(`Please navigate to this url and follow the instructions to log in: ${newUrl.toString()}`);
+        console.log(`Please navigate to this url and follow the instructions to log in: \n${newUrl.toString()}`);
 
         const rl = readline.createInterface({
             input: process.stdin,
@@ -137,6 +136,7 @@ exports.login = async function(options) {
             const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
             keyStore.setKey(options.networkId, accountId, keyPair);
             console.log(`Logged in with ${accountId}`);
+            rl.close();
         });
     }
 }
