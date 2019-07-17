@@ -126,7 +126,7 @@ exports.login = async function(options) {
         newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
-        console.log(`Please navigate to this url and follow the insturctions to log in: ${newUrl.toString()}`);
+        console.log(`Please navigate to this url and follow the instructions to log in: ${newUrl.toString()}`);
 
         const rl = readline.createInterface({
             input: process.stdin,
