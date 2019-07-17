@@ -6,7 +6,8 @@ const yargs = require('yargs');
 const bs58 = require('bs58');
 const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
-const readline = require('readline')
+const readline = require('readline');
+const URL = require('url').URL;
 
 ncp.limit = 16;
 
@@ -116,6 +117,7 @@ exports.stake = async function(options) {
 }
 
 exports.login = async function(options) {
+    console.log(options);
     if (!options.walletUrl) {
         console.log("Log in is not needed on this environment. Please use appropriate master account for shell operations.")
     } else {
