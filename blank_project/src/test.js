@@ -11,8 +11,8 @@ describe("Greeter", function() {
       if (window.testSettings === undefined) {
         window.testSettings = {};
       }
-      near = await nearlib.dev.connect(testSettings);
-      accountId = testSettings.accountId ? testSettings.accountId : nearlib.dev.myAccountId;
+      near = await nearlib.connect(testSettings);
+      accountId = testSettings.accountId;
       const contractName = testSettings.contractName ?
         testSettings.contractName :
         (new URL(window.location.href)).searchParams.get("contractName");

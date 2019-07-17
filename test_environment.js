@@ -1,8 +1,8 @@
 const NodeEnvironment = require('jest-environment-node');
-const dev = require('nearlib/dev');
-const fs = require('fs');
 const nearlib = require('nearlib');
+const fs = require('fs');
 
+const testAccountName = 'test.near';
 
 class LocalTestEnvironment extends NodeEnvironment {
     constructor(config) {
@@ -11,7 +11,6 @@ class LocalTestEnvironment extends NodeEnvironment {
 
     async setup() {
         this.global.nearlib = require('nearlib');
-        this.global.nearlib.dev = require('nearlib/dev');
         this.global.window = {};
         let config = require('./get-config')();
         this.global.testSettings = config;
@@ -19,20 +18,19 @@ class LocalTestEnvironment extends NodeEnvironment {
             contractName: "test" + Date.now(),
             accountId: "test" + Date.now()
         });
+        const keyStore = new nearlib.keyStores.UnencryptedFileSystemKeyStore('./neardev');
+        await keyStore.setKey(config.networkId, testAccountName, nearlib.utils.KeyPair.fromString('ed25519:2wyRcSwSuHtRVmkMCGjPwnzZmQLeXLzLLyED1NDMt4BjnKgQL6tF85yBx6Jr26D2dUNeC716RBoTxntVHsegogYw'));
         config.deps = Object.assign(config.deps || {}, {
             storage:  this.createFakeStorage(),
-            keyStore: new nearlib.InMemoryKeyStore(),
+            keyStore,
         });
-        const near = await dev.connect(config);
+        const near = await nearlib.connect(config);
 
-        const keyWithRandomSeed = await nearlib.KeyPair.fromRandomSeed();
-        await config.deps.createAccount(config.contractName, keyWithRandomSeed.getPublicKey());
-        config.deps.keyStore.setKey(config.contractName, keyWithRandomSeed);
-
-        // deploy contract
+        const masterAccount = await near.account(testAccountName);
+        const randomKey = await nearlib.KeyPair.fromRandom('ed25519');
         const data = [...fs.readFileSync('./out/main.wasm')];
-        await near.waitForTransactionResult(
-            await near.deployContract(config.contractName, data));
+        await config.deps.keyStore.setKey(config.networkId, config.contractName, randomKey);
+        await masterAccount.createAndDeployContract(config.contractName, randomKey.getPublicKey(), data, 1000000); 
 
         await super.setup();
     }

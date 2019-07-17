@@ -46,13 +46,6 @@ const callViewFunction = {
   handler: (argv) => exitOnError(main.callViewFunction(argv))
 };
 
-const viewAccount = {
-  command: 'view_account <accountId>',
-  desc: 'view given account/contract state',
-  builder: (yargs) => yargs,
-  handler: (argv) => exitOnError(main.viewAccount(argv))
-};
-
 const sendTokens = {
   command: 'send <receiver> <amount>',
   desc: 'send tokens to given receiver',
@@ -87,7 +80,38 @@ const createAccount = {
       type: 'string',
       required: true
     }),
-  handler: (argv) => exitOnError(main.createDevAccount(argv))
+  handler: (argv) => exitOnError(main.createAccount(argv))
+};
+
+const login = {
+  command: 'login',
+  desc: 'create a developer account',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.login(argv))
+};
+
+const viewAccount = {
+  command: 'state <accountId>',
+  desc: 'view account',
+  builder: (yargs) => yargs
+    .option('accountId', {
+      desc: 'Account to view',
+      type: 'string',
+      required: true
+    }),
+  handler: (argv) => exitOnError(main.viewAccount(argv))
+};
+
+const txStatus = {
+  command: 'tx-status <hash>',
+  desc: 'lookup transaction status by hash',
+  builder: (yargs) => yargs
+    .option('hash', {
+      desc: 'base58-encoded hash',
+      type: 'string',
+      required: true
+    }),
+  handler: (argv) => exitOnError(main.txStatus(argv))
 };
 
 const clean = {
@@ -114,6 +138,28 @@ const newProject = {
   handler: (argv) => exitOnError(main.newProject(argv))
 };
 
+const stake = {
+  command: 'stake [accountId] [publicKey] [amount]',
+  desc: 'create staking transaction',
+  builder: (yargs) => yargs
+    .option('accountId', {
+      desc: 'Account to stake on',
+      type: 'string',
+      required: true,
+    })
+    .option('publicKey', {
+      descr: 'Public key to stake with (base58 encoded)',
+      type: 'string',
+      required: true,
+    })
+    .option('amount', {
+      descr: 'Amount to stake',
+      type: 'string',
+      required: true,
+    }),
+    handler: (argv) => exitOnError(main.stake(argv))
+}
+
 let config = require('../get-config')();
 yargs // eslint-disable-line
   .option('nodeUrl', {
@@ -130,15 +176,22 @@ yargs // eslint-disable-line
     desc: 'NEAR contract helper URL',
     type: 'string',
   })
-  .option('useDevAccount', {
-    desc: 'Forces use of special "developer" account (only works on local node)',
-    type: 'boolean',
+  .option('keyPath', {
+    desc: 'Path to master account key',
+    type: 'string',
+  })
+  .option('homeDir', {
+    desc: 'Where to look for master account, default is ~/.near',
+    type: 'string',
+    default: `${process.env.HOME}/.near`,
   })
   .option('accountId', {
     desc: 'Unique identifier for the account',
     type: 'string',
   })
   .command(createAccount)
+  .command(viewAccount)
+  .command(txStatus)
   .command(build)
   .command(deploy)
   .command(scheduleFunctionCall)
@@ -147,6 +200,8 @@ yargs // eslint-disable-line
   .command(sendTokens)
   .command(clean)
   .command(newProject)
+  .command(stake)
+  .command(login)
   .config(config)
   .alias({
     'accountId': ['account_id'],

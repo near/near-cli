@@ -11,7 +11,7 @@ cd tmp-project
 yarn
 yarn remove near-shell
 yarn add ../
-NODE_ENV=development yarn test
+yarn test
 cd ..
 rm  -rf tmp-project
 

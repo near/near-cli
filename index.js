@@ -1,10 +1,12 @@
-const { InMemoryKeyStore, KeyPair } = require('nearlib');
-const neardev = require('nearlib/dev');
-const UnencryptedFileSystemKeyStore = require('nearlib/signing/unencrypted_file_system_keystore');
+const nearjs = require('nearlib');
+const { KeyPair, keyStores } = require('nearlib');
+const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 const fs = require('fs');
 const yargs = require('yargs');
+const bs58 = require('bs58');
 const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
+const readline = require('readline')
 
 ncp.limit = 16;
 
@@ -32,41 +34,40 @@ exports.clean = async function() {
   console.log("Clean complete.");
 };
 
-// Only works for dev environments
-exports.createDevAccount = async function(options) {
-    const keyPair = await KeyPair.fromRandomSeed();
-    const { accountId } = options;
-    options.useDevAccount = true;
-    options.deps = {
-        keyStore: new InMemoryKeyStore(),
-        storage: {},
-    };
-
-    await neardev.connect(options);
-    await options.deps.createAccount(accountId, keyPair.getPublicKey());
-    const keyStore = new UnencryptedFileSystemKeyStore('./', options.networkId);
-    keyStore.setKey(accountId, keyPair);
-    console.log("Create account complete for " + accountId);
-};
-
 async function connect(options) {
-    const keyStore = new UnencryptedFileSystemKeyStore('./', options.networkId);
-    if (!options.accountId) {
-        // see if we only have one account in keystore and just use that.
-        const accountIds = await keyStore.getAccountIds();
-        if (accountIds.length == 1) {
-            options.accountId = accountIds[0];
-        }
+    if (options.keyPath === undefined && options.helperUrl === undefined) {
+        const homeDir = options.homeDir || `${process.env.HOME}/.near`;
+        options.keyPath = `${homeDir}/validator_key.json`;
     }
-    if (!options.accountId) {
-        throw new Error('Please provide account id and make sure you created an account using `near create_account`');
-    }
+    // TODO: search for key store.
+    const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
     options.deps = {
         keyStore,
-        storage: {},
     };
+    return await nearjs.connect(options);
+}
 
-    return await neardev.connect(options);
+exports.createAccount = async function(options) {
+    let near = await connect(options);
+    const keyPair = await KeyPair.fromRandom('ed25519');
+    await near.createAccount(options.accountId, keyPair.getPublicKey());
+    near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
+    console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
+}
+
+exports.viewAccount = async function(options) {
+    let near = await connect(options);
+    let account = await near.account(options.accountId);
+    let state = await account.state();
+    console.log(`Account ${options.accountId}`);
+    console.log(state);
+}
+
+exports.txStatus = async function(options) {
+    let near = await connect(options);
+    let status = await near.connection.provider.txStatus(bs58.decode(options.hash));
+    console.log(`Transaction ${options.hash}`);
+    console.log(status);
 }
 
 exports.deploy = async function(options) {
@@ -106,9 +107,34 @@ exports.callViewFunction = async function(options) {
     console.log('Result:', await near.callViewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}')));
 };
 
-exports.viewAccount = async function(options) {
-    const { accountId } = options;
-    console.log(`View account: ${accountId}`);
+exports.stake = async function(options) {
+    console.log(`Staking ${options.amount} on ${options.accountId} with public key = ${options.publicKey}.`);
     const near = await connect(options);
-    console.log('Result:', await near.nearClient.viewAccount(accountId));
-};
+    const account = await near.account(options.accountId);
+    const result = await account.stake(options.publicKey, BigInt(options.amount));
+    console.log('Result: ', JSON.stringify(result));
+}
+
+exports.login = async function(options) {
+    if (!options.walletUrl) {
+        console.log("Log in is not needed on this environment. Please use appropriate master account for shell operations.")
+    } else {
+        const newUrl = new URL(options.walletUrl + "/login/");
+        const title = 'NEAR Shell';
+        newUrl.searchParams.set('title', title);
+        const keyPair = await KeyPair.fromRandom('ed25519');
+        newUrl.searchParams.set('public_key', keyPair.getPublicKey());
+        console.log(`Please navigate to this url and follow the insturctions to log in: ${newUrl.toString()}`);
+
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+          
+        rl.question('Please enter the accountId that you logged in with:', (accountId) => {
+            const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
+            keyStore.setKey(options.networkId, accountId, keyPair);
+            console.log(`Logged in with ${accountId}`);
+        });
+    }
+}

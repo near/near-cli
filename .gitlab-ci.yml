@@ -5,6 +5,8 @@ stages:
 
 run_tests:
   stage: test
+  tags: 
+    - gcloud
   script:
     - yarn
-    - yarn test
+    - NODE_ENV=ci yarn test
