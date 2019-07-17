@@ -6,7 +6,8 @@ const yargs = require('yargs');
 const bs58 = require('bs58');
 const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
-const readline = require('readline')
+const readline = require('readline');
+const URL = require('url').URL;
 
 ncp.limit = 16;
 
@@ -124,7 +125,7 @@ exports.login = async function(options) {
         newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
-        console.log(`Please navigate to this url and follow the insturctions to log in: ${newUrl.toString()}`);
+        console.log(`Please navigate to this url and follow the instructions to log in: \n${newUrl.toString()}`);
 
         const rl = readline.createInterface({
             input: process.stdin,
@@ -135,6 +136,7 @@ exports.login = async function(options) {
             const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
             keyStore.setKey(options.networkId, accountId, keyPair);
             console.log(`Logged in with ${accountId}`);
+            rl.close();
         });
     }
 }
