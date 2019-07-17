@@ -8,7 +8,7 @@
             case 'development':
                 return {
                     networkId: 'default',
-                    nodeUrl: 'http://34.94.33.164:3030',
+                    nodeUrl: 'https://rpc.nearprotocol.com',
                     contractName: CONTRACT_NAME,
                     walletUrl: 'https://wallet.nearprotocol.com',
                 };
