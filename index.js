@@ -49,6 +49,7 @@ async function connect(options) {
 }
 
 exports.createAccount = async function(options) {
+    console.log(options);
     let near = await connect(options);
     const keyPair = await KeyPair.fromRandom('ed25519');
     await near.createAccount(options.accountId, keyPair.getPublicKey());
