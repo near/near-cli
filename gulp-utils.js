@@ -13,7 +13,8 @@ function compile(inputFile, outputFile, callback) {
   const asc = getAsc();
   asc.main([
     inputFile,
-    "-O3",
+    // TODO: Optimiziation is very slow, enable it only conditionally for "prod" builds?
+    "-O1",
     "--baseDir", "assembly",
     "--binaryFile", outputFile,
     "--sourceMap",
