@@ -76,14 +76,7 @@ exports.deploy = async function(options) {
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
     const near = await connect(options);
     const contractData = [...fs.readFileSync(options.wasmFile)];
-    const res = await near.waitForTransactionResult(
-        await near.deployContract(options.accountId, contractData));
-    if (res.status == "Completed") {
-        console.log("Deployment succeeded.");
-    } else {
-        console.log("Deployment transaction did not succeed: ", res);
-        process.exit(1);
-    }
+    await near.deployContract(options.accountId, contractData);
 };
 
 exports.scheduleFunctionCall = async function(options) {
