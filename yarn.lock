@@ -1608,9 +1608,10 @@ ncp@^2.0.0:
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
   integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
 
-"nearlib@github:nearprotocol/nearlib#nightshade":
-  version "0.10.0-preview1"
-  resolved "https://codeload.github.com/nearprotocol/nearlib/tar.gz/60070e450fde4a95e8c5190c625ec8aad6d09cfe"
+nearlib@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/nearlib/-/nearlib-0.10.2.tgz#c67a8bc9fb46607db50b63cbf2d1a38c3188274f"
+  integrity sha512-xkvxBN6M/0vIttcmsnEvc3lxE0yAUI5LEYyPD2xEeC5kHLxGdwPRycTA5JUs9KGkR08AxQ/D9vKJpXFz0PB61A==
   dependencies:
     "@types/bn.js" "^4.11.5"
     bn.js "^4.11.5"
