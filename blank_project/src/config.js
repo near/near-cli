@@ -11,6 +11,7 @@
                     nodeUrl: 'https://rpc.nearprotocol.com',
                     contractName: CONTRACT_NAME,
                     walletUrl: 'https://wallet.nearprotocol.com',
+                    initialBalance: 100000000,
                 };
             case 'local':
                 return {
@@ -18,7 +19,7 @@
                     nodeUrl: 'http://localhost:3030',
                     keyPath: '~/.near/validator_key.json',
                     contractName: CONTRACT_NAME,
-                    initialBalance: 100000,
+                    initialBalance: 100000000,
                 };
             case 'test':
                 return {
@@ -26,7 +27,7 @@
                     nodeUrl: 'http://localhost:3030',
                     contractName: CONTRACT_NAME,
                     masterAccount: 'test.near',
-                    initialBalance: 100000,
+                    initialBalance: 100000000,
                 };
             case 'test-remote':
             case 'ci':
@@ -35,6 +36,7 @@
                     nodeUrl: 'http://34.94.13.241:3030',
                     contractName: CONTRACT_NAME,
                     masterAccount: 'test.near',
+                    initialBalance: 100000000,
                 };
             default:
                 throw Error(`Unconfigured environment '${env}'. Can be configured in src/config.js.`);
