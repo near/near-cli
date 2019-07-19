@@ -33,7 +33,7 @@
             case 'ci':
                 return {
                     networkId: 'shared-test',
-                    nodeUrl: 'http://34.94.13.241:3030',
+                    nodeUrl: 'http://shared-test.nearprotocol.com:3030',
                     contractName: CONTRACT_NAME,
                     masterAccount: 'test.near',
                     initialBalance: 100000000,
