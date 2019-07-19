@@ -79,6 +79,16 @@ const createAccount = {
       desc: 'Unique identifier for the newly created account',
       type: 'string',
       required: true
+    })
+    .option('masterAccount', {
+      desc: 'Account used to create requested account.',
+      type: 'string',
+      required: true
+    })
+    .option('initialBalance', {
+      desc: 'Number of tokens to transfer to newly created account',
+      type: 'string',
+      required: true
     }),
   handler: (argv) => exitOnError(main.createAccount(argv))
 };
