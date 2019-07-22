@@ -83,16 +83,14 @@ exports.scheduleFunctionCall = async function(options) {
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
         (options.amount ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
-    console.log('Result:', await near.waitForTransactionResult(
-        await near.scheduleFunctionCall(options.amount, options.accountId,
-            options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
+    const account = await near.account(options.accountId);
+    console.log('Result:', await near.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount));
 };
 
 exports.sendTokens = async function(options) {
     console.log(`Sending ${options.amount} NEAR to ${options.receiver}`);
     const near = await connect(options);
-    await near.waitForTransactionResult(
-        await near.sendTokens(options.amount, options.accountId, options.receiver));
+    await near.sendTokens(options.amount, options.accountId, options.receiver);
 };
 
 exports.callViewFunction = async function(options) {
