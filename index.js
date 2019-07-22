@@ -84,7 +84,7 @@ exports.scheduleFunctionCall = async function(options) {
         (options.amount ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    console.log('Result:', await near.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount));
+    console.log('Result:', await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount));
 };
 
 exports.sendTokens = async function(options) {
