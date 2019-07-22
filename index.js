@@ -96,7 +96,9 @@ exports.sendTokens = async function(options) {
 exports.callViewFunction = async function(options) {
     console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
     const near = await connect(options);
-    console.log('Result:', await near.callViewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}')));
+    // TODO: Figure out how to run readonly calls without account
+    const account = await near.account(options.accountId || options.masterAccount || 'register.near');
+    console.log('Result:', await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}')));
 };
 
 exports.stake = async function(options) {
