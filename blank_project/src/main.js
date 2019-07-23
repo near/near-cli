@@ -4,7 +4,8 @@
 
 async function initContract() {
   // Initializing connection to the NEAR DevNet.
-  window.near = await nearlib.connect(nearConfig);
+
+  window.near = await nearlib.connect(Object.assign({ deps: { keyStore: new nearlib.keyStores.BrowserLocalStorageKeyStore() } }, nearConfig));
 
   // Initializing our contract APIs by contract name and configuration.
   window.contract = await near.loadContract(nearConfig.contractName, {
@@ -15,7 +16,7 @@ async function initContract() {
     changeMethods: [],
     // Sender is the account ID to initialize transactions.
     // For devnet we create accounts on demand. See other examples on how to authorize accounts.
-    sender: nearlib.dev.myAccountId
+    sender: nearConfig.contractName
   });
 }
 
