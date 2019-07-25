@@ -60,7 +60,7 @@ exports.createAccount = async function(options) {
     }
     await near.createAccount(options.accountId, publicKey);
     if (keyPair) {
-        near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
+        await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
     }
     console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
 }
