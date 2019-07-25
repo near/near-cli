@@ -50,9 +50,18 @@ async function connect(options) {
 
 exports.createAccount = async function(options) {
     let near = await connect(options);
-    const keyPair = await KeyPair.fromRandom('ed25519');
-    await near.createAccount(options.accountId, keyPair.getPublicKey());
-    near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
+    let keyPair;
+    let publicKey;
+    if (options.publicKey) {
+        publicKey = options.publicKey;
+    } else {
+        keyPair = await KeyPair.fromRandom('ed25519');
+        publicKey = keyPair.getPublicKey();
+    }
+    await near.createAccount(options.accountId, publicKey);
+    if (keyPair) {
+        await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
+    }
     console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
 }
 
