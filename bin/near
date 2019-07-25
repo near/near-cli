@@ -85,6 +85,11 @@ const createAccount = {
       type: 'string',
       required: true
     })
+    .option('publicKey', {
+      desc: 'Public key to initialize the account with',
+      type: 'string',
+      required: false
+    })
     .option('initialBalance', {
       desc: 'Number of tokens to transfer to newly created account',
       type: 'string',
