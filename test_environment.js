@@ -13,7 +13,7 @@ class LocalTestEnvironment extends NodeEnvironment {
         this.global.nearlib = require('nearlib');
         this.global.window = {};
         let config = require('./get-config')();
-        this.global.testSettings = config;
+        this.global.testSettings = this.global.nearConfig = config;
         config = Object.assign(config, {
             contractName: "test" + Date.now(),
             accountId: "test" + Date.now()
