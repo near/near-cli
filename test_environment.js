@@ -2,6 +2,7 @@ const NodeEnvironment = require('jest-environment-node');
 const nearlib = require('nearlib');
 const fs = require('fs');
 
+const INITIAL_BALANCE = '100000000000';
 const testAccountName = 'test.near';
 
 class LocalTestEnvironment extends NodeEnvironment {
@@ -30,7 +31,7 @@ class LocalTestEnvironment extends NodeEnvironment {
         const randomKey = await nearlib.KeyPair.fromRandom('ed25519');
         const data = [...fs.readFileSync('./out/main.wasm')];
         await config.deps.keyStore.setKey(config.networkId, config.contractName, randomKey);
-        await masterAccount.createAndDeployContract(config.contractName, randomKey.getPublicKey(), data, 1000000); 
+        await masterAccount.createAndDeployContract(config.contractName, randomKey.getPublicKey(), data, INITIAL_BALANCE);
 
         await super.setup();
     }
