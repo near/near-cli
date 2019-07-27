@@ -6,7 +6,10 @@ module.exports = function getConfig() {
         console.log(config);
         return config;
     } catch (e) {
-        console.log(`[WARNING] Didn't find config at ${configPath}\n`);
-        return {};
+        if (e.code == 'MODULE_NOT_FOUND') {
+            console.warn(`[WARNING] Didn't find config at ${configPath}\n`);
+            return {};
+        }
+        throw e;
     }
 }
