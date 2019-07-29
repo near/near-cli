@@ -5,8 +5,11 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
 <body style="background: #fff; margin-top: 3em">
-  <div>Please run the following command in shell, then enter account id here.</div>
-  <div id="shell-command"></div>
+  <div>Please run the following command in shell, then enter account id here.
+  </div>
+  <div>
+      <code id="shell-command"></code>
+  </div>
   <input type="text" id="accountId" name="accountId" placeholder="Account id"></input>
   <button type="button" onClick="done()">done</button>
   <script src="https://cdn.jsdelivr.net/gh/nearprotocol/nearlib@82eed3127d56984e850cf1581344bc098b9f83ab/dist/nearlib.js"></script>
@@ -14,7 +17,7 @@
   <script src="./config.js"></script>
   <script>
     const currentUrl = new URL(window.location.href);
-    const message = `near createAccount {newAccountId} --masterAccount {masterAccountId} --publicKey ${currentUrl.searchParams.get('public_key')} --initialAmount 1000`;
+    const message = `near create_account {newAccountId} --masterAccount {masterAccountId} --publicKey ${currentUrl.searchParams.get('public_key')} --initialAmount 1000`;
     document.getElementById('shell-command').innerText = message;
 
     function done() {
