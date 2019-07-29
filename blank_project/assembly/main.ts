@@ -1,6 +1,4 @@
-import { context, storage, near } from "./near";
-
-import { Greeter } from "./model.near";
+import { Greeter } from "../out/model.near";
 
 // --- contract code goes below
 

@@ -2,15 +2,15 @@ const gulp = require("gulp");
 const nearUtils = require("near-shell/gulp-utils");
 
 gulp.task("build:model", callback => {
-  nearUtils.generateBindings("model.ts", "../out/model.near.ts", callback);
+  nearUtils.generateBindings("assembly/model.ts", "./out/model.near.ts", callback);
 });
 
 gulp.task("build:bindings", ["build:model"], callback => {
-  nearUtils.generateBindings("main.ts", "../out/main.near.ts", callback);
+  nearUtils.generateBindings("assembly/main.ts", "./out/main.near.ts", callback);
 });
 
 gulp.task("build", ["build:bindings"], callback => {
-  nearUtils.compile("../out/main.near.ts", "../out/main.wasm", callback);
+  nearUtils.compile("out/main.near.ts", "./out/main.wasm", callback);
 });
 
 gulp.task("default", ["build"]);
