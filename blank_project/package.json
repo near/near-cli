@@ -16,7 +16,7 @@
     "bignum": "github:MaxGraey/bignum.wasm",
     "gh-pages": "^2.0.1",
     "gulp": "^4.0.2",
-    "jest": "^22.4.4",
+    "jest": "^24.8.0",
     "jest-environment-node": "^24.5.0",
     "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
     "near-shell": "github:nearprotocol/near-shell"
