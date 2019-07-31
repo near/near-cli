@@ -50,9 +50,18 @@ async function connect(options) {
 
 exports.createAccount = async function(options) {
     let near = await connect(options);
-    const keyPair = await KeyPair.fromRandom('ed25519');
-    await near.createAccount(options.accountId, keyPair.getPublicKey());
-    near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
+    let keyPair;
+    let publicKey;
+    if (options.publicKey) {
+        publicKey = options.publicKey;
+    } else {
+        keyPair = await KeyPair.fromRandom('ed25519');
+        publicKey = keyPair.getPublicKey();
+    }
+    await near.createAccount(options.accountId, publicKey);
+    if (keyPair) {
+        await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
+    }
     console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
 }
 
@@ -124,11 +133,18 @@ exports.login = async function(options) {
             input: process.stdin,
             output: process.stdout
         });
-          
-        rl.question('Please enter the accountId that you logged in with:', (accountId) => {
-            const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
-            keyStore.setKey(options.networkId, accountId, keyPair);
-            console.log(`Logged in with ${accountId}`);
+        rl.question('Please enter the accountId that you logged in with:', async (accountId) => {
+            // check that the key got added
+            const near = await connect(options);
+            let account = await near.account(accountId);
+            let state = await account.state();
+            if (state.public_keys.includes(keyPair.getPublicKey())) {
+                const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
+                keyStore.setKey(options.networkId, accountId, keyPair);
+                console.log(`Logged in with ${accountId}`);
+            } else {
+                console.log('Log in did not succeed. Please try again.')
+            }
             rl.close();
         });
     }

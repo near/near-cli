@@ -4,26 +4,49 @@ The [NEAR](https://near.ai/npm) protocol library as CLI tool.
 More documentation [here](https://near.ai/readme)
 
 ## Installation
-```
+
+```bash
 npm install -g near-shell
 ```
 
 ## Usage
+
 In command line, from directory with your project:
-```Bash
+
+```bash
 near <command>
 ```
-### Commands:
-```Bash
-  near create_account  <account_id>            # create a developer account
-  near state <account_id>                      # view account
-  near new_project [dir]                       # generate a new project from template
+
+### Commands
+
+```bash
+  near create_account <accountId>              # create a developer account
+  near state <accountId>                       # view account
+  near tx-status <hash>                        # lookup transaction status by hash
+  near build                                   # build your smart contract
   near deploy                                  # deploy your smart contract
-  near call <contractName> <methodName> [args] # submits transaction, can change state, account required
-  near view <contractName> <methodName> [args] # cannot change state, account is contract name
+  near call <contractName> <methodName>        # schedule smart contract call which
+  [args]                                       # can modify state
+  near view <contractName> <methodName>        # make smart contract call which can
+  [args]                                       # view state
+  near state <accountId>                       # view account
+  near send <receiver> <amount>                # send tokens to given receiver
+  near clean                                   # clean the build environment
+  near new_project [projectDir]                # create a new blank project
+  near stake [accountId] [publicKey] [amount]  # create staking transaction
+  near login                                   # create a developer account
+
 ```
-### Options:
-| Option        | Description         | Type      |
-| ------------- |:-------------------:| :---------|
-| --help        | Show help           | [boolean] |
-| --version     | Show version number | [boolean] |
+
+### Options
+
+| Option                    | Description                                   | Type      | Default               |
+| --------------------------|:---------------------------------------------:| :---------|:----------------------|
+| --help                    | Show help                                     | [boolean] |                       |
+| --version                 | Show version number                           | [boolean] |                       |
+| --nodeUrl, --node_url     | NEAR node URL                                 | [string]  |"http://localhost:3030"|
+| --networkId, --network_id | NEAR network ID for different keys by network | [string]  |"default"              |
+| --helperUrl               | NEAR contract helper URL                      | [string]  |                       |
+| --keyPath                 | Path to master account key                    | [string]  |                       |
+| --homeDir                 | Where to look for master account              | [string]  |"~/.near"              |
+| --accountId, --account_id | Unique identifier for the account             | [string]  |                       |
