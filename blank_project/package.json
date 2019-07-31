@@ -13,13 +13,13 @@
   },
   "devDependencies": {
     "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
+    "bignum": "github:MaxGraey/bignum.wasm",
     "gh-pages": "^2.0.1",
-    "gulp": "^3",
+    "gulp": "^4.0.2",
     "jest": "^22.4.4",
     "jest-environment-node": "^24.5.0",
     "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
-    "near-shell": "github:nearprotocol/near-shell",
-    "bignum": "github:MaxGraey/bignum.wasm"
+    "near-shell": "github:nearprotocol/near-shell"
   },
   "wasmStudio": {
     "name": "Hello World Example",
