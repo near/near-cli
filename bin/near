@@ -47,7 +47,7 @@ const callViewFunction = {
 };
 
 const sendTokens = {
-  command: 'send <receiver> <amount>',
+  command: 'send <receiver> <sender> <amount>',
   desc: 'send tokens to given receiver',
   builder: (yargs) => yargs,
   handler: (argv) => exitOnError(main.sendTokens(argv))
