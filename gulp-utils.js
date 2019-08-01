@@ -46,30 +46,6 @@ function getAsc() {
       readFile: (filename, baseDir) => {
         baseDir = pathModule.relative(process.cwd(), baseDir);
         let path = pathModule.join(baseDir, filename);
-        // if (path.startsWith("out/") && path.indexOf(".near.ts") == -1) {
-        //   path = path.replace(/^out/, baseDir );
-        // } else if (path.startsWith(baseDir) && path.indexOf(".near.ts") != -1) {
-        //   path = path.replace(new RegExp("^" + baseDir), "out");
-        // }
-
-        // if (!fs.existsSync(path)) {
-        //   // TODO: Try node_modules instead of fixed hardcode
-        //   const mapping = {
-        //     "assembly/near.ts" : "./node_modules/near-runtime-ts/near.ts",
-        //     "assembly/json/encoder.ts" : "./node_modules/assemblyscript-json/assembly/encoder.ts",
-        //     "assembly/json/decoder.ts" : "./node_modules/assemblyscript-json/assembly/decoder.ts",
-        //     "bignum/integer/u128.ts" : "./node_modules/bignum/assembly/integer/u128.ts",
-        //   };
-        //   if (path in mapping) {
-        //     path =  mapping[path]
-        //   } else if (path.startsWith("assembly/node_modules/bignum/assembly")) {
-        //     // TODO: resolve two ways of importing bignum due to need to test near-runtime-ts separately
-        //     path = path.replace("assembly", ".");
-        //   } else if (path.startsWith("assembly/bignum")) {
-        //     path = path.replace("assembly/bignum", "./node_modules/bignum/assembly");
-        //   }
-        // }
-
         if (!fs.existsSync(path)) {
             return null;
         }
