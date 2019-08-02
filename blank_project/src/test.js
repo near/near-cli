@@ -19,7 +19,7 @@ describe("Greeter", function() {
       contract = await near.loadContract(contractName, {
         // NOTE: This configuration only needed while NEAR is still in development
         // View methods are read only. They don't modify the state, but usually return some value.
-        viewMethods: ["hello"],
+        viewMethods: ["whoSaidHi"],
         // Change methods can modify the state. But you don't receive the returned value when called.
         changeMethods: [],
         sender: accountId
@@ -33,8 +33,8 @@ describe("Greeter", function() {
       });
 
       it("get hello message", async function() {
-        const result = await contract.hello();
-        expect(result).toBe("Hello, world");
+        const result = await contract.whoSaidHi();
+        expect(result).toBeNull();
       });
   });
 });
