@@ -96,10 +96,11 @@ exports.scheduleFunctionCall = async function(options) {
     console.log('Result:', await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount));
 };
 
-exports.sendTokens = async function(options) {
-    console.log(`Sending ${options.amount} NEAR to ${options.receiver}`);
+exports.sendMoney = async function(options) {
+    console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
-    await near.sendTokens(options.amount, options.accountId, options.receiver);
+    const account = await near.account(options.sender);
+    await account.sendMoney(options.receiver, options.amount);
 };
 
 exports.callViewFunction = async function(options) {

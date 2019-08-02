@@ -46,11 +46,11 @@ const callViewFunction = {
   handler: (argv) => exitOnError(main.callViewFunction(argv))
 };
 
-const sendTokens = {
-  command: 'send <receiver> <amount>',
+const sendMoney = {
+  command: 'send <receiver> <sender> <amount>',
   desc: 'send tokens to given receiver',
   builder: (yargs) => yargs,
-  handler: (argv) => exitOnError(main.sendTokens(argv))
+  handler: (argv) => exitOnError(main.sendMoney(argv))
 };
 
 const { spawn } = require('child_process');
@@ -212,7 +212,7 @@ yargs // eslint-disable-line
   .command(scheduleFunctionCall)
   .command(callViewFunction)
   .command(viewAccount)
-  .command(sendTokens)
+  .command(sendMoney)
   .command(clean)
   .command(newProject)
   .command(stake)
