@@ -93,7 +93,9 @@ exports.scheduleFunctionCall = async function(options) {
         (options.amount ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    console.log('Result:', await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount));
+    const functionCallResponse = await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount);
+    const result = nearjs.providers.getTransactionLastResult(functionCallResponse);
+    console.log('Result:', result);
 };
 
 exports.sendMoney = async function(options) {
