@@ -93,13 +93,16 @@ exports.scheduleFunctionCall = async function(options) {
         (options.amount ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    console.log('Result:', await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount));
+    const functionCallResponse = await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount);
+    const result = nearjs.providers.getTransactionLastResult(functionCallResponse);
+    console.log('Result:', result);
 };
 
-exports.sendTokens = async function(options) {
-    console.log(`Sending ${options.amount} NEAR to ${options.receiver}`);
+exports.sendMoney = async function(options) {
+    console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
-    await near.sendTokens(options.amount, options.accountId, options.receiver);
+    const account = await near.account(options.sender);
+    await account.sendMoney(options.receiver, options.amount);
 };
 
 exports.callViewFunction = async function(options) {
@@ -133,11 +136,18 @@ exports.login = async function(options) {
             input: process.stdin,
             output: process.stdout
         });
-          
-        rl.question('Please enter the accountId that you logged in with:', (accountId) => {
-            const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
-            keyStore.setKey(options.networkId, accountId, keyPair);
-            console.log(`Logged in with ${accountId}`);
+        rl.question('Please enter the accountId that you logged in with:', async (accountId) => {
+            // check that the key got added
+            const near = await connect(options);
+            let account = await near.account(accountId);
+            let state = await account.state();
+            if (state.public_keys.includes(keyPair.getPublicKey())) {
+                const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
+                keyStore.setKey(options.networkId, accountId, keyPair);
+                console.log(`Logged in with ${accountId}`);
+            } else {
+                console.log('Log in did not succeed. Please try again.')
+            }
             rl.close();
         });
     }
