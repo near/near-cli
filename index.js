@@ -137,15 +137,19 @@ exports.login = async function(options) {
             output: process.stdout
         });
         rl.question('Please enter the accountId that you logged in with:', async (accountId) => {
-            // check that the key got added
-            const near = await connect(options);
-            let account = await near.account(accountId);
-            let state = await account.state();
-            if (state.public_keys.includes(keyPair.getPublicKey())) {
-                const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
-                keyStore.setKey(options.networkId, accountId, keyPair);
-                console.log(`Logged in with ${accountId}`);
-            } else {
+            try {
+                // check that the key got added
+                const near = await connect(options);
+                let account = await near.account(accountId);
+                let state = await account.state();
+                if (state.public_keys.includes(keyPair.getPublicKey())) {
+                    const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
+                    keyStore.setKey(options.networkId, accountId, keyPair);
+                    console.log(`Logged in with ${accountId}`);
+                } else {
+                    console.log('Log in did not succeed. Please try again.')
+                }
+            } catch (_) {
                 console.log('Log in did not succeed. Please try again.')
             }
             rl.close();
