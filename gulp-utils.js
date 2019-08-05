@@ -39,7 +39,6 @@ function getAsc() {
     }
 
     const logLn = process.browser ? window.logLn : console.log;
-    console.log("asc " + args.join(" "));
     return main(args, options || {
       stdout: process.stdout || asc.createMemoryStream(logLn),
       stderr: process.stderr || asc.createMemoryStream(logLn),
