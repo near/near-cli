@@ -56,6 +56,7 @@ function getAsc() {
           // TODO: Try node_modules instead of fixed hardcode
           const mapping = {
             "assembly/near.ts" : "./node_modules/near-runtime-ts/near.ts",
+            "assembly/base64.ts" : "./node_modules/near-runtime-ts/base64.ts",
             "assembly/json/encoder.ts" : "./node_modules/assemblyscript-json/assembly/encoder.ts",
             "assembly/json/decoder.ts" : "./node_modules/assemblyscript-json/assembly/decoder.ts",
             "bignum/integer/u128.ts" : "./node_modules/bignum/assembly/integer/u128.ts",
