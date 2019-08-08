@@ -60,6 +60,8 @@ function getAsc() {
             "assembly/collections.ts" : "./node_modules/near-runtime-ts/collections.ts",
             "assembly/storage.ts" : "./node_modules/near-runtime-ts/storage.ts",
             "assembly/runtime_api.ts" : "./node_modules/near-runtime-ts/runtime_api.ts",
+            "assembly/logging.ts" : "./node_modules/near-runtime-ts/logging.ts",
+            "assembly/runtime_api.ts" : "./node_modules/near-runtime-ts/runtime_api.ts",
             "assembly/json/encoder.ts" : "./node_modules/assemblyscript-json/assembly/encoder.ts",
             "assembly/json/decoder.ts" : "./node_modules/assemblyscript-json/assembly/decoder.ts",
             "bignum/integer/u128.ts" : "./node_modules/bignum/assembly/integer/u128.ts",
