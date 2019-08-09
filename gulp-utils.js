@@ -20,8 +20,7 @@ function compile(inputFile, outputFile, callback) {
     "--binaryFile", outputFile,
     "--textFile",outputFile.substring(0,outputFile.lastIndexOf("."))+ ".wat",
     "--measure",
-    "--runtime", "stub",
-    "--transform", path.relative(process.cwd(), path.join(__dirname, "node_modules/near-runtime-ts/dist/index.js"))
+    "--runtime", "stub"
   ], callback);
 }
 
