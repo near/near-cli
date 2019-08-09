@@ -1,13 +1,14 @@
 // FUTURE PEOPLE: This file is called "gulp-utils" but it's not related to the deprecated library called "gulp-utils". Don't panic.
-function generateBindings(inputFile, outputFile, callback) {
-  const asc = getAsc();
-  asc.main([
-    inputFile,
-    "--baseDir", process.cwd(),
-    "--nearFile", outputFile,
-    "--measure"
-  ], callback);
-}
+// function generateBindings(inputFile, outputFile, callback) {
+//   const asc = getAsc();
+//   asc.main([
+//     inputFile,
+//     "--baseDir", process.cwd(),
+//     "--nearFile", outputFile,
+//     "--measure"
+//   ], callback);
+// }
+var path = require("path");
 
 function compile(inputFile, outputFile, callback) {
   const asc = getAsc();
@@ -17,8 +18,10 @@ function compile(inputFile, outputFile, callback) {
     "-O1",
     "--baseDir", process.cwd(),
     "--binaryFile", outputFile,
+    "--textFile",outputFile.substring(0,outputFile.lastIndexOf("."))+ ".wat",
     "--measure",
-    "--runtime", "stub"
+    "--runtime", "stub",
+    "--transform", path.relative(process.cwd(), path.join(__dirname, "node_modules/near-runtime-ts/dist/index.js"))
   ], callback);
 }
 
@@ -61,4 +64,4 @@ function getAsc() {
   return asc;
 }
 
-module.exports = { generateBindings, compile };
+module.exports = { compile };
