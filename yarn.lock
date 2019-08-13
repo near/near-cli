@@ -388,9 +388,9 @@ array-unique@^0.3.2:
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
-"assemblyscript@github:nearprotocol/assemblyscript#assemblyscript-update":
+"assemblyscript@github:nearprotocol/assemblyscript":
   version "0.7.0"
-  resolved "https://codeload.github.com/nearprotocol/assemblyscript/tar.gz/bf018f20e09ecac2cff768a1e929f1d843b50e47"
+  resolved "https://codeload.github.com/nearprotocol/assemblyscript/tar.gz/81a0f5ebbbbe67f96eb1174e9ca91fc728d2b8dd"
   dependencies:
     "@protobufjs/utf8" "^1.1.0"
     binaryen "84.0.0-nightly.20190522"
