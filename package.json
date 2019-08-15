@@ -23,10 +23,11 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "assemblyscript": "github:nearprotocol/assemblyscript",
+    "assemblyscript": "github:nearprotocol/assemblyscript#near_dist",
     "bs58": "^4.0.1",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
+    "near-runtime-ts": "github:willemneal/near-runtime-ts#near_dist",
     "nearlib": "^0.11.0",
     "rimraf": "^2.6.3",
     "yargs": "^13.2.1"

@@ -1,13 +1,14 @@
 // FUTURE PEOPLE: This file is called "gulp-utils" but it's not related to the deprecated library called "gulp-utils". Don't panic.
-function generateBindings(inputFile, outputFile, callback) {
-  const asc = getAsc();
-  asc.main([
-    inputFile,
-    "--baseDir", "assembly",
-    "--nearFile", outputFile,
-    "--measure"
-  ], callback);
-}
+// function generateBindings(inputFile, outputFile, callback) {
+//   const asc = getAsc();
+//   asc.main([
+//     inputFile,
+//     "--baseDir", process.cwd(),
+//     "--nearFile", outputFile,
+//     "--measure"
+//   ], callback);
+// }
+var path = require("path");
 
 function compile(inputFile, outputFile, callback) {
   const asc = getAsc();
@@ -15,9 +16,9 @@ function compile(inputFile, outputFile, callback) {
     inputFile,
     // TODO: Optimiziation is very slow, enable it only conditionally for "prod" builds?
     "-O1",
-    "--baseDir", "assembly",
+    "--baseDir", process.cwd(),
     "--binaryFile", outputFile,
-    "--sourceMap",
+    "--textFile",outputFile.substring(0,outputFile.lastIndexOf("."))+ ".wat",
     "--measure",
     "--runtime", "stub"
   ], callback);
@@ -29,7 +30,7 @@ function getAsc() {
     return asc;
   }
 
-  asc = require("assemblyscript/bin/asc");
+  asc = require("assemblyscript/dist/asc");
 
   const fs = require("fs");
   const pathModule = require("path");
@@ -46,30 +47,6 @@ function getAsc() {
       readFile: (filename, baseDir) => {
         baseDir = pathModule.relative(process.cwd(), baseDir);
         let path = pathModule.join(baseDir, filename);
-        if (path.startsWith("out/") && path.indexOf(".near.ts") == -1) {
-          path = path.replace(/^out/, baseDir );
-        } else if (path.startsWith(baseDir) && path.indexOf(".near.ts") != -1) {
-          path = path.replace(new RegExp("^" + baseDir), "out");
-        }
-
-        if (!fs.existsSync(path)) {
-          // TODO: Try node_modules instead of fixed hardcode
-          const mapping = {
-            "assembly/near.ts" : "./node_modules/near-runtime-ts/near.ts",
-            "assembly/json/encoder.ts" : "./node_modules/assemblyscript-json/assembly/encoder.ts",
-            "assembly/json/decoder.ts" : "./node_modules/assemblyscript-json/assembly/decoder.ts",
-            "bignum/integer/u128.ts" : "./node_modules/bignum/assembly/integer/u128.ts",
-          };
-          if (path in mapping) {
-            path =  mapping[path]
-          } else if (path.startsWith("assembly/node_modules/bignum/assembly")) {
-            // TODO: resolve two ways of importing bignum due to need to test near-runtime-ts separately
-            path = path.replace("assembly", ".");
-          } else if (path.startsWith("assembly/bignum")) {
-            path = path.replace("assembly/bignum", "./node_modules/bignum/assembly");
-          }
-        }
-
         if (!fs.existsSync(path)) {
             return null;
         }
@@ -86,4 +63,4 @@ function getAsc() {
   return asc;
 }
 
-module.exports = { generateBindings, compile };
+module.exports = { compile };
