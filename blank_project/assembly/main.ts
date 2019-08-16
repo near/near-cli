@@ -28,5 +28,5 @@ export function sayHi(): void {
 // It reads value from the persistent store under the key "last_sender" and returns it.
 export function whoSaidHi(): string {
   // getString returns a string value for a given string key.
-  return storage.getString(LAST_SENDER_KEY);
+  return storage.getString(LAST_SENDER_KEY)!;
 }
