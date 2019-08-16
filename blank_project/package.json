@@ -18,7 +18,8 @@
     "gulp": "^4.0.2",
     "jest": "^24.8.0",
     "jest-environment-node": "^24.8.0",
-    "near-runtime-ts": "github:nearprotocol/near-shell#staging"
+    "near-shell": "github:nearprotocol/near-shell#staging",
+    "near-runtime-ts": "github:nearprotocol/near-runtime-ts#staging"
   },
   "wasmStudio": {
     "name": "Hello World Example",
