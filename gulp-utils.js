@@ -30,7 +30,7 @@ function getAsc() {
     return asc;
   }
 
-  asc = require("assemblyscript/dist/asc");
+  asc = require("assemblyscript/bin/asc");
 
   const fs = require("fs");
   const pathModule = require("path");
