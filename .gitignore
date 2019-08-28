@@ -2,3 +2,5 @@
 node_modules
 tmp-project
 neardev/*
+package-lock.json
+yarn.lock
