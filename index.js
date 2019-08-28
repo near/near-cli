@@ -85,7 +85,8 @@ exports.deploy = async function(options) {
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
     const near = await connect(options);
     const contractData = [...fs.readFileSync(options.wasmFile)];
-    await near.deployContract(options.accountId, contractData);
+    const account = await near.account(options.accountId);
+    await account.deployContract(contractData);
 };
 
 exports.scheduleFunctionCall = async function(options) {
