@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -ex
 cd tmp-project
 timestamp=$(date +%s)

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -ex
 ./test/new_project.sh
 ./test/account_operations.sh
