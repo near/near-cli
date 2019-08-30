@@ -14,6 +14,6 @@ echo Deploying contract
 ../bin/near deploy --accountId=$testaccount --wasmFile=out/main.wasm
 echo Calling functions
 RESULT=$(../bin/near call $testaccount hello "{}" --accountId=test.near)
-if [[ $RESULT != *"Result: hellob"* ]]; then
-  exit 0
+if [[ $RESULT != *"Result: helloa"* ]]; then
+  exit 1
 fi
