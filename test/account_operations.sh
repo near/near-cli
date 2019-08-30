@@ -8,7 +8,7 @@ echo Create account
 
 echo Get account state
 RESULT=$(../bin/near state $testaccount)
-if [[ $RESULT != *"Account $testaccountr"*"amount: '100000000'"* ]]; then
+if [[ $RESULT != *"Account $testaccount"*"amount: '100000000'"* ]]; then
     echo FAILURE Unexpected output from near state
     exit 1
 fi
