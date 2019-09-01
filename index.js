@@ -73,6 +73,14 @@ exports.viewAccount = async function(options) {
     console.log(state);
 }
 
+exports.keys = async function(options) {
+    let near = await connect(options);
+    let account = await near.account(options.accountId);
+    let accessKeys = await account.getAccessKeys();
+    console.log(`Keys for account ${options.accountId}`);
+    console.log(accessKeys);
+}
+
 exports.txStatus = async function(options) {
     let near = await connect(options);
     let status = await near.connection.provider.txStatus(bs58.decode(options.hash));
