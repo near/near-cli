@@ -2,6 +2,7 @@ const nearjs = require('nearlib');
 const { KeyPair, keyStores } = require('nearlib');
 const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 const fs = require('fs');
+const util = require('util')
 const yargs = require('yargs');
 const bs58 = require('bs58');
 const ncp = require('ncp').ncp;
@@ -10,6 +11,10 @@ const readline = require('readline');
 const URL = require('url').URL;
 
 ncp.limit = 16;
+
+const inspectResponse = (response) => {
+    return util.inspect(response, { showHidden: false, depth: null, colors: true });
+};
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -78,7 +83,7 @@ exports.keys = async function(options) {
     let account = await near.account(options.accountId);
     let accessKeys = await account.getAccessKeys();
     console.log(`Keys for account ${options.accountId}`);
-    console.log(accessKeys);
+    console.log(inspectResponse(accessKeys));
 }
 
 exports.txStatus = async function(options) {
