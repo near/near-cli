@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --experimental-repl-await
 
 const yargs = require('yargs');
 const main = require('../');
@@ -217,6 +217,7 @@ yargs // eslint-disable-line
   .command(newProject)
   .command(stake)
   .command(login)
+  .command(require('../commands/repl'))
   .config(config)
   .alias({
     'accountId': ['account_id'],
