@@ -9,4 +9,4 @@ run_tests:
     - gcloud
   script:
     - yarn
-    - NODE_ENV=ci-staging yarn test
+    - NODE_ENV=ci yarn test
