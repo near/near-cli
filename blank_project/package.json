@@ -17,7 +17,7 @@
     "jest": "^24.8.0",
     "jest-environment-node": "^24.8.0",
     "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
-    "near-shell": "file:.."
+    "near-shell": "github:nearprotocol/near-shell"
   },
   "wasmStudio": {
     "name": "Hello World Example",
