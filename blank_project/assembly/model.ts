@@ -1,3 +1,4 @@
+//@nearfile
 // Basic data model
 export class Greeter {
   text: string;
