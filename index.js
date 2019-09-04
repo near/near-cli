@@ -143,12 +143,7 @@ exports.login = async function(options) {
                 const near = await connect(options);
                 let account = await near.account(accountId);
                 let keys = await account.getAccessKeys();
-                let keyFound = false;
-                for (let i = 0; i < keys.length; i++) {
-                    if (keys[i].public_key == keyPair.getPublicKey()) {
-                        keyFound = true;
-                    }
-                }
+                let keyFound = keys.some(key => key.public_key == keyPair.getPublicKey().toString());
                 if (keyFound) {
                     const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
                     keyStore.setKey(options.networkId, accountId, keyPair);
