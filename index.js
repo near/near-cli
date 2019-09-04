@@ -85,7 +85,8 @@ exports.deploy = async function(options) {
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
     const near = await connect(options);
     const contractData = [...fs.readFileSync(options.wasmFile)];
-    await near.deployContract(options.accountId, contractData);
+    const account = await near.account(options.accountId);
+    await account.deployContract(contractData);
 };
 
 exports.scheduleFunctionCall = async function(options) {
@@ -141,16 +142,22 @@ exports.login = async function(options) {
                 // check that the key got added
                 const near = await connect(options);
                 let account = await near.account(accountId);
-                let state = await account.state();
-                if (state.public_keys.includes(keyPair.getPublicKey())) {
+                let keys = await account.getAccessKeys();
+                let keyFound = false;
+                for (let i = 0; i < keys.length; i++) {
+                    if (keys[i].public_key == keyPair.getPublicKey()) {
+                        keyFound = true;
+                    }
+                }
+                if (keyFound) {
                     const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
                     keyStore.setKey(options.networkId, accountId, keyPair);
                     console.log(`Logged in with ${accountId}`);
                 } else {
                     console.log('Log in did not succeed. Please try again.')
                 }
-            } catch (_) {
-                console.log('Log in did not succeed. Please try again.')
+            } catch (e) {
+                console.log(e)
             }
             rl.close();
         });

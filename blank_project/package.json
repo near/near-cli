@@ -3,7 +3,7 @@
   "description": "",
   "version": "0.0.1",
   "scripts": {
-    "build": "mkdir -p out/ && gulp",
+    "build": "gulp",
     "deploy:contract": "near deploy",
     "deploy:pages": "gh-pages -d src",
     "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
@@ -12,12 +12,10 @@
     "test": "npm run build && jest test --env=near-shell/test_environment"
   },
   "devDependencies": {
-    "assemblyscript-json": "github:nearprotocol/assemblyscript-json",
-    "bignum": "github:MaxGraey/bignum.wasm",
-    "gh-pages": "^2.0.1",
+    "gh-pages": "^2.1.1",
     "gulp": "^4.0.2",
     "jest": "^24.8.0",
-    "jest-environment-node": "^24.5.0",
+    "jest-environment-node": "^24.8.0",
     "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
     "near-shell": "github:nearprotocol/near-shell"
   },

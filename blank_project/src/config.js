@@ -4,6 +4,7 @@
 
     function getConfig(env) {
         switch (env) {
+
             case 'production':
             case 'development':
                 return {
@@ -11,6 +12,14 @@
                     nodeUrl: 'https://rpc.nearprotocol.com',
                     contractName: CONTRACT_NAME,
                     walletUrl: 'https://wallet.nearprotocol.com',
+                    initialBalance: 100000000,
+                };
+            case 'staging':
+                return {
+                    networkId: 'staging',
+                    nodeUrl: 'https://staging-rpc.nearprotocol.com/',
+                    contractName: CONTRACT_NAME,
+                    walletUrl: 'https://near-wallet-staging.onrender.com',
                     initialBalance: 100000000,
                 };
             case 'local':
@@ -35,6 +44,14 @@
                 return {
                     networkId: 'shared-test',
                     nodeUrl: 'http://shared-test.nearprotocol.com:3030',
+                    contractName: CONTRACT_NAME,
+                    masterAccount: 'test.near',
+                    initialBalance: 100000000,
+                };
+            case 'ci-staging':
+                return {
+                    networkId: 'shared-test-staging',
+                    nodeUrl: 'http://staging-shared-test.nearprotocol.com:3030',
                     contractName: CONTRACT_NAME,
                     masterAccount: 'test.near',
                     initialBalance: 100000000,
