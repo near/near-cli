@@ -51,6 +51,7 @@ function getAsc() {
       stdout: process.stdout || asc.createMemoryStream(logLn),
       stderr: process.stderr || asc.createMemoryStream(logLn),
       readFile: (filename, baseDir) => {
+        baseDir = pathModule.relative(process.cwd(), baseDir);
         let path = pathModule.join(baseDir, filename);
         if (!fs.existsSync(path)) {
             return null;
