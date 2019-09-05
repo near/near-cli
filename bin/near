@@ -165,7 +165,7 @@ const newProject = {
   handler: (argv) => exitOnError(main.newProject(argv))
 };
 
-const newProject = {
+const reactProject = {
   command: 'new_react_project [projectDir]',
   desc: 'create a new blank react project',
   builder: (yargs) => yargs
@@ -241,6 +241,7 @@ yargs // eslint-disable-line
   .command(sendMoney)
   .command(clean)
   .command(newProject)
+  .command(reactProject)
   .command(stake)
   .command(login)
   .config(config)
