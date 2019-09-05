@@ -31,6 +31,19 @@ exports.newProject = async function(options) {
   console.log('Copying project files complete.')
 };
 
+exports.reactProject = async function(options) {
+    // Need to wait for the copy to finish, otherwise next tasks do not find files.
+    const projectDir = options.projectDir;
+    const sourceDir = __dirname + "/blank_react-template";
+    console.log(`Copying files to new project directory (${projectDir}) from template source (${sourceDir}).`);
+    const copyDirFn = () => {
+        return new Promise(resolve => {
+            ncp (sourceDir, options.projectDir, response => resolve(response));
+    })};
+    await copyDirFn();
+    console.log('Copying project files complete.')
+  };
+
 exports.clean = async function() {
   const rmDirFn = () => {
       return new Promise(resolve => {

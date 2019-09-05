@@ -165,6 +165,19 @@ const newProject = {
   handler: (argv) => exitOnError(main.newProject(argv))
 };
 
+const newProject = {
+  command: 'new_react_project [projectDir]',
+  desc: 'create a new blank react project',
+  builder: (yargs) => yargs
+    .option('projectDir', {
+      desc: 'project directory',
+      type: 'string',
+      default: '.'
+    }),
+  handler: (argv) => exitOnError(main.reactProject(argv))
+};
+
+
 const stake = {
   command: 'stake [accountId] [publicKey] [amount]',
   desc: 'create staking transaction',
