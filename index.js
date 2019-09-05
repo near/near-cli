@@ -2,6 +2,7 @@ const nearjs = require('nearlib');
 const { KeyPair, keyStores } = require('nearlib');
 const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 const fs = require('fs');
+const util = require('util')
 const yargs = require('yargs');
 const bs58 = require('bs58');
 const ncp = require('ncp').ncp;
@@ -10,6 +11,10 @@ const readline = require('readline');
 const URL = require('url').URL;
 
 ncp.limit = 16;
+
+const inspectResponse = (response) => {
+    return util.inspect(response, { showHidden: false, depth: null, colors: true });
+};
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -71,6 +76,14 @@ exports.viewAccount = async function(options) {
     let state = await account.state();
     console.log(`Account ${options.accountId}`);
     console.log(state);
+}
+
+exports.keys = async function(options) {
+    let near = await connect(options);
+    let account = await near.account(options.accountId);
+    let accessKeys = await account.getAccessKeys();
+    console.log(`Keys for account ${options.accountId}`);
+    console.log(inspectResponse(accessKeys));
 }
 
 exports.txStatus = async function(options) {
@@ -143,12 +156,7 @@ exports.login = async function(options) {
                 const near = await connect(options);
                 let account = await near.account(accountId);
                 let keys = await account.getAccessKeys();
-                let keyFound = false;
-                for (let i = 0; i < keys.length; i++) {
-                    if (keys[i].public_key == keyPair.getPublicKey()) {
-                        keyFound = true;
-                    }
-                }
+                let keyFound = keys.some(key => key.public_key == keyPair.getPublicKey().toString());
                 if (keyFound) {
                     const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
                     keyStore.setKey(options.networkId, accountId, keyPair);

@@ -117,6 +117,18 @@ const viewAccount = {
   handler: (argv) => exitOnError(main.viewAccount(argv))
 };
 
+const keys = {
+  command: 'keys <accountId>',
+  desc: 'view account public keys',
+  builder: (yargs) => yargs
+    .option('accountId', {
+      desc: 'Account to view',
+      type: 'string',
+      required: true
+    }),
+  handler: (argv) => exitOnError(main.keys(argv))
+};
+
 const txStatus = {
   command: 'tx-status <hash>',
   desc: 'lookup transaction status by hash',
@@ -206,6 +218,7 @@ yargs // eslint-disable-line
   })
   .command(createAccount)
   .command(viewAccount)
+  .command(keys)
   .command(txStatus)
   .command(build)
   .command(deploy)
