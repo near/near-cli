@@ -40,11 +40,15 @@ modify src/config.js line that sets the contractName. Set it to id from step 1.
 ```
 const CONTRACT_NAME = "contractId"; /* TODO: fill this in! */
 ```
-
 Step 3:
+deploy the smart contract, run the command:
+```
+npm run deploy:contract
+```
+Step 4:
 Finally, run the command in your terminal.
 ```
-npm(yarn) start
+npm(yarn) intall && npm(yarn) start
 ```
 The server that starts is for static assets and by default serves them to localhost:5000. Navigate there in your browser to see the app running!
 
