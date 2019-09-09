@@ -64,6 +64,7 @@ function getAsc() {
         fs.writeFileSync(name, contents);
       },
       listFiles: (dirname, baseDir) => {
+        baseDir = pathModule.relative(process.cwd(), baseDir);
         try {
           return fs.readdirSync(path.join(baseDir, dirname)).filter(file => /^(?!.*\.d\.ts$).*\.ts$/.test(file));
         } catch (e) {
