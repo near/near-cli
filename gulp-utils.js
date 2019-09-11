@@ -60,10 +60,15 @@ function getAsc() {
       },
       writeFile: (filename, contents) => {
         const name = filename.startsWith("../") ? filename.substring(3) : filename;
-        mkdirp(name);
+        if (fs.mkdirSync){
+          mkdirp(name);
+        }
         fs.writeFileSync(name, contents);
       },
       listFiles: (dirname, baseDir) => {
+        if (fs.readdirSync == undefined){
+          return [];
+        }
         baseDir = pathModule.relative(process.cwd(), baseDir);
         try {
           return fs.readdirSync(path.join(baseDir, dirname)).filter(file => /^(?!.*\.d\.ts$).*\.ts$/.test(file));
