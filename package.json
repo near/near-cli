@@ -21,7 +21,9 @@
   "bin": {
     "near": "./bin/near"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "strip-ansi-cli": "^2.0.0"
+  },
   "dependencies": {
     "assemblyscript": "github:nearprotocol/assemblyscript",
     "bs58": "^4.0.1",
