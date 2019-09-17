@@ -74,6 +74,15 @@ exports.viewAccount = async function(options) {
     console.log(state);
 }
 
+exports.deleteAccount = async function(options) {
+    console.log(
+        `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
+    const near = await connect(options);
+    const account = await near.account(options.accountId);
+    await account.deleteAccount(options.beneficiaryId);
+    console.log(`Account ${options.accountId} for network "${options.networkId}" was deleted.`);
+};
+
 exports.keys = async function(options) {
     let near = await connect(options);
     let account = await near.account(options.accountId);
