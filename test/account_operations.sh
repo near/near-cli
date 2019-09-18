@@ -12,3 +12,5 @@ if [[ $RESULT != *"Account $testaccount"*"amount: '100000000'"* ]]; then
     echo FAILURE Unexpected output from near state
     exit 1
 fi
+
+../bin/near delete_account $testaccount test.near

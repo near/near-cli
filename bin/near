@@ -117,6 +117,23 @@ const viewAccount = {
   handler: (argv) => exitOnError(main.viewAccount(argv))
 };
 
+const deleteAccount = {
+  command: 'delete_account <accountId> <beneficiaryId>',
+  desc: 'delete an account and transfer funds to beneficiary account.',
+  builder: (yargs) => yargs
+    .option('accountId', {
+      desc: 'Account to view',
+      type: 'string',
+      required: true
+    })
+    .option('beneficiaryId', {
+      desc: 'Account to transfer funds to',
+      type: 'string',
+      required: true
+    }),
+  handler: (argv) => exitOnError(main.deleteAccount(argv))
+};
+
 const keys = {
   command: 'keys <accountId>',
   desc: 'view account public keys',
@@ -218,6 +235,7 @@ yargs // eslint-disable-line
   })
   .command(createAccount)
   .command(viewAccount)
+  .command(deleteAccount)
   .command(keys)
   .command(txStatus)
   .command(build)
