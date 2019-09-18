@@ -29,7 +29,7 @@
     "bs58": "^4.0.1",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
-    "near-runtime-ts": "github:nearprotocol/near-runtime-ts",
+    "near-runtime-ts": "github:nearprotocol/near-runtime-ts#f729606b83aa01b63d5c2b0a7fa0c08e9949ec00",
     "nearlib": "^0.13.1",
     "rimraf": "^2.6.3",
     "yargs": "^13.2.1"
