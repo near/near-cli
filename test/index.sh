@@ -1,5 +1,5 @@
 #!/bin/bash
-OVERALL_RESULT=$(true)
+OVERALL_RESULT=0
 for test in ./test/test_*; do
     echo ""
     echo "Running $test"

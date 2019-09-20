@@ -1,5 +1,7 @@
 #!/bin/bash
 set -ex
+rm  -rf tmp-project
+./bin/near new_project 'tmp-project'
 cd tmp-project
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp
