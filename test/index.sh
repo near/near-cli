@@ -1,5 +1,15 @@
 #!/bin/bash
-set -ex
-./test/new_project.sh
-./test/account_operations.sh
-#./test/contract_tests.sh
+OVERALL_RESULT=0
+for test in ./test/test_*; do
+    echo ""
+    echo "Running $test"
+    "$test"
+    if [ $? -ne 0 ]; then 
+        echo "$test FAIL"
+        OVERALL_RESULT=1
+    else
+        echo "$test SUCCESS"
+    fi
+done
+
+exit $OVERALL_RESULT

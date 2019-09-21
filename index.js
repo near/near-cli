@@ -71,7 +71,7 @@ exports.viewAccount = async function(options) {
     let account = await near.account(options.accountId);
     let state = await account.state();
     console.log(`Account ${options.accountId}`);
-    console.log(state);
+    console.log(inspectResponse(state));
 }
 
 exports.deleteAccount = async function(options) {
@@ -95,7 +95,7 @@ exports.txStatus = async function(options) {
     let near = await connect(options);
     let status = await near.connection.provider.txStatus(bs58.decode(options.hash));
     console.log(`Transaction ${options.hash}`);
-    console.log(status);
+    console.log(inspectResponse(status));
 }
 
 exports.deploy = async function(options) {
@@ -114,14 +114,14 @@ exports.scheduleFunctionCall = async function(options) {
     const account = await near.account(options.accountId);
     const functionCallResponse = await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount);
     const result = nearjs.providers.getTransactionLastResult(functionCallResponse);
-    console.log('Result:', result);
+    console.log(inspectResponse(result));
 };
 
 exports.sendMoney = async function(options) {
     console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
-    await account.sendMoney(options.receiver, options.amount);
+    console.log(inspectResponse(await account.sendMoney(options.receiver, options.amount)));
 };
 
 exports.callViewFunction = async function(options) {
@@ -129,7 +129,7 @@ exports.callViewFunction = async function(options) {
     const near = await connect(options);
     // TODO: Figure out how to run readonly calls without account
     const account = await near.account(options.accountId || options.masterAccount || 'register.near');
-    console.log('Result:', await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}')));
+    console.log(inspectResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
 };
 
 exports.stake = async function(options) {
@@ -137,7 +137,7 @@ exports.stake = async function(options) {
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const result = await account.stake(options.publicKey, BigInt(options.amount));
-    console.log('Result: ', JSON.stringify(result));
+    console.log(inspectResponse(result));
 }
 
 exports.login = async function(options) {
