@@ -34,7 +34,7 @@ const scheduleFunctionCall = {
     .option('amount', {
       desc: 'Number of tokens to attach',
       type: 'string',
-      default: '1000000000'
+      default: '1'
     }),
   handler: (argv) => exitOnError(main.scheduleFunctionCall(argv))
 };
