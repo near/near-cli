@@ -136,7 +136,7 @@ exports.stake = async function(options) {
     console.log(`Staking ${options.amount} on ${options.accountId} with public key = ${options.publicKey}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.stake(options.publicKey, BigInt(options.amount));
+    const result = await account.stake(options.publicKey, options.amount);
     console.log(inspectResponse(result));
 };
 

@@ -13,9 +13,9 @@ async function initContract() {
     window.accountId = window.walletAccount.getAccountId();
 
     // Initializing our contract APIs by contract name and configuration.
-    window.contract = await near.loadContract(nearConfig.contractName, {
-    // NOTE: This configuration only needed while NEAR is still in development
-    // View methods are read only. They don't modify the state, but usually return some value.
+    window.contract = await near.loadContract(nearConfig.contractName, { // eslint-disable-line require-atomic-updates
+        // NOTE: This configuration only needed while NEAR is still in development
+        // View methods are read only. They don't modify the state, but usually return some value.
         viewMethods: ['whoSaidHi'],
         // Change methods can modify the state. But you don't receive the returned value when called.
         changeMethods: ['sayHi'],

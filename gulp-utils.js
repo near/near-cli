@@ -8,7 +8,6 @@
 //     "--measure"
 //   ], callback);
 // }
-var path = require('path');
 
 function compile(inputFile, outputFile, callback) {
     const asc = getAsc();
