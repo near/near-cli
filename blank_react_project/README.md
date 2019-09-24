@@ -48,7 +48,10 @@ npm run deploy:contract
 Step 4:
 Finally, run the command in your terminal.
 ```
-npm(yarn) intall && npm(yarn) start
+npm intall && npm start
+```
+```
+yarn install && yarn start
 ```
 The server that starts is for static assets and by default serves them to localhost:5000. Navigate there in your browser to see the app running!
 
