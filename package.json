@@ -26,10 +26,10 @@
     "strip-ansi-cli": "^2.0.0"
   },
   "dependencies": {
-    "assemblyscript": "github:nearprotocol/assemblyscript",
     "bs58": "^4.0.1",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
+    "near-assemblyscript": "^0.7.1",
     "near-runtime-ts": "^0.3.1",
     "nearlib": "^0.13.3",
     "rimraf": "^2.6.3",
