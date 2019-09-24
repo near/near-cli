@@ -13,4 +13,4 @@ module.exports = function getConfig() {
         }
         throw e;
     }
-}
+};

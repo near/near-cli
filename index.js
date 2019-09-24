@@ -2,7 +2,7 @@ const nearjs = require('nearlib');
 const { KeyPair, keyStores } = require('nearlib');
 const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 const fs = require('fs');
-const util = require('util')
+const util = require('util');
 const yargs = require('yargs');
 const bs58 = require('bs58');
 const ncp = require('ncp').ncp;
@@ -19,25 +19,25 @@ const inspectResponse = (response) => {
 // TODO: Fix promisified wrappers to handle error properly
 
 exports.newProject = async function(options) {
-  // Need to wait for the copy to finish, otherwise next tasks do not find files.
-  const projectDir = options.projectDir;
-  const sourceDir = __dirname + "/blank_project";
-  console.log(`Copying files to new project directory (${projectDir}) from template source (${sourceDir}).`);
-  const copyDirFn = () => {
-      return new Promise(resolve => {
-          ncp (sourceDir, options.projectDir, response => resolve(response));
-  })};
-  await copyDirFn();
-  console.log('Copying project files complete.')
+    // Need to wait for the copy to finish, otherwise next tasks do not find files.
+    const projectDir = options.projectDir;
+    const sourceDir = __dirname + '/blank_project';
+    console.log(`Copying files to new project directory (${projectDir}) from template source (${sourceDir}).`);
+    const copyDirFn = () => {
+        return new Promise(resolve => {
+            ncp (sourceDir, options.projectDir, response => resolve(response));
+        });};
+    await copyDirFn();
+    console.log('Copying project files complete.');
 };
 
 exports.clean = async function() {
-  const rmDirFn = () => {
-      return new Promise(resolve => {
-      rimraf(yargs.argv.outDir, response => resolve(response));
-  })};
-  await rmDirFn();
-  console.log("Clean complete.");
+    const rmDirFn = () => {
+        return new Promise(resolve => {
+            rimraf(yargs.argv.outDir, response => resolve(response));
+        });};
+    await rmDirFn();
+    console.log('Clean complete.');
 };
 
 async function connect(options) {
@@ -64,7 +64,7 @@ exports.createAccount = async function(options) {
         await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
     }
     console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
-}
+};
 
 exports.viewAccount = async function(options) {
     let near = await connect(options);
@@ -72,7 +72,7 @@ exports.viewAccount = async function(options) {
     let state = await account.state();
     console.log(`Account ${options.accountId}`);
     console.log(inspectResponse(state));
-}
+};
 
 exports.deleteAccount = async function(options) {
     console.log(
@@ -89,14 +89,14 @@ exports.keys = async function(options) {
     let accessKeys = await account.getAccessKeys();
     console.log(`Keys for account ${options.accountId}`);
     console.log(inspectResponse(accessKeys));
-}
+};
 
 exports.txStatus = async function(options) {
     let near = await connect(options);
     let status = await near.connection.provider.txStatus(bs58.decode(options.hash));
     console.log(`Transaction ${options.hash}`);
     console.log(inspectResponse(status));
-}
+};
 
 exports.deploy = async function(options) {
     console.log(
@@ -138,13 +138,13 @@ exports.stake = async function(options) {
     const account = await near.account(options.accountId);
     const result = await account.stake(options.publicKey, BigInt(options.amount));
     console.log(inspectResponse(result));
-}
+};
 
 exports.login = async function(options) {
     if (!options.walletUrl) {
-        console.log("Log in is not needed on this environment. Please use appropriate master account for shell operations.")
+        console.log('Log in is not needed on this environment. Please use appropriate master account for shell operations.');
     } else {
-        const newUrl = new URL(options.walletUrl + "/login/");
+        const newUrl = new URL(options.walletUrl + '/login/');
         const title = 'NEAR Shell';
         newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
@@ -167,12 +167,12 @@ exports.login = async function(options) {
                     keyStore.setKey(options.networkId, accountId, keyPair);
                     console.log(`Logged in with ${accountId}`);
                 } else {
-                    console.log('Log in did not succeed. Please try again.')
+                    console.log('Log in did not succeed. Please try again.');
                 }
             } catch (e) {
-                console.log(e)
+                console.log(e);
             }
             rl.close();
         });
     }
-}
+};
