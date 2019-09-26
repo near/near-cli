@@ -28,7 +28,7 @@
     "bs58": "^4.0.1",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
-    "near-runtime-ts": "github:nearprotocol/near-runtime-ts#staging",
+    "near-runtime-ts": "github:nearprotocol/near-runtime-ts#rename_asc_dep",
     "nearlib": "^0.13.3",
     "rimraf": "^2.6.3",
     "yargs": "^13.2.1"
