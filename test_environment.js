@@ -16,8 +16,8 @@ class LocalTestEnvironment extends NodeEnvironment {
         let config = require('./get-config')();
         this.global.testSettings = this.global.nearConfig = config;
         config = Object.assign(config, {
-            contractName: "test" + Date.now(),
-            accountId: "test" + Date.now()
+            contractName: 'test' + Date.now(),
+            accountId: 'test' + Date.now()
         });
         const keyStore = new nearlib.keyStores.UnencryptedFileSystemKeyStore('./neardev');
         config.deps = Object.assign(config.deps || {}, {
@@ -59,7 +59,7 @@ class LocalTestEnvironment extends NodeEnvironment {
                 delete store[key];
             }
         };
-    };
+    }
 }
 
-module.exports = LocalTestEnvironment
+module.exports = LocalTestEnvironment;

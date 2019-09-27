@@ -4,9 +4,9 @@
   "description": "Command line utilities to interact with near blockchain",
   "main": "index.js",
   "scripts": {
-    "build": "echo \"Error: not implemented\" && exit 1",
-    "deploy": "echo \"Error: not implemented\" && exit 1",
-    "test": "./test/index.sh"
+    "test": "./test/index.sh",
+    "lint": "eslint .",
+    "fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "near": "./bin/near"
   },
   "devDependencies": {
+    "eslint": "^6.4.0",
     "strip-ansi-cli": "^2.0.0"
   },
   "dependencies": {
