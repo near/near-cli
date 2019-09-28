@@ -10,57 +10,5 @@
 // }
 let compile = require("near-runtime-ts").compile;
 
-function compile(inputFile, outputFile, callback) {
-  const asc = getAsc();
-  asc.main([
-    inputFile,
-    // TODO: Optimiziation is very slow, enable it only conditionally for "prod" builds?
-    "-O1",
-    "--baseDir", process.cwd(),
-    "--binaryFile", outputFile,
-    "--textFile",outputFile.substring(0,outputFile.lastIndexOf("."))+ ".wat",
-    "--measure",
-    "--runtime", "stub"
-  ], callback);
-}
-
-let asc;
-function getAsc() {
-  if (asc) {
-    return asc;
-  }
-
-  asc = require("assemblyscript/bin/asc");
-
-  const fs = require("fs");
-  const pathModule = require("path");
-  asc.main = (main => (args, options, fn) => {
-    if (typeof options === "function") {
-      fn = options;
-      options = undefined;
-    }
-
-    const logLn = process.browser ? window.logLn : console.log;
-    return main(args, options || {
-      stdout: process.stdout || asc.createMemoryStream(logLn),
-      stderr: process.stderr || asc.createMemoryStream(logLn),
-      readFile: (filename, baseDir) => {
-        baseDir = pathModule.relative(process.cwd(), baseDir);
-        let path = pathModule.join(baseDir, filename);
-        if (!fs.existsSync(path)) {
-            return null;
-        }
-
-        return fs.readFileSync(path).toString("utf8");
-      },
-      writeFile: (filename, contents) => {
-        const name = filename.startsWith("../") ? filename.substring(3) : filename;
-        fs.writeFileSync(name, contents);
-      },
-      listFiles: () => []
-    }, fn);
-  })(asc.main);
-  return asc;
-}
 
 module.exports = { compile };
