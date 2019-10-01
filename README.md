@@ -1,5 +1,7 @@
 # NEAR command line interface
 
+![Build Status](https://gitlab.com/near-protocol/near-shell/badges/master/pipeline.svg)
+
 The [NEAR](https://near.ai/npm) protocol library as CLI tool.
 More documentation [here](https://near.ai/readme)
 
