@@ -29,7 +29,7 @@ function getAsc() {
         return asc;
     }
 
-    asc = require('assemblyscript/bin/asc');
+    asc = require('near-assemblyscript/bin/asc');
 
     const fs = require('fs');
     const pathModule = require('path');
