@@ -9,10 +9,10 @@ timestamp=$(date +%s)
 testaccount=testaccount$timestamp
 ../bin/near create_account $testaccount
 echo Building contract
-cp ../node_modules/near-runtime-ts/tests/assembly/*.ts assembly/
 yarn 
 yarn remove near-shell
 yarn add ../
+cp ./node_modules/near-runtime-ts/tests/assembly/*.ts assembly/
 yarn build
 echo Deploying contract
 ../bin/near deploy --accountId=$testaccount --wasmFile=out/main.wasm
