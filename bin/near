@@ -93,7 +93,7 @@ const createAccount = {
     .option('initialBalance', {
       desc: 'Number of tokens to transfer to newly created account',
       type: 'string',
-      required: true
+      default: '1000000000000000000'
     }),
   handler: (argv) => exitOnError(main.createAccount(argv))
 };
