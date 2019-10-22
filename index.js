@@ -164,7 +164,7 @@ exports.login = async function(options) {
                 let keyFound = keys.some(key => key.public_key == keyPair.getPublicKey().toString());
                 if (keyFound) {
                     const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
-                    keyStore.setKey(options.networkId, accountId, keyPair);
+                    await keyStore.setKey(options.networkId, accountId, keyPair);
                     console.log(`Logged in with ${accountId}`);
                 } else {
                     console.log('Log in did not succeed. Please try again.');
