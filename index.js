@@ -9,12 +9,19 @@ const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
+const BN = require ('bn.js');
 
 ncp.limit = 16;
+
+const attonearpernear = new BN("1000" + "000" + "000" + "000", 10);
 
 const inspectResponse = (response) => {
     return util.inspect(response, { showHidden: false, depth: null, colors: true });
 };
+
+const convertAmountToAttoNear = (amount) => {
+    return new BN(amount, 10).mul(attonearpernear).toString(10);
+}
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -70,6 +77,9 @@ exports.viewAccount = async function(options) {
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let state = await account.state();
+
+    var amountInTokens = new BN(state.amount, 10).divRound(attonearpernear).toString(10);
+    state["amount_in_tokens"] = amountInTokens;
     console.log(`Account ${options.accountId}`);
     console.log(inspectResponse(state));
 };
@@ -112,7 +122,7 @@ exports.scheduleFunctionCall = async function(options) {
         (options.amount ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const functionCallResponse = await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount);
+    const functionCallResponse = await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), convertAmountToAttoNear(options.amount));
     const result = nearjs.providers.getTransactionLastResult(functionCallResponse);
     console.log(inspectResponse(result));
 };
@@ -121,7 +131,9 @@ exports.sendMoney = async function(options) {
     console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
+    const attoNearAmount = convertAmountToAttoNear(options.amount);
     console.log(inspectResponse(await account.sendMoney(options.receiver, options.amount)));
+    await account.sendMoney(options.receiver, attoNearAmount);
 };
 
 exports.callViewFunction = async function(options) {
@@ -136,8 +148,8 @@ exports.stake = async function(options) {
     console.log(`Staking ${options.amount} on ${options.accountId} with public key = ${options.publicKey}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.stake(options.publicKey, options.amount);
-    console.log(inspectResponse(result));
+    const result = await account.stake(options.publicKey, BigInt(convertAmountToAttoNear(options.amount)));
+    console.log('Result: ', JSON.stringify(result));
 };
 
 exports.login = async function(options) {
