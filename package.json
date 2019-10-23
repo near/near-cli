@@ -30,7 +30,7 @@
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
     "near-assemblyscript": "^0.7.4",
-    "nearlib": "^0.14.0",
+    "nearlib": "^0.15.0",
     "rimraf": "^2.6.3",
     "yargs": "^13.2.1"
   },
