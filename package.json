@@ -32,7 +32,7 @@
     "near-assemblyscript": "^0.7.4",
     "nearlib": "^0.14.0",
     "rimraf": "^2.6.3",
-    "yargs": "^13.2.1"
+    "yargs": "^14.2.0"
   },
   "keywords": [
     "blockchain",
