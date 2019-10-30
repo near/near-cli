@@ -93,7 +93,7 @@ exports.keys = async function(options) {
 
 exports.txStatus = async function(options) {
     let near = await connect(options);
-    let status = await near.connection.provider.txStatus(bs58.decode(options.hash));
+    let status = await near.connection.provider.txStatus(bs58.decode(options.hash), options.accountId || options.masterAccount);
     console.log(`Transaction ${options.hash}`);
     console.log(inspectResponse(status));
 };
