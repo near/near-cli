@@ -31,7 +31,7 @@
     "ncp": "^2.0.0",
     "near-assemblyscript": "^0.7.4",
     "nearlib": "^0.16.0",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.0",
     "yargs": "^14.2.0"
   },
   "keywords": [
