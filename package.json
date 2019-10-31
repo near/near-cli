@@ -1,6 +1,6 @@
 {
   "name": "near-shell",
-  "version": "0.11.5",
+  "version": "0.12.0",
   "description": "Command line utilities to interact with near blockchain",
   "main": "index.js",
   "scripts": {
