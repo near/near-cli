@@ -21,23 +21,31 @@ near <command>
 
 ### Commands
 
+For account:
 ```bash
-  near create_account <accountId>              # create a developer account
-  near state <accountId>                       # view account
-  near tx-status <hash>                        # lookup transaction status by hash
+  near login                                   # create a developer account
+  near create_account <accountId>              # create a developer account with masterAccount, publicKey and initialBalance
+  near view <accountId>                        # view account state
+  near keys <accountId>                        # view account public keys
+  near send <sender> <receiver> <amount>       # send tokens to given receiver
+  near stake <accountId> <publicKey> <amount>  # create staking transaction (base58 encoded)
+  near delete <accountId> <beneficiaryId>      # delete an account and transfer funds to beneficiary account
+```
+
+For smart contract:
+```bash
   near build                                   # build your smart contract
   near deploy                                  # deploy your smart contract
   near call <contractName> <methodName>        # schedule smart contract call which
   [args]                                       # can modify state
   near view <contractName> <methodName>        # make smart contract call which can
   [args]                                       # view state
-  near state <accountId>                       # view account
-  near send <receiver> <amount>                # send tokens to given receiver
   near clean                                   # clean the build environment
-  near new_project [projectDir]                # create a new blank project
-  near stake [accountId] [publicKey] [amount]  # create staking transaction
-  near login                                   # create a developer account
+```
 
+For transactions:
+```bash
+  near tx-status <hash>                        # lookup transaction status by hash
 ```
 
 ### Options
@@ -51,4 +59,7 @@ near <command>
 | --helperUrl               | NEAR contract helper URL                      | [string]  |                       |
 | --keyPath                 | Path to master account key                    | [string]  |                       |
 | --homeDir                 | Where to look for master account              | [string]  |"~/.near"              |
-| --accountId, --account_id | Unique identifier for the account             | [string]  |                       |
+| --accountId, --account_id | Unique identifier for the account             | [string]  [required]|                       |
+| --masterAccount           | Account used to create requested account.     | [string]  [required]|                       |
+| --publicKey               | Public key to initialize the account with     | [string]  [required]|                       |
+| --initialBalance          | Number of tokens to transfer to newly account | [string]  [required]|                       |

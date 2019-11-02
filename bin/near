@@ -12,6 +12,25 @@ const exitOnError = async function(promise) {
   }
 }
 
+//For smart contract:
+const { spawn } = require('child_process');
+const build = {
+  command: 'build',
+  desc: 'build your smart contract',
+  handler: (argv) => {
+    const gulp = spawn('gulp');
+    gulp.stdout.on('data', function (data) {
+      console.log(data.toString());
+    });
+    gulp.stderr.on('data', function (data) {
+      console.log(data.toString());
+    });
+    gulp.on('exit', function (code) {
+      process.exit(code);
+    });
+  }
+};
+
 const deploy = {
   command: 'deploy',
   desc: 'deploy your smart contract',
@@ -46,34 +65,22 @@ const callViewFunction = {
   handler: (argv) => exitOnError(main.callViewFunction(argv))
 };
 
-const sendMoney = {
-  command: 'send <sender> <receiver> <amount>',
-  desc: 'send tokens to given receiver',
-  builder: (yargs) => yargs,
-  handler: (argv) => exitOnError(main.sendMoney(argv))
+const clean = {
+  command: 'clean',
+  desc: 'clean the build environment',
+  builder: (yargs) => yargs
+    .option('outDir', {
+      desc: 'build directory',
+      type: 'string',
+      default: './out'
+    }),
+  handler: (argv) => exitOnError(main.clean(argv))
 };
 
-const { spawn } = require('child_process');
-const build = {
-  command: 'build',
-  desc: 'build your smart contract',
-  handler: (argv) => {
-    const gulp = spawn('gulp');
-    gulp.stdout.on('data', function (data) {
-      console.log(data.toString());
-    });
-    gulp.stderr.on('data', function (data) {
-      console.log(data.toString());
-    });
-    gulp.on('exit', function (code) {
-      process.exit(code);
-    });
-  }
-};
-
+//For Account:
 const createAccount = {
   command: 'create_account <accountId>',
-  desc: 'create a developer account',
+  desc: 'create a developer account with --masterAccount, --publicKey and --initialBalance',
   builder: (yargs) => yargs
     .option('accountId', {
       desc: 'Unique identifier for the newly created account',
@@ -100,14 +107,14 @@ const createAccount = {
 
 const login = {
   command: 'login',
-  desc: 'create a developer account',
+  desc: 'logging into NEAR wallet',
   builder: (yargs) => yargs,
   handler: (argv) => exitOnError(main.login(argv))
 };
 
 const viewAccount = {
-  command: 'state <accountId>',
-  desc: 'view account',
+  command: 'view <accountId>',
+  desc: 'view account state',
   builder: (yargs) => yargs
     .option('accountId', {
       desc: 'Account to view',
@@ -118,8 +125,8 @@ const viewAccount = {
 };
 
 const deleteAccount = {
-  command: 'delete_account <accountId> <beneficiaryId>',
-  desc: 'delete an account and transfer funds to beneficiary account.',
+  command: 'delete <accountId> <beneficiaryId>',
+  desc: 'delete an account and transfer funds to beneficiary account',
   builder: (yargs) => yargs
     .option('accountId', {
       desc: 'Account to view',
@@ -146,6 +153,36 @@ const keys = {
   handler: (argv) => exitOnError(main.keys(argv))
 };
 
+const stake = {
+  command: 'stake <accountId> <stakeKey> <amount>',
+  desc: 'create staking transaction',
+  builder: (yargs) => yargs
+    .option('accountId', {
+      desc: 'Account to stake on',
+      type: 'string',
+      required: true,
+    })
+    .option('stakeKey', {
+      descr: 'Public key to stake with (base58 encoded)',
+      type: 'string',
+      required: true,
+    })
+    .option('amount', {
+      descr: 'Amount to stake',
+      type: 'string',
+      required: true,
+    }),
+    handler: (argv) => exitOnError(main.stake(argv))
+};
+
+const sendMoney = {
+  command: 'send <sender> <receiver> <amount>',
+  desc: 'send tokens to given receiver',
+  builder: (yargs) => yargs,
+  handler: (argv) => exitOnError(main.sendMoney(argv))
+};
+
+//For transaction:
 const txStatus = {
   command: 'tx-status <hash>',
   desc: 'lookup transaction status by hash',
@@ -157,52 +194,6 @@ const txStatus = {
     }),
   handler: (argv) => exitOnError(main.txStatus(argv))
 };
-
-const clean = {
-  command: 'clean',
-  desc: 'clean the build environment',
-  builder: (yargs) => yargs
-    .option('outDir', {
-      desc: 'build directory',
-      type: 'string',
-      default: './out'
-    }),
-  handler: (argv) => exitOnError(main.clean(argv))
-};
-
-const newProject = {
-  command: 'new_project [projectDir]',
-  desc: 'create a new blank project',
-  builder: (yargs) => yargs
-    .option('projectDir', {
-      desc: 'project directory',
-      type: 'string',
-      default: '.'
-    }),
-  handler: (argv) => exitOnError(main.newProject(argv))
-};
-
-const stake = {
-  command: 'stake [accountId] [publicKey] [amount]',
-  desc: 'create staking transaction',
-  builder: (yargs) => yargs
-    .option('accountId', {
-      desc: 'Account to stake on',
-      type: 'string',
-      required: true,
-    })
-    .option('publicKey', {
-      descr: 'Public key to stake with (base58 encoded)',
-      type: 'string',
-      required: true,
-    })
-    .option('amount', {
-      descr: 'Amount to stake',
-      type: 'string',
-      required: true,
-    }),
-    handler: (argv) => exitOnError(main.stake(argv))
-}
 
 let config = require('../get-config')();
 yargs // eslint-disable-line
@@ -245,7 +236,6 @@ yargs // eslint-disable-line
   .command(viewAccount)
   .command(sendMoney)
   .command(clean)
-  .command(newProject)
   .command(stake)
   .command(login)
   .config(config)
