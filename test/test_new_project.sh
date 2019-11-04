@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -ex
 
 # remove temporary blank project
@@ -13,9 +13,9 @@ yarn remove near-shell
 yarn add ../
 yarn test
 cd ..
-rm  -rf tmp-project
 
 # test generating new project in new dir
+rm  -rf tmp-project
 ./bin/near new_project 'tmp-project'
 cd tmp-project
 FILE=package.json

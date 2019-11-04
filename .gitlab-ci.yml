@@ -1,9 +1,18 @@
-image: node:10
+image: node:12
 
 stages:
   - test
 
 run_tests:
+  stage: test
+  tags: 
+    - gcloud
+  script:
+    - yarn
+    - yarn lint
+    - NODE_ENV=ci yarn test
+
+run_tests_staging:
   stage: test
   tags: 
     - gcloud

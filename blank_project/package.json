@@ -3,7 +3,7 @@
   "description": "",
   "version": "0.0.1",
   "scripts": {
-    "build": "gulp",
+    "build": "mkdir -p out/ && gulp",
     "deploy:contract": "near deploy",
     "deploy:pages": "gh-pages -d src",
     "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
@@ -16,8 +16,8 @@
     "gulp": "^4.0.2",
     "jest": "^24.8.0",
     "jest-environment-node": "^24.8.0",
-    "near-runtime-ts": "github:nearprotocol/near-runtime-ts#staging",
-    "near-shell": "file:.."
+    "near-runtime-ts": "^0.5.1",
+    "near-shell": "github:nearprotocol/near-shell"
   },
   "wasmStudio": {
     "name": "Hello World Example",

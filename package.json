@@ -1,12 +1,12 @@
 {
   "name": "near-shell",
-  "version": "0.10.0-preview",
+  "version": "0.12.0",
   "description": "Command line utilities to interact with near blockchain",
   "main": "index.js",
   "scripts": {
-    "build": "echo \"Error: not implemented\" && exit 1",
-    "deploy": "echo \"Error: not implemented\" && exit 1",
-    "test": "./test/index.sh"
+    "test": "./test/index.sh",
+    "lint": "eslint .",
+    "fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -21,16 +21,18 @@
   "bin": {
     "near": "./bin/near"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^6.4.0",
+    "strip-ansi-cli": "^2.0.0"
+  },
   "dependencies": {
-    "assemblyscript": "github:nearprotocol/assemblyscript#staging",
     "bs58": "^4.0.1",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
-    "near-runtime-ts": "github:nearprotocol/near-runtime-ts#staging",
-    "nearlib": "github:nearprotocol/nearlib#staging",
-    "rimraf": "^2.6.3",
-    "yargs": "^13.2.1"
+    "near-assemblyscript": "^0.7.4",
+    "nearlib": "^0.17.0",
+    "rimraf": "^3.0.0",
+    "yargs": "^14.2.0"
   },
   "keywords": [
     "blockchain",
