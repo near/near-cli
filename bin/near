@@ -12,7 +12,7 @@ const exitOnError = async function(promise) {
   }
 }
 
-//For smart contract:
+//  For smart contract:
 const { spawn } = require('child_process');
 const build = {
   command: 'build',
@@ -67,7 +67,7 @@ const callViewFunction = {
 
 const clean = {
   command: 'clean',
-  desc: 'clean the build environment',
+  desc: 'clean the smart contract build locally',
   builder: (yargs) => yargs
     .option('outDir', {
       desc: 'build directory',
@@ -77,7 +77,7 @@ const clean = {
   handler: (argv) => exitOnError(main.clean(argv))
 };
 
-//For Account:
+// For Account:
 const createAccount = {
   command: 'create_account <accountId>',
   desc: 'create a developer account with --masterAccount, --publicKey and --initialBalance',
@@ -154,7 +154,7 @@ const keys = {
 };
 
 const stake = {
-  command: 'stake <accountId> <stakeKey> <amount>',
+  command: 'stake <accountId> <stakingKey> <amount>',
   desc: 'create staking transaction',
   builder: (yargs) => yargs
     .option('accountId', {
@@ -162,7 +162,7 @@ const stake = {
       type: 'string',
       required: true,
     })
-    .option('stakeKey', {
+    .option('stakingKey', {
       descr: 'Public key to stake with (base58 encoded)',
       type: 'string',
       required: true,
@@ -182,7 +182,7 @@ const sendMoney = {
   handler: (argv) => exitOnError(main.sendMoney(argv))
 };
 
-//For transaction:
+// For transaction:
 const txStatus = {
   command: 'tx-status <hash>',
   desc: 'lookup transaction status by hash',

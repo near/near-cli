@@ -28,7 +28,7 @@ For account:
   near view <accountId>                        # view account state
   near keys <accountId>                        # view account public keys
   near send <sender> <receiver> <amount>       # send tokens to given receiver
-  near stake <accountId> <publicKey> <amount>  # create staking transaction (base58 encoded)
+  near stake <accountId> <stakingKey> <amount>  # create staking transaction (stakingKey is base58 encoded)
   near delete <accountId> <beneficiaryId>      # delete an account and transfer funds to beneficiary account
 ```
 
@@ -40,7 +40,7 @@ For smart contract:
   [args]                                       # can modify state
   near view <contractName> <methodName>        # make smart contract call which can
   [args]                                       # view state
-  near clean                                   # clean the build environment
+  near clean                                   # clean the smart contract build locally(remove ./out )
 ```
 
 For transactions:

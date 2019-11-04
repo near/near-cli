@@ -27,7 +27,7 @@ async function connect(options) {
 
 // TODO: Fix promisified wrappers to handle error properly
 
-//For smart contract:
+// For smart contract:
 exports.clean = async function() {
     const rmDirFn = () => {
         return new Promise(resolve => {
@@ -64,7 +64,7 @@ exports.callViewFunction = async function(options) {
     console.log(inspectResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
 };
 
-//For account:
+// For account:
 exports.createAccount = async function(options) {
     let near = await connect(options);
     let keyPair;
@@ -153,14 +153,14 @@ exports.sendMoney = async function(options) {
 };
 
 exports.stake = async function(options) {
-    console.log(`Staking ${options.amount} on ${options.accountId} with public key = ${options.stakeKey}.`);
+    console.log(`Staking ${options.amount} on ${options.accountId} with public key = ${options.stakingKey}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.stake(options.stakeKey, options.amount);
+    const result = await account.stake(options.stakingKey, options.amount);
     console.log(inspectResponse(result));
 };
 
-//For transaction:
+// For transaction:
 exports.txStatus = async function(options) {
     let near = await connect(options);
     let status = await near.connection.provider.txStatus(bs58.decode(options.hash), options.accountId || options.masterAccount);
