@@ -9,6 +9,7 @@ module.exports = function getConfig() {
         if (e.code == 'MODULE_NOT_FOUND') {
             console.warn(`[WARNING] Didn't find config at ${configPath}, using default shell config`);
             const defaultConfig = require('./blank_project/src/config')(process.env.NODE_ENV || 'development');
+            console.log(defaultConfig);
             return defaultConfig;
         }
         throw e;

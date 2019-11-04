@@ -1,6 +1,3 @@
-const nearjs = require('nearlib');
-const { KeyPair, keyStores } = require('nearlib');
-const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 const fs = require('fs');
 const util = require('util');
 const yargs = require('yargs');
@@ -9,6 +6,12 @@ const ncp = require('ncp').ncp;
 const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
+
+const nearjs = require('nearlib');
+const { KeyPair, keyStores } = require('nearlib');
+const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
+
+const connect = require('./utils/connect');
 
 ncp.limit = 16;
 
@@ -39,15 +42,6 @@ exports.clean = async function() {
     await rmDirFn();
     console.log('Clean complete.');
 };
-
-async function connect(options) {
-    const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
-    options.deps = {
-        keyStore,
-    };
-    // TODO: search for key store.
-    return await nearjs.connect(options);
-}
 
 exports.createAccount = async function(options) {
     let near = await connect(options);
