@@ -235,7 +235,6 @@ yargs // eslint-disable-line
     .command(viewAccount)
     .command(sendMoney)
     .command(clean)
-    .command(newProject)
     .command(stake)
     .command(login)
     .command(require('../commands/repl'))
