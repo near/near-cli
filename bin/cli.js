@@ -1,6 +1,6 @@
 const yargs = require('yargs');
 const main = require('../');
-const exitOnError = require('../utils/exit-on-error')
+const exitOnError = require('../utils/exit-on-error');
 
 // For account: 
 const createAccount = {
