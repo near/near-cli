@@ -3,7 +3,7 @@ node_js: 12
 env:
   - NODE_ENV=ci
   - NODE_ENV=ci-staging
-before_script: yarn
+cache: yarn
 script:
   - yarn lint
   - yarn test
