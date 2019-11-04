@@ -8,4 +8,4 @@ module.exports = async function connect(options) {
         keyStore,
     };
     return await nearlib.connect(options);
-}
+};
