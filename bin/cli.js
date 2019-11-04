@@ -55,7 +55,7 @@ const { spawn } = require('child_process');
 const build = {
     command: 'build',
     desc: 'build your smart contract',
-    handler: (argv) => {
+    handler: () => {
         const gulp = spawn('gulp');
         gulp.stdout.on('data', function (data) {
             console.log(data.toString());
