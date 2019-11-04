@@ -1,14 +1,6 @@
 const yargs = require('yargs');
 const main = require('../');
-
-const exitOnError = async function(promise) {
-    try {
-        await promise;
-    } catch (e) {
-        console.log('Error: ', e);
-        process.exit(1);
-    }
-};
+const exitOnError = require('../utils/exit-on-error')
 
 // For account: 
 const createAccount = {
@@ -35,14 +27,14 @@ const createAccount = {
             type: 'string',
             default: '1000000000000000000'
         }),
-    handler: (argv) => exitOnError(main.createAccount(argv))
+    handler: exitOnError(main.createAccount)
 };
 
 const login = {
     command: 'login',
     desc: 'create a developer account',
     builder: (yargs) => yargs,
-    handler: (argv) => exitOnError(main.login(argv))
+    handler: exitOnError(main.login)
 };
 
 const viewAccount = {
@@ -54,7 +46,7 @@ const viewAccount = {
             type: 'string',
             required: true
         }),
-    handler: (argv) => exitOnError(main.viewAccount(argv))
+    handler: exitOnError(main.viewAccount)
 };
 
 const deleteAccount = {
@@ -71,7 +63,7 @@ const deleteAccount = {
             type: 'string',
             required: true
         }),
-    handler: (argv) => exitOnError(main.deleteAccount(argv))
+    handler: exitOnError(main.deleteAccount)
 };
 
 const keys = {
@@ -83,14 +75,14 @@ const keys = {
             type: 'string',
             required: true
         }),
-    handler: (argv) => exitOnError(main.keys(argv))
+    handler: exitOnError(main.keys)
 };
 
 const sendMoney = {
     command: 'send <sender> <receiver> <amount>',
     desc: 'send tokens to given receiver',
     builder: (yargs) => yargs,
-    handler: (argv) => exitOnError(main.sendMoney(argv))
+    handler: exitOnError(main.sendMoney)
 };
 
 const stake = {
@@ -112,7 +104,7 @@ const stake = {
             type: 'string',
             required: true,
         }),
-    handler: (argv) => exitOnError(main.stake(argv))
+    handler: exitOnError(main.stake)
 };
 
 // For contract:
@@ -128,7 +120,7 @@ const deploy = {
         .alias({
             'accountId': ['account_id', 'contractName', 'contract_name'],
         }),
-    handler: (argv) => exitOnError(main.deploy(argv))
+    handler: exitOnError(main.deploy)
 };
 
 const scheduleFunctionCall = {
@@ -140,14 +132,14 @@ const scheduleFunctionCall = {
             type: 'string',
             default: '1000000000'
         }),
-    handler: (argv) => exitOnError(main.scheduleFunctionCall(argv))
+    handler: exitOnError(main.scheduleFunctionCall)
 };
 
 const callViewFunction = {
     command: 'view <contractName> <methodName> [args]',
     desc: 'make smart contract call which can view state',
     builder: (yargs) => yargs,
-    handler: (argv) => exitOnError(main.callViewFunction(argv))
+    handler: exitOnError(main.callViewFunction)
 };
 
 const { spawn } = require('child_process');
@@ -178,7 +170,7 @@ const txStatus = {
             type: 'string',
             required: true
         }),
-    handler: (argv) => exitOnError(main.txStatus(argv))
+    handler: exitOnError(main.txStatus)
 };
 
 const clean = {
@@ -190,7 +182,7 @@ const clean = {
             type: 'string',
             default: './out'
         }),
-    handler: (argv) => exitOnError(main.clean(argv))
+    handler: exitOnError(main.clean)
 };
 
 let config = require('../get-config')();
