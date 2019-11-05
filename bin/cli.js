@@ -2,7 +2,65 @@ const yargs = require('yargs');
 const main = require('../');
 const exitOnError = require('../utils/exit-on-error');
 
-// For account: 
+const deploy = {
+    command: 'deploy',
+    desc: 'deploy your smart contract',
+    builder: (yargs) => yargs
+        .option('wasmFile', {
+            desc: 'Path to wasm file to deploy',
+            type: 'string',
+            default: './out/main.wasm'
+        })
+        .alias({
+            'accountId': ['account_id', 'contractName', 'contract_name'],
+        }),
+    handler: exitOnError(main.deploy)
+};
+
+const scheduleFunctionCall = {
+    command: 'call <contractName> <methodName> [args]',
+    desc: 'schedule smart contract call which can modify state',
+    builder: (yargs) => yargs
+        .option('amount', {
+            desc: 'Number of tokens to attach',
+            type: 'string',
+            default: '1000000000'
+        }),
+    handler: exitOnError(main.scheduleFunctionCall)
+};
+
+const callViewFunction = {
+    command: 'view <contractName> <methodName> [args]',
+    desc: 'make smart contract call which can view state',
+    builder: (yargs) => yargs,
+    handler: exitOnError(main.callViewFunction)
+};
+
+const sendMoney = {
+    command: 'send <sender> <receiver> <amount>',
+    desc: 'send tokens to given receiver',
+    builder: (yargs) => yargs,
+    handler: exitOnError(main.sendMoney)
+};
+
+const { spawn } = require('child_process');
+const build = {
+    command: 'build',
+    desc: 'build your smart contract',
+    handler: () => {
+        const gulp = spawn('gulp');
+        gulp.stdout.on('data', function (data) {
+            console.log(data.toString());
+        });
+        gulp.stderr.on('data', function (data) {
+            console.log(data.toString());
+        });
+        gulp.on('exit', function (code) {
+            process.exit(code);
+        });
+    }
+};
+
 const createAccount = {
     command: 'create_account <accountId>',
     desc: 'create a developer account',
@@ -38,7 +96,7 @@ const login = {
 };
 
 const viewAccount = {
-    command: 'view <accountId>',
+    command: 'state <accountId>',
     desc: 'view account',
     builder: (yargs) => yargs
         .option('accountId', {
@@ -50,7 +108,7 @@ const viewAccount = {
 };
 
 const deleteAccount = {
-    command: 'delete <accountId> <beneficiaryId>',
+    command: 'delete_account <accountId> <beneficiaryId>',
     desc: 'delete an account and transfer funds to beneficiary account.',
     builder: (yargs) => yargs
         .option('accountId', {
@@ -78,89 +136,6 @@ const keys = {
     handler: exitOnError(main.keys)
 };
 
-const sendMoney = {
-    command: 'send <sender> <receiver> <amount>',
-    desc: 'send tokens to given receiver',
-    builder: (yargs) => yargs,
-    handler: exitOnError(main.sendMoney)
-};
-
-const stake = {
-    command: 'stake [accountId] [stakingKey] [amount]',
-    desc: 'create staking transaction',
-    builder: (yargs) => yargs
-        .option('accountId', {
-            desc: 'Account to stake on',
-            type: 'string',
-            required: true,
-        })
-        .option('stakingKey', {
-            descr: 'Public key to stake with (base58 encoded)',
-            type: 'string',
-            required: true,
-        })
-        .option('amount', {
-            descr: 'Amount to stake',
-            type: 'string',
-            required: true,
-        }),
-    handler: exitOnError(main.stake)
-};
-
-// For contract:
-const deploy = {
-    command: 'deploy',
-    desc: 'deploy your smart contract',
-    builder: (yargs) => yargs
-        .option('wasmFile', {
-            desc: 'Path to wasm file to deploy',
-            type: 'string',
-            default: './out/main.wasm'
-        })
-        .alias({
-            'accountId': ['account_id', 'contractName', 'contract_name'],
-        }),
-    handler: exitOnError(main.deploy)
-};
-
-const scheduleFunctionCall = {
-    command: 'call <contractName> <methodName> [args]',
-    desc: 'schedule smart contract call which can modify state',
-    builder: (yargs) => yargs
-        .option('amount', {
-            desc: 'Number of tokens to attach',
-            type: 'string',
-            default: '1000000000'
-        }),
-    handler: exitOnError(main.scheduleFunctionCall)
-};
-
-const callViewFunction = {
-    command: 'view <contractName> <methodName> [args]',
-    desc: 'make smart contract call which can view state',
-    builder: (yargs) => yargs,
-    handler: exitOnError(main.callViewFunction)
-};
-
-const { spawn } = require('child_process');
-const build = {
-    command: 'build',
-    desc: 'build your smart contract',
-    handler: () => {
-        const gulp = spawn('gulp');
-        gulp.stdout.on('data', function (data) {
-            console.log(data.toString());
-        });
-        gulp.stderr.on('data', function (data) {
-            console.log(data.toString());
-        });
-        gulp.on('exit', function (code) {
-            process.exit(code);
-        });
-    }
-};
-
-// For transaction:
 const txStatus = {
     command: 'tx-status <hash>',
     desc: 'lookup transaction status by hash',
@@ -183,6 +158,40 @@ const clean = {
             default: './out'
         }),
     handler: exitOnError(main.clean)
+};
+
+const newProject = {
+    command: 'new_project [projectDir]',
+    desc: 'create a new blank project',
+    builder: (yargs) => yargs
+        .option('projectDir', {
+            desc: 'project directory',
+            type: 'string',
+            default: '.'
+        }),
+    handler: exitOnError(main.newProject)
+};
+
+const stake = {
+    command: 'stake [accountId] [publicKey] [amount]',
+    desc: 'create staking transaction',
+    builder: (yargs) => yargs
+        .option('accountId', {
+            desc: 'Account to stake on',
+            type: 'string',
+            required: true,
+        })
+        .option('publicKey', {
+            descr: 'Public key to stake with (base58 encoded)',
+            type: 'string',
+            required: true,
+        })
+        .option('amount', {
+            descr: 'Amount to stake',
+            type: 'string',
+            required: true,
+        }),
+    handler: exitOnError(main.stake)
 };
 
 let config = require('../get-config')();
