@@ -50,6 +50,13 @@
                 contractName: CONTRACT_NAME,
                 masterAccount: 'test.near',
             };
+        case 'tatooine':
+            return {
+                networkId: 'tatooine',
+                nodeUrl: 'https://rpc.tatooine.nearprotocol.com',
+                contractName: CONTRACT_NAME,
+                walletUrl: 'https://wallet.tatooine.nearprotocol.com',
+            };
         default:
             throw Error(`Unconfigured environment '${env}'. Can be configured in src/config.js.`);
         }
