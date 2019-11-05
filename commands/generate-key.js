@@ -11,7 +11,7 @@ module.exports = {
             const { deps: { keyStore }} = near.config;
             const existingKey = await keyStore.getKey(argv.networkId, argv.accountId);
             if (existingKey) {
-                console.log(`Account has existing key pair with ${existingKey.publicKey} public key`)
+                console.log(`Account has existing key pair with ${existingKey.publicKey} public key`);
             } else {
                 const keyPair = KeyPair.fromRandom('ed25519');
                 await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
