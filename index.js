@@ -43,15 +43,6 @@ exports.clean = async function() {
     console.log('Clean complete.');
 };
 
-async function connect(options) {
-    const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
-    options.deps = {
-        keyStore,
-    };
-    // TODO: search for key store.
-    return await nearjs.connect(options);
-}
-
 exports.createAccount = async function(options) {
     let near = await connect(options);
     let keyPair;
