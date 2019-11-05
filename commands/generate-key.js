@@ -9,9 +9,14 @@ module.exports = {
         let near = await require('../utils/connect')(argv);
         if (argv.accountId) {
             const { deps: { keyStore }} = near.config;
-            const keyPair = KeyPair.fromRandom('ed25519');
-            await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
-            console.log(`Generated key pair with ${keyPair.publicKey} public key`);
+            const existingKey = await keyStore.getKey(argv.networkId, argv.accountId);
+            if (existingKey) {
+                console.log(`Account has existing key pair with ${existingKey.publicKey} public key`)
+            } else {
+                const keyPair = KeyPair.fromRandom('ed25519');
+                await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
+                console.log(`Generated key pair with ${keyPair.publicKey} public key`);
+            }
         }
     })
 };
