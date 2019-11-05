@@ -46,7 +46,7 @@ const login = {
 };
 
 const viewAccount = {
-    command: 'state <accountId>',
+    command: 'view <accountId>',
     desc: 'view account',
     builder: (yargs) => yargs
         .option('accountId', {

@@ -13,7 +13,7 @@ RESULT=$(../bin/near view $testaccount | strip-ansi)
 echo $RESULT
 EXPECTED=".+Account $testaccount.+amount:.+'1000000000000000000'.+ "
 if [[ ! "$RESULT" =~ $EXPECTED ]]; then
-    echo FAILURE Unexpected output from near state
+    echo FAILURE Unexpected output from near view
     exit 1
 fi
 
