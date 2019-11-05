@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 rm  -rf tmp-project
-yarn create near-app --plain tmp-project
+./bin/near new_project 'tmp-project'
 cd tmp-project
 rm  -rf assembly
 mkdir assembly
