@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/nearprotocol/near-shell#readme",
   "bin": {
-    "near": "./bin/near"
+    "near": "./bin/near",
+    "near-cli-js": "./bin/cli.js"
   },
   "devDependencies": {
     "eslint": "^6.4.0",
