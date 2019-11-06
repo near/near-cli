@@ -1,4 +1,4 @@
 #!/bin/sh
-CLI_PATH="$(dirname "$0")"/near-cli-js
+CLI_PATH="$(dirname "$0")"/near-cli.js
 node --experimental-repl-await "$CLI_PATH" "$@"
 
