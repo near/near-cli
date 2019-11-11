@@ -23,13 +23,13 @@ near <command>
 
 For account:
 ```bash
-  near login                                   # create a developer account
-  near create_account <accountId>              # create a developer account with masterAccount, publicKey and initialBalance
-  near view <accountId>                        # view account state
-  near keys <accountId>                        # view account public keys
-  near send <sender> <receiver> <amount>       # send tokens to given receiver
-  near stake <accountId> <stakingKey> <amount>  # create staking transaction (stakingKey is base58 encoded)
-  near delete <accountId> <beneficiaryId>      # delete an account and transfer funds to beneficiary account
+  near login                                       # create a developer account
+  near create_account <accountId> <masterAccount>  # create a developer account with masterAccount, publicKey and initialBalance
+  near view <accountId>                            # view account state
+  near keys <accountId>                            # view account public keys
+  near send <sender> <receiver> <amount>           # send tokens to given receiver
+  near stake <accountId> <stakingKey> <amount>     # create staking transaction (stakingKey is base58 encoded)
+  near delete <accountId> <beneficiaryId>          # delete an account and transfer funds to beneficiary account
 ```
 
 For smart contract:
@@ -59,7 +59,7 @@ For transactions:
 | --helperUrl               | NEAR contract helper URL                      | [string]  |                       |
 | --keyPath                 | Path to master account key                    | [string]  |                       |
 | --homeDir                 | Where to look for master account              | [string]  |"~/.near"              |
-| --accountId, --account_id | Unique identifier for the account             | [string]  [required]|                       |
-| --masterAccount           | Account used to create requested account.     | [string]  [required]|                       |
-| --publicKey               | Public key to initialize the account with     | [string]  [required]|                       |
-| --initialBalance          | Number of tokens to transfer to newly account | [string]  [required]|                       |
+| --accountId, --account_id | Unique identifier for the account             | [string]  [required]|             |
+| --masterAccount           | Account used to create requested account.     | [string]  [required]|             |
+| --publicKey               | Public key to initialize the account with     | [string]  [required]|             |
+| --initialBalance          | Number of tokens to transfer to newly account | [string]  [required]|             |

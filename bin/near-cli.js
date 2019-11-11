@@ -5,7 +5,7 @@ const exitOnError = require('../utils/exit-on-error');
 // For account: 
 const createAccount = {
     command: 'create_account <accountId>',
-    desc: 'create a developer account',
+    desc: 'create a new developer account',
     builder: (yargs) => yargs
         .option('accountId', {
             desc: 'Unique identifier for the newly created account',
@@ -32,7 +32,7 @@ const createAccount = {
 
 const login = {
     command: 'login',
-    desc: 'create a developer account',
+    desc: 'logging in through NEAR protocol wallet',
     builder: (yargs) => yargs,
     handler: exitOnError(main.login)
 };
@@ -160,6 +160,18 @@ const build = {
     }
 };
 
+const clean = {
+    command: 'clean',
+    desc: 'clean the build environment',
+    builder: (yargs) => yargs
+        .option('outDir', {
+            desc: 'build directory',
+            type: 'string',
+            default: './out'
+        }),
+    handler: exitOnError(main.clean)
+};
+
 // For transaction:
 const txStatus = {
     command: 'tx-status <hash>',
@@ -171,18 +183,6 @@ const txStatus = {
             required: true
         }),
     handler: exitOnError(main.txStatus)
-};
-
-const clean = {
-    command: 'clean',
-    desc: 'clean the build environment',
-    builder: (yargs) => yargs
-        .option('outDir', {
-            desc: 'build directory',
-            type: 'string',
-            default: './out'
-        }),
-    handler: exitOnError(main.clean)
 };
 
 let config = require('../get-config')();
