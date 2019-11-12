@@ -2,6 +2,9 @@
   "name": "near-shell",
   "version": "0.14.1",
   "description": "Command line utilities to interact with near blockchain",
+  "engines": {
+      "node" : ">= 10"
+  },
   "main": "index.js",
   "scripts": {
     "test": "./test/index.sh",
