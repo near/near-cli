@@ -3,22 +3,23 @@ set -ex
 rm  -rf tmp-project
 yarn create near-app --plain tmp-project
 cd tmp-project
-rm  -rf assembly
-mkdir assembly
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp
 ../bin/near create_account $testaccount
 echo Building contract
-yarn 
-yarn remove near-shell
-yarn add ../
-cp ./node_modules/near-runtime-ts/tests/assembly/*.ts assembly/
+yarn install
 yarn build
 echo Deploying contract
 ../bin/near deploy --accountId=$testaccount --wasmFile=out/main.wasm
 echo Calling functions
-RESULT=$(../bin/near call $testaccount hello "{}" --accountId=test.near)
-if [[ $RESULT != *"helloa"* ]]; then
+RESULT=$(../bin/near call $testaccount welcome '{"name":"TEST"}' --accountId=test.near)
+TEXT=$RESULT.text
+EXPECTED='Welcome, TEST. Welcome to NEAR Protocol chain'
+if [[ ! "$TEXT" =~ $EXPECTED ]]; then
     echo FAILURE Unexpected output from near call
     exit 1
 fi
+echo Viewing functions
+RESULT2=$(../bin/near inspect $testaccount welcome '{"name":"TEST"}' --accountId=test.near)
+echo $RESULT2
+

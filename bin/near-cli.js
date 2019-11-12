@@ -136,7 +136,7 @@ const scheduleFunctionCall = {
 };
 
 const callViewFunction = {
-    command: 'view <contractName> <methodName> [args]',
+    command: 'inspect <contractName> <methodName> [args]',
     desc: 'make smart contract call which can view state',
     builder: (yargs) => yargs,
     handler: exitOnError(main.callViewFunction)
