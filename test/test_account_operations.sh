@@ -9,7 +9,7 @@ echo Create account
 ../bin/near create_account $testaccount
 
 echo Get account state
-RESULT=$(../bin/near view $testaccount | strip-ansi)
+RESULT=$(../bin/near state $testaccount | strip-ansi)
 echo $RESULT
 EXPECTED=".+Account $testaccount.+amount:.+'1000000000000000000'.+ "
 if [[ ! "$RESULT" =~ $EXPECTED ]]; then

@@ -20,6 +20,6 @@ if [[ ! "$TEXT" =~ $EXPECTED ]]; then
     exit 1
 fi
 echo Viewing functions
-RESULT2=$(../bin/near inspect $testaccount welcome '{"name":"TEST"}' --accountId=test.near)
+RESULT2=$(../bin/near view $testaccount welcome '{"name":"TEST"}' --accountId=test.near)
 echo $RESULT2
 

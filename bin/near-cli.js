@@ -38,8 +38,8 @@ const login = {
 };
 
 const viewAccount = {
-    command: 'view <accountId>',
-    desc: 'view account',
+    command: 'state <accountId>',
+    desc: 'view account state',
     builder: (yargs) => yargs
         .option('accountId', {
             desc: 'Account to view',
@@ -136,7 +136,7 @@ const scheduleFunctionCall = {
 };
 
 const callViewFunction = {
-    command: 'inspect <contractName> <methodName> [args]',
+    command: 'view <contractName> <methodName> [args]',
     desc: 'make smart contract call which can view state',
     builder: (yargs) => yargs,
     handler: exitOnError(main.callViewFunction)
