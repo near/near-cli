@@ -2,6 +2,112 @@ const yargs = require('yargs');
 const main = require('../');
 const exitOnError = require('../utils/exit-on-error');
 
+// For account: 
+const createAccount = {
+    command: 'create_account <accountId>',
+    desc: 'create a new developer account',
+    builder: (yargs) => yargs
+        .option('accountId', {
+            desc: 'Unique identifier for the newly created account',
+            type: 'string',
+            required: true
+        })
+        .option('masterAccount', {
+            desc: 'Account used to create requested account.',
+            type: 'string',
+            required: true
+        })
+        .option('publicKey', {
+            desc: 'Public key to initialize the account with',
+            type: 'string',
+            required: false
+        })
+        .option('initialBalance', {
+            desc: 'Number of tokens to transfer to newly created account',
+            type: 'string',
+            default: '1000000000000000000'
+        }),
+    handler: exitOnError(main.createAccount)
+};
+
+const login = {
+    command: 'login',
+    desc: 'logging in through NEAR protocol wallet',
+    builder: (yargs) => yargs,
+    handler: exitOnError(main.login)
+};
+
+const viewAccount = {
+    command: 'state <accountId>',
+    desc: 'view account state',
+    builder: (yargs) => yargs
+        .option('accountId', {
+            desc: 'Account to view',
+            type: 'string',
+            required: true
+        }),
+    handler: exitOnError(main.viewAccount)
+};
+
+const deleteAccount = {
+    command: 'delete <accountId> <beneficiaryId>',
+    desc: 'delete an account and transfer funds to beneficiary account.',
+    builder: (yargs) => yargs
+        .option('accountId', {
+            desc: 'Account to view',
+            type: 'string',
+            required: true
+        })
+        .option('beneficiaryId', {
+            desc: 'Account to transfer funds to',
+            type: 'string',
+            required: true
+        }),
+    handler: exitOnError(main.deleteAccount)
+};
+
+const keys = {
+    command: 'keys <accountId>',
+    desc: 'view account public keys',
+    builder: (yargs) => yargs
+        .option('accountId', {
+            desc: 'Account to view',
+            type: 'string',
+            required: true
+        }),
+    handler: exitOnError(main.keys)
+};
+
+const sendMoney = {
+    command: 'send <sender> <receiver> <amount>',
+    desc: 'send tokens to given receiver',
+    builder: (yargs) => yargs,
+    handler: exitOnError(main.sendMoney)
+};
+
+const stake = {
+    command: 'stake [accountId] [stakingKey] [amount]',
+    desc: 'create staking transaction',
+    builder: (yargs) => yargs
+        .option('accountId', {
+            desc: 'Account to stake on',
+            type: 'string',
+            required: true,
+        })
+        .option('stakingKey', {
+            descr: 'Public key to stake with (base58 encoded)',
+            type: 'string',
+            required: true,
+        })
+        .option('amount', {
+            descr: 'Amount to stake',
+            type: 'string',
+            required: true,
+        }),
+    handler: exitOnError(main.stake)
+};
+
+// For contract:
 const deploy = {
     command: 'deploy',
     desc: 'deploy your smart contract',
@@ -36,13 +142,6 @@ const callViewFunction = {
     handler: exitOnError(main.callViewFunction)
 };
 
-const sendMoney = {
-    command: 'send <sender> <receiver> <amount>',
-    desc: 'send tokens to given receiver',
-    builder: (yargs) => yargs,
-    handler: exitOnError(main.sendMoney)
-};
-
 const { spawn } = require('child_process');
 const build = {
     command: 'build',
@@ -61,93 +160,6 @@ const build = {
     }
 };
 
-const createAccount = {
-    command: 'create_account <accountId>',
-    desc: 'create a developer account',
-    builder: (yargs) => yargs
-        .option('accountId', {
-            desc: 'Unique identifier for the newly created account',
-            type: 'string',
-            required: true
-        })
-        .option('masterAccount', {
-            desc: 'Account used to create requested account.',
-            type: 'string',
-            required: true
-        })
-        .option('publicKey', {
-            desc: 'Public key to initialize the account with',
-            type: 'string',
-            required: false
-        })
-        .option('initialBalance', {
-            desc: 'Number of tokens to transfer to newly created account',
-            type: 'string',
-            default: '1000000000000000000'
-        }),
-    handler: exitOnError(main.createAccount)
-};
-
-const login = {
-    command: 'login',
-    desc: 'create a developer account',
-    builder: (yargs) => yargs,
-    handler: exitOnError(main.login)
-};
-
-const viewAccount = {
-    command: 'state <accountId>',
-    desc: 'view account',
-    builder: (yargs) => yargs
-        .option('accountId', {
-            desc: 'Account to view',
-            type: 'string',
-            required: true
-        }),
-    handler: exitOnError(main.viewAccount)
-};
-
-const deleteAccount = {
-    command: 'delete_account <accountId> <beneficiaryId>',
-    desc: 'delete an account and transfer funds to beneficiary account.',
-    builder: (yargs) => yargs
-        .option('accountId', {
-            desc: 'Account to view',
-            type: 'string',
-            required: true
-        })
-        .option('beneficiaryId', {
-            desc: 'Account to transfer funds to',
-            type: 'string',
-            required: true
-        }),
-    handler: exitOnError(main.deleteAccount)
-};
-
-const keys = {
-    command: 'keys <accountId>',
-    desc: 'view account public keys',
-    builder: (yargs) => yargs
-        .option('accountId', {
-            desc: 'Account to view',
-            type: 'string',
-            required: true
-        }),
-    handler: exitOnError(main.keys)
-};
-
-const txStatus = {
-    command: 'tx-status <hash>',
-    desc: 'lookup transaction status by hash',
-    builder: (yargs) => yargs
-        .option('hash', {
-            desc: 'base58-encoded hash',
-            type: 'string',
-            required: true
-        }),
-    handler: exitOnError(main.txStatus)
-};
-
 const clean = {
     command: 'clean',
     desc: 'clean the build environment',
@@ -160,38 +172,17 @@ const clean = {
     handler: exitOnError(main.clean)
 };
 
-const newProject = {
-    command: 'new_project [projectDir]',
-    desc: 'create a new blank project',
+// For transaction:
+const txStatus = {
+    command: 'tx-status <hash>',
+    desc: 'lookup transaction status by hash',
     builder: (yargs) => yargs
-        .option('projectDir', {
-            desc: 'project directory',
+        .option('hash', {
+            desc: 'base58-encoded hash',
             type: 'string',
-            default: '.'
+            required: true
         }),
-    handler: exitOnError(main.newProject)
-};
-
-const stake = {
-    command: 'stake [accountId] [publicKey] [amount]',
-    desc: 'create staking transaction',
-    builder: (yargs) => yargs
-        .option('accountId', {
-            desc: 'Account to stake on',
-            type: 'string',
-            required: true,
-        })
-        .option('publicKey', {
-            descr: 'Public key to stake with (base58 encoded)',
-            type: 'string',
-            required: true,
-        })
-        .option('amount', {
-            descr: 'Amount to stake',
-            type: 'string',
-            required: true,
-        }),
-    handler: exitOnError(main.stake)
+    handler: exitOnError(main.txStatus)
 };
 
 let config = require('../get-config')();
@@ -236,7 +227,6 @@ yargs // eslint-disable-line
     .command(viewAccount)
     .command(sendMoney)
     .command(clean)
-    .command(newProject)
     .command(stake)
     .command(login)
     .command(require('../commands/repl'))
