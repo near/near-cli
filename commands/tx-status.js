@@ -13,7 +13,7 @@ module.exports = {
             required: true
         }),
     handler: exitOnError(async (argv) => {
-        const near = await connect(argv)
+        const near = await connect(argv);
 
         const hashParts = argv.hash.split(':');
         let hash, accountId;
@@ -24,10 +24,10 @@ module.exports = {
         } else {
             throw new Error('Unexpected transaction hash format');
         }
-        accountId = accountId || argv.accountId || argv.masterAccount
+        accountId = accountId || argv.accountId || argv.masterAccount;
 
         if (!accountId) {
-            throw new Error('Please specify account id, either as part of transaction hash or using --accountId flag.')
+            throw new Error('Please specify account id, either as part of transaction hash or using --accountId flag.');
         }
 
         const status = await near.connection.provider.txStatus(bs58.decode(hash), accountId);
