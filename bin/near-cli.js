@@ -172,19 +172,6 @@ const clean = {
     handler: exitOnError(main.clean)
 };
 
-// For transaction:
-const txStatus = {
-    command: 'tx-status <hash>',
-    desc: 'lookup transaction status by hash',
-    builder: (yargs) => yargs
-        .option('hash', {
-            desc: 'base58-encoded hash',
-            type: 'string',
-            required: true
-        }),
-    handler: exitOnError(main.txStatus)
-};
-
 let config = require('../get-config')();
 yargs // eslint-disable-line
     .scriptName('near')
@@ -219,7 +206,7 @@ yargs // eslint-disable-line
     .command(viewAccount)
     .command(deleteAccount)
     .command(keys)
-    .command(txStatus)
+    .command(require('../commands/tx-status'))
     .command(build)
     .command(deploy)
     .command(scheduleFunctionCall)
