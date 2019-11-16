@@ -1,8 +1,7 @@
 const fs = require('fs');
-const util = require('util');
 const yargs = require('yargs');
-const bs58 = require('bs58');
 const ncp = require('ncp').ncp;
+ncp.limit = 16;
 const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
@@ -12,12 +11,7 @@ const { KeyPair, keyStores } = require('nearlib');
 const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 
 const connect = require('./utils/connect');
-
-ncp.limit = 16;
-
-const inspectResponse = (response) => {
-    return util.inspect(response, { showHidden: false, depth: null, colors: true });
-};
+const inspectResponse = require('./utils/inspect-response');
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -152,12 +146,4 @@ exports.stake = async function(options) {
     const account = await near.account(options.accountId);
     const result = await account.stake(options.stakingKey, options.amount);
     console.log(inspectResponse(result));
-};
-
-// For transaction:
-exports.txStatus = async function(options) {
-    let near = await connect(options);
-    let status = await near.connection.provider.txStatus(bs58.decode(options.hash), options.accountId || options.masterAccount);
-    console.log(`Transaction ${options.hash}`);
-    console.log(inspectResponse(status));
 };
