@@ -3,7 +3,7 @@
   "version": "0.14.1",
   "description": "Command line utilities to interact with near blockchain",
   "engines": {
-      "node" : ">= 10"
+    "node": ">= 10"
   },
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
     "near-assemblyscript": "^0.7.4",
-    "nearlib": "^0.17.0",
+    "nearlib": "^0.17.1",
     "rimraf": "^3.0.0",
     "yargs": "^14.2.0"
   },
