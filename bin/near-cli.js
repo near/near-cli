@@ -174,6 +174,7 @@ const clean = {
 
 let config = require('../get-config')();
 yargs // eslint-disable-line
+    .middleware(require('../utils/check-version'))
     .scriptName('near')
     .option('nodeUrl', {
         desc: 'NEAR node URL',

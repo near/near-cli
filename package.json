@@ -31,11 +31,14 @@
   },
   "dependencies": {
     "bs58": "^4.0.1",
+    "chalk": "^3.0.0",
+    "is-ci": "^2.0.0",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
     "near-assemblyscript": "^0.7.4",
     "nearlib": "^0.17.1",
     "rimraf": "^3.0.0",
+    "update-notifier": "^3.0.1",
     "yargs": "^15.0.1"
   },
   "keywords": [
