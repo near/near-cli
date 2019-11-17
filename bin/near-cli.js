@@ -229,4 +229,5 @@ yargs // eslint-disable-line
     })
     .showHelpOnFail(true)
     .demandCommand(1, 'Please enter a command')
+    .wrap(null)
     .argv;
