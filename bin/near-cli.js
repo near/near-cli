@@ -2,7 +2,7 @@ const yargs = require('yargs');
 const main = require('../');
 const exitOnError = require('../utils/exit-on-error');
 
-// For account: 
+// For account:
 const createAccount = {
     command: 'create_account <accountId>',
     desc: 'create a new developer account',
@@ -211,7 +211,6 @@ yargs // eslint-disable-line
     .command(deploy)
     .command(scheduleFunctionCall)
     .command(callViewFunction)
-    .command(viewAccount)
     .command(sendMoney)
     .command(clean)
     .command(stake)
@@ -229,5 +228,5 @@ yargs // eslint-disable-line
     })
     .showHelpOnFail(true)
     .demandCommand(1, 'Please enter a command')
+    .wrap(null)
     .argv;
-
