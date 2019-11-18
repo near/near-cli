@@ -37,7 +37,7 @@
     "near-bindgen-as": "github:nearprotocol/near-bindgen-as#v1.1.0",
     "nearlib": "^0.17.1",
     "rimraf": "^3.0.0",
-    "yargs": "^14.2.0"
+    "yargs": "^15.0.1"
   },
   "keywords": [
     "blockchain",
