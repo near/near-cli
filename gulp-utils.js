@@ -9,5 +9,4 @@
 //   ], callback);
 // }
 
-
-module.exports = require("near-bindgen-as/compiler");
+module.exports = require('near-bindgen-as/compiler');
