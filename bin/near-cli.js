@@ -211,7 +211,6 @@ yargs // eslint-disable-line
     .command(deploy)
     .command(scheduleFunctionCall)
     .command(callViewFunction)
-    // .command(viewAccount)
     .command(sendMoney)
     .command(clean)
     .command(stake)
