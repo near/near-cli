@@ -8,13 +8,7 @@ const chalk = require('chalk');  // colorize output
 const isCI = require('is-ci');   // avoid output if running in CI server
 
 // updateCheckInterval is measured in seconds
-const ONCE_PER = {
-    SECOND: 0,
-    MINUTE: 1000 * 60,
-    HOUR:   1000 * 60 * 60,
-    DAY:    1000 * 60 * 60 * 24,
-    WEEK:   1000 * 60 * 60 * 24 * 7
-};
+const UPDATE_CHECK_INTERVAL_SECONDS = 1;
 
 /**
     check the current version of NEAR Shell against latest as published on npm
@@ -22,7 +16,7 @@ const ONCE_PER = {
 module.exports = async function checkVersion() {
     const pkg = require('../package.json');
 
-    const notifier = updateNotifier({ pkg, updateCheckInterval: ONCE_PER.SECOND });
+    const notifier = updateNotifier({ pkg, updateCheckInterval: UPDATE_CHECK_INTERVAL_SECONDS });
 
     if (
         notifier.update &&
