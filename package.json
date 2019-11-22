@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "eslint": "^6.4.0",
+    "jest": "^24.1.0",
     "strip-ansi-cli": "^2.0.0"
   },
   "dependencies": {
