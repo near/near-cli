@@ -10,7 +10,7 @@ beforeAll(async () => {
 beforeEach(async () => {
 });
 
-test('make function call using access key', async() => {
+test('formatting attonear amounts', async() => {
    expect(format.prettyPrintNearAmount('8999999999837087887')).toEqual('~9E attonear');
    expect(format.prettyPrintNearAmount('8099099999837087887')).toEqual('~8E attonear');
    expect(format.prettyPrintNearAmount('99999')).toEqual('99999 attonear'); // do not format smaller values
