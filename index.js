@@ -8,6 +8,7 @@ const URL = require('url').URL;
 
 const nearjs = require('nearlib');
 const { KeyPair, keyStores } = require('nearlib');
+const format = require('./utils/formatting-utils');
 const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 
 const connect = require('./utils/connect');
@@ -112,6 +113,9 @@ exports.viewAccount = async function(options) {
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let state = await account.state();
+    if (state && state.amount) {
+        state['formattedAmount'] = format.prettyPrintNearAmount(state.amount);
+    }
     console.log(`Account ${options.accountId}`);
     console.log(inspectResponse(state));
 };
