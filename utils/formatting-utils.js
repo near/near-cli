@@ -10,9 +10,9 @@ const symbols = ['', 'K', 'M', 'G', 'T', 'P', 'E'];
 
 function prettyPrintNearAmount(amt) {
     if (amt <= 99999) {
-        return `${amt} attonear`;;
+        return `${amt} attonear`;
     }
-    i = 0;
+    let i = 0;
     while (amt >= 1000 && i <= 5) {
         amt = amt / 1000;
         i++;
