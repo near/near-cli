@@ -65,12 +65,15 @@ exports.login = async function(options) {
                 let account = await near.account(accountId);
                 let keys = await account.getAccessKeys();
                 let publicKey = keyPair.getPublicKey().toString();
+                const short = (key) => key.substring(0,14); // keep the public key readable
+
                 let keyFound = keys.some(key => key.public_key == keyPair.getPublicKey().toString());
                 if (keyFound) {
                     await options.keyStore.setKey(options.networkId, accountId, keyPair);
                     console.log(`Logged in as ${accountId} with public key ${publicKey} successfully`);
+                    console.log(chalk`Logged in as [ {bold ${accountId}} ] with public key [ {bold ${short(publicKey)}} ] successfully`);
                 } else {
-                    console.log('Log in did not succeed. Please try again.');
+                    console.log(chalk`The account you provided has not {bold.red authorized the expected key:} [ {bold ${short(publicKey)}... ]} Please try again.\n`);
                 }
             } catch (e) {
                 console.log(e);
