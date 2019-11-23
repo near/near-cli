@@ -40,7 +40,11 @@ exports.scheduleFunctionCall = async function(options) {
         (options.amount ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const functionCallResponse = await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount);
+    const functionCallResponse = await account.functionCall(
+        options.contractName,
+        options.methodName,
+        JSON.parse(options.args || '{}'),
+        format.parseInputAmount(options.amount));
     const result = nearjs.providers.getTransactionLastResult(functionCallResponse);
     console.log(inspectResponse(result));
 };
@@ -138,16 +142,16 @@ exports.keys = async function(options) {
 };
 
 exports.sendMoney = async function(options) {
-    console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
+    console.log(`Sending ${options.amount} (${format.parseInputAmount(options.amount)}) NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
-    console.log(inspectResponse(await account.sendMoney(options.receiver, options.amount)));
+    console.log(inspectResponse(await account.sendMoney(options.receiver, format.parseInputAmount(options.amount))));
 };
 
 exports.stake = async function(options) {
-    console.log(`Staking ${options.amount} on ${options.accountId} with public key = ${options.stakingKey}.`);
+    console.log(`Staking ${options.amount} (${format.parseInputAmount(options.amount)}) on ${options.accountId} with public key = ${options.stakingKey}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.stake(options.stakingKey, options.amount);
+    const result = await account.stake(options.stakingKey, format.parseInputAmount(options.amount));
     console.log(inspectResponse(result));
 };
