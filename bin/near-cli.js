@@ -1,6 +1,7 @@
 const yargs = require('yargs');
 const main = require('../');
 const exitOnError = require('../utils/exit-on-error');
+const chalk = require('chalk');
 
 // For account:
 
@@ -201,6 +202,8 @@ yargs // eslint-disable-line
         'outDir': 'out_dir'
     })
     .showHelpOnFail(true)
-    .demandCommand(1, 'Please enter a command')
+    .demandCommand(1, chalk`Pass {bold --help} to see all available commands and options.`)
+    .usage(chalk`Usage: {bold $0 <command> [options]}`)
+    .epilogue(chalk`Check out our epic whiteboard series: {bold http://near.ai/wbs}`)
     .wrap(null)
     .argv;
