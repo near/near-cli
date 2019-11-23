@@ -5,6 +5,7 @@ ncp.limit = 16;
 const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
+const chalk = require('chalk');  // colorize output
 
 const { KeyPair, utils } = require('nearlib');
 
@@ -51,13 +52,13 @@ exports.login = async function(options) {
         newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
-        console.log(`Please navigate to this url and follow the instructions to log in: \n${newUrl.toString()}`);
+        console.log(chalk`\n(Step 1) {bold.yellow Please navigate to this url} and follow the instructions to log in: \n${newUrl.toString()}`);
 
         const rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout
         });
-        rl.question('Please enter the accountId that you logged in with:', async (accountId) => {
+        rl.question(chalk`(Step 2) Which account did you just authorize for use with NEAR Shell?  {bold Enter it here:} `, async (accountId) => {
             try {
                 // check that the key got added
                 const near = await connect(options);
