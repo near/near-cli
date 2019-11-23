@@ -76,9 +76,16 @@ exports.login = async function(options) {
                     console.log(chalk`The account you provided has not {bold.red authorized the expected key:} [ {bold ${short(publicKey)}... ]} Please try again.\n`);
                 }
             } catch (e) {
-                console.log(e);
+                if(/Account ID/.test(e.message)) {
+                    console.log(chalk`\n{bold.red You need to provide a valid account ID to login}. Please try logging in again.`);
+                } else if(/does not exist/.test(e.message)) {
+                    console.log(chalk`\n{bold.red The account you provided does not exist} on the current network ({bold ${accountId}} not found on {bold ${options.nodeUrl}})`);
+                } else {
+                    console.log(e);
+                }
+            } finally {
+                rl.close();
             }
-            rl.close();
         });
     }
 };
