@@ -72,7 +72,7 @@ exports.login = async function(options) {
                 let account = await near.account(accountId);
                 let keys = await account.getAccessKeys();
                 let publicKey = keyPair.getPublicKey().toString();
-                const short = (key) => key.substring(0,14); // keep the public key readable
+                const short = (key) => `${key.substring(0,14)}...`; // keep the public key readable
 
                 let keyFound = keys.some(key => key.public_key == keyPair.getPublicKey().toString());
                 if (keyFound) {
@@ -80,13 +80,13 @@ exports.login = async function(options) {
                     console.log(`Logged in as ${accountId} with public key ${publicKey} successfully`);
                     console.log(chalk`Logged in as [ {bold ${accountId}} ] with public key [ {bold ${short(publicKey)}} ] successfully`);
                 } else {
-                    console.log(chalk`The account you provided has not {bold.red authorized the expected key:} [ {bold ${short(publicKey)}... ]} Please try again.\n`);
+                    console.log(chalk`The account you provided has not {bold.red authorized the expected key} [ {bold ${short(publicKey)}} ] Please try again.\n`);
                 }
             } catch (e) {
                 if(/Account ID/.test(e.message)) {
-                    console.log(chalk`\n{bold.red You need to provide a valid account ID to login}. Please try logging in again.`);
+                    console.log(chalk`\n{bold.red You need to provide a valid account ID to login}. Please try logging in again.\n`);
                 } else if(/does not exist/.test(e.message)) {
-                    console.log(chalk`\n{bold.red The account you provided does not exist} on the current network ({bold ${accountId}} not found on {bold ${options.nodeUrl}})`);
+                    console.log(chalk`\n{bold.red The account you provided does not exist} on the current network ({bold ${accountId}} not found on {bold ${options.nodeUrl}})\n`);
                 } else {
                     console.log(e);
                 }
