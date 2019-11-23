@@ -6,6 +6,8 @@ const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
 const chalk = require('chalk');  // colorize output
+const open = require('open');    // open URL in default browser
+const isCI = require('is-ci');   // honor CI server limitations
 
 const { KeyPair, utils } = require('nearlib');
 
@@ -52,8 +54,13 @@ exports.login = async function(options) {
         newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
-        console.log(chalk`\n(Step 1) {bold.yellow Please navigate to this url} and follow the instructions to log in: \n${newUrl.toString()}`);
+        console.log(chalk`\n(Step 1) {bold.yellow Please authorize NEAR Shell} on at least one of your accounts then come back.`);
 
+        if(isCI || process.env.NEAR_DEBUG) {
+            console.log(newUrl.toString());
+        } else {
+            await open(newUrl.toString());
+        }
         const rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout
