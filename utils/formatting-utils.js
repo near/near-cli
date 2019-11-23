@@ -15,7 +15,7 @@ const symbolsToExponent = {
     T: 1000 * 1000 * 1000 * 1000,
     P: 1000 * 1000 * 1000 * 1000 * 1000,
     E: 1000 * 1000 * 1000 * 1000 * 1000 * 1000,
-}
+};
 
 function prettyPrintNearAmount(amt) {
     if (amt <= 99999) {
