@@ -1,44 +1,29 @@
-/*
-1 K = 1000 B, K for 3 zero
-1 M = 1000 K, for 6 zero
-1 G = 1000 M, for 9 zero
-1 T = 1000 G, T for 12 zero
-1 P = 1000 T, P for 15 zero
-1 E = 1000 P, E for 18 zero
-*/
-const symbols = ['', 'K', 'M', 'G', 'T', 'P', 'E'];
+const BN = require ('bn.js');
 
-const symbolsToExponent = {
-    K: 1000,
-    M: 1000 * 1000,
-    G: 1000 * 1000 * 1000,
-    T: 1000 * 1000 * 1000 * 1000,
-    P: 1000 * 1000 * 1000 * 1000 * 1000,
-    E: 1000 * 1000 * 1000 * 1000 * 1000 * 1000,
-};
+const exp = 24;
+const unitsInOneNear = new BN('10', 10).pow(new BN(exp, 10));
 
 function prettyPrintNearAmount(amt) {
-    if (amt <= 99999) {
-        return `${amt} attonear`;
+    let amtBN = new BN(amt, 10);
+    if (amtBN.lte(unitsInOneNear)) {
+        return `0.${amt.padStart(exp, '0')} NEAR`;
     }
-    let i = 0;
-    while (amt >= 1000 && i <= 5) {
-        amt = amt / 1000;
-        i++;
-    }
-
-    return `~${Math.round(amt)}${symbols[i]} attonear`;
+    return `${amtBN.div(unitsInOneNear).toString(10, 0)}.${amtBN.mod(unitsInOneNear).toString(10, 0)} NEAR`;
 }
 
 function parseInputAmount(amt) {
     if (!amt) { return amt; }
     amt = amt.trim();
-    const symbol = amt[amt.length - 1];
-    if (symbolsToExponent[symbol]) {
-        amt = amt.substring(0, amt.length - 1).trim();
-        amt = amt * symbolsToExponent[symbol];
+    let split = amt.split('.');
+    if (split.length == 1) {
+        return `${amt.padEnd(exp + 1, '0')}`;
     }
-    return amt;
+    if (split.length > 2 || split[1].length > exp) {
+        throw 'Invalid input format';
+    }
+    let wholePart = new BN(split[0], 10).mul(unitsInOneNear);
+    let fractionPart = new BN(split[1].padEnd(exp, '0'), 10);
+    return `${wholePart.add(fractionPart).toString(10, 0)}`;
 }
 
 module.exports = { prettyPrintNearAmount, parseInputAmount };

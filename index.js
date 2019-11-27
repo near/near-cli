@@ -16,6 +16,8 @@ const inspectResponse = require('./utils/inspect-response');
 
 // TODO: Fix promisified wrappers to handle error properly
 
+
+
 // For smart contract:
 exports.clean = async function() {
     const rmDirFn = () => {
