@@ -26,6 +26,8 @@ test('parseInputAmount', async() => {
     expect(format.parseInputAmount('0.000008099099999837087887')).toEqual('8099099999837087887');
     expect(format.parseInputAmount('0.000008099099999837087887')).not.toEqual('8099099999837087888');
     expect(format.parseInputAmount('999.998999999999837087887000')).toEqual('999998999999999837087887000');
+    expect(format.parseInputAmount('0.000000000000001')).toEqual('1000000000');
+  
     try  {
         // Too many decimals
         expect(format.parseInputAmount('0.0000080990999998370878871')).toFail();
