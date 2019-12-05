@@ -38,7 +38,7 @@ exports.deploy = async function(options) {
 
 exports.scheduleFunctionCall = async function(options) {
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
-        (options.amount ? ` with attached ${options.amount} NEAR` : ''));
+        (options.amount ? ` with attached ${utils.format.parseNearAmount(options.amount)} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const functionCallResponse = await account.functionCall(
@@ -150,9 +150,9 @@ exports.sendMoney = async function(options) {
 };
 
 exports.stake = async function(options) {
-    console.log(`Staking ${options.amount} (${format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${options.stakingKey}.`);
+    console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${options.stakingKey}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.stake(options.stakingKey, format.parseNearAmount(options.amount));
+    const result = await account.stake(options.stakingKey, utils.format.parseNearAmount(options.amount));
     console.log(inspectResponse(result));
 };

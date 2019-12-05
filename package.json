@@ -1,6 +1,6 @@
 {
   "name": "near-shell",
-  "version": "0.14.2",
+  "version": "0.15.0",
   "description": "Command line utilities to interact with near blockchain",
   "engines": {
     "node": ">= 10"
