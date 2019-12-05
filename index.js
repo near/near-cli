@@ -7,8 +7,7 @@ const readline = require('readline');
 const URL = require('url').URL;
 
 const nearjs = require('nearlib');
-const { KeyPair, keyStores } = require('nearlib');
-const format = require('./utils/formatting-utils');
+const { KeyPair, keyStores, utils } = require('nearlib');
 const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 
 const connect = require('./utils/connect');
@@ -46,7 +45,7 @@ exports.scheduleFunctionCall = async function(options) {
         options.contractName,
         options.methodName,
         JSON.parse(options.args || '{}'),
-        format.parseInputAmount(options.amount));
+        utils.format.parseNearAmount(options.amount));
     const result = nearjs.providers.getTransactionLastResult(functionCallResponse);
     console.log(inspectResponse(result));
 };
@@ -120,7 +119,7 @@ exports.viewAccount = async function(options) {
     let account = await near.account(options.accountId);
     let state = await account.state();
     if (state && state.amount) {
-        state['formattedAmount'] = format.prettyPrintNearAmount(state.amount);
+        state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
     }
     console.log(`Account ${options.accountId}`);
     console.log(inspectResponse(state));
@@ -144,16 +143,16 @@ exports.keys = async function(options) {
 };
 
 exports.sendMoney = async function(options) {
-    console.log(`Sending ${options.amount} (${format.parseInputAmount(options.amount)}) NEAR to ${options.receiver} from ${options.sender}`);
+    console.log(`Sending ${options.amount} (${utils.format.parseNearAmount(options.amount)}) NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
-    console.log(inspectResponse(await account.sendMoney(options.receiver, format.parseInputAmount(options.amount))));
+    console.log(inspectResponse(await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount))));
 };
 
 exports.stake = async function(options) {
-    console.log(`Staking ${options.amount} (${format.parseInputAmount(options.amount)}) on ${options.accountId} with public key = ${options.stakingKey}.`);
+    console.log(`Staking ${options.amount} (${format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${options.stakingKey}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.stake(options.stakingKey, format.parseInputAmount(options.amount));
+    const result = await account.stake(options.stakingKey, format.parseNearAmount(options.amount));
     console.log(inspectResponse(result));
 };

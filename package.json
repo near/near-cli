@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "jest test && ./test/index.sh",
+    "test": "./test/index.sh",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
@@ -28,6 +28,7 @@
   "devDependencies": {
     "eslint": "^6.4.0",
     "jest": "^24.1.0",
+    "strip-ansi": "^6.0.0",
     "strip-ansi-cli": "^2.0.0"
   },
   "dependencies": {
@@ -38,7 +39,7 @@
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
     "near-assemblyscript": "^0.7.4",
-    "nearlib": "^0.17.1",
+    "nearlib": "^0.18.0",
     "rimraf": "^3.0.0",
     "update-notifier": "^3.0.1",
     "yargs": "^15.0.1"
