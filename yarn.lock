@@ -2230,9 +2230,9 @@ near-assemblyscript@^0.7.4:
     source-map-support "^0.5.13"
 
 nearlib@^0.17.1:
-  version "0.17.2"
-  resolved "https://registry.yarnpkg.com/nearlib/-/nearlib-0.17.2.tgz#49257f06088ad9f093f384199d44b7eb57f24656"
-  integrity sha512-CRhuxrqHAF6vwm61vNaRLXJpFMRoCIVXifQmoZ6vcMeLJ4T4k0QS9+ft6D1zIR2JpwIEukoeCW/RQ3g6G9YsJQ==
+  version "0.17.3"
+  resolved "https://registry.yarnpkg.com/nearlib/-/nearlib-0.17.3.tgz#25fddd2c7f28ae5c1f8d6bba8d70072edd8d5ecb"
+  integrity sha512-RCwVJtW95C8mpYEVwDRDa/JyDnRORjERr5mX8tsvC9gCnA2KfRq60RKfl/OyeHk+waJWqAuq9xoc50fTk19AJA==
   dependencies:
     "@types/bn.js" "^4.11.5"
     bn.js "^5.0.0"
@@ -2243,7 +2243,6 @@ nearlib@^0.17.1:
     node-fetch "^2.3.0"
     text-encoding-utf-8 "^1.0.2"
     tweetnacl "^1.0.1"
-    typescript "^3.5.1"
 
 needle@^2.2.1:
   version "2.4.0"
@@ -3386,11 +3385,6 @@ type-fest@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
-
-typescript@^3.5.1:
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.3.tgz#fea942fabb20f7e1ca7164ff626f1a9f3f70b4da"
-  integrity sha512-N7bceJL1CtRQ2RiG0AQME13ksR7DiuQh/QehubYcghzv20tnh+MQnQIuJddTmsbqYj+dztchykemz0zFzlvdQw==
 
 u3@^0.1.0:
   version "0.1.0"
