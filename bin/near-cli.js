@@ -25,7 +25,7 @@ const createAccount = {
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
-            default: '1000000000000000000'
+            default: '10'
         }),
     handler: exitOnError(main.createAccount)
 };
@@ -130,7 +130,7 @@ const scheduleFunctionCall = {
         .option('amount', {
             desc: 'Number of tokens to attach',
             type: 'string',
-            default: '1000000000'
+            default: '0.0000000001'
         }),
     handler: exitOnError(main.scheduleFunctionCall)
 };
