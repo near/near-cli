@@ -1,9 +1,10 @@
-# NEAR command line interface
+# NEAR Shell command line interface
 
 [![Build Status](https://travis-ci.com/nearprotocol/near-shell.svg?branch=master)](https://travis-ci.com/nearprotocol/near-shell)
 
-The [NEAR](https://near.ai/npm) protocol library as CLI tool.
-More documentation [here](https://near.ai/readme)
+NEAR Shell is a Node.js application that relies on [`nearlib`](https://github.com/nearprotocol/nearlib) to generate secure keys, connect to the NEAR platform and send transactions to the network on your behalf.
+
+> note that **Node.js version 10+** is required to run NEAR Shell
 
 ## Installation
 
@@ -25,7 +26,7 @@ near <command>
 ```bash
   near login                                       # logging in through NEAR protocol wallet
   near create_account <accountId>                  # create a developer account with --masterAccount(required), publicKey and initialBalance
-  near state <accountId>                            # view account state
+  near state <accountId>                           # view account state
   near keys <accountId>                            # view account public keys
   near send <sender> <receiver> <amount>           # send tokens to given receiver
   near stake <accountId> <stakingKey> <amount>     # create staking transaction (stakingKey is base58 encoded)
@@ -34,39 +35,37 @@ near <command>
 
 #### For smart contract:
 ```bash
-  near build                                   # build your smart contract
-  near deploy                                  # deploy your smart contract
-  near call <contractName> <methodName>        # schedule smart contract call which
-  [args]                                       # can modify state
-  near view <contractName> <methodName>        # make smart contract call which can
-  [args]                                       # view state
-  near clean                                   # clean the smart contract build locally(remove ./out )
+  near build                                       # build your smart contract
+  near deploy                                      # deploy your smart contract
+  near call <contractName> <methodName> [args]     # schedule smart contract call which can modify state
+  near view <contractName> <methodName> [args]     # make smart contract call which can view state
+  near clean                                       # clean the smart contract build locally (remove ./out )
 ```
 
 #### For transactions:
 ```bash
-  near tx-status <hash>                        # lookup transaction status by hash
+  near tx-status <hash>                            # lookup transaction status by hash
 ```
 
 #### Misc:
 
 ```bash
-  near repl                                    # launch interactive Node.js shell with NEAR connection available to use
-  near generate-key <account-id>               # generate key
+  near repl                                        # launch interactive Node.js shell with NEAR connection available to use
+  near generate-key <account-id>                   # generate key
 ```
 
 ### Options
 
 | Option                    | Description                                   | Type      | Default               |
-| --------------------------|:---------------------------------------------:| :---------|:----------------------|
+| --------------------------|:----------------------------------------------| :---------|:----------------------|
 | --help                    | Show help                                     | [boolean] |                       |
 | --version                 | Show version number                           | [boolean] |                       |
-| --nodeUrl, --node_url     | NEAR node URL                                 | [string]  |"http://localhost:3030"|
-| --networkId, --network_id | NEAR network ID for different keys by network | [string]  |"default"              |
+| --nodeUrl                 | NEAR node URL                                 | [string]  |"http://localhost:3030"|
+| --networkId               | NEAR network ID for different keys by network | [string]  |"default"              |
 | --helperUrl               | NEAR contract helper URL                      | [string]  |                       |
 | --keyPath                 | Path to master account key                    | [string]  |                       |
 | --homeDir                 | Where to look for master account              | [string]  |"~/.near"              |
-| --accountId, --account_id | Unique identifier for the account             | [string]  [required]|             |
+| --accountId               | Unique identifier for the account             | [string]  [required]|             |
 | --masterAccount           | Account used to create requested account.     | [string]  [required]|             |
 | --publicKey               | Public key to initialize the account with     | [string]  [required]|             |
 | --initialBalance          | Number of tokens to transfer to newly account | [string]  [required]|             |
