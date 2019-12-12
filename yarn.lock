@@ -3174,9 +3174,9 @@ near-assemblyscript@^0.7.4:
     source-map-support "^0.5.13"
 
 nearlib@^0.18.0:
-  version "0.18.2"
-  resolved "https://registry.yarnpkg.com/nearlib/-/nearlib-0.18.2.tgz#5bc0b7e90e84a18c5fbb62e902dfcc7df0a4cc68"
-  integrity sha512-DjaK62A8qzgBEb3XOoUxsfWbguMtGbht/4kWtyx0C06InHii3Y9rVd4G+5NYnjJxIANcSJ8EYKJ8Bd2UFr2jDw==
+  version "0.18.4"
+  resolved "https://registry.yarnpkg.com/nearlib/-/nearlib-0.18.4.tgz#015ba8010930a39952cb39390b5c9e8394657fbc"
+  integrity sha512-pp0cJrxl4Zzswh8tjrGQhjdfFSrncytfv9rtAFGasV+g18ezx0WmYk7KOjnlONcAga5Bqkznn0WtedzMGsYspg==
   dependencies:
     "@types/bn.js" "^4.11.5"
     bn.js "^5.0.0"
