@@ -99,12 +99,12 @@ const stake = {
             required: true,
         })
         .option('stakingKey', {
-            descr: 'Public key to stake with (base58 encoded)',
+            desc: 'Public key to stake with (base58 encoded)',
             type: 'string',
             required: true,
         })
         .option('amount', {
-            descr: 'Amount to stake',
+            desc: 'Amount to stake',
             type: 'string',
             required: true,
         }),
