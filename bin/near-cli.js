@@ -81,7 +81,11 @@ const keys = {
 const sendMoney = {
     command: 'send <sender> <receiver> <amount>',
     desc: 'send tokens to given receiver',
-    builder: (yargs) => yargs,
+    builder: (yargs) => yargs
+        .option('amount', {
+            desc: 'Amount of NEAR tokens to send',
+            type: 'string',
+        }),
     handler: exitOnError(main.sendMoney)
 };
 
