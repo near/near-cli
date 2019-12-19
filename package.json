@@ -32,14 +32,14 @@
     "strip-ansi-cli": "^2.0.0"
   },
   "dependencies": {
-    "assemblyscript": "^0.8.0",
+    "assemblyscript": "^0.8.1",
     "bn": "^1.0.5",
     "bs58": "^4.0.1",
     "chalk": "^3.0.0",
     "is-ci": "^2.0.0",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
-    "near-bindgen-as": "github:nearprotocol/near-bindgen-as#v1.1.0",
+    "near-bindgen-as": "^1.0.1",
     "nearlib": "^0.19.0",
     "rimraf": "^3.0.0",
     "update-notifier": "^3.0.1",
