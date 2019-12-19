@@ -25,7 +25,7 @@ const createAccount = {
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
-            default: '1000000000000000000'
+            default: '10'
         }),
     handler: exitOnError(main.createAccount)
 };
@@ -81,7 +81,11 @@ const keys = {
 const sendMoney = {
     command: 'send <sender> <receiver> <amount>',
     desc: 'send tokens to given receiver',
-    builder: (yargs) => yargs,
+    builder: (yargs) => yargs
+        .option('amount', {
+            desc: 'Amount of NEAR tokens to send',
+            type: 'string',
+        }),
     handler: exitOnError(main.sendMoney)
 };
 
@@ -95,12 +99,12 @@ const stake = {
             required: true,
         })
         .option('stakingKey', {
-            descr: 'Public key to stake with (base58 encoded)',
+            desc: 'Public key to stake with (base58 encoded)',
             type: 'string',
             required: true,
         })
         .option('amount', {
-            descr: 'Amount to stake',
+            desc: 'Amount to stake',
             type: 'string',
             required: true,
         }),
@@ -130,7 +134,7 @@ const scheduleFunctionCall = {
         .option('amount', {
             desc: 'Number of tokens to attach',
             type: 'string',
-            default: '1000000000'
+            default: '0.0000000001'
         }),
     handler: exitOnError(main.scheduleFunctionCall)
 };
@@ -174,6 +178,7 @@ const clean = {
 
 let config = require('../get-config')();
 yargs // eslint-disable-line
+    .middleware(require('../utils/check-version'))
     .scriptName('near')
     .option('nodeUrl', {
         desc: 'NEAR node URL',

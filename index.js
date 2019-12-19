@@ -7,13 +7,15 @@ const readline = require('readline');
 const URL = require('url').URL;
 
 const nearjs = require('nearlib');
-const { KeyPair, keyStores } = require('nearlib');
+const { KeyPair, keyStores, utils } = require('nearlib');
 const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 
 const connect = require('./utils/connect');
 const inspectResponse = require('./utils/inspect-response');
 
 // TODO: Fix promisified wrappers to handle error properly
+
+
 
 // For smart contract:
 exports.clean = async function() {
@@ -36,10 +38,14 @@ exports.deploy = async function(options) {
 
 exports.scheduleFunctionCall = async function(options) {
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
-        (options.amount ? ` with attached ${options.amount} NEAR` : ''));
+        (options.amount ? ` with attached ${utils.format.parseNearAmount(options.amount)} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const functionCallResponse = await account.functionCall(options.contractName, options.methodName, JSON.parse(options.args || '{}'), options.amount);
+    const functionCallResponse = await account.functionCall(
+        options.contractName,
+        options.methodName,
+        JSON.parse(options.args || '{}'),
+        utils.format.parseNearAmount(options.amount));
     const result = nearjs.providers.getTransactionLastResult(functionCallResponse);
     console.log(inspectResponse(result));
 };
@@ -112,6 +118,9 @@ exports.viewAccount = async function(options) {
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let state = await account.state();
+    if (state && state.amount) {
+        state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
+    }
     console.log(`Account ${options.accountId}`);
     console.log(inspectResponse(state));
 };
@@ -134,16 +143,16 @@ exports.keys = async function(options) {
 };
 
 exports.sendMoney = async function(options) {
-    console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
+    console.log(`Sending ${options.amount} (${utils.format.parseNearAmount(options.amount)}) NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
-    console.log(inspectResponse(await account.sendMoney(options.receiver, options.amount)));
+    console.log(inspectResponse(await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount))));
 };
 
 exports.stake = async function(options) {
-    console.log(`Staking ${options.amount} on ${options.accountId} with public key = ${options.stakingKey}.`);
+    console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${options.stakingKey}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.stake(options.stakingKey, options.amount);
+    const result = await account.stake(options.stakingKey, utils.format.parseNearAmount(options.amount));
     console.log(inspectResponse(result));
 };
