@@ -3173,10 +3173,10 @@ near-assemblyscript@^0.7.4:
     opencollective-postinstall "^2.0.0"
     source-map-support "^0.5.13"
 
-nearlib@^0.18.0:
-  version "0.18.4"
-  resolved "https://registry.yarnpkg.com/nearlib/-/nearlib-0.18.4.tgz#015ba8010930a39952cb39390b5c9e8394657fbc"
-  integrity sha512-pp0cJrxl4Zzswh8tjrGQhjdfFSrncytfv9rtAFGasV+g18ezx0WmYk7KOjnlONcAga5Bqkznn0WtedzMGsYspg==
+nearlib@^0.19.0:
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/nearlib/-/nearlib-0.19.1.tgz#88096067f08bcc24266f3c52046bf7c75f85a3cb"
+  integrity sha512-S/DIznzEwJK6VqMBfVMT661+Rc8w1UWKQuR6uCl6L57owgiOSLJDux7wkHXSKRvrlx2P+xCdyO9tIR2xBG32EQ==
   dependencies:
     "@types/bn.js" "^4.11.5"
     bn.js "^5.0.0"
