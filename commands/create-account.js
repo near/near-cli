@@ -1,7 +1,7 @@
 
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
-const { KeyPair } = require('nearlib');
+const { KeyPair, utils } = require('nearlib');
 
 module.exports = {
     command: 'create_account <accountId>',
@@ -25,12 +25,14 @@ module.exports = {
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
-            default: '10'
+            default: '0.1'
         }),
     handler: exitOnError(createAccount)
 };
 
 async function createAccount(options) {
+    options.initialBalance = utils.format.parseNearAmount(options.initialBalance);
+    // NOTE: initialBalance is passed as part of config here
     let near = await connect(options);
     let keyPair;
     let publicKey;
@@ -40,7 +42,6 @@ async function createAccount(options) {
         keyPair = await KeyPair.fromRandom('ed25519');
         publicKey = keyPair.getPublicKey();
     }
-    // TODO: Needs to pass initialBalance converted from NEAR tokens
     await near.createAccount(options.accountId, publicKey);
     if (keyPair) {
         await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
