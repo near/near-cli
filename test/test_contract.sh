@@ -3,13 +3,12 @@ set -ex
 rm  -rf tmp-project
 yarn create near-app --vanilla tmp-project
 cd tmp-project
+timestamp=$(date +%s)
+testaccount=testaccount$timestamp
+../bin/near create_account $testaccount
 echo Building contract
 yarn install
 yarn build
-echo Creating account
-timestamp=$(date +%s)
-testaccount=testaccount$timestamp
-../bin/near create_account --masterAccount $testaccount
 echo Deploying contract
 ../bin/near deploy --accountId=$testaccount --wasmFile=out/main.wasm
 echo Calling functions
