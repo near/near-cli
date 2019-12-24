@@ -59,22 +59,6 @@ exports.callViewFunction = async function(options) {
 };
 
 // For account:
-exports.createAccount = async function(options) {
-    let near = await connect(options);
-    let keyPair;
-    let publicKey;
-    if (options.publicKey) {
-        publicKey = options.publicKey;
-    } else {
-        keyPair = await KeyPair.fromRandom('ed25519');
-        publicKey = keyPair.getPublicKey();
-    }
-    await near.createAccount(options.accountId, publicKey);
-    if (keyPair) {
-        await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
-    }
-    console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
-};
 
 exports.login = async function(options) {
     if (!options.walletUrl) {

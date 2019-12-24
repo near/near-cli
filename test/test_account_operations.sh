@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 rm  -rf tmp-project
-yarn create near-app --plain tmp-project
+yarn create near-app --vanilla tmp-project
 cd tmp-project
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp
@@ -11,7 +11,7 @@ echo Create account
 echo Get account state
 RESULT=$(../bin/near state $testaccount | strip-ansi)
 echo $RESULT
-EXPECTED=".+Account $testaccount.+amount:.+'10'.+ "
+EXPECTED=".+Account $testaccount.+amount:.+'100000000000000000000000'.+ "
 if [[ ! "$RESULT" =~ $EXPECTED ]]; then
     echo FAILURE Unexpected output from near view
     exit 1

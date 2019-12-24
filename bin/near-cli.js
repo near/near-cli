@@ -3,32 +3,6 @@ const main = require('../');
 const exitOnError = require('../utils/exit-on-error');
 
 // For account:
-const createAccount = {
-    command: 'create_account <accountId>',
-    desc: 'create a new developer account',
-    builder: (yargs) => yargs
-        .option('accountId', {
-            desc: 'Unique identifier for the newly created account',
-            type: 'string',
-            required: true
-        })
-        .option('masterAccount', {
-            desc: 'Account used to create requested account.',
-            type: 'string',
-            required: true
-        })
-        .option('publicKey', {
-            desc: 'Public key to initialize the account with',
-            type: 'string',
-            required: false
-        })
-        .option('initialBalance', {
-            desc: 'Number of tokens to transfer to newly created account',
-            type: 'string',
-            default: '10'
-        }),
-    handler: exitOnError(main.createAccount)
-};
 
 const login = {
     command: 'login',
@@ -207,7 +181,7 @@ yargs // eslint-disable-line
         desc: 'Unique identifier for the account',
         type: 'string',
     })
-    .command(createAccount)
+    .command(require('../commands/create-account'))
     .command(viewAccount)
     .command(deleteAccount)
     .command(keys)
