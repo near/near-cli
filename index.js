@@ -6,7 +6,6 @@ const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
 
-const nearjs = require('nearlib');
 const { KeyPair, keyStores, utils } = require('nearlib');
 const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 
@@ -34,20 +33,6 @@ exports.deploy = async function(options) {
     const contractData = [...fs.readFileSync(options.wasmFile)];
     const account = await near.account(options.accountId);
     await account.deployContract(contractData);
-};
-
-exports.scheduleFunctionCall = async function(options) {
-    console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
-        (options.amount ? ` with attached ${utils.format.parseNearAmount(options.amount)} NEAR` : ''));
-    const near = await connect(options);
-    const account = await near.account(options.accountId);
-    const functionCallResponse = await account.functionCall(
-        options.contractName,
-        options.methodName,
-        JSON.parse(options.args || '{}'),
-        utils.format.parseNearAmount(options.amount));
-    const result = nearjs.providers.getTransactionLastResult(functionCallResponse);
-    console.log(inspectResponse(result));
 };
 
 exports.callViewFunction = async function(options) {
