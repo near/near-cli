@@ -34,4 +34,4 @@ async function scheduleFunctionCall(options) {
         utils.format.parseNearAmount(options.amount));
     const result = nearlib.providers.getTransactionLastResult(functionCallResponse);
     console.log(inspectResponse(result));
-};
+}
