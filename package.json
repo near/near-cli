@@ -5,6 +5,7 @@
   "engines": {
     "node": ">= 10"
   },
+  "engineStrict" : true,
   "main": "index.js",
   "scripts": {
     "test": "./test/index.sh",
