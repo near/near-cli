@@ -7,7 +7,12 @@ const exitOnError = require('../utils/exit-on-error');
 const login = {
     command: 'login',
     desc: 'logging in through NEAR protocol wallet',
-    builder: (yargs) => yargs,
+    builder: (yargs) => yargs
+        .option('walletUrl', {
+            desc: 'URL of wallet to use',
+            type: 'string',
+            required: false
+        }),
     handler: exitOnError(main.login)
 };
 
@@ -101,18 +106,6 @@ const deploy = {
     handler: exitOnError(main.deploy)
 };
 
-const scheduleFunctionCall = {
-    command: 'call <contractName> <methodName> [args]',
-    desc: 'schedule smart contract call which can modify state',
-    builder: (yargs) => yargs
-        .option('amount', {
-            desc: 'Number of tokens to attach',
-            type: 'string',
-            default: '0.0000000001'
-        }),
-    handler: exitOnError(main.scheduleFunctionCall)
-};
-
 const callViewFunction = {
     command: 'view <contractName> <methodName> [args]',
     desc: 'make smart contract call which can view state',
@@ -188,7 +181,7 @@ yargs // eslint-disable-line
     .command(require('../commands/tx-status'))
     .command(build)
     .command(deploy)
-    .command(scheduleFunctionCall)
+    .command(require('../commands/call'))
     .command(callViewFunction)
     .command(sendMoney)
     .command(clean)
