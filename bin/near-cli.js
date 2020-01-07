@@ -7,7 +7,12 @@ const exitOnError = require('../utils/exit-on-error');
 const login = {
     command: 'login',
     desc: 'logging in through NEAR protocol wallet',
-    builder: (yargs) => yargs,
+    builder: (yargs) => yargs
+        .option('walletUrl', {
+            desc: 'URL of wallet to use',
+            type: 'string',
+            required: false
+        }),
     handler: exitOnError(main.login)
 };
 
