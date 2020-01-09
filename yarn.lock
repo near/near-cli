@@ -2948,9 +2948,9 @@ ncp@^2.0.0:
   integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
 
 near-bindgen-as@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/near-bindgen-as/-/near-bindgen-as-1.1.1.tgz#408f2aee991251ccfcaf149a28e2194fa948dea6"
-  integrity sha512-2JJPX47X2Ni0M8LJoIuZgcq6HVWi7Ha9oLSf8937kcJ8orKxS0mzGl79nO/d5xZh3LC19QoKSngJlDrl+cx9Nw==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/near-bindgen-as/-/near-bindgen-as-1.2.0.tgz#3d7d4e35256c98772c7192c7400e8f5c9df73b56"
+  integrity sha512-Ha+yFrQrPQ+koQyG5LY5Aod+t/GOnfDB+IIsiGBtHgHz5TmaTEQ6isU+Y/AZNv3oKAzGybVEHILOsUBiazBknQ==
 
 nearlib@^0.19.2:
   version "0.19.2"
