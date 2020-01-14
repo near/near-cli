@@ -7,14 +7,11 @@ const readline = require('readline');
 const URL = require('url').URL;
 
 const { KeyPair, keyStores, utils } = require('nearlib');
-const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 
 const connect = require('./utils/connect');
 const inspectResponse = require('./utils/inspect-response');
 
 // TODO: Fix promisified wrappers to handle error properly
-
-
 
 // For smart contract:
 exports.clean = async function() {
@@ -69,8 +66,7 @@ exports.login = async function(options) {
                 let publicKey = keyPair.getPublicKey().toString();
                 let keyFound = keys.some(key => key.public_key == keyPair.getPublicKey().toString());
                 if (keyFound) {
-                    const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
-                    await keyStore.setKey(options.networkId, accountId, keyPair);
+                    await options.keyStore.setKey(options.networkId, accountId, keyPair);
                     console.log(`Logged in as ${accountId} with public key ${publicKey} successfully`);
                 } else {
                     console.log('Log in did not succeed. Please try again.');

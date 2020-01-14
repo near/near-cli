@@ -174,6 +174,7 @@ yargs // eslint-disable-line
         desc: 'Unique identifier for the account',
         type: 'string',
     })
+    .middleware(require('../middleware/key-store'))
     .command(require('../commands/create-account'))
     .command(viewAccount)
     .command(deleteAccount)
