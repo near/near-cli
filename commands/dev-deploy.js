@@ -36,7 +36,6 @@ async function devDeploy(options) {
         `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
     const contractData = [await readFile(wasmFile)];
     const account = await near.account(accountId);
-    await account.deployContract(contractData);
     console.log(`Done deploying to ${accountId}`);
 }
 
@@ -44,8 +43,8 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
     const accountFilePath = `${keyStore.keyDir}/dev-account`;
     if (!init) {
         try {
-            const existingAccountId = (await readFile(accountFilePath)).trim();
-            if (existingAccountId && await keyStore.getKey(networkId, accountId)) {
+            const existingAccountId = (await readFile(accountFilePath)).toString('utf8').trim();
+            if (existingAccountId && await keyStore.getKey(networkId, existingAccountId)) {
                 return existingAccountId;
             }
         } catch (e) {
