@@ -6,7 +6,7 @@ const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
 
-const { KeyPair, keyStores, utils } = require('nearlib');
+const { KeyPair, utils } = require('nearlib');
 
 const connect = require('./utils/connect');
 const inspectResponse = require('./utils/inspect-response');
