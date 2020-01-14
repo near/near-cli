@@ -39,7 +39,6 @@
     "is-ci": "^2.0.0",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
-    "near-bindgen-as": "^1.1.1",
     "nearlib": "^0.19.2",
     "rimraf": "^3.0.0",
     "update-notifier": "^4.0.0",
