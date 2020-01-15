@@ -182,6 +182,7 @@ yargs // eslint-disable-line
     .command(require('../commands/tx-status'))
     .command(build)
     .command(deploy)
+    .command(require('../commands/dev-deploy'))
     .command(require('../commands/call'))
     .command(callViewFunction)
     .command(sendMoney)

@@ -1,16 +1,26 @@
 #!/bin/bash
 set -ex
 rm  -rf tmp-project
+
 yarn create near-app --vanilla tmp-project
+
 cd tmp-project
+
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp
 ../bin/near create_account $testaccount
+
 echo Building contract
 yarn install
 yarn build
+
 echo Deploying contract
 ../bin/near deploy --accountId=$testaccount --wasmFile=out/main.wasm
+
+echo Deploying contract to temporary accountId
+# TODO: Specify helperUrl in project template
+../bin/near dev-deploy out/main.wasm
+
 echo Calling functions
 RESULT=$(../bin/near call $testaccount welcome '{"name":"TEST"}' --accountId=test.near)
 TEXT=$RESULT.text
@@ -19,6 +29,7 @@ if [[ ! "$TEXT" =~ $EXPECTED ]]; then
     echo FAILURE Unexpected output from near call
     exit 1
 fi
+
 echo Viewing functions
 RESULT2=$(../bin/near view $testaccount welcome '{"name":"TEST"}' --accountId=test.near)
 echo $RESULT2
