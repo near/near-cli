@@ -4,7 +4,7 @@ const connect = require('../utils/connect');
 const { readFile, writeFile } = require('fs').promises;
 
 module.exports = {
-    command: 'dev-deploy <wasmFile>',
+    command: 'dev-deploy [wasmFile]',
     desc: 'deploy your smart contract using temporary account (TestNet only)',
     builder: (yargs) => yargs
         .option('wasmFile',{
