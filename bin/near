@@ -1,4 +1,11 @@
-#!/bin/sh
-CLI_PATH="$(dirname "$0")"/near-cli.js
-node --experimental-repl-await "$CLI_PATH" "$@"
-
+#!/usr/bin/env node
+const flaggedRespawn = require('flagged-respawn');
+require('v8flags')((e, flags) => {
+    if (e) {
+        throw e;
+    }
+    flaggedRespawn(
+        flags.concat(['--experimental_repl_await']),
+        process.argv.indexOf('repl') == -1 ? process.argv : process.argv.concat(['--experimental-repl-await']),
+        ready => ready && require('./near-cli.js'));
+})

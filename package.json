@@ -1,6 +1,6 @@
 {
   "name": "near-shell",
-  "version": "0.20.0",
+  "version": "0.20.1-preview2",
   "description": "Command line utilities to interact with near blockchain",
   "engines": {
     "node": ">= 10"
@@ -22,8 +22,7 @@
   },
   "homepage": "https://github.com/nearprotocol/near-shell#readme",
   "bin": {
-    "near": "./bin/near",
-    "near-cli.js": "./bin/near-cli.js"
+    "near": "./bin/near"
   },
   "devDependencies": {
     "eslint": "^6.4.0",
@@ -36,12 +35,14 @@
     "bn": "^1.0.5",
     "bs58": "^4.0.1",
     "chalk": "^3.0.0",
+    "flagged-respawn": "^1.0.1",
     "is-ci": "^2.0.0",
     "jest-environment-node": "^24.5.0",
     "ncp": "^2.0.0",
     "nearlib": "^0.20.0",
     "rimraf": "^3.0.0",
     "update-notifier": "^4.0.0",
+    "v8flags": "^3.1.3",
     "yargs": "^15.0.1"
   },
   "keywords": [
