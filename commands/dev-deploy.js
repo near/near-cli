@@ -34,7 +34,7 @@ async function devDeploy(options) {
     const accountId = await createDevAccountIfNeeded({ ...options, near });
     console.log(
         `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
-    const contractData = [await readFile(wasmFile)];
+    const contractData = await readFile(wasmFile);
     const account = await near.account(accountId);
     await account.deployContract(contractData);
     console.log(`Done deploying to ${accountId}`);
