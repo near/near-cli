@@ -1,5 +1,4 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME;
-const DEFAULT_ENV = 'development';
 
 function getConfig(env) {
     switch (env) {
