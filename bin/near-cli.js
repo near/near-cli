@@ -166,9 +166,9 @@ yargs // eslint-disable-line
         type: 'string',
     })
     .option('homeDir', {
-        desc: 'Where to look for master account, default is ~/.near',
+        desc: 'Where to look for master account, default is ./neardev',
         type: 'string',
-        default: `${process.env.HOME}/.near`,
+        default: `${process.cwd()}/neardev`,
     })
     .option('accountId', {
         desc: 'Unique identifier for the account',
