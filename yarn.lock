@@ -535,12 +535,12 @@ asn1@~0.2.3:
   dependencies:
     safer-buffer "~2.1.0"
 
-assemblyscript@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.8.1.tgz#c5c627492406e6d87f426897b3d92bd2a533f7fe"
-  integrity sha512-AEpb4Aq5g77XOxSvWn9ZFjIdfyypGavO5oKOAXUo22tnSpebGHdrx0iyVindGKkDlxWhHUc87B0fvM/w1fnpDg==
+assemblyscript@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.9.1.tgz#678ec0816af2c2bf27a205df47c3e6705b4668d7"
+  integrity sha512-aM72Ey+CQloWmqTDLnlXD2Tb3sVoLU5i3tShaJWHlnLFWiyWWLZBQTue6jwyzqF8t9JNiEyC9eqkuagNtgSDjw==
   dependencies:
-    binaryen "89.0.0-nightly.20191113"
+    binaryen "90.0.0-nightly.20200128"
     long "^4.0.0"
 
 assert-plus@1.0.0, assert-plus@^1.0.0:
@@ -653,10 +653,10 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-binaryen@89.0.0-nightly.20191113:
-  version "89.0.0-nightly.20191113"
-  resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-89.0.0-nightly.20191113.tgz#a0d3914f35c929787341e02910b7ffaeb7d897a9"
-  integrity sha512-scODswmj6Xf/Adjy1PRsjf8fHxpIIUYpH7HjKUaZ/RdZYjqB1Zq3X4izpLfcK+hKGNah92DpAJ3i/adEayMe9g==
+binaryen@90.0.0-nightly.20200128:
+  version "90.0.0-nightly.20200128"
+  resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-90.0.0-nightly.20200128.tgz#fd49c75f74a142ae77e9268e3c18cad8fea1a4be"
+  integrity sha512-f64O/OpAtS39zcocpqjMtskUgAkUAv2fBlY9/hu2Ly4m0Xd/waaTrPRLSaAsEDzFcn+MebOdCN8ASjej1jc0uA==
 
 bindings@^1.5.0:
   version "1.5.0"
