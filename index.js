@@ -75,31 +75,10 @@ exports.login = async function(options) {
         if(tempUrl){
             // open a browser to capture NEAR Wallet callback (and quietly direct the user if open fails)
             try {
-                // check that the key got added
-                const near = await connect(options);
-                let account = await near.account(accountId);
-                let keys = await account.getAccessKeys();
-                let publicKey = keyPair.getPublicKey().toString();
-                const short = (key) => `${key.substring(0,14)}...`; // keep the public key readable
-
-                let keyFound = keys.some(key => key.public_key == keyPair.getPublicKey().toString());
-                if (keyFound) {
-                    await options.keyStore.setKey(options.networkId, accountId, keyPair);
-                    console.log(`Logged in as ${accountId} with public key ${publicKey} successfully`);
-                    console.log(chalk`Logged in as [ {bold ${accountId}} ] with public key [ {bold ${short(publicKey)}} ] successfully`);
-                } else {
-                    console.log(chalk`The account you provided {bold.red [ {bold.white ${accountId}} ] has not authorized the expected key [ {bold.white ${short(publicKey)}} ]}  Please try again.\n`);
-                }
-            } catch (e) {
-                if(/Account ID/.test(e.message)) {
-                    console.log(chalk`\n{bold.red You need to provide a valid account ID to login}. Please try logging in again.\n`);
-                } else if(/does not exist/.test(e.message)) {
-                    console.log(chalk`\nThe account you provided {bold.red [ {bold.white ${accountId}} ] does not exist on the [ {bold.white ${options.networkId}} ] network} (using ${options.nodeUrl})\n`);
-                } else {
-                    console.log(e);
-                }
-            } finally {
-                rl.close();
+                newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
+                await open(newUrl.toString());
+            } catch (error) {
+                console.error(`Failed to open the URL [ ${newUrl.toString()} ]`, error);
             }
 
             // capture account_id as provided by NEAR Wallet
