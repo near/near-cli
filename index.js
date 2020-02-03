@@ -121,3 +121,19 @@ exports.stake = async function(options) {
     const result = await account.stake(options.stakingKey, utils.format.parseNearAmount(options.amount));
     console.log(inspectResponse(result));
 };
+
+exports.defaultCommand = async function(options) {
+    let unclearPiece = `'${options._.join(', ')}'`;
+    switch (options._.length) {
+        case 0:
+            unclearPiece = 'argument(s)'
+            break;
+        case 1:
+            unclearPiece = `'${options._}'`
+            break;
+        default:
+            // use initialized value
+            break;
+    }
+    console.warn(`Sorry, I do not understand ${unclearPiece}\nPlease run 'near' to see the list of available commands.`)
+}

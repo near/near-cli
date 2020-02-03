@@ -143,6 +143,11 @@ const clean = {
     handler: exitOnError(main.clean)
 };
 
+const defaultCommand = {
+    command: '$0',
+    handler: exitOnError(main.defaultCommand)
+}
+
 let config = require('../get-config')();
 yargs // eslint-disable-line
     .middleware(require('../utils/check-version'))
@@ -191,6 +196,7 @@ yargs // eslint-disable-line
     .command(login)
     .command(require('../commands/repl'))
     .command(require('../commands/generate-key'))
+    .command(defaultCommand)
     .config(config)
     .alias({
         'accountId': ['account_id'],
