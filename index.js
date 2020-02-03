@@ -125,15 +125,15 @@ exports.stake = async function(options) {
 exports.defaultCommand = async function(options) {
     let unclearPiece = `'${options._.join(', ')}'`;
     switch (options._.length) {
-        case 0:
-            unclearPiece = 'argument(s)'
-            break;
-        case 1:
-            unclearPiece = `'${options._}'`
-            break;
-        default:
-            // use initialized value
-            break;
+    case 0:
+        unclearPiece = 'argument(s)';
+        break;
+    case 1:
+        unclearPiece = `'${options._}'`;
+        break;
+    default:
+        // use initialized value
+        break;
     }
-    console.warn(`Sorry, I do not understand ${unclearPiece}\nPlease run 'near' to see the list of available commands.`)
-}
+    console.warn(`Sorry, I do not understand ${unclearPiece}\nPlease run 'near' to see the list of available commands.`);
+};

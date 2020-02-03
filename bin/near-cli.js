@@ -146,7 +146,7 @@ const clean = {
 const defaultCommand = {
     command: '$0',
     handler: exitOnError(main.defaultCommand)
-}
+};
 
 let config = require('../get-config')();
 yargs // eslint-disable-line
