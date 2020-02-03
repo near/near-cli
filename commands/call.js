@@ -23,7 +23,7 @@ module.exports = {
 
 async function scheduleFunctionCall(options) {
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
-        (options.amount && options.amount != '0' ? ` with attached ${utils.format.parseNearAmount(options.amount)} NEAR` : ''));
+        (options.amount && options.amount != '0' ? ` with attached ${options.amount} NEAR (${utils.format.parseNearAmount(options.amount)} yoctoNEAR)` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const functionCallResponse = await account.functionCall(

@@ -108,7 +108,7 @@ exports.keys = async function(options) {
 };
 
 exports.sendMoney = async function(options) {
-    console.log(`Sending ${options.amount} (${utils.format.parseNearAmount(options.amount)}) NEAR to ${options.receiver} from ${options.sender}`);
+    console.log(`Sending ${options.amount} NEAR (${utils.format.parseNearAmount(options.amount)} yoctoNEAR) to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
     console.log(inspectResponse(await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount))));
