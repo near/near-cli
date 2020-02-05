@@ -165,11 +165,6 @@ yargs // eslint-disable-line
         desc: 'Path to master account key',
         type: 'string',
     })
-    .option('homeDir', {
-        desc: 'Where to look for master account, default is ./neardev',
-        type: 'string',
-        default: `${process.cwd()}/neardev`,
-    })
     .option('accountId', {
         desc: 'Unique identifier for the account',
         type: 'string',
