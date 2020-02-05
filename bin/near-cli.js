@@ -2,24 +2,24 @@ const yargs = require('yargs');
 const main = require('../');
 const exitOnError = require('../utils/exit-on-error');
 
-let registeredCommands = []
-let registeredCommandObjs = []
+let registeredCommands = [];
+let registeredCommandObjs = [];
 
 function registerCommand(cmd) {
-  registeredCommandObjs.push(cmd)
-  if (cmd.hasOwnProperty('command')) {
-    // remove […] and <…> and trim, leaving only the command (ex: 'state')
-    // check for aliases
-    const cleanCommand = (cmd) => cmd.replace(/\s*\[.*\]/gi, '').replace(/\s*<.*>/gi, '').trim()
-    if (Array.isArray(cmd.command)) {
-      for (const alias of cmd.command) {
-        console.log('findthis', alias)
-        registeredCommands.push(cleanCommand(alias))
-      }
-    } else {
-      registeredCommands.push(cleanCommand(cmd.command))
+    registeredCommandObjs.push(cmd);
+    if (Object.prototype.hasOwnProperty.call(cmd, 'command')) {
+        // remove […] and <…> and trim, leaving only the command (ex: 'state')
+        // check for aliases
+        const cleanCommand = (cmd) => cmd.replace(/\s*\[.*\]/gi, '').replace(/\s*<.*>/gi, '').trim();
+        if (Array.isArray(cmd.command)) {
+            for (const alias of cmd.command) {
+                console.log('findthis', alias);
+                registeredCommands.push(cleanCommand(alias));
+            }
+        } else {
+            registeredCommands.push(cleanCommand(cmd.command));
+        }
     }
-  }
 }
 
 // For account:
@@ -34,7 +34,7 @@ const login = {
         }),
     handler: exitOnError(main.login)
 };
-registerCommand(login)
+registerCommand(login);
 
 const viewAccount = {
     command: 'state <accountId>',
@@ -47,7 +47,7 @@ const viewAccount = {
         }),
     handler: exitOnError(main.viewAccount)
 };
-registerCommand(viewAccount)
+registerCommand(viewAccount);
 
 const deleteAccount = {
     command: 'delete <accountId> <beneficiaryId>',
@@ -65,7 +65,7 @@ const deleteAccount = {
         }),
     handler: exitOnError(main.deleteAccount)
 };
-registerCommand(deleteAccount)
+registerCommand(deleteAccount);
 
 const keys = {
     command: 'keys <accountId>',
@@ -78,7 +78,7 @@ const keys = {
         }),
     handler: exitOnError(main.keys)
 };
-registerCommand(keys)
+registerCommand(keys);
 
 const sendMoney = {
     command: 'send <sender> <receiver> <amount>',
@@ -90,7 +90,7 @@ const sendMoney = {
         }),
     handler: exitOnError(main.sendMoney)
 };
-registerCommand(sendMoney)
+registerCommand(sendMoney);
 
 const stake = {
     command: 'stake [accountId] [stakingKey] [amount]',
@@ -113,7 +113,7 @@ const stake = {
         }),
     handler: exitOnError(main.stake)
 };
-registerCommand(stake)
+registerCommand(stake);
 
 // For contract:
 const deploy = {
@@ -130,7 +130,7 @@ const deploy = {
         }),
     handler: exitOnError(main.deploy)
 };
-registerCommand(deploy)
+registerCommand(deploy);
 
 const callViewFunction = {
     command: 'view <contractName> <methodName> [args]',
@@ -138,7 +138,7 @@ const callViewFunction = {
     builder: (yargs) => yargs,
     handler: exitOnError(main.callViewFunction)
 };
-registerCommand(callViewFunction)
+registerCommand(callViewFunction);
 
 const { spawn } = require('child_process');
 const build = {
@@ -157,7 +157,7 @@ const build = {
         });
     }
 };
-registerCommand(build)
+registerCommand(build);
 
 const clean = {
     command: 'clean',
@@ -170,31 +170,31 @@ const clean = {
         }),
     handler: exitOnError(main.clean)
 };
-registerCommand(clean)
+registerCommand(clean);
 
 const defaultCommand = {
     command: '$0',
 };
-registerCommand(defaultCommand)
+registerCommand(defaultCommand);
 
 // middleware to validate commands and arguments
 const checkCommandsArgs = (argv, yargsInstance) => {
-  main.checkCommandsArgs(argv, yargsInstance, registeredCommandObjs, registeredCommands)
-}
+    main.checkCommandsArgs(argv, yargsInstance, registeredCommandObjs, registeredCommands);
+};
 
 // add external commands
-const createAccountCommand = require('../commands/create-account')
-registerCommand(createAccountCommand)
-const txStatusCommand = require('../commands/tx-status')
-registerCommand(txStatusCommand)
-const devDeployCommand = require('../commands/dev-deploy')
-registerCommand(devDeployCommand)
-const callCommand = require('../commands/call')
-registerCommand(callCommand)
-const replCommand = require('../commands/repl')
-registerCommand(replCommand)
-const generateKeyCommand = require('../commands/generate-key')
-registerCommand(generateKeyCommand)
+const createAccountCommand = require('../commands/create-account');
+registerCommand(createAccountCommand);
+const txStatusCommand = require('../commands/tx-status');
+registerCommand(txStatusCommand);
+const devDeployCommand = require('../commands/dev-deploy');
+registerCommand(devDeployCommand);
+const callCommand = require('../commands/call');
+registerCommand(callCommand);
+const replCommand = require('../commands/repl');
+registerCommand(replCommand);
+const generateKeyCommand = require('../commands/generate-key');
+registerCommand(generateKeyCommand);
 
 let config = require('../get-config')();
 yargs // eslint-disable-line
@@ -247,7 +247,7 @@ yargs
     .demandCommand(1, 'Please enter a command')
     .wrap(null)
     .fail(function (msg) {
-      console.error(`Error: ${msg}\nPlease use the --help flag for more information.`)
-      yargs.exit()
+        console.error(`Error: ${msg}\nPlease use the --help flag for more information.`);
+        yargs.exit();
     })
     .argv;
