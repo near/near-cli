@@ -5,6 +5,7 @@ ncp.limit = 16;
 const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
+const stringWidth = require('string-width')
 
 const { KeyPair, utils } = require('nearlib');
 
@@ -122,18 +123,93 @@ exports.stake = async function(options) {
     console.log(inspectResponse(result));
 };
 
-exports.defaultCommand = async function(options) {
-    let unclearPiece = `'${options._.join(', ')}'`;
-    switch (options._.length) {
-    case 0:
-        unclearPiece = 'argument(s)';
-        break;
-    case 1:
-        unclearPiece = `'${options._}'`;
-        break;
-    default:
-        // use initialized value
-        break;
+exports.checkCommandsArgs = async function (argv, yargs, registeredCommandObjs, registeredCommands) {
+    // logic borrowed from yargs/lib/usage.js
+    function maxWidth (table, theWrap, modifier) {
+        let width = 0
+        if (!Array.isArray(table)) {
+          table = Object.keys(table).map(key => [table[key]])
+        }
+        
+        table.forEach((v) => {
+          width = Math.max(
+            stringWidth(modifier ? `${modifier} ${v['command']}` : v['command']),
+            width
+          )
+        })
+        
+        if (theWrap) width = Math.min(width, parseInt(theWrap * 0.5, 10))
+        
+        return width
     }
-    console.warn(`Sorry, I do not understand ${unclearPiece}\nPlease run 'near' to see the list of available commands.`);
+
+    // find and inform user of invalid commands
+    const invalidCommands = argv._.filter(command => !registeredCommands.includes(command))
+    if (invalidCommands.length === 1) {
+        console.log(`Invalid command '${invalidCommands}'`)
+    } else if (invalidCommands.length > 1) {
+        console.log(`Invalid commands '${invalidCommands.join(', ')}'`)
+    }
+    
+    // valid arguments as understood by the yargs instance
+    const activeArgs = Object.keys(argv)
+    const validArgs = Object.keys(yargs.parsed.aliases)
+    // add a handful of special keys for our use case
+    validArgs.push(...['_', '$0', 'keyStore', 'contractName', 'walletUrl'])
+    
+    const invalidArguments = activeArgs.filter(arg => !validArgs.includes(arg))
+    if (invalidArguments.length === 1) {
+        console.error(`Invalid argument '${invalidArguments[0]}'`)
+    } else if (invalidArguments.length > 1) {
+        console.error(`Invalid argument(s) '${invalidArguments.join(', ')}'`)
+    }    
+    
+    // exit yargs, otherwise it tries to continue throwing misleading errors
+    if (invalidArguments.length !== 0 || invalidCommands.length !== 0) yargs.exit()
+    
+    // command 'near' with no invalid arguments or invalid commands displays --help
+    // logic borrowed from yargs/lib/usage.js
+    if (argv.hasOwnProperty('_') && argv._.length === 0 && invalidCommands.length === 0 && invalidArguments.length === 0) {
+      const ui = require('cliui')({
+        width: null,
+        wrap: null
+      })
+      if (registeredCommandObjs.length) {
+        ui.div('Commands:')
+    
+        const context = yargs.getContext()
+        const parentCommands = context.commands.length ? `${context.commands.join(' ')} ` : ''
+    
+        if (yargs.getParserConfiguration()['sort-commands'] === true) {
+          commands = registeredCommandObjs.sort((a, b) => a[0].localeCompare(b[0]))
+        }
+    
+        registeredCommandObjs.forEach((command) => {
+          const commandString = `near ${parentCommands}${command.command.replace(/^\$0 ?/, '')}` // drop $0 from default commands.
+          ui.span(
+            {
+              text: commandString,
+              padding: [0, 2, 0, 2],
+              width: maxWidth(registeredCommandObjs, null, `near${parentCommands}`) + 4
+            },
+            { text: command['desc'] }
+          )
+          const hints = []
+          if (command[2]) hints.push(`[${'default:'.slice(0, -1)}]`) // TODO hacking around i18n here
+          if (command[3] && command[3].length) {
+            hints.push(`[${'aliases:'} ${command[3].join(', ')}]`)
+          }
+          if (hints.length) {
+            ui.div({ text: hints.join(' '), padding: [0, 0, 0, 2], align: 'right' })
+          } else {
+            ui.div()
+          }
+        })
+    
+        ui.div()
+      }      
+    
+      console.log(ui.toString())
+      yargs.showHelp()
+    }
 };
