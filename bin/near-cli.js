@@ -9,7 +9,16 @@ function registerCommand(cmd) {
   registeredCommandObjs.push(cmd)
   if (cmd.hasOwnProperty('command')) {
     // remove […] and <…> and trim, leaving only the command (ex: 'state')
-    registeredCommands.push(cmd.command.replace(/\s*\[.*\]/gi, '').replace(/\s*<.*>/gi, '').trim())
+    // check for aliases
+    const cleanCommand = (cmd) => cmd.replace(/\s*\[.*\]/gi, '').replace(/\s*<.*>/gi, '').trim()
+    if (Array.isArray(cmd.command)) {
+      for (const alias of cmd.command) {
+        console.log('findthis', alias)
+        registeredCommands.push(cleanCommand(alias))
+      }
+    } else {
+      registeredCommands.push(cleanCommand(cmd.command))
+    }
   }
 }
 
