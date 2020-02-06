@@ -145,6 +145,7 @@ const clean = {
 
 let config = require('../get-config')();
 yargs // eslint-disable-line
+    .strict()
     .middleware(require('../utils/check-version'))
     .scriptName('near')
     .option('nodeUrl', {
@@ -167,6 +168,15 @@ yargs // eslint-disable-line
     })
     .option('accountId', {
         desc: 'Unique identifier for the account',
+        type: 'string',
+    })
+    .option('walletUrl', {
+        desc: 'Website for NEAR Wallet',
+        type: 'string',
+        default: 'trythis'
+    })
+    .option('contractName', {
+        desc: 'Account name of contract',
         type: 'string',
     })
     .middleware(require('../middleware/key-store'))
@@ -197,5 +207,6 @@ yargs // eslint-disable-line
     })
     .showHelpOnFail(true)
     .demandCommand(1, 'Please enter a command')
+    .recommendCommands()
     .wrap(null)
     .argv;
