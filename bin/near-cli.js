@@ -173,11 +173,12 @@ yargs // eslint-disable-line
     .option('walletUrl', {
         desc: 'Website for NEAR Wallet',
         type: 'string',
-        default: 'trythis'
+        hidden: true
     })
     .option('contractName', {
         desc: 'Account name of contract',
         type: 'string',
+        hidden: true      
     })
     .middleware(require('../middleware/key-store'))
     .command(require('../commands/create-account'))
