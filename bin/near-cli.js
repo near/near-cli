@@ -166,11 +166,6 @@ yargs // eslint-disable-line
         desc: 'Path to master account key',
         type: 'string',
     })
-    .option('homeDir', {
-        desc: 'Where to look for master account, default is ~/.near',
-        type: 'string',
-        default: `${process.env.HOME}/.near`,
-    })
     .option('accountId', {
         desc: 'Unique identifier for the account',
         type: 'string',

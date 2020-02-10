@@ -64,7 +64,6 @@ near <command>
 | --networkId               | NEAR network ID for different keys by network | [string]  |"default"              |
 | --helperUrl               | NEAR contract helper URL                      | [string]  |                       |
 | --keyPath                 | Path to master account key                    | [string]  |                       |
-| --homeDir                 | Where to look for master account              | [string]  |"~/.near"              |
 | --accountId               | Unique identifier for the account             | [string]  [required]|             |
 | --masterAccount           | Account used to create requested account.     | [string]  [required]|             |
 | --publicKey               | Public key to initialize the account with     | [string]  [required]|             |
