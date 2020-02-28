@@ -118,7 +118,7 @@ const build = {
     command: 'build',
     desc: 'build your smart contract',
     handler: () => {
-        const gulp = spawn('gulp');
+        const gulp = spawn('gulp', [], {shell: process.platform == 'win32'});
         gulp.stdout.on('data', function (data) {
             console.log(data.toString());
         });
