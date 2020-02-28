@@ -22,15 +22,12 @@ echo Deploying contract to temporary accountId
 ../bin/near dev-deploy
 
 echo Calling functions
-RESULT=$(../bin/near call $testaccount welcome '{"name":"TEST"}' --accountId=test.near)
-TEXT=$RESULT.text
-EXPECTED='Welcome, TEST. Welcome to NEAR Protocol chain'
-if [[ ! "$TEXT" =~ $EXPECTED ]]; then
+../bin/near call $testaccount setGreeting '{"message":"TEST"}' --accountId=test.near
+
+RESULT=$(../bin/near view $testaccount welcome '{"account_id":"test.near"}' --accountId=test.near)
+TEXT=$RESULT
+EXPECTED='TEST test.near'
+if [[ ! "$TEXT" =~ ".*$EXPECTED.*" ]]; then
     echo FAILURE Unexpected output from near call
     exit 1
 fi
-
-echo Viewing functions
-RESULT2=$(../bin/near view $testaccount welcome '{"name":"TEST"}' --accountId=test.near)
-echo $RESULT2
-
