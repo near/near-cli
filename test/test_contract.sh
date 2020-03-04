@@ -28,6 +28,6 @@ RESULT=$(../bin/near view $testaccount welcome '{"account_id":"test.near"}' --ac
 TEXT=$RESULT
 EXPECTED='TEST test.near'
 if [[ ! "$TEXT" =~ ".*$EXPECTED.*" ]]; then
-    echo FAILURE Unexpected output from near call
+    echo FAILURE Unexpected output from near call: $TEXT
     exit 1
 fi
