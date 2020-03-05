@@ -27,7 +27,7 @@ echo Calling functions
 RESULT=$(../bin/near view $testaccount welcome '{"account_id":"test.near"}' --accountId=test.near)
 TEXT=$RESULT
 EXPECTED='TEST test.near'
-if [[ ! "$TEXT" =~ ".*$EXPECTED.*" ]]; then
-    echo FAILURE Unexpected output from near call: $TEXT
+if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
+    echo FAILURE Unexpected output from near call: $RESULT
     exit 1
 fi
