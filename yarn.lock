@@ -2947,10 +2947,10 @@ ncp@^2.0.0:
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
   integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
 
-nearlib@^0.20.0:
-  version "0.20.1"
-  resolved "https://registry.yarnpkg.com/nearlib/-/nearlib-0.20.1.tgz#b2671e816c5e238aa7c7ab8035af877127cc52d0"
-  integrity sha512-nwC+2ZKHAQGxW2ENGEb0pZnh9gem65Kqt/Y+uA2PZvmWfloAwUTE9dfLmEzwciXQtLVXR18TROCfLNbasW1mVw==
+nearlib@^0.22.0:
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/nearlib/-/nearlib-0.22.0.tgz#e7e9ed88752fb533c0920720f962f97395ddfec6"
+  integrity sha512-6yTc5Ti5oHFak8GSvuzHF7gTRIXRDIs822LiIqJWqoJ5emWktAZqWowS9taAazfG/joU2H0B3WX5Z46oIv4U0w==
   dependencies:
     "@types/bn.js" "^4.11.5"
     bn.js "^5.0.0"
