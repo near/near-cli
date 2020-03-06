@@ -36,7 +36,7 @@
     "chalk": "^3.0.0",
     "flagged-respawn": "^1.0.1",
     "is-ci": "^2.0.0",
-    "jest-environment-node": "^24.5.0",
+    "jest-environment-node": "^25.1.0",
     "ncp": "^2.0.0",
     "nearlib": "^0.22.0",
     "rimraf": "^3.0.0",
