@@ -5,10 +5,14 @@ ncp.limit = 16;
 const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
-
+const chalk = require('chalk');  // colorize output
+const open = require('open');    // open URL in default browser
 const { KeyPair, utils } = require('nearlib');
 
 const connect = require('./utils/connect');
+const verify = require('./utils/verify-account');
+const capture = require('./utils/capture-login-success');
+
 const inspectResponse = require('./utils/inspect-response');
 
 // TODO: Fix promisified wrappers to handle error properly
@@ -51,31 +55,64 @@ exports.login = async function(options) {
         newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
-        console.log(`Please navigate to this url and follow the instructions to log in: \n${newUrl.toString()}`);
 
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-        rl.question('Please enter the accountId that you logged in with:', async (accountId) => {
+        console.log(chalk`\n{bold.yellow Please authorize NEAR Shell} on at least one of your accounts.`);
+        console.log(chalk`\n{dim If your browser doesn't automatically open, please visit this URL\n${newUrl.toString()}}`);
+
+        // attempt to capture accountId automatically via browser callback
+        let tempUrl;
+        let accountId;
+
+        // find a callback URL on the local machine
+        try {
+            tempUrl = await capture.callback();
+        } catch (error) {
+            // console.error("Failed to find suitable port.", error.message)
+            // silent error is better here
+        }
+
+        // if we found a suitable URL, attempt to use it
+        if(tempUrl){
+            // open a browser to capture NEAR Wallet callback (and quietly direct the user if open fails)
             try {
-                // check that the key got added
-                const near = await connect(options);
-                let account = await near.account(accountId);
-                let keys = await account.getAccessKeys();
-                let publicKey = keyPair.getPublicKey().toString();
-                let keyFound = keys.some(key => key.public_key == keyPair.getPublicKey().toString());
-                if (keyFound) {
-                    await options.keyStore.setKey(options.networkId, accountId, keyPair);
-                    console.log(`Logged in as ${accountId} with public key ${publicKey} successfully`);
-                } else {
-                    console.log('Log in did not succeed. Please try again.');
-                }
-            } catch (e) {
-                console.log(e);
+                newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
+                await open(newUrl.toString());
+            } catch (error) {
+                console.error(`Failed to open the URL [ ${newUrl.toString()} ]`, error);
             }
-            rl.close();
-        });
+
+            // capture account_id as provided by NEAR Wallet
+            try {
+                [accountId] = await capture.payload(['account_id'], tempUrl);
+            } catch (error) {
+                console.error('Failed to capture payload.', error.message);
+            }
+        }
+
+        // verify the accountId if we captured it or ...
+        if(accountId) {
+            try {
+                await verify(accountId, keyPair, options);
+            } catch(error) {
+                console.error('Failed to verify accountId.', error.message);
+            }
+        // prompt user to enter it at the terminal if we didn't
+        } else {
+            const rl = readline.createInterface({
+                input: process.stdin,
+                output: process.stdout
+            });
+
+            rl.question(chalk`Please authorize at least one account at the URL above.\n\nWhich account did you authorize for use with NEAR Shell?  {bold Enter it here:} `, async (accountId) => {
+                try {
+                    await verify(accountId, keyPair, options);
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    rl.close();
+                }
+            });
+        }
     }
 };
 
