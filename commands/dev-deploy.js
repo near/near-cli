@@ -27,7 +27,7 @@ async function devDeploy(options) {
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
 
     if (!helperUrl && !masterAccount) {
-        throw new Error('Cannot create account as netiher helperUrl nor masterAccount is specified in config for current NODE_ENV (see src/config.js)');
+        throw new Error('Cannot create account as neither helperUrl nor masterAccount is specified in config for current NODE_ENV (see src/config.js)');
     }
 
     const near = await connect(options);
