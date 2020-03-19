@@ -1949,11 +1949,6 @@ ip-regex@^2.1.0:
   resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-2.1.0.tgz#fa78bf5d2e6913c911ce9f819ee5146bb6d844e9"
   integrity sha1-+ni/XS5pE8kRzp+BnuUUa7bYROk=
 
-ip-regex@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-2.1.0.tgz#fa78bf5d2e6913c911ce9f819ee5146bb6d844e9"
-  integrity sha1-+ni/XS5pE8kRzp+BnuUUa7bYROk=
-
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/is-accessor-descriptor/-/is-accessor-descriptor-0.1.6.tgz#a9e12cb3ae8d876727eeef3843f8a0897b5c98d6"
@@ -2166,11 +2161,6 @@ is-windows@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
   integrity sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==
-
-is-wsl@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-2.1.1.tgz#4a1c152d429df3d441669498e2486d3596ebaf1d"
-  integrity sha512-umZHcSrwlDHo2TGMXv0DZ8dIUGunZ2Iv68YZnrmCiBPkZ4aaOhtv7pXJKeki9k3qJ3RJr0cDyitcl5wEH3AYog==
 
 is-wsl@^2.1.1:
   version "2.1.1"
@@ -3177,9 +3167,9 @@ onetime@^5.1.0:
     mimic-fn "^2.1.0"
 
 open@^7.0.1:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/open/-/open-7.0.2.tgz#fb3681f11f157f2361d2392307548ca1792960e8"
-  integrity sha512-70E/pFTPr7nZ9nLDPNTcj3IVqnNvKuP4VsBmoKV9YGTnChe0mlS3C4qM7qKarhZ8rGaHKLfo+vBTHXDp6ZSyLQ==
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/open/-/open-7.0.3.tgz#db551a1af9c7ab4c7af664139930826138531c48"
+  integrity sha512-sP2ru2v0P290WFfv49Ap8MF6PkzGNnGlAwHweB4WR4mr5d2d0woiCluUeJ218w7/+PmoBy9JmYgD5A4mLcWOFA==
   dependencies:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
