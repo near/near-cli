@@ -67,5 +67,5 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
     await writeFile(accountFilePath, accountId);
     // write file to be used by env-cmd
     await writeFile(accountFilePathEnv, `CONTRACT_NAME=${accountId}`);
-    return accountId;``
+    return accountId;
 }
