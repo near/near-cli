@@ -6,6 +6,7 @@
 const updateNotifier = require('update-notifier');
 const chalk = require('chalk');  // colorize output
 const isCI = require('is-ci');   // avoid output if running in CI server
+const shellUpgrade = require('./migration/shell-upgrade');
 
 // updateCheckInterval is measured in seconds
 const UPDATE_CHECK_INTERVAL_SECONDS = 1;
@@ -38,6 +39,9 @@ Run {cyan npm install -g near-shell} to avoid unexpected behavior`;
 
         notifier.notify({ message, boxenOpts });
     }
+
+    // check if upgrade migrations are needed
+    await shellUpgrade.checkUpgradeNeeded(pkg.version);
 };
 
 
