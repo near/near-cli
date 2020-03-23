@@ -11,12 +11,14 @@ const checkUpgradeNeeded = async (version) => {
     const writeFile = (filePath, data) => util.promisify(fs.writeFile)(filePath, data);
     const shellInfoFilePath = './.near/shell-info.js';
 
+    // TODO: allow autoUpgrade key to determine whether to proceed with upgrades
+    const infoJson = {
+        autoUpgrade: true,
+        lastVersionUsed: version
+    };
+
     // check for existence of shell info file and create if necessary
     if (!fs.existsSync(shellInfoFilePath)) {
-        const infoJson = {
-            promptToUpgrade: true,
-            lastVersionUsed: version
-        };
         shell.mkdir('-p', './.near');
         // write file with lint-preferred indentation
         await writeFile(shellInfoFilePath, JSON.stringify(infoJson, null, 4));
@@ -54,6 +56,8 @@ const checkUpgradeNeeded = async (version) => {
                 const upgradeScriptFile = require(upgradeScriptFilePath);
                 await upgradeScriptFile.upgrade(lastVersionObj.patch);
             }
+            // update shell info file to reflect latest version
+            await writeFile(shellInfoFilePath, JSON.stringify(infoJson, null, 4));
         }
     }
 };
