@@ -182,6 +182,11 @@ yargs // eslint-disable-line
         type: 'string',
         hidden: true
     })
+    .option('masterAccount', {
+      desc: 'Master account used when create new accounts',
+      type: 'string',
+      hidden: true
+    })
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
     .command(require('../commands/create-account'))
