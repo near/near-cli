@@ -1,6 +1,7 @@
 const yargs = require('yargs');
 const main = require('../');
 const exitOnError = require('../utils/exit-on-error');
+const chalk = require('chalk');
 
 let registeredCommands = [];
 let registeredCommandObjs = [];
@@ -145,7 +146,7 @@ const build = {
     command: 'build',
     desc: 'build your smart contract',
     handler: () => {
-        const gulp = spawn('gulp');
+        const gulp = spawn('gulp', [], {shell: process.platform == 'win32'});
         gulp.stdout.on('data', function (data) {
             console.log(data.toString());
         });
@@ -218,17 +219,13 @@ yargs // eslint-disable-line
         desc: 'Path to master account key',
         type: 'string',
     })
-    .option('homeDir', {
-        desc: 'Where to look for master account, default is ~/.near',
-        type: 'string',
-        default: `${process.env.HOME}/.near`,
-    })
     .option('accountId', {
         desc: 'Unique identifier for the account',
         type: 'string',
     })
     .middleware(require('../middleware/key-store'));
-  
+    .middleware(require('../middleware/print-options'))
+
 for (const command of registeredCommandObjs) {
     yargs.command(command);
 }
@@ -244,7 +241,9 @@ yargs
         'outDir': 'out_dir'
     })
     .showHelpOnFail(true)
-    .demandCommand(1, 'Please enter a command')
+    .demandCommand(1, chalk`Pass {bold --help} to see all available commands and options.`)
+    .usage(chalk`Usage: {bold $0 <command> [options]}`)
+    .epilogue(chalk`Check out our epic whiteboard series: {bold http://near.ai/wbs}`)
     .wrap(null)
     .fail(function (msg) {
         console.error(`Error: ${msg}\nPlease use the --help flag for more information.`);

@@ -27,7 +27,7 @@ async function devDeploy(options) {
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
 
     if (!helperUrl && !masterAccount) {
-        throw new Error('Cannot create account as netiher helperUrl nor masterAccount is specified in config for current NODE_ENV (see src/config.js)');
+        throw new Error('Cannot create account as neither helperUrl nor masterAccount is specified in config for current NODE_ENV (see src/config.js)');
     }
 
     const near = await connect(options);
@@ -41,16 +41,21 @@ async function devDeploy(options) {
 }
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
+    // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
+    // https://github.com/nearprotocol/near-shell/issues/287
     const accountFilePath = `${keyStore.keyDir}/dev-account`;
+    const accountFilePathEnv = `${keyStore.keyDir}/dev-account.env`;
     if (!init) {
         try {
+            // throws if either file is missing
             const existingAccountId = (await readFile(accountFilePath)).toString('utf8').trim();
+            await readFile(accountFilePathEnv);
             if (existingAccountId && await keyStore.getKey(networkId, existingAccountId)) {
                 return existingAccountId;
             }
         } catch (e) {
             if (e.code === 'ENOENT') {
-                // Ignore as it means new account needs to be created
+                // Ignore as it means new account needs to be created, which happens below
             } else {
                 throw e;
             }
@@ -62,5 +67,7 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
     await near.accountCreator.createAccount(accountId, keyPair.publicKey);
     await keyStore.setKey(networkId, accountId, keyPair);
     await writeFile(accountFilePath, accountId);
+    // write file to be used by env-cmd
+    await writeFile(accountFilePathEnv, `CONTRACT_NAME=${accountId}`);
     return accountId;
 }
