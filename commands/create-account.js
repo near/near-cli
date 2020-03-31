@@ -25,7 +25,7 @@ module.exports = {
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
-            default: '0.1'
+            default: '100'
         }),
     handler: exitOnError(createAccount)
 };
