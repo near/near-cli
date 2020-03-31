@@ -17,4 +17,4 @@ if [[ ! "$RESULT" =~ $EXPECTED ]]; then
     exit 1
 fi
 
-../bin/near delete_account $testaccount test.near
+../bin/near delete $testaccount test.near
