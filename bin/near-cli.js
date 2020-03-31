@@ -134,9 +134,31 @@ const deploy = {
 registerCommand(deploy);
 
 const callViewFunction = {
-    command: 'view <contractName> <methodName> [args]',
+    command: 'view [contractName] [methodName] [data] [gas] [amount]',
     desc: 'make smart contract call which can view state',
-    builder: (yargs) => yargs,
+    builder: (yargs) => yargs
+        .option('contractName', {
+            desc: 'Contract where the method is being called',
+            type: 'string',
+        })    
+        .option('methodName', {
+            desc: 'Contract method being called',
+            type: 'string',
+        })
+        .option('data', {
+            desc: 'Data to send to method',
+            type: 'string',
+        })
+        .option('gas', {
+            desc: 'Max amount of gas this call can use',
+            type: 'string',
+            default: '100000000000000'
+        })
+        .option('amount', {
+            desc: 'Number of tokens to attach',
+            type: 'string',
+            default: '0'
+        }),        
     handler: exitOnError(main.callViewFunction)
 };
 registerCommand(callViewFunction);
@@ -223,8 +245,13 @@ yargs // eslint-disable-line
         desc: 'Unique identifier for the account',
         type: 'string',
     })
-    .middleware(require('../middleware/key-store'));
-    .middleware(require('../middleware/print-options'))
+    .option('masterAccount', {
+        desc: 'Master account used when create new accounts',
+        type: 'string',
+        hidden: true
+    })
+    .middleware(require('../middleware/key-store'))
+    .middleware(require('../middleware/print-options'));
 
 for (const command of registeredCommandObjs) {
     yargs.command(command);

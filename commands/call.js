@@ -5,9 +5,21 @@ const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
 
 module.exports = {
-    command: 'call <contractName> <methodName> [args]',
+    command: 'call [contractName] [methodName] [data] [gas] [amount]',
     desc: 'schedule smart contract call which can modify state',
     builder: (yargs) => yargs
+        .option('contractName', {
+            desc: 'Contract where the method is being called',
+            type: 'string',
+        })    
+        .option('methodName', {
+            desc: 'Contract method being called',
+            type: 'string',
+        })
+        .option('data', {
+            desc: 'Data to send to method',
+            type: 'string',
+        })        
         .option('gas', {
             desc: 'Max amount of gas this call can use',
             type: 'string',
