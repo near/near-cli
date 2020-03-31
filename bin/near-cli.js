@@ -1,6 +1,7 @@
 const yargs = require('yargs');
 const main = require('../');
 const exitOnError = require('../utils/exit-on-error');
+const chalk = require('chalk');
 
 // For account:
 
@@ -118,7 +119,7 @@ const build = {
     command: 'build',
     desc: 'build your smart contract',
     handler: () => {
-        const gulp = spawn('gulp');
+        const gulp = spawn('gulp', [], {shell: process.platform == 'win32'});
         gulp.stdout.on('data', function (data) {
             console.log(data.toString());
         });
@@ -170,6 +171,7 @@ yargs // eslint-disable-line
         desc: 'Unique identifier for the account',
         type: 'string',
     })
+
     .option('walletUrl', {
         desc: 'Website for NEAR Wallet',
         type: 'string',
@@ -178,8 +180,9 @@ yargs // eslint-disable-line
     .option('contractName', {
         desc: 'Account name of contract',
         type: 'string',
-        hidden: true      
+        hidden: true
     })
+    .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
     .command(require('../commands/create-account'))
     .command(viewAccount)
@@ -207,7 +210,9 @@ yargs // eslint-disable-line
         'outDir': 'out_dir'
     })
     .showHelpOnFail(true)
-    .demandCommand(1, 'Please enter a command')
     .recommendCommands()
+    .demandCommand(1, chalk`Pass {bold --help} to see all available commands and options.`)
+    .usage(chalk`Usage: {bold $0 <command> [options]}`)
+    .epilogue(chalk`Check out our epic whiteboard series: {bold http://near.ai/wbs}`)
     .wrap(null)
     .argv;
