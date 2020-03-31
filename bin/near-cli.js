@@ -183,7 +183,7 @@ yargs // eslint-disable-line
         hidden: true
     })
     .option('masterAccount', {
-        desc: 'Master account used when create new accounts',
+        desc: 'Master account used when creating new accounts',
         type: 'string',
         hidden: true
     })
