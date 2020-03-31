@@ -1,10 +1,10 @@
 
 #!/bin/bash
 set -ex
-KEY_FILE=neardev/default/generate-key-test.json
+KEY_FILE=neardev/$NODE_ENV/generate-key-test.json
 rm -f "$KEY_FILE"
 
-RESULT=$(./bin/near generate-key generate-key-test --networkId default)
+RESULT=$(./bin/near generate-key generate-key-test --networkId $NODE_ENV)
 echo $RESULT
  
 if [[ ! -f "${KEY_FILE}" ]]; then
@@ -18,7 +18,7 @@ if [[ ! "$RESULT" =~ $EXPECTED ]]; then
     exit 1
 fi
 
-RESULT2=$(./bin/near generate-key generate-key-test --networkId default)
+RESULT2=$(./bin/near generate-key generate-key-test --networkId $NODE_ENV)
 echo $RESULT2
 
 EXPECTED2=".*Account has existing key pair with ed25519:.+ public key.*"

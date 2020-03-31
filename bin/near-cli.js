@@ -146,6 +146,7 @@ const clean = {
 
 let config = require('../get-config')();
 yargs // eslint-disable-line
+    .strict()
     .middleware(require('../utils/check-version'))
     .scriptName('near')
     .option('nodeUrl', {
@@ -169,6 +170,22 @@ yargs // eslint-disable-line
     .option('accountId', {
         desc: 'Unique identifier for the account',
         type: 'string',
+    })
+
+    .option('walletUrl', {
+        desc: 'Website for NEAR Wallet',
+        type: 'string',
+        hidden: true
+    })
+    .option('contractName', {
+        desc: 'Account name of contract',
+        type: 'string',
+        hidden: true
+    })
+    .option('masterAccount', {
+        desc: 'Master account used when creating new accounts',
+        type: 'string',
+        hidden: true
     })
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
@@ -198,6 +215,7 @@ yargs // eslint-disable-line
         'outDir': 'out_dir'
     })
     .showHelpOnFail(true)
+    .recommendCommands()
     .demandCommand(1, chalk`Pass {bold --help} to see all available commands and options.`)
     .usage(chalk`Usage: {bold $0 <command> [options]}`)
     .epilogue(chalk`Check out our epic whiteboard series: {bold http://near.ai/wbs}`)
