@@ -1,6 +1,6 @@
 {
   "name": "near-shell",
-  "version": "0.20.3",
+  "version": "0.20.4",
   "description": "General purpose command line tools for interacting with NEAR Protocol",
   "engines": {
     "node": ">= 10"
