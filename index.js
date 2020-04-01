@@ -72,9 +72,15 @@ exports.login = async function(options) {
 
         // if we found a suitable URL, attempt to use it
         if (tempUrl) {
-            // open a browser to capture NEAR Wallet callback (and quietly direct the user if open fails)
-            try {
+            if (process.env.GITPOD_WORKSPACE_URL) {
+                const workspaceUrl = new URL(process.env.GITPOD_WORKSPACE_URL);
+                newUrl.searchParams.set('success_url', `https://${tempUrl.port}-${workspaceUrl.hostname}`);
+            } else {
                 newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
+            }
+
+            try {
+                // open a browser to capture NEAR Wallet callback (and quietly direct the user if open fails)
                 await open(newUrl.toString());
             } catch (error) {
                 console.error(`Failed to open the URL [ ${newUrl.toString()} ]`, error);
