@@ -1,7 +1,9 @@
 const http = require('http');
 const url = require('url');
 const stoppable = require('stoppable'); // graceful, effective server shutdown
-var tcpPortUsed = require('tcp-port-used'); // avoid port collisions
+const tcpPortUsed = require('tcp-port-used'); // avoid port collisions
+
+let server;
 
 /**
     extract arbitrary collection of fields from temporary HTTP server
@@ -14,7 +16,7 @@ var tcpPortUsed = require('tcp-port-used'); // avoid port collisions
 const payload = (fields, { port, hostname }) => new Promise((resolve, reject) => {
 
     const message = renderWebPage('You are logged in. Please close this window.');
-    const server = stoppable(http.createServer(handler)).listen(port, hostname);
+    server = stoppable(http.createServer(handler)).listen(port, hostname);
 
     /**
         request handler for single-use node server
@@ -69,7 +71,11 @@ const callback = async (port = 3000, hostname = '127.0.0.1', range = 10) => {
     return { port, hostname };
 };
 
-module.exports = { payload, callback };
+const cancel = () => {
+    if (server) server.stop();
+}
+
+module.exports = { payload, callback, cancel };
 
 
 /**

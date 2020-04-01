@@ -57,22 +57,21 @@ exports.login = async function(options) {
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
 
         console.log(chalk`\n{bold.yellow Please authorize NEAR Shell} on at least one of your accounts.`);
-        console.log(chalk`\n{dim If your browser doesn't automatically open, please visit this URL\n${newUrl.toString()}}`);
 
         // attempt to capture accountId automatically via browser callback
         let tempUrl;
-        let accountId;
 
         // find a callback URL on the local machine
         try {
             tempUrl = await capture.callback();
         } catch (error) {
             // console.error("Failed to find suitable port.", error.message)
+            // TODO: Is it? Try triggering error
             // silent error is better here
         }
 
         // if we found a suitable URL, attempt to use it
-        if(tempUrl){
+        if (tempUrl) {
             // open a browser to capture NEAR Wallet callback (and quietly direct the user if open fails)
             try {
                 newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
@@ -80,38 +79,54 @@ exports.login = async function(options) {
             } catch (error) {
                 console.error(`Failed to open the URL [ ${newUrl.toString()} ]`, error);
             }
-
-            // capture account_id as provided by NEAR Wallet
-            try {
-                [accountId] = await capture.payload(['account_id'], tempUrl);
-            } catch (error) {
-                console.error('Failed to capture payload.', error.message);
-            }
         }
 
-        // verify the accountId if we captured it or ...
-        if(accountId) {
-            try {
-                await verify(accountId, keyPair, options);
-            } catch(error) {
-                console.error('Failed to verify accountId.', error.message);
-            }
-        // prompt user to enter it at the terminal if we didn't
-        } else {
-            const rl = readline.createInterface({
-                input: process.stdin,
-                output: process.stdout
-            });
+        console.log(chalk`\n{dim If your browser doesn't automatically open, please visit this URL\n${newUrl.toString()}}`);
 
-            rl.question(chalk`Please authorize at least one account at the URL above.\n\nWhich account did you authorize for use with NEAR Shell?  {bold Enter it here:} `, async (accountId) => {
-                try {
-                    await verify(accountId, keyPair, options);
-                } catch (error) {
-                    console.error(error);
-                } finally {
-                    rl.close();
-                }
+        async function getAccountFromWebpage() {
+            // capture account_id as provided by NEAR Wallet
+            const [accountId] = await capture.payload(['account_id'], tempUrl);
+            return accountId;
+        }
+
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+
+        async function getAccountFromConsole() {
+            return await new Promise((resolve) => {
+                rl.question(
+                    chalk`Please authorize at least one account at the URL above.\n\n` +
+                    chalk`Which account did you authorize for use with NEAR Shell?\n` + 
+                    chalk`{bold Enter it here (if not redirected automatically):}\n`, async (accountId) => {
+                    resolve(accountId); 
+                });
             });
+        }
+
+        let accountId;
+        if (!tempUrl) {
+            accountId = await getAccountFromConsole(); 
+        } else {
+            accountId = await new Promise((resolve, reject) => {
+                let resolved = false;
+                const resolveOnce = (result) => { if (!resolved) resolve(result); resolved = true; }
+                getAccountFromWebpage()
+                    .then(resolveOnce); // NOTE: error ignored on purpose
+                getAccountFromConsole()
+                    .then(resolveOnce)
+                    .catch(reject);
+            });
+        }
+        rl.close();
+        capture.cancel();
+
+        // verify the accountId if we captured it or ...
+        try {
+            await verify(accountId, keyPair, options);
+        } catch (error) {
+            console.error('Failed to verify accountId.', error.message);
         }
     }
 };
