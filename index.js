@@ -83,27 +83,27 @@ exports.login = async function(options) {
 
         console.log(chalk`\n{dim If your browser doesn't automatically open, please visit this URL\n${newUrl.toString()}}`);
 
-        async function getAccountFromWebpage() {
+        const getAccountFromWebpage = async () => {
             // capture account_id as provided by NEAR Wallet
             const [accountId] = await capture.payload(['account_id'], tempUrl);
             return accountId;
-        }
+        };
 
         const rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout
         });
 
-        async function getAccountFromConsole() {
+        const getAccountFromConsole = async () => {
             return await new Promise((resolve) => {
                 rl.question(
                     chalk`Please authorize at least one account at the URL above.\n\n` +
                     chalk`Which account did you authorize for use with NEAR Shell?\n` + 
                     chalk`{bold Enter it here (if not redirected automatically):}\n`, async (accountId) => {
-                    resolve(accountId); 
-                });
+                        resolve(accountId); 
+                    });
             });
-        }
+        };
 
         let accountId;
         if (!tempUrl) {
@@ -111,7 +111,7 @@ exports.login = async function(options) {
         } else {
             accountId = await new Promise((resolve, reject) => {
                 let resolved = false;
-                const resolveOnce = (result) => { if (!resolved) resolve(result); resolved = true; }
+                const resolveOnce = (result) => { if (!resolved) resolve(result); resolved = true; };
                 getAccountFromWebpage()
                     .then(resolveOnce); // NOTE: error ignored on purpose
                 getAccountFromConsole()

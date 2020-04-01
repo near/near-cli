@@ -73,7 +73,7 @@ const callback = async (port = 3000, hostname = '127.0.0.1', range = 10) => {
 
 const cancel = () => {
     if (server) server.stop();
-}
+};
 
 module.exports = { payload, callback, cancel };
 
