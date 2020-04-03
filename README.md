@@ -1,6 +1,7 @@
 # NEAR Shell command line interface
 
 [![Build Status](https://travis-ci.com/nearprotocol/near-shell.svg?branch=master)](https://travis-ci.com/nearprotocol/near-shell)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/nearprotocol/near-shell) 
 
 NEAR Shell is a Node.js application that relies on [`nearlib`](https://github.com/nearprotocol/nearlib) to generate secure keys, connect to the NEAR platform and send transactions to the network on your behalf.
 

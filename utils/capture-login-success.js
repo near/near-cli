@@ -13,30 +13,35 @@ let server;
     @param port the port the server should use
     @param hostname the hostname the server should use
  */
-const payload = (fields, { port, hostname }) => new Promise((resolve, reject) => {
-
-    const message = renderWebPage('You are logged in. Please close this window.');
+const payload = (fields, { port, hostname }, redirectUrl) => new Promise((resolve, reject) => {
     server = stoppable(http.createServer(handler)).listen(port, hostname);
 
     /**
         request handler for single-use node server
      */
     function handler(req, res){
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/html');
         try {
             let parsedUrl = url.parse(req.url, true);
             let results = fields.map((field) => parsedUrl.query[field]);
-            res.end(message, () => {
-                server.stop();
-                resolve(results);
-            });
+
+            if (Object.keys(parsedUrl.query).length > 0) {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/html');
+                // TODO: Make code more specialized (vs handling generic fields) and only output this if login succeeded end to end
+                res.end(renderWebPage('You are logged in. Please close this window.'), () => {
+                    server.stop();
+                    resolve(results);
+                });
+            } else {
+                res.writeHead(301, { Location: redirectUrl });
+                res.end();
+            }
         } catch (e) {
-            console.log('Unexpected error: ', e);
+            console.error('Unexpected error: ', e);
             res.statusCode = 400;
             res.end('It\'s a scam!');
             server.stop();
-            reject('Failed to capture accountId');
+            reject(new Error('Failed to capture accountId'));
         }
     }
 });
@@ -49,6 +54,11 @@ const payload = (fields, { port, hostname }) => new Promise((resolve, reject) =>
     @param range the number of ports to try scanning before giving up
  */
 const callback = async (port = 3000, hostname = '127.0.0.1', range = 10) => {
+    if (process.env.GITPOD_WORKSPACE_URL) {
+        // NOTE: Port search interferes with GitPod port management
+        return { port, hostname };
+    }
+
     const start = port;
     const end = start + range;
     let inUse = true;

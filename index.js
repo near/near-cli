@@ -63,7 +63,7 @@ exports.login = async function(options) {
 
         // find a callback URL on the local machine
         try {
-            tempUrl = await capture.callback();
+            tempUrl = await capture.callback(6000);
         } catch (error) {
             // console.error("Failed to find suitable port.", error.message)
             // TODO: Is it? Try triggering error
@@ -72,12 +72,19 @@ exports.login = async function(options) {
 
         // if we found a suitable URL, attempt to use it
         if (tempUrl) {
-            // open a browser to capture NEAR Wallet callback (and quietly direct the user if open fails)
-            try {
+            if (process.env.GITPOD_WORKSPACE_URL) {
+                const workspaceUrl = new URL(process.env.GITPOD_WORKSPACE_URL);
+                newUrl.searchParams.set('success_url', `https://${tempUrl.port}-${workspaceUrl.hostname}`);
+                // Browser not opened, as will open automatically for opened port
+            } else {
                 newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
-                await open(newUrl.toString());
-            } catch (error) {
-                console.error(`Failed to open the URL [ ${newUrl.toString()} ]`, error);
+
+                try {
+                    // open a browser to capture NEAR Wallet callback (and quietly direct the user if open fails)
+                    await open(newUrl.toString());
+                } catch (error) {
+                    console.error(`Failed to open the URL [ ${newUrl.toString()} ]`, error);
+                }
             }
         }
 
@@ -85,7 +92,7 @@ exports.login = async function(options) {
 
         const getAccountFromWebpage = async () => {
             // capture account_id as provided by NEAR Wallet
-            const [accountId] = await capture.payload(['account_id'], tempUrl);
+            const [accountId] = await capture.payload(['account_id'], tempUrl, newUrl);
             return accountId;
         };
 
