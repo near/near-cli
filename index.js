@@ -63,7 +63,7 @@ exports.login = async function(options) {
 
         // find a callback URL on the local machine
         try {
-            tempUrl = await capture.callback(6000);
+            tempUrl = await capture.callback(5000);
         } catch (error) {
             // console.error("Failed to find suitable port.", error.message)
             // TODO: Is it? Try triggering error

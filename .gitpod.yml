@@ -4,5 +4,5 @@ github:
   prebuilds:
     addBadge: true
 ports:
-  - port: 6000
+  - port: 5000
     onOpen: open-browser
