@@ -69,3 +69,7 @@ near <command>
 | --masterAccount           | Account used to create requested account.     | [string]  [required]|             |
 | --publicKey               | Public key to initialize the account with     | [string]  [required]|             |
 | --initialBalance          | Number of tokens to transfer to newly account | [string]  [required]|             |
+
+## License
+This repository is distributed under the terms of both the MIT license and the Apache License (Version 2.0).
+See [LICENSE](LICENSE) and [LICENSE-APACHE](LICENSE-APACHE) for details.
