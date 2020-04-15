@@ -5,7 +5,7 @@ module.exports = {
     handler: async (argv) => {
         const repl = require('repl');
         const context = repl.start('> ').context;
-        context.nearlib = require('nearlib');
+        context.nearlib = require('near-api-js');
         context.near = await require('../utils/connect')(argv);
         if (argv.accountId) {
             context.account = await context.near.account(argv.accountId);

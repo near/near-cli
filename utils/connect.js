@@ -1,4 +1,4 @@
-const nearlib = require('nearlib');
+const nearlib = require('near-api-js');
 
 module.exports = async function connect({ keyStore, ...options }) {
     // TODO: Avoid need to wrap in deps

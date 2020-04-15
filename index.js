@@ -7,7 +7,7 @@ const readline = require('readline');
 const URL = require('url').URL;
 const chalk = require('chalk');  // colorize output
 const open = require('open');    // open URL in default browser
-const { KeyPair, utils } = require('nearlib');
+const { KeyPair, utils } = require('near-api-js');
 
 const connect = require('./utils/connect');
 const verify = require('./utils/verify-account');

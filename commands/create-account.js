@@ -1,7 +1,7 @@
 
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
-const { KeyPair, utils } = require('nearlib');
+const { KeyPair, utils } = require('near-api-js');
 
 module.exports = {
     command: 'create_account <accountId>',

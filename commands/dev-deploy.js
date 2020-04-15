@@ -1,4 +1,4 @@
-const { KeyPair } = require('nearlib');
+const { KeyPair } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { readFile, writeFile } = require('fs').promises;

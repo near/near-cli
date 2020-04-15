@@ -1,4 +1,4 @@
-const KeyPair = require('nearlib').KeyPair;
+const KeyPair = require('near-api-js').KeyPair;
 const exitOnError = require('../utils/exit-on-error');
 
 module.exports = {

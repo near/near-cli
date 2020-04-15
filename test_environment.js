@@ -1,5 +1,5 @@
 const NodeEnvironment = require('jest-environment-node');
-const nearlib = require('nearlib');
+const nearlib = require('near-api-js');
 const fs = require('fs');
 
 const INITIAL_BALANCE = '100000000000';
@@ -11,7 +11,7 @@ class LocalTestEnvironment extends NodeEnvironment {
     }
 
     async setup() {
-        this.global.nearlib = require('nearlib');
+        this.global.nearlib = require('near-api-js');
         this.global.window = {};
         let config = require('./get-config')();
         this.global.testSettings = this.global.nearConfig = config;

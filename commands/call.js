@@ -1,4 +1,4 @@
-const nearlib = require('nearlib');
+const nearlib = require('near-api-js');
 const { utils } = nearlib;
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
