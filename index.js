@@ -15,6 +15,9 @@ const capture = require('./utils/capture-login-success');
 
 const inspectResponse = require('./utils/inspect-response');
 
+const MIXPANEL_TOKEN = '9aa8926fbcb03eb5d6ce787b5e8fa6eb';
+var mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
+
 // TODO: Fix promisified wrappers to handle error properly
 
 // For smart contract:
@@ -47,6 +50,13 @@ exports.callViewFunction = async function(options) {
 // For account:
 
 exports.login = async function(options) {
+    mixpanel.track('test_event', {
+        distinct_id: 'unique client id',
+        property_1: 'value 1',
+        property_2: 'value 2',
+        property_3: 'value 3'
+    });
+
     if (!options.walletUrl) {
         console.log('Log in is not needed on this environment. Please use appropriate master account for shell operations.');
     } else {
@@ -126,15 +136,17 @@ exports.login = async function(options) {
                     .catch(reject);
             });
         }
-        rl.close();
-        capture.cancel();
-
+       
         // verify the accountId if we captured it or ...
         try {
             await verify(accountId, keyPair, options);
         } catch (error) {
             console.error('Failed to verify accountId.', error.message);
         }
+
+        rl.close();
+        capture.cancel();
+
     }
 };
 
