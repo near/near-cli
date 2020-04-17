@@ -82,12 +82,15 @@ const track = async (eventType, eventProperties) => {
         return;
     }
 
-    if (shellSettings.trackingEnabled) {
+    try {
         const mixPanelProperties = {
             distinct_id: shellSettings.trackingSessionId
         };
         Object.assign(mixPanelProperties, eventProperties);
         mixpanel.track(eventType, mixPanelProperties);
+    }
+    catch (e) {
+        console.log("Warning: problem while sending developer event tracking data. This is not critical. Error: ", e);
     }
 };
 
