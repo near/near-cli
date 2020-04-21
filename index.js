@@ -146,7 +146,7 @@ exports.viewAccount = async function(options) {
     }
     console.log(`Account ${options.accountId}`);
     console.log(inspectResponse(state));
-    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_STATE, { 'accountId' : options.accountId });
+    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_STATE, {});
 };
 
 exports.deleteAccount = async function(options) {
