@@ -2,6 +2,7 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
 const bs58 = require('bs58');
+const eventtracking = require('../utils/eventtracking');
 
 module.exports = {
     command: 'tx-status <hash>',
@@ -13,6 +14,7 @@ module.exports = {
             required: true
         }),
     handler: exitOnError(async (argv) => {
+        await eventtracking.track(eventtracking.EVENT_ID_TX_STATUS_START, {});
         const near = await connect(argv);
 
         const hashParts = argv.hash.split(':');
@@ -33,5 +35,6 @@ module.exports = {
         const status = await near.connection.provider.txStatus(bs58.decode(hash), accountId);
         console.log(`Transaction ${accountId}:${hash}`);
         console.log(inspectResponse(status));
+        await eventtracking.track(eventtracking.EVENT_ID_TX_STATUS_SUCCESS, {});
     })
 };
