@@ -2,7 +2,6 @@ const MIXPANEL_TOKEN = '9aa8926fbcb03eb5d6ce787b5e8fa6eb';
 var mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
 const homedir = require('os').homedir();
 const fs = require('fs');
-const {promisify} = require('util');
 const path = require('path');
 const uuid = require('uuid');
 const chalk = require('chalk');  // colorize output
@@ -93,10 +92,9 @@ const track = async (eventType, eventProperties) => {
         mixpanel.track(eventType, mixPanelProperties);
     }
     catch (e) {
-        console.log("Warning: problem while sending developer event tracking data. This is not critical. Error: ", e);
+        console.log('Warning: problem while sending developer event tracking data. This is not critical. Error: ', e);
     }
 };
 
-track('test_event', { p1: 'a'})
 
 module.exports = { track };
