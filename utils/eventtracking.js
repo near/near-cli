@@ -25,7 +25,7 @@ const getShellSettings = () => {
         }
     } catch (e) {
         console.log(e);
-    }
+    };
     return {};
 }
 
@@ -39,7 +39,7 @@ const saveShellSettings = (settings) => {
         fs.writeFileSync(shellSettingsPath, JSON.stringify(settings));
     } catch (e) {
         console.log(e);
-    }
+    };
 }
 
 
@@ -96,5 +96,13 @@ const track = async (eventType, eventProperties) => {
     }
 };
 
+module.exports = {
+    track,
 
-module.exports = { track };
+    // Event ids used in mixpanel. Note that we want to mention shell to make it very easy to tell that an event came from shell,
+    // since mixpanel might be used for other components as well.
+    EVENT_ID_ACCOUNT_STATE: 'shell_account_state',
+    EVENT_ID_LOGIN: 'shell_login',
+    EVENT_ID_DEPLOY: 'shell_deploy',
+    EVENT_ID_DEV_DEPLOY: 'shell_dev_deploy'
+};

@@ -14,9 +14,7 @@ const verify = require('./utils/verify-account');
 const capture = require('./utils/capture-login-success');
 
 const inspectResponse = require('./utils/inspect-response');
-
-const MIXPANEL_TOKEN = '9aa8926fbcb03eb5d6ce787b5e8fa6eb';
-var mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
+const eventtracking = require('./utils/eventtracking');
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -103,7 +101,6 @@ exports.login = async function(options) {
             input: process.stdin,
             output: process.stdout
         });
-
         const getAccountFromConsole = async () => {
             return await new Promise((resolve) => {
                 rl.question(
@@ -114,6 +111,8 @@ exports.login = async function(options) {
                     });
             });
         };
+        rl.close();
+        capture.cancel();
 
         let accountId;
         if (!tempUrl) {
@@ -136,11 +135,7 @@ exports.login = async function(options) {
         } catch (error) {
             console.error('Failed to verify accountId.', error.message);
         }
-
-        rl.close();
-        capture.cancel();
-
-    }
+    }    
 };
 
 exports.viewAccount = async function(options) {
@@ -152,6 +147,7 @@ exports.viewAccount = async function(options) {
     }
     console.log(`Account ${options.accountId}`);
     console.log(inspectResponse(state));
+    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_STATE, { 'accountId' : options.accountId });
 };
 
 exports.deleteAccount = async function(options) {
