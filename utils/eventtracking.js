@@ -1,50 +1,16 @@
 const MIXPANEL_TOKEN = '9aa8926fbcb03eb5d6ce787b5e8fa6eb';
 var mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
-const homedir = require('os').homedir();
-const fs = require('fs');
-const path = require('path');
+
 const uuid = require('uuid');
 const chalk = require('chalk');  // colorize output
 const readline = require('readline');
+const settings = require('./settings');
 
 const TRACKING_ENABLED_KEY = 'trackingEnaled';
 const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
 
-// TODO: pull out into separate file. Remove DBG console printouts
-const getShellSettings = () => {
-    const nearPath = path.join(homedir, '.near-config');
-    try {
-        if (!fs.existsSync(nearPath)) {
-            fs.mkdirSync(nearPath);
-        }
-        const shellSettingsPath = path.join(nearPath, 'settings');
-        if (!fs.existsSync(shellSettingsPath)) {
-            return {};
-        } else {
-            return JSON.parse(fs.readFileSync(shellSettingsPath, 'utf8'));
-        }
-    } catch (e) {
-        console.log(e);
-    }
-    return {};
-};
-
-const saveShellSettings = (settings) => {
-    const nearPath = path.join(homedir, '.near-config');
-    try {
-        if (!fs.existsSync(nearPath)) {
-            fs.mkdirSync(nearPath);
-        }
-        const shellSettingsPath = path.join(nearPath, 'settings');
-        fs.writeFileSync(shellSettingsPath, JSON.stringify(settings));
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-
 const track = async (eventType, eventProperties) => {
-    const shellSettings = getShellSettings();
+    const shellSettings = settings.getShellSettings();
     // if the appropriate option is not in settings, ask now and save settings.
     if (!(TRACKING_ENABLED_KEY in shellSettings)) {
         const rl = readline.createInterface({
@@ -77,7 +43,7 @@ const track = async (eventType, eventProperties) => {
         shellSettings[TRACKING_ENABLED_KEY] = await getEventTrackingConsent();
         shellSettings[TRACKING_SESSION_ID_KEY] = shellSettings[TRACKING_ENABLED_KEY] ? uuid.v4() : undefined;
         rl.close();
-        saveShellSettings(shellSettings);
+        settings.saveShellSettings(shellSettings);
     }
 
     if (!shellSettings[TRACKING_ENABLED_KEY]) {
