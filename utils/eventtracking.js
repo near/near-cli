@@ -8,6 +8,9 @@ const uuid = require('uuid');
 const chalk = require('chalk');  // colorize output
 const readline = require('readline');
 
+const TRACKING_ENABLED_KEY = 'trackingEnaled';
+const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
+
 // TODO: pull out into separate file. Remove DBG console printouts
 const getShellSettings = () => {
     const nearPath = path.join(homedir, '.near-config');
@@ -15,7 +18,7 @@ const getShellSettings = () => {
         if (!fs.existsSync(nearPath)) {
             fs.mkdirSync(nearPath);
         }
-        const shellSettingsPath = path.join(nearPath, 'shellSettings');
+        const shellSettingsPath = path.join(nearPath, 'settings');
         if (!fs.existsSync(shellSettingsPath)) {
             return {};
         } else {
@@ -33,7 +36,7 @@ const saveShellSettings = (settings) => {
         if (!fs.existsSync(nearPath)) {
             fs.mkdirSync(nearPath);
         }
-        const shellSettingsPath = path.join(nearPath, 'shellSettings');
+        const shellSettingsPath = path.join(nearPath, 'settings');
         fs.writeFileSync(shellSettingsPath, JSON.stringify(settings));
     } catch (e) {
         console.log(e);
@@ -44,7 +47,7 @@ const saveShellSettings = (settings) => {
 const track = async (eventType, eventProperties) => {
     const shellSettings = getShellSettings();
     // if the appropriate option is not in settings, ask now and save settings.
-    if (!('trackingEnabled' in shellSettings)) {
+    if (!(TRACKING_ENABLED_KEY in shellSettings)) {
         const rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout
@@ -72,13 +75,13 @@ const track = async (eventType, eventProperties) => {
             return false; // If they can't figure it out in this many attempts, just opt out
         };
        
-        shellSettings['trackingEnabled'] = await getEventTrackingConsent();
-        shellSettings['trackingSessionId'] = shellSettings['trackingEnabled'] ? uuid.v4() : undefined;
+        shellSettings[TRACKING_ENABLED_KEY] = await getEventTrackingConsent();
+        shellSettings[TRACKING_SESSION_ID_KEY] = shellSettings[TRACKING_ENABLED_KEY] ? uuid.v4() : undefined;
         rl.close();
         saveShellSettings(shellSettings);
     }
 
-    if (!shellSettings.trackingEnabled) {
+    if (!shellSettings[TRACKING_ENABLED_KEY]) {
         return;
     }
 
@@ -93,5 +96,7 @@ const track = async (eventType, eventProperties) => {
         console.log("Warning: problem while sending developer event tracking data. This is not critical. Error: ", e);
     }
 };
+
+track('test_event', { p1: 'a'})
 
 module.exports = { track };
