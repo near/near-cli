@@ -50,13 +50,6 @@ exports.callViewFunction = async function(options) {
 // For account:
 
 exports.login = async function(options) {
-    mixpanel.track('test_event', {
-        distinct_id: 'unique client id',
-        property_1: 'value 1',
-        property_2: 'value 2',
-        property_3: 'value 3'
-    });
-
     if (!options.walletUrl) {
         console.log('Log in is not needed on this environment. Please use appropriate master account for shell operations.');
     } else {
