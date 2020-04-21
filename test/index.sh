@@ -1,6 +1,6 @@
 #!/bin/bash
 OVERALL_RESULT=0
-mdkir ~/.near-config
+mkdir ~/.near-config
 cp ./test/testsettings ~/.near-config/settings
 for test in ./test/test_*; do
     echo ""
