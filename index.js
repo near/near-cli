@@ -111,8 +111,6 @@ exports.login = async function(options) {
                     });
             });
         };
-        rl.close();
-        capture.cancel();
 
         let accountId;
         if (!tempUrl) {
@@ -128,14 +126,15 @@ exports.login = async function(options) {
                     .catch(reject);
             });
         }
-       
+        rl.close();
+        capture.cancel();
         // verify the accountId if we captured it or ...
         try {
             await verify(accountId, keyPair, options);
         } catch (error) {
             console.error('Failed to verify accountId.', error.message);
         }
-    }    
+    }
 };
 
 exports.viewAccount = async function(options) {
