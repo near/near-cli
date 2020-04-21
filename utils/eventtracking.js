@@ -25,9 +25,9 @@ const getShellSettings = () => {
         }
     } catch (e) {
         console.log(e);
-    };
+    }
     return {};
-}
+};
 
 const saveShellSettings = (settings) => {
     const nearPath = path.join(homedir, '.near-config');
@@ -39,8 +39,8 @@ const saveShellSettings = (settings) => {
         fs.writeFileSync(shellSettingsPath, JSON.stringify(settings));
     } catch (e) {
         console.log(e);
-    };
-}
+    }
+};
 
 
 const track = async (eventType, eventProperties) => {
