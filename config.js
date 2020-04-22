@@ -6,10 +6,10 @@ function getConfig(env) {
     case 'production':
         return {
             networkId: 'mainnet',
-            nodeUrl: 'https://rpc.nearprotocol.com',
+            nodeUrl: 'https://rpc.mainnet.nearprotocol.com',
             contractName: CONTRACT_NAME,
-            walletUrl: 'https://wallet.nearprotocol.com',
-            helperUrl: 'https://helper.nearprotocol.com',
+            walletUrl: 'https://wallet.mainnet.nearprotocol.com',
+            helperUrl: 'https://helper.mainnet.nearprotocol.com',
         };
     case 'development':
         return {
