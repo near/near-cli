@@ -33,7 +33,6 @@ module.exports = {
 
 async function createAccount(options) {
     await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_START, {});
-    console.log("?")
     options.initialBalance = utils.format.parseNearAmount(options.initialBalance);
     // NOTE: initialBalance is passed as part of config here
     let near = await connect(options);

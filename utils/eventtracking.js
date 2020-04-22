@@ -6,7 +6,7 @@ const chalk = require('chalk');  // colorize output
 const readline = require('readline');
 const settings = require('./settings');
 
-const TRACKING_ENABLED_KEY = 'trackingEnaled';
+const TRACKING_ENABLED_KEY = 'trackingEnabled';
 const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
 
 const track = async (eventType, eventProperties) => {
@@ -52,7 +52,7 @@ const track = async (eventType, eventProperties) => {
 
     try {
         const mixPanelProperties = {
-            distinct_id: shellSettings.trackingSessionId
+            distinct_id: shellSettings[TRACKING_SESSION_ID_KEY]
         };
         Object.assign(mixPanelProperties, eventProperties);
         mixpanel.track(eventType, mixPanelProperties);

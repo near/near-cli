@@ -4,14 +4,16 @@ const path = require('path');
 
 
 // Persistent shell settings
+const SETTINGS_FILE_NAME = 'settings.json';
+const SETTINGS_DIR = '.near-config';
 
 const getShellSettings = () => {
-    const nearPath = path.join(homedir, '.near-config');
+    const nearPath = path.join(homedir, SETTINGS_DIR);
     try {
         if (!fs.existsSync(nearPath)) {
             fs.mkdirSync(nearPath);
         }
-        const shellSettingsPath = path.join(nearPath, 'settings');
+        const shellSettingsPath = path.join(nearPath, SETTINGS_FILE_NAME);
         if (!fs.existsSync(shellSettingsPath)) {
             return {};
         } else {
@@ -24,12 +26,12 @@ const getShellSettings = () => {
 };
 
 const saveShellSettings = (settings) => {
-    const nearPath = path.join(homedir, '.near-config');
+    const nearPath = path.join(homedir, SETTINGS_DIR);
     try {
         if (!fs.existsSync(nearPath)) {
             fs.mkdirSync(nearPath);
         }
-        const shellSettingsPath = path.join(nearPath, 'settings');
+        const shellSettingsPath = path.join(nearPath, SETTINGS_FILE_NAME);
         fs.writeFileSync(shellSettingsPath, JSON.stringify(settings));
     } catch (e) {
         console.log(e);
