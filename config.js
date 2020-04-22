@@ -13,7 +13,7 @@ function getConfig(env) {
         };
     case 'development':
         return {
-            networkId: 'testnet',
+            networkId: 'default',
             nodeUrl: 'https://rpc.testnet.nearprotocol.com',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.testnet.nearprotocol.com',
