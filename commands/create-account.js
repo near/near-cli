@@ -32,7 +32,6 @@ module.exports = {
 };
 
 async function createAccount(options) {
-    await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_START, {});
     options.initialBalance = utils.format.parseNearAmount(options.initialBalance);
     // NOTE: initialBalance is passed as part of config here, parsed in middleware/initial-balance
     let near = await connect(options);
@@ -49,5 +48,4 @@ async function createAccount(options) {
         await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
     }
     console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
-    await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_SUCCESS, {});
 }
