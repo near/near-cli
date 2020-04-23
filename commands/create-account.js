@@ -1,7 +1,7 @@
 
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
-const { KeyPair, utils } = require('near-api-js');
+const { KeyPair } = require('near-api-js');
 const eventtracking = require('../utils/eventtracking');
 
 module.exports = {
