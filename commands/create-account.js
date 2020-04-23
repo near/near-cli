@@ -2,13 +2,13 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { KeyPair } = require('near-api-js');
 const NEAR_ENV_SUFFIXES = [
-  'near',
-  'test',
-  'beta',
-  'dev'
+    'near',
+    'test',
+    'beta',
+    'dev'
 ];
 const TLA_MIN_LENGTH = 11;
-const ERROR_INVALID_FORMAT = new Error("Invalid format for account name, please check console for details.")
+const ERROR_INVALID_FORMAT = new Error('Invalid format for account name, please check console for details.');
 
 module.exports = {
     command: 'create_account <accountId>',
@@ -54,7 +54,7 @@ async function createAccount(options) {
             throw(ERROR_INVALID_FORMAT);
         }
     } else {
-        console.log(`Unexpected account name format. Please use one of these formats:\n` +
+        console.log('Unexpected account name format. Please use one of these formats:\n' +
         `1. Top-level name with ${TLA_MIN_LENGTH}+ characters (ex: near-friend.test)\n` +
         `2. A subdomain account name ending with .${NEAR_ENV_SUFFIXES.join(', .')}. (Example: counter.alice.test)`);
         throw(ERROR_INVALID_FORMAT);
