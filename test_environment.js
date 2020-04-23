@@ -2,7 +2,7 @@ const NodeEnvironment = require('jest-environment-node');
 const nearlib = require('near-api-js');
 const fs = require('fs');
 
-const INITIAL_BALANCE = '100000000000';
+const INITIAL_BALANCE = '500000000000000000000000000';
 const testAccountName = 'test.near';
 
 class LocalTestEnvironment extends NodeEnvironment {
