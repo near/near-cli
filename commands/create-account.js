@@ -1,6 +1,6 @@
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
-const { KeyPair, utils } = require('near-api-js');
+const { KeyPair } = require('near-api-js');
 const NEAR_ENV_SUFFIXES = [
   'near',
   'test',
@@ -38,6 +38,7 @@ module.exports = {
 };
 
 async function createAccount(options) {
+    // NOTE: initialBalance is passed as part of config here, parsed in middleware/initial-balance
     // periods are disallowed in top-level accounts and can only be used for subdomains
     const splitAccount = options.accountId.split('.');
     if (splitAccount.length === 2) {
@@ -58,8 +59,6 @@ async function createAccount(options) {
         `2. A subdomain account name ending with .${NEAR_ENV_SUFFIXES.join(', .')}. (Example: counter.alice.test)`);
         throw(ERROR_INVALID_FORMAT);
     }
-    options.initialBalance = utils.format.parseNearAmount(options.initialBalance);
-    // NOTE: initialBalance is passed as part of config here
     let near = await connect(options);
     let keyPair;
     let publicKey;
