@@ -1,7 +1,7 @@
 
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
-const { KeyPair, utils } = require('near-api-js');
+const { KeyPair } = require('near-api-js');
 
 module.exports = {
     command: 'create_account <accountId>',
@@ -31,8 +31,7 @@ module.exports = {
 };
 
 async function createAccount(options) {
-    options.initialBalance = utils.format.parseNearAmount(options.initialBalance);
-    // NOTE: initialBalance is passed as part of config here
+    // NOTE: initialBalance is passed as part of config here, parsed in middleware/initial-balance
     let near = await connect(options);
     let keyPair;
     let publicKey;
