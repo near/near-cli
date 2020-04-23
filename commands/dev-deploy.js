@@ -62,7 +62,7 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
         }
     }
 
-    const accountId = `dev-${Date.now()}`;
+    const accountId = `dev-${Date.now()}.test.near`;
     const keyPair = await KeyPair.fromRandom('ed25519');
     await near.accountCreator.createAccount(accountId, keyPair.publicKey);
     await keyStore.setKey(networkId, accountId, keyPair);
