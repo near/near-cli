@@ -8,7 +8,6 @@ const NEAR_ENV_SUFFIXES = [
     'dev'
 ];
 const TLA_MIN_LENGTH = 11;
-const ERROR_INVALID_FORMAT = new Error('Invalid format for account name, please check console for details.');
 
 module.exports = {
     command: 'create_account <accountId>',
@@ -45,19 +44,19 @@ async function createAccount(options) {
         // TLA (bob-at-least-maximum-chars.test)
         if (splitAccount[0].length < TLA_MIN_LENGTH) {
             console.log(`Top-level accounts (not ending in .near, .test, etc) must be greater than ${TLA_MIN_LENGTH} characters`);
-            throw(ERROR_INVALID_FORMAT);
+            return;
         }
     } else if (splitAccount.length === 3) {
         // Subdomain (short.alice.near)
         if (!NEAR_ENV_SUFFIXES.includes(splitAccount[2])) {
             console.log(`Expected a subdomain account name ending in ${NEAR_ENV_SUFFIXES.join(', ')}. (Example: counter.alice.test)`);
-            throw(ERROR_INVALID_FORMAT);
+            return;
         }
     } else {
         console.log('Unexpected account name format. Please use one of these formats:\n' +
         `1. Top-level name with ${TLA_MIN_LENGTH}+ characters (ex: near-friend.test)\n` +
         `2. A subdomain account name ending with .${NEAR_ENV_SUFFIXES.join(', .')}. (Example: counter.alice.test)`);
-        throw(ERROR_INVALID_FORMAT);
+        return;
     }
     let near = await connect(options);
     let keyPair;
