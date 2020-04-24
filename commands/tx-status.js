@@ -14,7 +14,7 @@ module.exports = {
             required: true
         }),
     handler: exitOnError(async (argv) => {
-        await eventtracking.track(eventtracking.EVENT_ID_TX_STATUS_START, {});
+        await eventtracking.track(eventtracking.EVENT_ID_TX_STATUS_START, { node: options.nodeUrl });
         const near = await connect(argv);
 
         const hashParts = argv.hash.split(':');
@@ -35,6 +35,6 @@ module.exports = {
         const status = await near.connection.provider.txStatus(bs58.decode(hash), accountId);
         console.log(`Transaction ${accountId}:${hash}`);
         console.log(inspectResponse(status));
-        await eventtracking.track(eventtracking.EVENT_ID_TX_STATUS_SUCCESS, {});
+        await eventtracking.track(eventtracking.EVENT_ID_TX_STATUS_END, { node: options.nodeUrl, success: true });
     })
 };
