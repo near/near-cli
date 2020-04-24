@@ -18,6 +18,11 @@ module.exports = {
             type: 'boolean',
             default: false
         })
+        .option('initialBalance', {
+            desc: 'Number of tokens to transfer to newly created account',
+            type: 'string',
+            default: '100'
+        })
         .alias({
             'init': ['force', 'f'],
         }),
