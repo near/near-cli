@@ -14,6 +14,7 @@ const verify = require('./utils/verify-account');
 const capture = require('./utils/capture-login-success');
 
 const inspectResponse = require('./utils/inspect-response');
+const eventtracking = require('./utils/eventtracking');
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -100,7 +101,6 @@ exports.login = async function(options) {
             input: process.stdin,
             output: process.stdout
         });
-
         const getAccountFromConsole = async () => {
             return await new Promise((resolve) => {
                 rl.question(
@@ -128,7 +128,6 @@ exports.login = async function(options) {
         }
         rl.close();
         capture.cancel();
-
         // verify the accountId if we captured it or ...
         try {
             await verify(accountId, keyPair, options);
@@ -139,6 +138,7 @@ exports.login = async function(options) {
 };
 
 exports.viewAccount = async function(options) {
+    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_STATE_START, {});
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let state = await account.state();
@@ -147,23 +147,28 @@ exports.viewAccount = async function(options) {
     }
     console.log(`Account ${options.accountId}`);
     console.log(inspectResponse(state));
+    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_STATE_SUCCESS, {});
 };
 
 exports.deleteAccount = async function(options) {
+    await eventtracking.track(eventtracking.EVENT_ID_DELETE_ACCOUNT_START, {});
     console.log(
         `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
     await account.deleteAccount(options.beneficiaryId);
     console.log(`Account ${options.accountId} for network "${options.networkId}" was deleted.`);
+    await eventtracking.track(eventtracking.EVENT_ID_DELETE_ACCOUNT_SUCCESS, {});
 };
 
 exports.keys = async function(options) {
+    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_KEYS_START, {});
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let accessKeys = await account.getAccessKeys();
     console.log(`Keys for account ${options.accountId}`);
     console.log(inspectResponse(accessKeys));
+    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_KEYS_SUCCESS, {});
 };
 
 exports.sendMoney = async function(options) {
