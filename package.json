@@ -33,6 +33,7 @@
   "dependencies": {
     "ascii-table": "0.0.9",
     "bn": "^1.0.5",
+    "bn.js": "^5.1.1",
     "bs58": "^4.0.1",
     "chalk": "^4.0.0",
     "flagged-respawn": "^1.0.1",
