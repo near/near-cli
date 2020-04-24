@@ -199,7 +199,7 @@ exports.stake = async function (options) {
     await eventtracking.track(eventtracking.EVENT_ID_STAKE_END, { node: options.nodeUrl, success: true });
 };
 
-exports.build = async function (options) {
+exports.build = async function () {
     await eventtracking.track(eventtracking.EVENT_ID_BUILD_START, {});
     const gulp = spawn('gulp', [], { shell: process.platform == 'win32' });
     gulp.stdout.on('data', function (data) {
@@ -212,4 +212,4 @@ exports.build = async function (options) {
         process.exit(code);
     });
     await eventtracking.track(eventtracking.EVENT_ID_BUILD_END, { success: true });
-}
+};
