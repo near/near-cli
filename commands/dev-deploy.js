@@ -2,12 +2,13 @@ const { KeyPair } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { readFile, writeFile } = require('fs').promises;
+const eventtracking = require('../utils/eventtracking');
 
 module.exports = {
     command: 'dev-deploy [wasmFile]',
     desc: 'deploy your smart contract using temporary account (TestNet only)',
     builder: (yargs) => yargs
-        .option('wasmFile',{
+        .option('wasmFile', {
             desc: 'Path to wasm file to deploy',
             type: 'string',
             default: './out/main.wasm'
@@ -29,6 +30,7 @@ module.exports = {
 };
 
 async function devDeploy(options) {
+    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_START, { node: options.nodeUrl });
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
 
     if (!helperUrl && !masterAccount) {
@@ -43,6 +45,7 @@ async function devDeploy(options) {
     const account = await near.account(accountId);
     await account.deployContract(contractData);
     console.log(`Done deploying to ${accountId}`);
+    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { node: options.nodeUrl, success: true });
 }
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
