@@ -8,7 +8,7 @@ module.exports = {
     command: 'dev-deploy [wasmFile]',
     desc: 'deploy your smart contract using temporary account (TestNet only)',
     builder: (yargs) => yargs
-        .option('wasmFile',{
+        .option('wasmFile', {
             desc: 'Path to wasm file to deploy',
             type: 'string',
             default: './out/main.wasm'
@@ -26,25 +26,21 @@ module.exports = {
 
 async function devDeploy(options) {
     await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_START, { node: options.nodeUrl });
-    try {
-        const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
+    const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
 
-        if (!helperUrl && !masterAccount) {
-            throw new Error('Cannot create account as neither helperUrl nor masterAccount is specified in config for current NODE_ENV (see src/config.js)');
-        }
-
-        const near = await connect(options);
-        const accountId = await createDevAccountIfNeeded({ ...options, near });
-        console.log(
-            `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
-        const contractData = await readFile(wasmFile);
-        const account = await near.account(accountId);
-        await account.deployContract(contractData);
-        console.log(`Done deploying to ${accountId}`);
-        await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { node: options.nodeUrl, success: true });
-    } catch (e) {
-        await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { node: options.nodeUrl, success: false });
+    if (!helperUrl && !masterAccount) {
+        throw new Error('Cannot create account as neither helperUrl nor masterAccount is specified in config for current NODE_ENV (see src/config.js)');
     }
+
+    const near = await connect(options);
+    const accountId = await createDevAccountIfNeeded({ ...options, near });
+    console.log(
+        `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
+    const contractData = await readFile(wasmFile);
+    const account = await near.account(accountId);
+    await account.deployContract(contractData);
+    console.log(`Done deploying to ${accountId}`);
+    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { node: options.nodeUrl, success: true });
 }
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {

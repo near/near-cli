@@ -94,9 +94,9 @@ module.exports = {
     EVENT_ID_STAKE_END: 'event_id_stake_end',
     EVENT_ID_CREATE_ACCOUNT_START: 'shell_create_account_start',
     EVENT_ID_CREATE_ACCOUNT_END: 'shell_create_account_end',
-    EVENT_ID_REPL_START: 'shell_repl_start',
+    EVENT_ID_REPL_START: 'shell_repl_start', // repl is currently broken so this is not used.
     EVENT_ID_REPL_END: 'shell_repl_end',
     EVENT_ID_GENERATE_KEY_START: 'shell_generate_key_start',
     EVENT_ID_GENERATE_KEY_END: 'shell_id_generate_key_end',
-    EVENT_ID_ERROR: 'shell_error'
+    EVENT_ID_ERROR: 'shell_error' // This is not used right now because of mixpanel bug.
 };
