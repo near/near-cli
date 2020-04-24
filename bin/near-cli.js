@@ -206,6 +206,7 @@ yargs // eslint-disable-line
     .command(login)
     .command(require('../commands/repl'))
     .command(require('../commands/generate-key'))
+    .command(require('../commands/validators'))
     .config(config)
     .alias({
         'accountId': ['account_id'],

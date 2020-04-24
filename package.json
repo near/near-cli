@@ -31,6 +31,7 @@
     "strip-ansi-cli": "^2.0.0"
   },
   "dependencies": {
+    "ascii-table": "0.0.9",
     "bn": "^1.0.5",
     "bs58": "^4.0.1",
     "chalk": "^4.0.0",
