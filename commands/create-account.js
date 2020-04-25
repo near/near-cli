@@ -1,6 +1,7 @@
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { KeyPair } = require('near-api-js');
+const eventtracking = require('../utils/eventtracking');
 const NEAR_ENV_SUFFIXES = {
     production: 'near',
     default: 'test',
@@ -38,6 +39,7 @@ module.exports = {
 };
 
 async function createAccount(options) {
+    await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_START, { nodeUrl: options.nodeUrl });
     // NOTE: initialBalance is passed as part of config here, parsed in middleware/initial-balance
     // periods are disallowed in top-level accounts and can only be used for subaccounts
     const splitAccount = options.accountId.split('.');
@@ -86,4 +88,5 @@ async function createAccount(options) {
         await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
     }
     console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
+    await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_END, { node: options.nodeUrl, success: true });
 }
