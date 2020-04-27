@@ -70,6 +70,10 @@ module.exports = {
         const seatPrice = findSeatPrice(validators.current_validators, numSeats);
         const nextSeatPrice = findSeatPrice(validators.next_validators, numSeats);
 
+        // Sort validators by their stake.
+        validators.current_validators = validators.current_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
+        validators.next_validators = validators.next_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
+
         var validatorsTable = new AsciiTable();
         validatorsTable.setHeading('Validator Id', 'Stake', '# seats', '% online', 'bls produced', 'bls expected');
         console.log(`Validators (total: ${validators.current_validators.length}, seat price: ${utils.format.formatNearAmount(seatPrice, 0)}):`);
