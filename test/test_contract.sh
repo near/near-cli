@@ -7,7 +7,7 @@ yarn create near-app --vanilla tmp-project
 cd tmp-project
 
 timestamp=$(date +%s)
-testaccount=testaccount$timestamp.test.near
+testaccount=testaccount$timestamp
 ../bin/near create_account $testaccount
 
 echo Building contract
