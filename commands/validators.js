@@ -1,7 +1,5 @@
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
-const inspectResponse = require('../utils/inspect-response');
-const bs58 = require('bs58');
 const { utils } = require('near-api-js');
 const BN = require('bn.js');
 const AsciiTable = require('ascii-table');
@@ -12,10 +10,7 @@ function findSeatPrice(validators, numSeats) {
     let stakesSum = stakes.reduce((a, b) => a.add(b));
     // assert stakesSum >= numSeats
     let left = new BN(1), right = stakesSum.add(new BN(1));
-    while (true) {
-        if (left.eq(right.sub(new BN(1)))) {
-            return left;
-        }
+    while (!left.eq(right.sub(new BN(1)))) {
         const mid = left.add(right).div(new BN(2));
         let found = false;
         let currentSum = new BN(0);
@@ -31,6 +26,7 @@ function findSeatPrice(validators, numSeats) {
             right = mid;
         }
     }
+    return left;
 }
 
 function diffValidators(currentValidators, nextValidators) {
