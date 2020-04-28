@@ -52,9 +52,12 @@ const track = async (eventType, eventProperties) => {
         return;
     }
 
+
     try {
+        const distinctId = shellSettings[TRACKING_SESSION_ID_KEY];
+        process.env.MIXPANEL_ID = distinctId;
         const mixPanelProperties = {
-            distinct_id: shellSettings[TRACKING_SESSION_ID_KEY]
+            distinct_id: distinctId
         };
         Object.assign(mixPanelProperties, eventProperties);
         await mixpanel.track(eventType, mixPanelProperties);
