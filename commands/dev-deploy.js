@@ -71,7 +71,7 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init, maste
     }
 
     let accountId;
-    if (typeof masterAccount === "undefined" && helperUrl) {
+    if (typeof masterAccount === 'undefined' && helperUrl) {
         // determine "faucet" account name of environment from helperUrl
         const splitHelper = helperUrl.split('.');
         accountId = `dev-${Date.now()}.${splitHelper[1]}`;
