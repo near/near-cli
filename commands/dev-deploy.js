@@ -48,7 +48,7 @@ async function devDeploy(options) {
     await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { node: options.nodeUrl, success: true });
 }
 
-async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount }) {
+async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount, helperUrl }) {
     // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
     // https://github.com/nearprotocol/near-shell/issues/287
     const accountFilePath = `${keyStore.keyDir}/dev-account`;
@@ -70,7 +70,15 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init, maste
         }
     }
 
-    const accountId = `dev-${Date.now()}.${masterAccount}`;
+    let accountId;
+    if (typeof masterAccount === "undefined" && helperUrl) {
+        // determine "faucet" account name of environment from helperUrl
+        const splitHelper = helperUrl.split('.');
+        accountId = `dev-${Date.now()}.${splitHelper[1]}`;
+    } else {
+        accountId = `dev-${Date.now()}.${masterAccount}`;
+    }
+    
     const keyPair = await KeyPair.fromRandom('ed25519');
     await near.accountCreator.createAccount(accountId, keyPair.publicKey);
     await keyStore.setKey(networkId, accountId, keyPair);
