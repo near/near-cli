@@ -94,7 +94,7 @@ module.exports = { payload, callback, cancel };
 function renderWebPage(message){
     const title = 'NEAR Account Authorization Success';
 
-    // logo and font from https://nearprotocol.com/brand/
+    // logo and font from https://near.org/brand/
     return `
 <!DOCTYPE html>
 <html lang="en">
