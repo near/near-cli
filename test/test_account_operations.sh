@@ -4,12 +4,12 @@ rm  -rf tmp-project
 yarn create near-app --vanilla tmp-project
 cd tmp-project
 timestamp=$(date +%s)
-testaccount=testaccount$timestamp
+testaccount=testaccount$timestamp.test.near
 echo Create account
 ../bin/near create_account $testaccount
 
 echo Get account state
-RESULT=$(../bin/near state $testaccount | strip-ansi)
+RESULT=$(../bin/near state $testaccount | ../node_modules/.bin/strip-ansi)
 echo $RESULT
 EXPECTED=".+Account $testaccount.+amount:.+'100000000000000000000000000'.+ "
 if [[ ! "$RESULT" =~ $EXPECTED ]]; then
