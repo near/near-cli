@@ -3,7 +3,6 @@ const chalk = require('chalk');
 
 // NEAR imports
 const { keyStores } = require('near-api-js');
-const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 
 // local imports
 const connect = require('./connect');
