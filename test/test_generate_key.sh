@@ -1,7 +1,7 @@
 
 #!/bin/bash
 set -ex
-KEY_FILE=~/.near-config/$NODE_ENV/generate-key-test.json
+KEY_FILE=~/.near-credentials/$NODE_ENV/generate-key-test.json
 rm -f "$KEY_FILE"
 echo "Testing generating-key: new key"
 
