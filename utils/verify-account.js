@@ -1,9 +1,6 @@
 // npm imports
 const chalk = require('chalk');
 
-// NEAR imports
-const { keyStores } = require('near-api-js');
-
 // local imports
 const connect = require('./connect');
 
