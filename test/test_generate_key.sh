@@ -1,7 +1,7 @@
 
 #!/bin/bash
 set -ex
-KEY_FILE=neardev/$NODE_ENV/generate-key-test.json
+KEY_FILE=.near-config/$NODE_ENV/generate-key-test.json
 rm -f "$KEY_FILE"
 
 RESULT=$(./bin/near generate-key generate-key-test --networkId $NODE_ENV)
