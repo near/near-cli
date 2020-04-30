@@ -53,9 +53,9 @@ exports.callViewFunction = async function (options) {
     await eventtracking.track(eventtracking.EVENT_ID_CALL_VIEW_FN_END, { node: options.nodeUrl, success: true });
 };
 
+// open a given URL in browser in a safe way.
 openUrl = async function(url) {
     try {
-        // open a browser to capture NEAR Wallet callback (and quietly direct the user if open fails)
         await open(url.toString());
     } catch (error) {
         console.error(`Failed to open the URL [ ${url.toString()} ]`, error);
@@ -101,6 +101,7 @@ exports.login = async function (options) {
                 openUrl(newUrl); 
             }
         } else if (isWin) {
+            // redirect automatically on windows, but do not use the browser callback
             openUrl(newUrl);
         }
 
