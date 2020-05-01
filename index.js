@@ -53,6 +53,15 @@ exports.callViewFunction = async function (options) {
     await eventtracking.track(eventtracking.EVENT_ID_CALL_VIEW_FN_END, { node: options.nodeUrl, success: true });
 };
 
+// open a given URL in browser in a safe way.
+const openUrl = async function(url) {
+    try {
+        await open(url.toString());
+    } catch (error) {
+        console.error(`Failed to open the URL [ ${url.toString()} ]`, error);
+    }
+};
+
 exports.login = async function (options) {
     await eventtracking.track(eventtracking.EVENT_ID_LOGIN_START, { node: options.nodeUrl });
     if (!options.walletUrl) {
@@ -68,10 +77,13 @@ exports.login = async function (options) {
 
         // attempt to capture accountId automatically via browser callback
         let tempUrl;
+        const isWin = process.platform === 'win32';
 
         // find a callback URL on the local machine
         try {
-            tempUrl = await capture.callback(5000);
+            if (!isWin) { // capture callback is currently not working on windows. This is a workaround to not use it
+                tempUrl = await capture.callback(5000);
+            }
         } catch (error) {
             // console.error("Failed to find suitable port.", error.message)
             // TODO: Is it? Try triggering error
@@ -86,14 +98,11 @@ exports.login = async function (options) {
                 // Browser not opened, as will open automatically for opened port
             } else {
                 newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
-
-                try {
-                    // open a browser to capture NEAR Wallet callback (and quietly direct the user if open fails)
-                    await open(newUrl.toString());
-                } catch (error) {
-                    console.error(`Failed to open the URL [ ${newUrl.toString()} ]`, error);
-                }
+                openUrl(newUrl); 
             }
+        } else if (isWin) {
+            // redirect automatically on windows, but do not use the browser callback
+            openUrl(newUrl);
         }
 
         console.log(chalk`\n{dim If your browser doesn't automatically open, please visit this URL\n${newUrl.toString()}}`);
@@ -108,12 +117,13 @@ exports.login = async function (options) {
             input: process.stdin,
             output: process.stdout
         });
+        const redirectAutomaticallyHint = tempUrl ? ' (if not redirected automatically)' : '';
         const getAccountFromConsole = async () => {
             return await new Promise((resolve) => {
                 rl.question(
                     chalk`Please authorize at least one account at the URL above.\n\n` +
                     chalk`Which account did you authorize for use with NEAR Shell?\n` +
-                    chalk`{bold Enter it here (if not redirected automatically):}\n`, async (accountId) => {
+                    chalk`{bold Enter it here${redirectAutomaticallyHint}:}\n`, async (accountId) => {
                         resolve(accountId);
                     });
             });
