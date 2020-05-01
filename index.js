@@ -54,13 +54,13 @@ exports.callViewFunction = async function (options) {
 };
 
 // open a given URL in browser in a safe way.
-openUrl = async function(url) {
+const openUrl = async function(url) {
     try {
         await open(url.toString());
     } catch (error) {
         console.error(`Failed to open the URL [ ${url.toString()} ]`, error);
     }
-}
+};
 
 exports.login = async function (options) {
     await eventtracking.track(eventtracking.EVENT_ID_LOGIN_START, { node: options.nodeUrl });
@@ -77,7 +77,7 @@ exports.login = async function (options) {
 
         // attempt to capture accountId automatically via browser callback
         let tempUrl;
-        const isWin = process.platform === "win32";
+        const isWin = process.platform === 'win32';
 
         // find a callback URL on the local machine
         try {
