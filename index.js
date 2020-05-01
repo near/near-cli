@@ -117,7 +117,7 @@ exports.login = async function (options) {
             input: process.stdin,
             output: process.stdout
         });
-        const redirectAutomaticallyHint = tempUrl ? '(if not redirected automatically)' : '';
+        const redirectAutomaticallyHint = tempUrl ? ' (if not redirected automatically)' : '';
         const getAccountFromConsole = async () => {
             return await new Promise((resolve) => {
                 rl.question(
