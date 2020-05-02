@@ -3,7 +3,7 @@ node_js:
   - 12
 env:
   - NODE_ENV=ci
-  - NODE_ENV=ci-staging
+  - NODE_ENV=ci-betanet
 cache: yarn
 script:
   - yarn lint
