@@ -32,7 +32,8 @@ const saveShellSettings = (settings) => {
             fs.mkdirSync(nearPath);
         }
         const shellSettingsPath = path.join(nearPath, SETTINGS_FILE_NAME);
-        fs.writeFileSync(shellSettingsPath, JSON.stringify(settings));
+        const indentationSize = 4;
+        fs.writeFileSync(shellSettingsPath, JSON.stringify(settings, null, indentationSize));
     } catch (e) {
         console.log(e);
     }
