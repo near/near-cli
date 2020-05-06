@@ -2,12 +2,13 @@ const { KeyPair } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { readFile, writeFile } = require('fs').promises;
+const eventtracking = require('../utils/eventtracking');
 
 module.exports = {
     command: 'dev-deploy [wasmFile]',
     desc: 'deploy your smart contract using temporary account (TestNet only)',
     builder: (yargs) => yargs
-        .option('wasmFile',{
+        .option('wasmFile', {
             desc: 'Path to wasm file to deploy',
             type: 'string',
             default: './out/main.wasm'
@@ -29,6 +30,7 @@ module.exports = {
 };
 
 async function devDeploy(options) {
+    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_START, { node: options.nodeUrl });
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
 
     if (!helperUrl && !masterAccount) {
@@ -43,13 +45,14 @@ async function devDeploy(options) {
     const account = await near.account(accountId);
     await account.deployContract(contractData);
     console.log(`Done deploying to ${accountId}`);
+    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { node: options.nodeUrl, success: true });
 }
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
     // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
     // https://github.com/nearprotocol/near-shell/issues/287
-    const accountFilePath = `${keyStore.keyDir}/dev-account`;
-    const accountFilePathEnv = `${keyStore.keyDir}/dev-account.env`;
+    const accountFilePath = 'neardev/dev-account';
+    const accountFilePathEnv = 'neardev/dev-account.env';
     if (!init) {
         try {
             // throws if either file is missing

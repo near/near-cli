@@ -4,6 +4,7 @@ function getConfig(env) {
     switch (env) {
 
     case 'production':
+    case 'mainnet':
         return {
             networkId: 'mainnet',
             nodeUrl: 'https://rpc.mainnet.nearprotocol.com',
@@ -12,6 +13,7 @@ function getConfig(env) {
             helperUrl: 'https://helper.mainnet.nearprotocol.com',
         };
     case 'development':
+    case 'testnet':
         return {
             networkId: 'default',
             nodeUrl: 'https://rpc.testnet.nearprotocol.com',
@@ -51,10 +53,10 @@ function getConfig(env) {
             contractName: CONTRACT_NAME,
             masterAccount: 'test.near',
         };
-    case 'ci-staging':
+    case 'ci-betanet':
         return {
             networkId: 'shared-test-staging',
-            nodeUrl: 'http://staging-shared-test.nearprotocol.com:3030',
+            nodeUrl: 'http://rpc.ci-betanet.nearprotocol.com',
             contractName: CONTRACT_NAME,
             masterAccount: 'test.near',
         };

@@ -1,8 +1,9 @@
 
 #!/bin/bash
 set -ex
-KEY_FILE=neardev/$NODE_ENV/generate-key-test.json
+KEY_FILE=~/.near-credentials/$NODE_ENV/generate-key-test.json
 rm -f "$KEY_FILE"
+echo "Testing generating-key: new key"
 
 RESULT=$(./bin/near generate-key generate-key-test --networkId $NODE_ENV)
 echo $RESULT
@@ -17,6 +18,8 @@ if [[ ! "$RESULT" =~ $EXPECTED ]]; then
     echo FAILURE Unexpected output from near generate-key
     exit 1
 fi
+
+echo "Testing generating-key: key for account already exists"
 
 RESULT2=$(./bin/near generate-key generate-key-test --networkId $NODE_ENV)
 echo $RESULT2

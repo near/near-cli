@@ -114,22 +114,11 @@ const callViewFunction = {
     handler: exitOnError(main.callViewFunction)
 };
 
-const { spawn } = require('child_process');
+
 const build = {
     command: 'build',
     desc: 'build your smart contract',
-    handler: () => {
-        const gulp = spawn('gulp', [], {shell: process.platform == 'win32'});
-        gulp.stdout.on('data', function (data) {
-            console.log(data.toString());
-        });
-        gulp.stderr.on('data', function (data) {
-            console.log(data.toString());
-        });
-        gulp.on('exit', function (code) {
-            process.exit(code);
-        });
-    }
+    handler: exitOnError(main.build)
 };
 
 const clean = {
