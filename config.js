@@ -7,34 +7,34 @@ function getConfig(env) {
     case 'mainnet':
         return {
             networkId: 'mainnet',
-            nodeUrl: 'https://rpc.mainnet.nearprotocol.com',
+            nodeUrl: 'https://rpc.mainnet.near.org',
             contractName: CONTRACT_NAME,
-            walletUrl: 'https://wallet.mainnet.nearprotocol.com',
+            walletUrl: 'https://wallet.mainnet.near.org',
             helperUrl: 'https://helper.mainnet.nearprotocol.com',
         };
     case 'development':
     case 'testnet':
         return {
             networkId: 'default',
-            nodeUrl: 'https://rpc.testnet.nearprotocol.com',
+            nodeUrl: 'https://rpc.testnet.near.org',
             contractName: CONTRACT_NAME,
-            walletUrl: 'https://wallet.testnet.nearprotocol.com',
+            walletUrl: 'https://wallet.testnet.near.org',
             helperUrl: 'https://helper.testnet.nearprotocol.com',
         };
     case 'devnet':
         return {
             networkId: 'devnet',
-            nodeUrl: 'https://rpc.devnet.nearprotocol.com',
+            nodeUrl: 'https://rpc.devnet.near.org',
             contractName: CONTRACT_NAME,
-            walletUrl: 'https://wallet.devnet.nearprotocol.com',
+            walletUrl: 'https://wallet.devnet.near.org',
             helperUrl: 'https://helper.devnet.nearprotocol.com',
         };
     case 'betanet':
         return {
             networkId: 'betanet',
-            nodeUrl: 'https://rpc.betanet.nearprotocol.com',
+            nodeUrl: 'https://rpc.betanet.near.org',
             contractName: CONTRACT_NAME,
-            walletUrl: 'https://wallet.betanet.nearprotocol.com',
+            walletUrl: 'https://wallet.betanet.near.org',
             helperUrl: 'https://helper.betanet.nearprotocol.com',
         };
     case 'local':
