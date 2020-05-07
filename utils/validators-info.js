@@ -64,15 +64,15 @@ async function showProposalsTable(near) {
     result.current_proposals.forEach((p) => proposals.set(p.account_id, p));
     const combinedProposals = combineValidatorsAndProposals(result.current_validators, proposals);
     const expectedSeatPrice = validators.findSeatPrice(combinedProposals, result.numSeats);
-    console.log(`Proposals (total: ${proposals.size})`);
-    console.log(`Expected seat price = ${utils.format.formatNearAmount(expectedSeatPrice, 0)}`);
+    console.log(`Proposals for the epoch after next (total: ${proposals.size}, expected seat price = ${utils.format.formatNearAmount(expectedSeatPrice, 0)})`);
     const proposalsTable = new AsciiTable();
+    proposalsTable.setHeading('Status', 'Validator', 'Stake => New Stake');
     combinedProposals.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake))).forEach((proposal) => {
         let kind = '';
         if (new BN(proposal.stake).gte(expectedSeatPrice)) {
-            kind = proposals.has(proposal.account_id) ? 'New' : 'Rollover';
+            kind = proposals.has(proposal.account_id) ? 'Proposal(Accepted)' : 'Rollover';
         } else {
-            kind = proposals.has(proposal.account_id) ? 'Declined' : 'Kicked out';
+            kind = proposals.has(proposal.account_id) ? 'Proposal(Declined)' : 'Kicked out';
         }
         let stake_fmt = utils.format.formatNearAmount(proposal.stake, 0);
         if (currentValidators.has(proposal.account_id) && proposals.has(proposal.account_id)) {
@@ -85,6 +85,8 @@ async function showProposalsTable(near) {
         );
     });
     console.log(proposalsTable.toString());
+    console.log("Expected seat price is calculated based on observed so far proposals and validators.");
+    console.log("It can change from new proposals or some validators going offline.");
     console.log("Note: this currently doesn't account for offline kickouts and rewards for current epoch");
 }
 
