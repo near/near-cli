@@ -10,7 +10,7 @@ function getConfig(env) {
             nodeUrl: 'https://rpc.mainnet.near.org',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.mainnet.near.org',
-            helperUrl: 'https://helper.mainnet.nearprotocol.com',
+            helperUrl: 'https://helper.mainnet.near.org',
         };
     case 'development':
     case 'testnet':
@@ -19,7 +19,7 @@ function getConfig(env) {
             nodeUrl: 'https://rpc.testnet.near.org',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.testnet.near.org',
-            helperUrl: 'https://helper.testnet.nearprotocol.com',
+            helperUrl: 'https://helper.testnet.near.org',
         };
     case 'devnet':
         return {
@@ -27,7 +27,7 @@ function getConfig(env) {
             nodeUrl: 'https://rpc.devnet.near.org',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.devnet.near.org',
-            helperUrl: 'https://helper.devnet.nearprotocol.com',
+            helperUrl: 'https://helper.devnet.near.org',
         };
     case 'betanet':
         return {
@@ -35,7 +35,7 @@ function getConfig(env) {
             nodeUrl: 'https://rpc.betanet.near.org',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.betanet.near.org',
-            helperUrl: 'https://helper.betanet.nearprotocol.com',
+            helperUrl: 'https://helper.betanet.near.org',
         };
     case 'local':
         return {
@@ -49,14 +49,14 @@ function getConfig(env) {
     case 'ci':
         return {
             networkId: 'shared-test',
-            nodeUrl: 'http://shared-test.nearprotocol.com:3030',
+            nodeUrl: 'https://rpc.ci-testnet.near.org',
             contractName: CONTRACT_NAME,
             masterAccount: 'test.near',
         };
     case 'ci-betanet':
         return {
             networkId: 'shared-test-staging',
-            nodeUrl: 'http://rpc.ci-betanet.nearprotocol.com',
+            nodeUrl: 'https://rpc.ci-betanet.near.org',
             contractName: CONTRACT_NAME,
             masterAccount: 'test.near',
         };
