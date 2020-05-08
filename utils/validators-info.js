@@ -15,14 +15,14 @@ async function showValidatorsTable(near, epochId) {
     const seatPrice = validators.findSeatPrice(result.current_validators, result.numSeats);
     result.current_validators = result.current_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     var validatorsTable = new AsciiTable();
-    validatorsTable.setHeading('Validator Id', 'Stake', '# seats', '% online', 'bls produced', 'bls expected');
+    validatorsTable.setHeading('Validator Id', 'Stake', '# Seats', '% Online', 'Blocks produced', 'Blocks expected');
     console.log(`Validators (total: ${result.current_validators.length}, seat price: ${utils.format.formatNearAmount(seatPrice, 0)}):`);
     result.current_validators.forEach((validator) => {
         validatorsTable.addRow(
             validator.account_id,
             utils.format.formatNearAmount(validator.stake, 0),
-            new BN(validator.stake).divRound(seatPrice),
-            Math.floor(validator.num_produced_blocks / validator.num_expected_blocks * 100),
+            new BN(validator.stake).div(seatPrice),
+            `${Math.floor(validator.num_produced_blocks / validator.num_expected_blocks * 10000) / 100}%`,
             validator.num_produced_blocks,
             validator.num_expected_blocks);
     });
@@ -32,20 +32,21 @@ async function showValidatorsTable(near, epochId) {
 async function showNextValidatorsTable(near) {
     const result = await validatorsInfo(near, null);
     const nextSeatPrice = validators.findSeatPrice(result.next_validators, result.numSeats);
+    result.next_validators = result.next_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     const diff = validators.diffEpochValidators(result.current_validators, result.next_validators);
     console.log(`\nNext validators (total: ${result.next_validators.length}, seat price: ${utils.format.formatNearAmount(nextSeatPrice, 0)}):`);
     let nextValidatorsTable = new AsciiTable();
-    nextValidatorsTable.setHeading('Status', 'Validator', 'Stake', '# seats');
+    nextValidatorsTable.setHeading('Status', 'Validator', 'Stake', '# Seats');
     diff.newValidators.forEach((validator) => nextValidatorsTable.addRow(
         'New',
         validator.account_id,
         utils.format.formatNearAmount(validator.stake, 0),
-        new BN(validator.stake).divRound(nextSeatPrice)));
+        new BN(validator.stake).div(nextSeatPrice)));
     diff.changedValidators.forEach((changeValidator) => nextValidatorsTable.addRow(
         'Rewarded', 
         changeValidator.next.account_id, 
         `${utils.format.formatNearAmount(changeValidator.current.stake, 0)} -> ${utils.format.formatNearAmount(changeValidator.next.stake, 0)}`,
-        new BN(changeValidator.next.stake).divRound(nextSeatPrice)));
+        new BN(changeValidator.next.stake).div(nextSeatPrice)));
     diff.removedValidators.forEach((validator) => nextValidatorsTable.addRow('Kicked out', validator.account_id, '-', '-'));
     console.log(nextValidatorsTable.toString());
 }
@@ -67,7 +68,7 @@ async function showProposalsTable(near) {
     const combinedPassingProposals = combinedProposals.filter((p) => new BN(p.stake).gte(expectedSeatPrice));
     console.log(`Proposals for the epoch after next (new: ${proposals.size}, passing: ${combinedPassingProposals.length}, expected seat price = ${utils.format.formatNearAmount(expectedSeatPrice, 0)})`);
     const proposalsTable = new AsciiTable();
-    proposalsTable.setHeading('Status', 'Validator', 'Stake => New Stake');
+    proposalsTable.setHeading('Status', 'Validator', 'Stake => New Stake', '# Seats');
     combinedProposals.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake))).forEach((proposal) => {
         let kind = '';
         if (new BN(proposal.stake).gte(expectedSeatPrice)) {
@@ -82,7 +83,8 @@ async function showProposalsTable(near) {
         proposalsTable.addRow(
             kind,
             proposal.account_id,
-            stake_fmt
+            stake_fmt,
+            new BN(proposal.stake).div(expectedSeatPrice)
         );
     });
     console.log(proposalsTable.toString());
