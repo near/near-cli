@@ -82,7 +82,8 @@ exports.login = async function (options) {
 
         // find a callback URL on the local machine
         try {
-            if (isMac) { // capture callback is currently not working on windows. This is a workaround to not use it
+            // capture callback isn't working reliably outside of Mac. This is a workaround to not use it
+            if (isMac) {
                 tempUrl = await capture.callback(5000);
                 // if we found a suitable URL, attempt to use it
                 newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
