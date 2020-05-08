@@ -78,11 +78,7 @@ exports.login = async function (options) {
         // attempt to capture accountId automatically via browser callback
         let tempUrl;
         // See: https://github.com/near/near-shell/issues/358
-        // Mac:     set up a callback       open site automatically
-        // Windows: don't set up callback   open site automatically
-        // Linux:   set up callback         don't open site automatically
         const isMac = process.platform === 'darwin';
-        const isLinux = process.platform === 'linux';
 
         // find a callback URL on the local machine
         try {
