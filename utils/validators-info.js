@@ -85,9 +85,9 @@ async function showProposalsTable(near) {
         );
     });
     console.log(proposalsTable.toString());
-    console.log("Expected seat price is calculated based on observed so far proposals and validators.");
-    console.log("It can change from new proposals or some validators going offline.");
-    console.log("Note: this currently doesn't account for offline kickouts and rewards for current epoch");
+    console.log('Expected seat price is calculated based on observed so far proposals and validators.');
+    console.log('It can change from new proposals or some validators going offline.');
+    console.log('Note: this currently doesn\'t account for offline kickouts and rewards for current epoch');
 }
 
 module.exports = { showValidatorsTable, showNextValidatorsTable, showProposalsTable };

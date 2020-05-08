@@ -15,15 +15,15 @@ module.exports = {
         const near = await connect(argv);
 
         switch (argv.epoch) {
-            case 'current':
-                await validatorsInfo.showValidatorsTable(near, null);
-                break;
-            case 'next':
-                await validatorsInfo.showNextValidatorsTable(near);
-                break;
-            default:
-                await validatorsInfo.showValidatorsTable(near, argv.epoch);
-                break;
+        case 'current':
+            await validatorsInfo.showValidatorsTable(near, null);
+            break;
+        case 'next':
+            await validatorsInfo.showNextValidatorsTable(near);
+            break;
+        default:
+            await validatorsInfo.showValidatorsTable(near, argv.epoch);
+            break;
         }
     })
 };
