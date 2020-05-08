@@ -64,7 +64,8 @@ async function showProposalsTable(near) {
     result.current_proposals.forEach((p) => proposals.set(p.account_id, p));
     const combinedProposals = combineValidatorsAndProposals(result.current_validators, proposals);
     const expectedSeatPrice = validators.findSeatPrice(combinedProposals, result.numSeats);
-    console.log(`Proposals for the epoch after next (total: ${proposals.size}, expected seat price = ${utils.format.formatNearAmount(expectedSeatPrice, 0)})`);
+    const combinedPassingProposals = combinedProposals.filter((p) => new BN(p.stake).gte(expectedSeatPrice));
+    console.log(`Proposals for the epoch after next (new: ${proposals.size}, passing: ${combinedPassingProposals.length}, expected seat price = ${utils.format.formatNearAmount(expectedSeatPrice, 0)})`);
     const proposalsTable = new AsciiTable();
     proposalsTable.setHeading('Status', 'Validator', 'Stake => New Stake');
     combinedProposals.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake))).forEach((proposal) => {
