@@ -78,6 +78,7 @@ exports.login = async function (options) {
         // attempt to capture accountId automatically via browser callback
         let tempUrl;
         const isWin = process.platform === 'win32';
+        const isLinux = process.platform === 'linux';
 
         // find a callback URL on the local machine
         try {
@@ -136,8 +137,11 @@ exports.login = async function (options) {
             accountId = await new Promise((resolve, reject) => {
                 let resolved = false;
                 const resolveOnce = (result) => { if (!resolved) resolve(result); resolved = true; };
-                getAccountFromWebpage()
-                    .then(resolveOnce); // NOTE: error ignored on purpose
+                // See https://github.com/near/near-shell/issues/358 describing this if block
+                if (!isLinux) {
+                    getAccountFromWebpage()
+                        .then(resolveOnce); // NOTE: error ignored on purpose
+                }
                 getAccountFromConsole()
                     .then(resolveOnce)
                     .catch(reject);
