@@ -86,23 +86,11 @@ exports.login = async function (options) {
 
         // find a callback URL on the local machine
         try {
-            if (isMac || isLinux) { // capture callback is currently not working on windows. This is a workaround to not use it
+            if (isMac) { // capture callback is currently not working on windows. This is a workaround to not use it
                 tempUrl = await capture.callback(5000);
                 // if we found a suitable URL, attempt to use it
-                if (isMac) {
-                    newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
-                    await openUrl(newUrl);
-                } else {
-                    // is linux
-                    if (process.env.GITPOD_WORKSPACE_URL) {
-                        const workspaceUrl = new URL(process.env.GITPOD_WORKSPACE_URL);
-                        newUrl.searchParams.set('success_url', `https://${tempUrl.port}-${workspaceUrl.hostname}`);
-                        // Browser not opened, as will open automatically for opened port
-                    } else {
-                        // is linux but not Gitpod
-                        newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
-                    }
-                }
+                newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
+                await openUrl(newUrl);
             } else {
                 // redirect automatically, but do not use the browser callback
                 await openUrl(newUrl);
@@ -144,10 +132,8 @@ exports.login = async function (options) {
             accountId = await new Promise((resolve, reject) => {
                 let resolved = false;
                 const resolveOnce = (result) => { if (!resolved) resolve(result); resolved = true; };
-                if (!isLinux) {
-                    getAccountFromWebpage()
-                        .then(resolveOnce); // NOTE: error ignored on purpose
-                }
+                getAccountFromWebpage()
+                    .then(resolveOnce); // NOTE: error ignored on purpose
                 getAccountFromConsole()
                     .then(resolveOnce)
                     .catch(reject);
