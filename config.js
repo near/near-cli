@@ -9,7 +9,7 @@ function getConfig(env) {
             networkId: 'mainnet',
             nodeUrl: 'https://rpc.mainnet.near.org',
             contractName: CONTRACT_NAME,
-            walletUrl: 'https://wallet.mainnet.near.org',
+            walletUrl: 'https://wallet.near.org',
             helperUrl: 'https://helper.mainnet.near.org',
         };
     case 'development':
