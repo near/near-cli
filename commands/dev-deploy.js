@@ -64,7 +64,10 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
         } catch (e) {
             if (e.code === 'ENOENT') {
                 // Create neardev directory, new account will be created below
-                await mkdir('./neardev');
+                try {
+                    await mkdir('./neardev')
+                } catch (_) {} // if already exists, okay
+
             } else {
                 throw e;
             }
