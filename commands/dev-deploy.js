@@ -2,6 +2,7 @@ const { KeyPair } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { readFile, writeFile, mkdir } = require('fs').promises;
+const { existsSync } = require('fs');
 const eventtracking = require('../utils/eventtracking');
 
 module.exports = {
@@ -64,10 +65,7 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
         } catch (e) {
             if (e.code === 'ENOENT') {
                 // Create neardev directory, new account will be created below
-                try {
-                    await mkdir('./neardev')
-                } catch (_) {} // if already exists, okay
-
+                if (!existsSync('./neardev')) await mkdir('./neardev');
             } else {
                 throw e;
             }
