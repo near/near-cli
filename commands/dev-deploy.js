@@ -54,6 +54,7 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
     // https://github.com/nearprotocol/near-shell/issues/287
     const accountFilePath = 'neardev/dev-account';
     const accountFilePathEnv = 'neardev/dev-account.env';
+    const projectCredentialsPath = './neardev';
     if (!init) {
         try {
             // throws if either file is missing
@@ -65,7 +66,7 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
         } catch (e) {
             if (e.code === 'ENOENT') {
                 // Create neardev directory, new account will be created below
-                if (!existsSync('./neardev')) await mkdir('./neardev');
+                if (!existsSync(projectCredentialsPath)) await mkdir(projectCredentialsPath);
             } else {
                 throw e;
             }
