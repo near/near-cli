@@ -77,32 +77,25 @@ exports.login = async function (options) {
 
         // attempt to capture accountId automatically via browser callback
         let tempUrl;
-        const isWin = process.platform === 'win32';
+        // See: https://github.com/near/near-shell/issues/358
+        const isMac = process.platform === 'darwin';
 
         // find a callback URL on the local machine
         try {
-            if (!isWin) { // capture callback is currently not working on windows. This is a workaround to not use it
+            // capture callback isn't working reliably outside of Mac. This is a workaround to not use it
+            if (isMac) {
                 tempUrl = await capture.callback(5000);
+                // if we found a suitable URL, attempt to use it
+                newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
+                await openUrl(newUrl);
+            } else {
+                // redirect automatically, but do not use the browser callback
+                await openUrl(newUrl);
             }
         } catch (error) {
             // console.error("Failed to find suitable port.", error.message)
             // TODO: Is it? Try triggering error
             // silent error is better here
-        }
-
-        // if we found a suitable URL, attempt to use it
-        if (tempUrl) {
-            if (process.env.GITPOD_WORKSPACE_URL) {
-                const workspaceUrl = new URL(process.env.GITPOD_WORKSPACE_URL);
-                newUrl.searchParams.set('success_url', `https://${tempUrl.port}-${workspaceUrl.hostname}`);
-                // Browser not opened, as will open automatically for opened port
-            } else {
-                newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
-                openUrl(newUrl); 
-            }
-        } else if (isWin) {
-            // redirect automatically on windows, but do not use the browser callback
-            openUrl(newUrl);
         }
 
         console.log(chalk`\n{dim If your browser doesn't automatically open, please visit this URL\n${newUrl.toString()}}`);
