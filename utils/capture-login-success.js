@@ -33,7 +33,7 @@ const payload = (fields, { port, hostname }, redirectUrl) => new Promise((resolv
                     resolve(results);
                 });
             } else {
-                res.writeHead(301, { Location: redirectUrl });
+                res.writeHead(302, { Location: redirectUrl });
                 res.end();
             }
         } catch (e) {
