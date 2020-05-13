@@ -1,8 +1,8 @@
-const nearlib = require('near-api-js');
+const { keyStores } = require('near-api-js');
 const homedir = require('os').homedir();
 const path = require('path');
-const MergeKeyStore = nearlib.keyStores.MergeKeyStore;
-const UnencryptedFileSystemKeyStore = nearlib.keyStores.UnencryptedFileSystemKeyStore;
+const MergeKeyStore = keyStores.MergeKeyStore;
+const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
 
 const CREDENTIALS_DIR = '.near-credentials';
 const PROJECT_KEY_DIR = './neardev';

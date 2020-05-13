@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/near/near-shell.svg?branch=master)](https://travis-ci.com/near/near-shell)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/near/near-shell) 
 
-NEAR Shell is a Node.js application that relies on [`nearlib`](https://github.com/nearprotocol/nearlib) to generate secure keys, connect to the NEAR platform and send transactions to the network on your behalf.
+NEAR Shell is a Node.js application that relies on [`near-api-js`](https://github.com/near/near-api-js) to generate secure keys, connect to the NEAR platform and send transactions to the network on your behalf.
 
 > note that **Node.js version 10+** is required to run NEAR Shell
 
