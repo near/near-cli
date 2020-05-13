@@ -2,6 +2,8 @@ const NodeEnvironment = require('jest-environment-node');
 const nearlib = require('near-api-js');
 const fs = require('fs');
 
+const { PROJECT_KEY_DIR } = require('./middleware/key-store');
+
 const INITIAL_BALANCE = '500000000000000000000000000';
 const testAccountName = 'test.near';
 
@@ -19,7 +21,7 @@ class LocalTestEnvironment extends NodeEnvironment {
             contractName: 'test' + Date.now(),
             accountId: 'test' + Date.now()
         });
-        const keyStore = new nearlib.keyStores.UnencryptedFileSystemKeyStore('./neardev');
+        const keyStore = new nearlib.keyStores.UnencryptedFileSystemKeyStore(PROJECT_KEY_DIR);
         config.deps = Object.assign(config.deps || {}, {
             storage:  this.createFakeStorage(),
             keyStore,
