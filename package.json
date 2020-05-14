@@ -40,7 +40,7 @@
     "jest-environment-node": "^26.0.0",
     "mixpanel": "^0.11.0",
     "ncp": "^2.0.0",
-    "near-api-js": "^0.24.0",
+    "near-api-js": "^0.25.0",
     "open": "^7.0.1",
     "rimraf": "^3.0.0",
     "stoppable": "^1.1.0",
