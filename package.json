@@ -31,6 +31,7 @@
     "strip-ansi-cli": "^2.0.0"
   },
   "dependencies": {
+    "@ledgerhq/hw-transport-node-hid": "^5.15.0",
     "ascii-table": "0.0.9",
     "bn.js": "^5.1.1",
     "bs58": "^4.0.1",
@@ -41,6 +42,7 @@
     "mixpanel": "^0.11.0",
     "ncp": "^2.0.0",
     "near-api-js": "^0.25.0",
+    "near-ledger-js": "^0.0.4",
     "open": "^7.0.1",
     "rimraf": "^3.0.0",
     "stoppable": "^1.1.0",

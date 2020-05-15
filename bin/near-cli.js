@@ -160,6 +160,16 @@ yargs // eslint-disable-line
         desc: 'Unique identifier for the account',
         type: 'string',
     })
+    .option('useLedger', {
+        desc: 'Use Ledger for signing',
+        type: 'boolean',
+        default: false
+    })
+    .option('hdKeyPath', {
+        desc: 'HD key path to use with Ledger',
+        type: 'string',
+        default: "44'/397'/0'/0'/1'"
+    })
 
     .option('walletUrl', {
         desc: 'Website for NEAR Wallet',
@@ -179,6 +189,7 @@ yargs // eslint-disable-line
     .middleware(require('../middleware/initial-balance'))
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
+    .middleware(require('../middleware/ledger'))
     .command(require('../commands/create-account'))
     .command(viewAccount)
     .command(deleteAccount)
