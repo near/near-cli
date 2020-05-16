@@ -47,8 +47,7 @@ exports.callViewFunction = async function (options) {
     await eventtracking.track(eventtracking.EVENT_ID_CALL_VIEW_FN_START, { node: options.nodeUrl });
     console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
     const near = await connect(options);
-    // TODO: Figure out how to run readonly calls without account
-    const account = await near.account(options.accountId || options.masterAccount || 'register.near');
+    const account = await near.account(options.accountId || options.masterAccount || options.contractName);
     console.log(inspectResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
     await eventtracking.track(eventtracking.EVENT_ID_CALL_VIEW_FN_END, { node: options.nodeUrl, success: true });
 };
