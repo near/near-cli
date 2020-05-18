@@ -3169,9 +3169,9 @@ ncp@^2.0.0:
   integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
 
 near-api-js@^0.25.0:
-  version "0.25.0"
-  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.25.0.tgz#c210816c41b90897c5508dc4e0d15e4c481fb293"
-  integrity sha512-FreBjyfZ2aP8HjgTYMqJzxS0+teoCsQfsEVX3tOcKLWMMudy3lK9OZ4tj9J9f8Kzg1LyGHLHpkiqJedkq+UH0A==
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.25.1.tgz#4b2c05cc929cc42b76898ca12939aafc083505e9"
+  integrity sha512-z0LpHA+CmbOreaTCEl91/cus9K/S+hC3zLMf6L6UyxY+GUNDV1OqlvTZzsbrHxFnlbK45ZwebtZeOtLPOrDceQ==
   dependencies:
     "@types/bn.js" "^4.11.5"
     bn.js "^5.0.0"
