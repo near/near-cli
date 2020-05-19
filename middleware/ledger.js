@@ -1,4 +1,4 @@
-const { Signer, utils: { PublicKey, key_pair: { KeyType } } } = require('near-api-js');
+const { utils: { PublicKey, key_pair: { KeyType } } } = require('near-api-js');
 const { createClient } = require('near-ledger-js');
 const { default: TransportNodeHid } = require('@ledgerhq/hw-transport-node-hid');
 
@@ -23,15 +23,15 @@ module.exports = async function useLedgerSigner({ useLedger, hdKeyPath, newHdKey
 
     let cachedPublicKey;
     let signer = {
-        async getPublicKey(accountId, networkId) {
+        async getPublicKey() {
             // NOTE: Public key is cached to avoid confirming on Ledger multiple times
             if (!cachedPublicKey) {
                 cachedPublicKey = await getPublicKeyForPath(hdKeyPath);
             }
             return cachedPublicKey;
         },
-        async signMessage(message, accountId, networkId) {
-            const publicKey = await this.getPublicKey(accountId, networkId);
+        async signMessage(message) {
+            const publicKey = await this.getPublicKey();
             console.log('Waiting for confirmation on Ledger...');
             const signature = await client.sign(message);
             return { signature, publicKey };
