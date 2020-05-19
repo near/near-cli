@@ -14,7 +14,7 @@ module.exports = async function useLedgerSigner({ useLedger, hdKeyPath, newHdKey
     const client = await createClient(transport);
 
     async function getPublicKeyForPath(hdKeyPath) {
-        console.log('Waiting for confirmation on Ledger...')
+        console.log('Waiting for confirmation on Ledger...');
         const rawPublicKey = await client.getPublicKey(hdKeyPath);
         const publicKey = new PublicKey({ keyType: KeyType.ED25519, data: rawPublicKey });
         console.log('Using public key:', publicKey.toString());
@@ -32,11 +32,11 @@ module.exports = async function useLedgerSigner({ useLedger, hdKeyPath, newHdKey
         },
         async signMessage(message, accountId, networkId) {
             const publicKey = await this.getPublicKey(accountId, networkId);
-            console.log('Waiting for confirmation on Ledger...')
-            const signature = await client.sign(message)
+            console.log('Waiting for confirmation on Ledger...');
+            const signature = await client.sign(message);
             return { signature, publicKey };
         }
-    }
+    };
 
     if (newHdKeyPath) {
         publicKey = await getPublicKeyForPath(hdKeyPath);
