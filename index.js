@@ -62,6 +62,7 @@ const openUrl = async function(url) {
 };
 
 exports.login = async function (options) {
+    await eventtracking.askForConsentIfNeeded();
     await eventtracking.track(eventtracking.EVENT_ID_LOGIN_START, { node: options.nodeUrl });
     if (!options.walletUrl) {
         console.log('Log in is not needed on this environment. Please use appropriate master account for shell operations.');

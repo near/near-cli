@@ -32,6 +32,7 @@ module.exports = {
 };
 
 async function devDeploy(options) {
+    await eventtracking.askForConsentIfNeeded();
     await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_START, { node: options.nodeUrl });
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
 

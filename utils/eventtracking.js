@@ -1,5 +1,5 @@
 const MIXPANEL_TOKEN = '9aa8926fbcb03eb5d6ce787b5e8fa6eb';
-var mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
+const mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
 
 const uuid = require('uuid');
 const chalk = require('chalk');  // colorize output
@@ -9,47 +9,14 @@ const settings = require('./settings');
 const TRACKING_ENABLED_KEY = 'trackingEnabled';
 const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
 
+const shouldOptInByDefault = () => {
+    const isGitPod = !!process.env.GITPOD_WORKSPACE_URL;
+    return isGitPod;
+};
+
 const track = async (eventType, eventProperties) => {
     const shellSettings = settings.getShellSettings();
-    // if the appropriate option is not in settings, ask now and save settings.
-    if (!(TRACKING_ENABLED_KEY in shellSettings)) {
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-        const getEventTrackingConsent = async () => {
-            for (var attempts = 0; attempts < 10; attempts++) {
-                const answer = await new Promise((resolve) => {
-               
-                    rl.question(
-                        chalk`We would like to collect data on near-shell usage to improve developer experience.` +
-                        chalk ` We will never send private information. We only collect which commands are run via an anonymous identifier.` +
-                        chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
-                        async (consentToEventTracking) => {
-                            if (consentToEventTracking == 'y' || consentToEventTracking == 'Y') { 
-                                resolve(true); 
-                            }
-                            else if (consentToEventTracking == 'n' || consentToEventTracking == 'N') {
-                                resolve(false);
-                            }
-                            resolve(undefined);
-                        });
-                });
-                if (answer !== undefined) {
-                    return answer;
-                }
-            }
-            return false; // If they can't figure it out in this many attempts, just opt out
-        };
-
-        const isGitPod = !!process.env.GITPOD_WORKSPACE_URL;
-        shellSettings[TRACKING_ENABLED_KEY] = isGitPod ? true : await getEventTrackingConsent();
-        shellSettings[TRACKING_SESSION_ID_KEY] = shellSettings[TRACKING_ENABLED_KEY] ? uuid.v4() : undefined;
-        rl.close();
-        settings.saveShellSettings(shellSettings);
-    }
-
-    if (!shellSettings[TRACKING_ENABLED_KEY]) {
+    if (!shellSettings[TRACKING_ENABLED_KEY] && (!(TRACKING_ENABLED_KEY in shellSettings) || !shouldOptInByDefault())) {
         return;
     }
 
@@ -59,14 +26,55 @@ const track = async (eventType, eventProperties) => {
         };
         Object.assign(mixPanelProperties, eventProperties);
         await mixpanel.track(eventType, mixPanelProperties);
-    }
-    catch (e) {
+    } catch (e) {
         console.log('Warning: problem while sending developer event tracking data. This is not critical. Error: ', e);
+    }
+};
+
+const getEventTrackingConsent = async () => {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    try {
+        for (let attempts = 0; attempts < 10; attempts++) {
+            const answer = await new Promise((resolve) => {
+                rl.question(
+                    chalk`We would like to collect data on near-shell usage to improve developer experience.` +
+                    chalk` We will never send private information. We only collect which commands are run via an anonymous identifier.` +
+                    chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
+                    async (consentToEventTracking) => {
+                        if (consentToEventTracking == 'y' || consentToEventTracking == 'Y') {
+                            resolve(true);
+                        } else if (consentToEventTracking == 'n' || consentToEventTracking == 'N') {
+                            resolve(false);
+                        }
+                        resolve(undefined);
+                    });
+            });
+            if (answer !== undefined) {
+                return answer;
+            }
+        }
+        return false; // If they can't figure it out in this many attempts, just opt out
+    } finally {
+        rl.close();
+    }
+};
+
+const askForConsentIfNeeded = async () => {
+    const shellSettings = settings.getShellSettings();
+    // if the appropriate option is not in settings, ask now and save settings.
+    if (!(TRACKING_ENABLED_KEY in shellSettings)) {
+        shellSettings[TRACKING_ENABLED_KEY] = shouldOptInByDefault() || await getEventTrackingConsent();
+        shellSettings[TRACKING_SESSION_ID_KEY] = shellSettings[TRACKING_ENABLED_KEY] ? uuid.v4() : undefined;
+        settings.saveShellSettings(shellSettings);
     }
 };
 
 module.exports = {
     track,
+    askForConsentIfNeeded,
     // Event ids used in mixpanel. Note that we want to mention shell to make it very easy to tell that an event came from shell,
     // since mixpanel might be used for other components as well.
     EVENT_ID_ACCOUNT_STATE_START: 'shell_account_state_start',
