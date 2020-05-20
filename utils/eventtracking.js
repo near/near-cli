@@ -24,7 +24,7 @@ const track = async (eventType, eventProperties) => {
                     rl.question(
                         chalk`We would like to collect data on near-shell usage to improve developer experience.` +
                         chalk ` We will never send private information. We only collect which commands are run via an anonymous identifier.` +
-                        chalk`{bold.yellow  Would you like to opt in (y/n)?}`,
+                        chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
                         async (consentToEventTracking) => {
                             if (consentToEventTracking == 'y' || consentToEventTracking == 'Y') { 
                                 resolve(true); 
@@ -41,8 +41,9 @@ const track = async (eventType, eventProperties) => {
             }
             return false; // If they can't figure it out in this many attempts, just opt out
         };
-       
-        shellSettings[TRACKING_ENABLED_KEY] = await getEventTrackingConsent();
+
+        const isGitPod = !!process.env.GITPOD_WORKSPACE_URL;
+        shellSettings[TRACKING_ENABLED_KEY] = isGitPod ? true : await getEventTrackingConsent();
         shellSettings[TRACKING_SESSION_ID_KEY] = shellSettings[TRACKING_ENABLED_KEY] ? uuid.v4() : undefined;
         rl.close();
         settings.saveShellSettings(shellSettings);

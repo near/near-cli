@@ -1,6 +1,8 @@
 const NodeEnvironment = require('jest-environment-node');
-const nearlib = require('near-api-js');
+const nearAPI = require('near-api-js');
 const fs = require('fs');
+
+const { PROJECT_KEY_DIR } = require('./middleware/key-store');
 
 const INITIAL_BALANCE = '500000000000000000000000000';
 const testAccountName = 'test.near';
@@ -12,6 +14,7 @@ class LocalTestEnvironment extends NodeEnvironment {
 
     async setup() {
         this.global.nearlib = require('near-api-js');
+        this.global.nearAPI = require('near-api-js');
         this.global.window = {};
         let config = require('./get-config')();
         this.global.testSettings = this.global.nearConfig = config;
@@ -19,15 +22,15 @@ class LocalTestEnvironment extends NodeEnvironment {
             contractName: 'test' + Date.now(),
             accountId: 'test' + Date.now()
         });
-        const keyStore = new nearlib.keyStores.UnencryptedFileSystemKeyStore('./neardev');
+        const keyStore = new nearAPI.keyStores.UnencryptedFileSystemKeyStore(PROJECT_KEY_DIR);
         config.deps = Object.assign(config.deps || {}, {
             storage:  this.createFakeStorage(),
             keyStore,
         });
-        const near = await nearlib.connect(config);
+        const near = await nearAPI.connect(config);
 
         const masterAccount = await near.account(testAccountName);
-        const randomKey = await nearlib.KeyPair.fromRandom('ed25519');
+        const randomKey = await nearAPI.KeyPair.fromRandom('ed25519');
         const data = [...fs.readFileSync('./out/main.wasm')];
         await config.deps.keyStore.setKey(config.networkId, config.contractName, randomKey);
         await masterAccount.createAndDeployContract(config.contractName, randomKey.getPublicKey(), data, INITIAL_BALANCE);

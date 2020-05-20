@@ -1,5 +1,4 @@
-const nearlib = require('near-api-js');
-const { utils } = nearlib;
+const { providers, utils } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
@@ -34,7 +33,7 @@ async function scheduleFunctionCall(options) {
         JSON.parse(options.args || '{}'),
         options.gas,
         utils.format.parseNearAmount(options.amount));
-    const result = nearlib.providers.getTransactionLastResult(functionCallResponse);
+    const result = providers.getTransactionLastResult(functionCallResponse);
     console.log(inspectResponse(result));
     await eventtracking.track(eventtracking.EVENT_ID_SCHEDULE_FN_CALL_END, { node: options.nodeUrl, success: true });
 }

@@ -1,8 +1,10 @@
 const { KeyPair } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
-const { readFile, writeFile } = require('fs').promises;
+const { readFile, writeFile, mkdir } = require('fs').promises;
+const { existsSync } = require('fs');
 const eventtracking = require('../utils/eventtracking');
+const { PROJECT_KEY_DIR } = require('../middleware/key-store');
 
 module.exports = {
     command: 'dev-deploy [wasmFile]',
@@ -51,8 +53,8 @@ async function devDeploy(options) {
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount, helperUrl }) {
     // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
     // https://github.com/nearprotocol/near-shell/issues/287
-    const accountFilePath = `${keyStore.keyDir}/dev-account`;
-    const accountFilePathEnv = `${keyStore.keyDir}/dev-account.env`;
+    const accountFilePath = `${PROJECT_KEY_DIR}/dev-account`;
+    const accountFilePathEnv = `${PROJECT_KEY_DIR}/dev-account.env`;
     if (!init) {
         try {
             // throws if either file is missing
@@ -63,7 +65,10 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init, maste
             }
         } catch (e) {
             if (e.code === 'ENOENT') {
-                // Ignore as it means new account needs to be created, which happens below
+                // Create neardev directory, new account will be created below
+                if (!existsSync(PROJECT_KEY_DIR)) {
+                    await mkdir(PROJECT_KEY_DIR);
+                }
             } else {
                 throw e;
             }

@@ -1,10 +1,6 @@
 // npm imports
 const chalk = require('chalk');
 
-// NEAR imports
-const { keyStores } = require('near-api-js');
-const UnencryptedFileSystemKeyStore = keyStores.UnencryptedFileSystemKeyStore;
-
 // local imports
 const connect = require('./connect');
 
@@ -21,7 +17,7 @@ module.exports = async (accountId, keyPair, options) => {
             key => key.public_key == keyPair.getPublicKey().toString()
         );
         if (keyFound) {
-            const keyStore = new UnencryptedFileSystemKeyStore('./neardev');
+            const keyStore = near.config.deps.keyStore;
             await keyStore.setKey(options.networkId, accountId, keyPair);
             console.log(chalk`Logged in as [ {bold ${accountId}} ] with public key [ {bold ${short(publicKey)}} ] successfully\n`
             );
