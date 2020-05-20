@@ -25,8 +25,9 @@ module.exports = async function checkVersion() {
     ) {
         const { type: diff, current, latest } = notifier.update;
         const update = normalizePhrasingOf(diff);
+        const updateCommand = '{updateCommand}';
         const message = chalk`NEAR Shell has a ${update} available {dim ${current}} → {green ${latest}}
-Run {cyan npm install -g near-shell} to avoid unexpected behavior`;
+Run {cyan ${updateCommand}} to avoid unexpected behavior`;
 
         const boxenOpts = {
             padding: 1,
