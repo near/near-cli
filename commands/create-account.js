@@ -3,13 +3,7 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { KeyPair } = require('near-api-js');
 const eventtracking = require('../utils/eventtracking');
-const NEAR_ENV_SUFFIXES = {
-    production: 'near',
-    default: 'testnet',
-    development: 'testnet',
-    devnet: 'devnet',
-    betanet: 'betanet'
-};
+// Top-level account (TLA) is testnet for foo.alice.testnet
 const TLA_MIN_LENGTH = 32;
 
 module.exports = {
@@ -59,20 +53,15 @@ async function createAccount(options) {
     } else if (splitAccount.length > 1) {
         // Subaccounts (short.alice.near, even.more.bob.test, and eventually peter.potato)
         // Check that master account TLA matches
-        const accountRootTLA = splitAccount[splitAccount.length - 1];
         const accountTLA = splitAccount.filter((n, i) => i !== 0).join('.');
         if (accountTLA !== options.masterAccount) {
             console.log(`New account doesn't share the same top-level account. Expecting account name to end in ".${options.masterAccount}"`);
             return;
         }
 
-        // Rules apply for environments except local, test, ci, ci-staging
-        if (Object.keys(NEAR_ENV_SUFFIXES).includes(options.networkId)) {
-            // Recommend that the TLA matches the expected network in most cases
-            const networkTLA = NEAR_ENV_SUFFIXES[options.networkId];
-            if (networkTLA !== masterRootTLA || networkTLA !== accountRootTLA) {
-                console.log(`NOTE: In most cases, when connected to "${options.networkId}" account and masterAccount will end in ".${networkTLA}"`);
-            }
+        // Warn user if account seems to be using wrong network, where TLA is captured in config
+        if (Object.prototype.hasOwnProperty.call(options, 'tla') && masterRootTLA !== options.tla) {
+            console.log(`NOTE: In most cases, when connected to network "${options.networkId}", masterAccount will end in ".${options.tla}"`);
         }
     }
     let near = await connect(options);

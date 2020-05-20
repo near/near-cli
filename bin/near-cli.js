@@ -176,6 +176,11 @@ yargs // eslint-disable-line
         type: 'string',
         hidden: true
     })
+    .option('tla', {
+        desc: 'Expected top-level account for a network',
+        type: 'string',
+        hidden: true
+    })
     .middleware(require('../middleware/initial-balance'))
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
