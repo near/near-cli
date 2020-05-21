@@ -23,7 +23,7 @@ module.exports = {
             type: 'string',
             required: false
         })
-        .option('newHdKeyPath', {
+        .option('newLedgerKey', {
             desc: 'HD key path to use with Ledger. Used to generate public key if not specified directly',
             type: 'string',
             default: "44'/397'/0'/0'/1'"

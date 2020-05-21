@@ -2,10 +2,10 @@ const { utils: { PublicKey, key_pair: { KeyType } } } = require('near-api-js');
 const { createClient } = require('near-ledger-js');
 const { default: TransportNodeHid } = require('@ledgerhq/hw-transport-node-hid');
 
-// near ... --useLedger --hdKeyPath
-// near create_account new_account_name --newHdKeyPath --useLedger --hdKeyPath --masterAccount account_that_creates
-module.exports = async function useLedgerSigner({ useLedger, hdKeyPath, newHdKeyPath, publicKey }) {
-    if (!useLedger) {
+// near ... --useLedgerKey
+// near create_account new_account_name --newLedgerKey --useLedgerKey --masterAccount account_that_creates
+module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, newLedgerKey, publicKey }) {
+    if (!ledgerKeyPath) {
         return;
     }
 
@@ -13,22 +13,24 @@ module.exports = async function useLedgerSigner({ useLedger, hdKeyPath, newHdKey
     const transport = await TransportNodeHid.create();
     const client = await createClient(transport);
 
+    let cachedPublicKeys = {};
     async function getPublicKeyForPath(hdKeyPath) {
+        // NOTE: Public key is cached to avoid confirming on Ledger multiple times
+        if (cachedPublicKeys[ledgerKeyPath]) {
+            return cachedPublicKeys[hdKeyPath];
+        }
+
         console.log('Waiting for confirmation on Ledger...');
         const rawPublicKey = await client.getPublicKey(hdKeyPath);
         const publicKey = new PublicKey({ keyType: KeyType.ED25519, data: rawPublicKey });
+        cachedPublicKeys[hdKeyPath] = publicKey;
         console.log('Using public key:', publicKey.toString());
         return publicKey;
     }
 
-    let cachedPublicKey;
     let signer = {
         async getPublicKey() {
-            // NOTE: Public key is cached to avoid confirming on Ledger multiple times
-            if (!cachedPublicKey) {
-                cachedPublicKey = await getPublicKeyForPath(hdKeyPath);
-            }
-            return cachedPublicKey;
+            return getPublicKeyForPath(ledgerKeyPath);
         },
         async signMessage(message) {
             const publicKey = await this.getPublicKey();
@@ -38,9 +40,8 @@ module.exports = async function useLedgerSigner({ useLedger, hdKeyPath, newHdKey
         }
     };
 
-    if (newHdKeyPath) {
-        publicKey = await getPublicKeyForPath(hdKeyPath);
-        console.log('publicKey', publicKey);
+    if (newLedgerKey) {
+        publicKey = await getPublicKeyForPath(newLedgerKey);
     }
 
     return { signer, publicKey };

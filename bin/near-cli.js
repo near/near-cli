@@ -160,13 +160,8 @@ yargs // eslint-disable-line
         desc: 'Unique identifier for the account',
         type: 'string',
     })
-    .option('useLedger', {
-        desc: 'Use Ledger for signing',
-        type: 'boolean',
-        default: false
-    })
-    .option('hdKeyPath', {
-        desc: 'HD key path to use with Ledger',
+    .option('useLedgerKey', {
+        desc: 'Use Ledger for signing with given HD key path',
         type: 'string',
         default: "44'/397'/0'/0'/1'"
     })
