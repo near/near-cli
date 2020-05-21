@@ -199,6 +199,16 @@ exports.sendMoney = async function (options) {
     await eventtracking.track(eventtracking.EVENT_ID_SEND_TOKENS_END, { node: options.nodeUrl, success: true });
 };
 
+exports.deleteAccessKey = async function (options) {
+    await eventtracking.track(eventtracking.EVENT_ID_DELETE_KEY_START, { node: options.nodeUrl, amount: options.amount });
+    console.log(`Deleting key = ${options.accessKey} on ${options.accountId}.`);
+    const near = await connect(options);
+    const account = await near.account(options.accountId);
+    const result = await account.deleteKey(options.accessKey);
+    console.log(inspectResponse(result));
+    await eventtracking.track(eventtracking.EVENT_ID_DELETE_KEY_END, { node: options.nodeUrl, success: true });
+};
+
 exports.stake = async function (options) {
     await eventtracking.track(eventtracking.EVENT_ID_STAKE_START, { node: options.nodeUrl, amount: options.amount });
     console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${options.stakingKey}.`);

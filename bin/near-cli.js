@@ -91,6 +91,18 @@ const stake = {
     handler: exitOnError(main.stake)
 };
 
+const deleteAccessKey = {
+    command: 'delete-key [publicKey]',
+    desc: 'delete access key',
+    builder: (yargs) => yargs
+        .option('accessKey', {
+            desc: 'Public key to delete (base58 encoded)',
+            type: 'string',
+            required: true,
+        }),
+    handler: exitOnError(main.deleteAccessKey)
+};
+
 // For contract:
 const deploy = {
     command: 'deploy',
@@ -113,7 +125,6 @@ const callViewFunction = {
     builder: (yargs) => yargs,
     handler: exitOnError(main.callViewFunction)
 };
-
 
 const build = {
     command: 'build',
@@ -192,6 +203,7 @@ yargs // eslint-disable-line
     .command(sendMoney)
     .command(clean)
     .command(stake)
+    .command(deleteAccessKey)
     .command(login)
     .command(require('../commands/repl'))
     .command(require('../commands/generate-key'))
