@@ -92,7 +92,7 @@ const stake = {
 };
 
 const deleteAccessKey = {
-    command: 'delete-key [publicKey]',
+    command: 'delete-key [accessKey]',
     desc: 'delete access key',
     builder: (yargs) => yargs
         .option('accessKey', {
