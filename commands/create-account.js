@@ -23,6 +23,11 @@ module.exports = {
             type: 'string',
             required: false
         })
+        .option('newLedgerKey', {
+            desc: 'HD key path to use with Ledger. Used to generate public key if not specified directly',
+            type: 'string',
+            default: "44'/397'/0'/0'/1'"
+        })
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
