@@ -1,6 +1,4 @@
 const { utils: { PublicKey, key_pair: { KeyType } } } = require('near-api-js');
-const { createClient } = require('near-ledger-js');
-const { default: TransportNodeHid } = require('@ledgerhq/hw-transport-node-hid');
 
 // near ... --useLedgerKey
 // near create_account new_account_name --newLedgerKey --useLedgerKey --masterAccount account_that_creates
@@ -9,6 +7,9 @@ module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, n
         // NOTE: This checks if --useLedgerKey was specified at all, default value still can be used
         return;
     }
+
+    const { createClient } = require('near-ledger-js');
+    const { default: TransportNodeHid } = require('@ledgerhq/hw-transport-node-hid');
 
     console.log('Make sure to connect your Ledger and open NEAR app');
     const transport = await TransportNodeHid.create();
