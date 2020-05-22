@@ -114,7 +114,6 @@ const callViewFunction = {
     handler: exitOnError(main.callViewFunction)
 };
 
-
 const build = {
     command: 'build',
     desc: 'build your smart contract',
@@ -195,6 +194,7 @@ yargs // eslint-disable-line
     .command(login)
     .command(require('../commands/repl'))
     .command(require('../commands/generate-key'))
+    .command(require('../commands/delete-key'))
     .command(require('../commands/validators'))
     .command(require('../commands/proposals'))
     .config(config)
