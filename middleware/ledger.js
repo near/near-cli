@@ -4,8 +4,9 @@ const { default: TransportNodeHid } = require('@ledgerhq/hw-transport-node-hid')
 
 // near ... --useLedgerKey
 // near create_account new_account_name --newLedgerKey --useLedgerKey --masterAccount account_that_creates
-module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, newLedgerKey, publicKey }) {
-    if (!ledgerKeyPath) {
+module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, newLedgerKey, publicKey }, yargs) {
+    if (yargs.parsed.defaulted.useLedgerKey) {
+        // NOTE: This checks if --useLedgerKey was specified at all, default value still can be used
         return;
     }
 
