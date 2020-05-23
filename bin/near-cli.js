@@ -160,26 +160,21 @@ yargs // eslint-disable-line
         desc: 'Unique identifier for the account',
         type: 'string',
     })
-
     .option('walletUrl', {
         desc: 'Website for NEAR Wallet',
-        type: 'string',
-        hidden: true
+        type: 'string'
     })
     .option('contractName', {
         desc: 'Account name of contract',
-        type: 'string',
-        hidden: true
+        type: 'string'
     })
     .option('masterAccount', {
         desc: 'Master account used when creating new accounts',
-        type: 'string',
-        hidden: true
+        type: 'string'
     })
     .option('tla', {
         desc: 'Expected top-level account for a network',
-        type: 'string',
-        hidden: true
+        type: 'string'
     })
     .middleware(require('../middleware/initial-balance'))
     .middleware(require('../middleware/print-options'))
