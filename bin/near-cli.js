@@ -114,7 +114,6 @@ const callViewFunction = {
     handler: exitOnError(main.callViewFunction)
 };
 
-
 const build = {
     command: 'build',
     desc: 'build your smart contract',
@@ -160,6 +159,11 @@ yargs // eslint-disable-line
         desc: 'Unique identifier for the account',
         type: 'string',
     })
+    .option('useLedgerKey', {
+        desc: 'Use Ledger for signing with given HD key path',
+        type: 'string',
+        default: "44'/397'/0'/0'/1'"
+    })
     .option('walletUrl', {
         desc: 'Website for NEAR Wallet',
         type: 'string'
@@ -179,6 +183,7 @@ yargs // eslint-disable-line
     .middleware(require('../middleware/initial-balance'))
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
+    .middleware(require('../middleware/ledger'))
     .command(require('../commands/create-account'))
     .command(viewAccount)
     .command(deleteAccount)
@@ -195,6 +200,7 @@ yargs // eslint-disable-line
     .command(login)
     .command(require('../commands/repl'))
     .command(require('../commands/generate-key'))
+    .command(require('../commands/delete-key'))
     .command(require('../commands/validators'))
     .command(require('../commands/proposals'))
     .config(config)
