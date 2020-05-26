@@ -49,7 +49,7 @@ async function createAccount(options) {
     if (splitAccount.length === 1) {
         // TLA (bob-with-at-least-maximum-characters)
         if (splitAccount[0].length < TLA_MIN_LENGTH) {
-            console.log(`Top-level accounts must be greater than ${TLA_MIN_LENGTH} characters.\n` +
+            console.log(`Top-level accounts must be at least ${TLA_MIN_LENGTH} characters.\n` +
               'Note: this is for advanced usage only. Typical account names are of the form:\n' +
               'app.alice.test, where the masterAccount shares the top-level account (.test).'
             );
@@ -58,15 +58,16 @@ async function createAccount(options) {
     } else if (splitAccount.length > 1) {
         // Subaccounts (short.alice.near, even.more.bob.test, and eventually peter.potato)
         // Check that master account TLA matches
-        const accountTLA = splitAccount.filter((n, i) => i !== 0).join('.');
-        if (accountTLA !== options.masterAccount) {
+        if (!options.accountId.endsWith(`.${options.masterAccount}`)) {
             console.log(`New account doesn't share the same top-level account. Expecting account name to end in ".${options.masterAccount}"`);
             return;
         }
 
         // Warn user if account seems to be using wrong network, where TLA is captured in config
-        if (Object.prototype.hasOwnProperty.call(options, 'tla') && masterRootTLA !== options.tla) {
-            console.log(`NOTE: In most cases, when connected to network "${options.networkId}", masterAccount will end in ".${options.tla}"`);
+        // TODO: when "network" key is available, revisit logic to determine if user is on proper network
+        // See: https://github.com/near/near-shell/issues/387
+        if (options.helperAccount && masterRootTLA !== options.helperAccount) {
+            console.log(`NOTE: In most cases, when connected to network "${options.networkId}", masterAccount will end in ".${options.helperAccount}"`);
         }
     }
     let near = await connect(options);

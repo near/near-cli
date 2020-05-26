@@ -176,7 +176,7 @@ yargs // eslint-disable-line
         desc: 'Master account used when creating new accounts',
         type: 'string'
     })
-    .option('tla', {
+    .option('helperAccount', {
         desc: 'Expected top-level account for a network',
         type: 'string'
     })

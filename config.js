@@ -11,7 +11,7 @@ function getConfig(env) {
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.near.org',
             helperUrl: 'https://helper.mainnet.near.org',
-            tla: 'near',
+            helperAccount: 'near',
         };
     case 'development':
     case 'testnet':
@@ -21,7 +21,7 @@ function getConfig(env) {
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.testnet.near.org',
             helperUrl: 'https://helper.testnet.near.org',
-            tla: 'testnet',
+            helperAccount: 'testnet',
         };
     case 'devnet':
         return {
@@ -30,7 +30,7 @@ function getConfig(env) {
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.devnet.near.org',
             helperUrl: 'https://helper.devnet.near.org',
-            tla: 'devnet',
+            helperAccount: 'devnet',
         };
     case 'betanet':
         return {
@@ -39,7 +39,7 @@ function getConfig(env) {
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.betanet.near.org',
             helperUrl: 'https://helper.betanet.near.org',
-            tla: 'betanet',
+            helperAccount: 'betanet',
         };
     case 'local':
         return {
