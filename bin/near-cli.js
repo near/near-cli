@@ -140,12 +140,12 @@ yargs // eslint-disable-line
     .option('nodeUrl', {
         desc: 'NEAR node URL',
         type: 'string',
-        default: 'https://rpc.testnet.near.org'
+        default: config.nodeUrl
     })
     .option('networkId', {
         desc: 'NEAR network ID, allows using different keys based on network',
         type: 'string',
-        default: 'default'
+        default: config.networkId
     })
     .option('helperUrl', {
         desc: 'NEAR contract helper URL',
