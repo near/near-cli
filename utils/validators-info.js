@@ -34,7 +34,7 @@ async function showNextValidatorsTable(near) {
     const nextSeatPrice = validators.findSeatPrice(result.next_validators, result.numSeats);
     result.next_validators = result.next_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     const diff = validators.diffEpochValidators(result.current_validators, result.next_validators);
-    console.log(`\nNext validators (total: ${result.next_validators.length}, seat price: ${utils.format.formatNearAmount(nextSeatPrice, 0)}):`);
+    console.log(`\nNext validators (total: ${result.next_validators.length}, seat price: ${utils.format.formatNearAmount(nextSeatPrice.toString(), 0)}):`);
     let nextValidatorsTable = new AsciiTable();
     nextValidatorsTable.setHeading('Status', 'Validator', 'Stake', '# Seats');
     diff.newValidators.forEach((validator) => nextValidatorsTable.addRow(
@@ -66,7 +66,7 @@ async function showProposalsTable(near) {
     const combinedProposals = combineValidatorsAndProposals(result.current_validators, proposals);
     const expectedSeatPrice = validators.findSeatPrice(combinedProposals, result.numSeats);
     const combinedPassingProposals = combinedProposals.filter((p) => new BN(p.stake).gte(expectedSeatPrice));
-    console.log(`Proposals for the epoch after next (new: ${proposals.size}, passing: ${combinedPassingProposals.length}, expected seat price = ${utils.format.formatNearAmount(expectedSeatPrice, 0)})`);
+    console.log(`Proposals for the epoch after next (new: ${proposals.size}, passing: ${combinedPassingProposals.length}, expected seat price = ${utils.format.formatNearAmount(expectedSeatPrice.toString(), 0)})`);
     const proposalsTable = new AsciiTable();
     proposalsTable.setHeading('Status', 'Validator', 'Stake => New Stake', '# Seats');
     combinedProposals.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake))).forEach((proposal) => {
