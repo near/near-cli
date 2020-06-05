@@ -48,9 +48,22 @@ async function createAccount(options) {
         keyPair = await KeyPair.fromRandom('ed25519');
         publicKey = keyPair.getPublicKey();
     }
-    await near.createAccount(options.accountId, publicKey);
     if (keyPair) {
         await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
+    }
+    try {
+        await near.createAccount(options.accountId, publicKey);
+    } catch(error) {
+        if (error.message.includes('Timeout')) {
+            console.warn("Received a timeout when creating account, please run:");
+            console.warn(`near state ${options.accountId}`);
+            console.warn("to confirm creation. Keyfile for this account has been saved.");
+        } else {
+            near.connection.signer.keyStore.removeKey(options.networkId, options.accountId)
+                .then(() => {
+                    throw error
+                }).catch((e) => console.error(e));
+        }
     }
     console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
     await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_END, { node: options.nodeUrl, success: true });
