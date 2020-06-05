@@ -6,13 +6,15 @@ process.on('exit', () => {
         // TODO: pass info on environment
         env: {
             NEAR_CLI_ERROR_LAST_COMMAND: process.env.NEAR_CLI_ERROR_LAST_COMMAND,
-            NEAR_CLI_LAST_ERROR: process.env.NEAR_CLI_LAST_ERROR
+            NEAR_CLI_LAST_ERROR: process.env.NEAR_CLI_LAST_ERROR,
+            NEAR_CLI_NETWORK_ID: process.env.NEAR_CLI_NETWORK_ID
         }
     });
 });
 
 module.exports = (promiseFn) => async (...args) => {
     process.env.NEAR_CLI_ERROR_LAST_COMMAND = args[0]['_'];
+    process.env.NEAR_CLI_NETWORK_ID = require('../get-config')()['networkId'];
     const promise = promiseFn.apply(null, args);
     try {
         await promise;
