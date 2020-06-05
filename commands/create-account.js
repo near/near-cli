@@ -65,7 +65,7 @@ const createAccountCommandDeprecated = {
             default: '100'
         }),
     handler: exitOnError(async (options) => {
-        console.log("near create_account is deprecated. Please use near create-account.");
+        console.log('near create_account is deprecated. Please use near create-account.');
         await createAccount(options); })
 }; 
 
@@ -92,4 +92,4 @@ async function createAccount(options) {
 module.exports = {
     createAccountCommand,
     createAccountCommandDeprecated
-}
+};
