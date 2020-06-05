@@ -8,7 +8,6 @@ const readline = require('readline');
 const settings = require('./settings');
 const uuid = require('uuid');
 
-
 const TRACKING_ENABLED_KEY = 'trackingEnabled';
 const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
 
@@ -34,7 +33,7 @@ const shouldTrack = (shellSettings) => {
     return TRACKING_ENABLED_KEY in shellSettings && shellSettings[TRACKING_ENABLED_KEY];
 }
 
-const track = async (eventType, eventProperties) => {
+const track = async (eventType, eventProperties, options) => {
     const shellSettings = settings.getShellSettings();
     if (!shouldTrack(shellSettings)) {
         return;
@@ -44,6 +43,9 @@ const track = async (eventType, eventProperties) => {
             distinct_id: isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY],
             near_cli_version,
             os: process.platform,
+            network_id: options.networkId,
+            node_url: options.nodeUrl,
+            wallet_url: options.walletUrl,
             is_gitpod: isGitPod()
         };
         Object.assign(mixPanelProperties, eventProperties);

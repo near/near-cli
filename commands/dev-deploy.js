@@ -33,7 +33,7 @@ module.exports = {
 
 async function devDeploy(options) {
     await eventtracking.askForConsentIfNeeded();
-    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_START, { node: options.nodeUrl });
+    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_START, {}, options);
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
 
     if (!helperUrl && !masterAccount) {
@@ -48,7 +48,7 @@ async function devDeploy(options) {
     const account = await near.account(accountId);
     await account.deployContract(contractData);
     console.log(`Done deploying to ${accountId}`);
-    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { node: options.nodeUrl, success: true });
+    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { success: true }, options);
 }
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {

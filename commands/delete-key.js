@@ -16,11 +16,11 @@ module.exports = {
 };
 
 async function deleteAccessKey(options) {
-    await eventtracking.track(eventtracking.EVENT_ID_DELETE_KEY_START, { node: options.nodeUrl, amount: options.amount });
+    await eventtracking.track(eventtracking.EVENT_ID_DELETE_KEY_START, { amount: options.amount }, options);
     console.log(`Deleting key = ${options.accessKey} on ${options.accountId}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const result = await account.deleteKey(options.accessKey);
     console.log(inspectResponse(result));
-    await eventtracking.track(eventtracking.EVENT_ID_DELETE_KEY_END, { node: options.nodeUrl, success: true });
+    await eventtracking.track(eventtracking.EVENT_ID_DELETE_KEY_END, { success: true }, options);
 }
