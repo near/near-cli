@@ -51,7 +51,7 @@ async function devDeploy(options) {
     await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { node: options.nodeUrl, success: true });
 }
 
-async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount, helperUrl, helperAccount }) {
+async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount }) {
     // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
     // https://github.com/nearprotocol/near-shell/issues/287
     const accountFilePath = `${PROJECT_KEY_DIR}/dev-account`;
@@ -76,12 +76,13 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init, maste
         }
     }
     let accountId;
-    if (typeof masterAccount === 'undefined' && helperUrl && helperAccount) {
-        accountId = `dev-${Date.now()}.${helperAccount}`;
-    } else if (masterAccount) {
+    // create random number with at least 7 digits
+    const randomNumber = Math.floor(Math.random() * (9999999 - 1000000) + 1000000);
+
+    if (masterAccount) {
         accountId = `dev-${Date.now()}.${masterAccount}`;
     } else {
-        console.error('Expecting helperUrl and/or helperAccount flag, please provide those.');
+        accountId = `dev-${Date.now()}-${randomNumber}`;
     }
 
     const keyPair = await KeyPair.fromRandom('ed25519');
