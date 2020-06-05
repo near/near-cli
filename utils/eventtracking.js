@@ -1,11 +1,13 @@
 const MIXPANEL_TOKEN = '9aa8926fbcb03eb5d6ce787b5e8fa6eb';
-const mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
 
-const uuid = require('uuid');
 const chalk = require('chalk');  // colorize output
 const crypto = require('crypto');
+const mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
+const near_cli_version = require('../package.json').version;
 const readline = require('readline');
 const settings = require('./settings');
+const uuid = require('uuid');
+
 
 const TRACKING_ENABLED_KEY = 'trackingEnabled';
 const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
@@ -40,6 +42,8 @@ const track = async (eventType, eventProperties) => {
     try {
         const mixPanelProperties = {
             distinct_id: isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY],
+            near_cli_version,
+            os: process.platform,
             is_gitpod: isGitPod()
         };
         Object.assign(mixPanelProperties, eventProperties);
