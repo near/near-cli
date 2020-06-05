@@ -12,14 +12,14 @@ const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
 
 const isGitPod = () => {
     return !!process.env.GITPOD_WORKSPACE_URL;
-}
+};
 
 const getGitPodUserHash = () => {
     if (!process.env.GITPOD_GIT_USER_NAME) {
         return null;
     }
     return crypto.createHash('sha256').update(process.env.GITPOD_GIT_USER_NAME, 'utf8').digest('hex').toString();
-}
+};
 
 const shouldOptInByDefault = () => {
     return isGitPod();
@@ -30,7 +30,7 @@ const shouldTrack = (shellSettings) => {
         return true;
     }
     return TRACKING_ENABLED_KEY in shellSettings && shellSettings[TRACKING_ENABLED_KEY];
-}
+};
 
 const track = async (eventType, eventProperties) => {
     const shellSettings = settings.getShellSettings();
