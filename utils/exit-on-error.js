@@ -3,7 +3,6 @@ process.on('exit', () => {
     require('child_process').fork(__dirname + '/crash-error-report.js', ['node'], {
         silent: true,
         detached: true,
-        // TODO: pass info on environment
         env: {
             NEAR_CLI_ERROR_LAST_COMMAND: process.env.NEAR_CLI_ERROR_LAST_COMMAND,
             NEAR_CLI_LAST_ERROR: process.env.NEAR_CLI_LAST_ERROR,
