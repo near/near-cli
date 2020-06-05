@@ -55,13 +55,13 @@ async function createAccount(options) {
         await near.createAccount(options.accountId, publicKey);
     } catch(error) {
         if (error.message.includes('Timeout')) {
-            console.warn("Received a timeout when creating account, please run:");
+            console.warn('Received a timeout when creating account, please run:');
             console.warn(`near state ${options.accountId}`);
-            console.warn("to confirm creation. Keyfile for this account has been saved.");
+            console.warn('to confirm creation. Keyfile for this account has been saved.');
         } else {
             near.connection.signer.keyStore.removeKey(options.networkId, options.accountId)
                 .then(() => {
-                    throw error
+                    throw error;
                 }).catch((e) => console.error(e));
         }
     }
