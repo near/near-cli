@@ -25,9 +25,16 @@ const shouldOptInByDefault = () => {
     return isGitPod();
 };
 
+const shouldTrack = (shellSettings) => {
+    if (shouldOptInByDefault()) {
+        return true;
+    }
+    return TRACKING_ENABLED_KEY in shellSettings && shellSettings[TRACKING_ENABLED_KEY];
+}
+
 const track = async (eventType, eventProperties) => {
     const shellSettings = settings.getShellSettings();
-    if (!shellSettings[TRACKING_ENABLED_KEY] && (!(TRACKING_ENABLED_KEY in shellSettings) && !shouldOptInByDefault())) {
+    if (!shouldTrack(shellSettings)) {
         return;
     }
     try {
