@@ -64,10 +64,10 @@ const createAccountCommandDeprecated = {
             type: 'string',
             default: '100'
         }),
-    handler: () => {
+    handler: exitOnError(async (options) => {
         console.log("near create_account is deprecated. Please use near create-account.");
-        exitOnError(createAccount); }
-};
+        await createAccount(options); })
+}; 
 
 async function createAccount(options) {
     await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_START, { nodeUrl: options.nodeUrl });
