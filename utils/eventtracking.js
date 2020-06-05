@@ -111,5 +111,5 @@ module.exports = {
     EVENT_ID_GENERATE_KEY_END: 'shell_id_generate_key_end',
     EVENT_ID_DELETE_KEY_START: 'event_id_delete_key_start',
     EVENT_ID_DELETE_KEY_END: 'event_id_delete_key_end',
-    EVENT_ID_ERROR: 'shell_error' // This is not used right now because of mixpanel bug.
+    EVENT_ID_ERROR: 'event_id_shell_error'
 };
