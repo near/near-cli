@@ -20,7 +20,7 @@ module.exports = (promiseFn) => async (...args) => {
         await promise;
     } catch (e) {
         process.env.NEAR_CLI_LAST_ERROR = e.message;
-        process.env.NEAR_CLI_OPTIONS = args;
+        process.env.NEAR_CLI_OPTIONS = JSON.stringify(args[0]);
         console.log('Error: ', e);
         process.exit(1);
     }
