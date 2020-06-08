@@ -6,20 +6,32 @@ module.exports = {
     command: 'generate-key <account-id>',
     desc: 'generate key ',
     builder: (yargs) => yargs,
-    handler: exitOnError(async (options) => {
-        await eventtracking.track(eventtracking.EVENT_ID_GENERATE_KEY_START, {}, options);
-        let near = await require('../utils/connect')(options);
-        if (options.accountId) {
+    handler: exitOnError(async (argv) => {
+        try {
+            await eventtracking.track(eventtracking.EVENT_ID_GENERATE_KEY_START, {}, argv);
+            let near = await require('../utils/connect')(argv);
+            if (!argv.accountId) {
+                return;
+            }
+
+            if (argv.usingLedger) {
+                await argv.signer.getPublicKey();
+                // NOTE: Command above already prints public key
+                return;
+            }
+
             const { deps: { keyStore } } = near.config;
-            const existingKey = await keyStore.getKey(options.networkId, options.accountId);
+            const existingKey = await keyStore.getKey(argv.networkId, argv.accountId);
             if (existingKey) {
                 console.log(`Account has existing key pair with ${existingKey.publicKey} public key`);
-            } else {
-                const keyPair = KeyPair.fromRandom('ed25519');
-                await keyStore.setKey(options.networkId, options.accountId, keyPair);
-                console.log(`Generated key pair with ${keyPair.publicKey} public key`);
+                return;
             }
+
+            const keyPair = KeyPair.fromRandom('ed25519');
+            await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
+            console.log(`Generated key pair with ${keyPair.publicKey} public key`);
+        } finally {
+            await eventtracking.track(eventtracking.EVENT_ID_GENERATE_KEY_END, { success: true }, argv);
         }
-        await eventtracking.track(eventtracking.EVENT_ID_GENERATE_KEY_END, { success: true }, options);
     })
 };
