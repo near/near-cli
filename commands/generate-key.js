@@ -15,7 +15,7 @@ module.exports = {
             }
 
             if (argv.usingLedger) {
-                const publicKey = await argv.signer.getPublicKey();
+                await argv.signer.getPublicKey();
                 // NOTE: Command above already prints public key
                 return;
             }
