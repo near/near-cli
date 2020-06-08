@@ -159,7 +159,7 @@ yargs // eslint-disable-line
         desc: 'Unique identifier for the account',
         type: 'string',
     })
-    .option('useLedgerKey', {
+    .option('use-ledger-key', {
         desc: 'Use Ledger for signing with given HD key path',
         type: 'string',
         default: "44'/397'/0'/0'/1'"
@@ -210,7 +210,8 @@ yargs // eslint-disable-line
         'networkId': ['network_id'],
         'wasmFile': 'wasm_file',
         'projectDir': 'project_dir',
-        'outDir': 'out_dir'
+        'outDir': 'out_dir',
+        'use-ledger-key': ['use_ledger_key', 'useLedgerKey']
     })
     .showHelpOnFail(true)
     .recommendCommands()
