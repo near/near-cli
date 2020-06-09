@@ -15,10 +15,10 @@ const isGitPod = () => {
 };
 
 const getGitPodUserHash = () => {
-    if (!process.env.GITPOD_GIT_USER_NAME) {
+    if (!process.env.GITPOD_GIT_USER_EMAIL) {
         return null;
     }
-    return crypto.createHash('sha256').update(process.env.GITPOD_GIT_USER_NAME, 'utf8').digest('hex').toString();
+    return crypto.createHash('sha256').update(process.env.GITPOD_GIT_USER_EMAIL, 'utf8').digest('hex').toString();
 };
 
 const shouldOptInByDefault = () => {
