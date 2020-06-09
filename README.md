@@ -48,6 +48,21 @@ near <command>
   near tx-status <hash>                            # lookup transaction status by hash
 ```
 
+#### REPL:
+
+```
+near repl
+```
+
+Launch interactive Node.js shell with NEAR connection available to use. The repl's initial context contains `nearAPI`, `near`and `account` if an accountId cli argument is provided. To load a script into the repl use  `.load script.js`.
+
+##### Usage example:
+```
+near repl --acountId bob
+> console.log(account)
+> .load script.js
+```
+
 #### Misc:
 
 ```bash
