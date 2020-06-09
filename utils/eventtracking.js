@@ -2,11 +2,8 @@ const MIXPANEL_TOKEN = '9aa8926fbcb03eb5d6ce787b5e8fa6eb';
 
 const chalk = require('chalk');  // colorize output
 const crypto = require('crypto');
-<<<<<<< HEAD
 const mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
 const near_cli_version = require('../package.json').version;
-=======
->>>>>>> master
 const readline = require('readline');
 const settings = require('./settings');
 const uuid = require('uuid');
