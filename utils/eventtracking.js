@@ -3,26 +3,44 @@ const mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
 
 const uuid = require('uuid');
 const chalk = require('chalk');  // colorize output
+const crypto = require('crypto');
 const readline = require('readline');
 const settings = require('./settings');
 
 const TRACKING_ENABLED_KEY = 'trackingEnabled';
 const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
 
+const isGitPod = () => {
+    return !!process.env.GITPOD_WORKSPACE_URL;
+};
+
+const getGitPodUserHash = () => {
+    if (!process.env.GITPOD_GIT_USER_EMAIL) {
+        return null;
+    }
+    return crypto.createHash('sha256').update(process.env.GITPOD_GIT_USER_EMAIL, 'utf8').digest('hex').toString();
+};
+
 const shouldOptInByDefault = () => {
-    const isGitPod = !!process.env.GITPOD_WORKSPACE_URL;
-    return isGitPod;
+    return isGitPod();
+};
+
+const shouldTrack = (shellSettings) => {
+    if (shouldOptInByDefault()) {
+        return true;
+    }
+    return TRACKING_ENABLED_KEY in shellSettings && shellSettings[TRACKING_ENABLED_KEY];
 };
 
 const track = async (eventType, eventProperties) => {
     const shellSettings = settings.getShellSettings();
-    if (!shellSettings[TRACKING_ENABLED_KEY] && (!(TRACKING_ENABLED_KEY in shellSettings) || !shouldOptInByDefault())) {
+    if (!shouldTrack(shellSettings)) {
         return;
     }
-
     try {
         const mixPanelProperties = {
-            distinct_id: shellSettings[TRACKING_SESSION_ID_KEY]
+            distinct_id: isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY],
+            is_gitpod: isGitPod()
         };
         Object.assign(mixPanelProperties, eventProperties);
         await mixpanel.track(eventType, mixPanelProperties);
