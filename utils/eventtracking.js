@@ -1,4 +1,4 @@
-const MIXPANEL_TOKEN = '9aa8926fbcb03eb5d6ce787b5e8fa6eb';
+const MIXPANEL_TOKEN = 'e98aa9d6d259d9d78f20cb05cb54f5cb';
 const mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
 
 const uuid = require('uuid');
