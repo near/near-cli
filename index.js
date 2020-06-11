@@ -5,6 +5,7 @@ ncp.limit = 16;
 const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
+const qs = require('querystring');
 const chalk = require('chalk');  // colorize output
 const open = require('open');    // open URL in default browser
 const { spawn } = require('child_process');
@@ -187,10 +188,10 @@ exports.sendMoney = async function (options) {
 };
 
 exports.stake = async function (options) {
-    console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${options.stakingKey}.`);
+    console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${qs.unescape(options.stakingKey)}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.stake(options.stakingKey, utils.format.parseNearAmount(options.amount));
+    const result = await account.stake(qs.unescape(options.stakingKey), utils.format.parseNearAmount(options.amount));
     console.log(inspectResponse(result));
 };
 
