@@ -2,7 +2,6 @@ const { providers, utils } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
-const eventtracking = require('../utils/eventtracking');
 
 module.exports = {
     command: 'call <contractName> <methodName> [args]',
@@ -22,7 +21,6 @@ module.exports = {
 };
 
 async function scheduleFunctionCall(options) {
-    await eventtracking.track(eventtracking.EVENT_ID_SCHEDULE_FN_CALL_START, { node: options.nodeUrl });
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
         (options.amount && options.amount != '0' ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
@@ -35,5 +33,4 @@ async function scheduleFunctionCall(options) {
         utils.format.parseNearAmount(options.amount));
     const result = providers.getTransactionLastResult(functionCallResponse);
     console.log(inspectResponse(result));
-    await eventtracking.track(eventtracking.EVENT_ID_SCHEDULE_FN_CALL_END, { node: options.nodeUrl, success: true });
 }

@@ -72,7 +72,6 @@ const createAccountCommandDeprecated = {
 }; 
 
 async function createAccount(options) {
-    await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_START, { nodeUrl: options.nodeUrl });
     // NOTE: initialBalance is passed as part of config here, parsed in middleware/initial-balance
     // periods are disallowed in top-level accounts and can only be used for subaccounts
     const splitAccount = options.accountId.split('.');
@@ -115,9 +114,11 @@ async function createAccount(options) {
     await near.createAccount(options.accountId, publicKey);
     if (keyPair) {
         await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
+        await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_END, { success: true, new_keypair: true }, options);
+    } else {
+        await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_END, { success: true, new_keypair: false }, options);
     }
     console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
-    await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_END, { node: options.nodeUrl, success: true });
 }
 
 module.exports = {
