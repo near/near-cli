@@ -16,7 +16,7 @@
     "url": "git+https://github.com/nearprotocol/near-shell.git"
   },
   "author": "Jane Degtiareva",
-  "license": "MIT",
+  "license": "(MIT AND Apache-2.0)",
   "bugs": {
     "url": "https://github.com/nearprotocol/near-shell/issues"
   },
