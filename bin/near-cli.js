@@ -183,7 +183,8 @@ yargs // eslint-disable-line
     .option('verbose', {
         desc: 'Prints out verbose output',
         type: 'boolean',
-        default: true
+        alias: 'v',
+        default: false
     })
     .middleware(require('../middleware/initial-balance'))
     .middleware(require('../middleware/print-options'))
