@@ -10,8 +10,8 @@ NEAR Shell is a Node.js application that relies on [`near-api-js`](https://githu
 ## Installation
 
 ```bash
-https://github.com/near-guildnet/near-shell.git
-cd near-shell
+git clone https://github.com/near-guildnet/near-shell.git near-shell-guildnet
+cd near-shell-guildnet
 npm install -g
 ```
 
@@ -28,7 +28,7 @@ near <command>
 Without a wallet this is how I created master accounts. Maybe there's a different way. Account creation requires [httpie](https://httpie.org/docs#installation)
 ```bash
 near generate-key account_id.guildnet
-http post http://164.90.144.140:3000/account newAccountId=account_id.guildnet newAccountPublicKey=accound_id_public_key
+http post http://164.90.144.140:3000/account newAccountId=account_id.guildnet newAccountPublicKey=account_public_key
 ```
 
 ### Commands
