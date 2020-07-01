@@ -35,6 +35,15 @@ function getConfig(env) {
             helperAccount: 'betanet',
             explorerUrl: 'https://explorer.betanet.near.org',
         };
+    case 'guildnet':
+        return {
+            networkId: 'guildnet',
+            nodeUrl: 'http://66.73.0.194:3030',
+            contractName: CONTRACT_NAME,
+            walletUrl: 'https://wallet.guildnet.near.org',
+            helperUrl: 'http://164.90.144.140:3000',
+            helperAccount: 'guildnet',
+        };
     case 'local':
         return {
             networkId: 'local',
