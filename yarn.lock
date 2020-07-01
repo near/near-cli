@@ -461,29 +461,29 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-5.17.0.tgz#806490c7da04a94a1e791e46faf099c3cbc06a0d"
   integrity sha512-m+es6OwqqhHPFGnSZOxGgn7kucWNS6Ep/khCS/avYx/LNz+SRZVRvHT4GuH9Qy6sB9Lg0W7ZEJpKqEzvLGvNoQ==
 
-"@ledgerhq/hw-transport-node-hid-noevents@^5.17.0":
-  version "5.17.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid-noevents/-/hw-transport-node-hid-noevents-5.17.0.tgz#2770244d7f949642013dc9e07438f7e2b6519fdc"
-  integrity sha512-XQ2Wf4NXXjpIe/Xj6ImWkRdItKjc5jzkNCqV0U51fxzZnSmt2kWINQPLDHQXF1s0AxBzOaas+iE0pAfVd8GRYQ==
+"@ledgerhq/hw-transport-node-hid-noevents@^5.18.0":
+  version "5.18.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid-noevents/-/hw-transport-node-hid-noevents-5.18.0.tgz#e367e7435ece4a55896318141942436fe4b99f63"
+  integrity sha512-/bU20WqJ8FAImyA2H3uKd2xNVPJM2VaRBNYxHCGBtSfYbEMtIkvRPaY1GHtw/VFSGMeUefLClbsShXFn3Tjn8g==
   dependencies:
     "@ledgerhq/devices" "^5.17.0"
     "@ledgerhq/errors" "^5.17.0"
     "@ledgerhq/hw-transport" "^5.17.0"
     "@ledgerhq/logs" "^5.17.0"
-    node-hid "^1.2.0"
+    node-hid "^1.3.0"
 
 "@ledgerhq/hw-transport-node-hid@^5.15.0":
-  version "5.17.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-5.17.0.tgz#4536eb3f87a49b4b7987084c84cc567d5c1ce8b5"
-  integrity sha512-KeBIIZ6kjJUqqTFKqw4swbPHtdQGgn6LJdmBeok3BL8qh8IWtewRYkNMLCT+QevOkK990u7uRYbhtgfS1QjFqA==
+  version "5.18.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-5.18.0.tgz#7854af281c744fdc5c30f7b461eab23554d47055"
+  integrity sha512-BuoWd8RMlAxDcA7JQ2SAtLzTvy9fzjpcaWlkxrKsZx4CmhgiRFToU6G0kF8w+3OrRD4/mXfmuFXvBiAyBKcJUw==
   dependencies:
     "@ledgerhq/devices" "^5.17.0"
     "@ledgerhq/errors" "^5.17.0"
     "@ledgerhq/hw-transport" "^5.17.0"
-    "@ledgerhq/hw-transport-node-hid-noevents" "^5.17.0"
+    "@ledgerhq/hw-transport-node-hid-noevents" "^5.18.0"
     "@ledgerhq/logs" "^5.17.0"
     lodash "^4.17.15"
-    node-hid "^1.2.0"
+    node-hid "^1.3.0"
     usb "^1.6.3"
 
 "@ledgerhq/hw-transport@^5.17.0":
@@ -3377,6 +3377,13 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
+node-abi@^2.18.0:
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.18.0.tgz#1f5486cfd7d38bd4f5392fa44a4ad4d9a0dffbf4"
+  integrity sha512-yi05ZoiuNNEbyT/xXfSySZE+yVnQW6fxPZuFbLyS1s6b5Kw3HzV2PHOM4XR+nsjzkHxByK+2Wg+yCQbe35l8dw==
+  dependencies:
+    semver "^5.4.1"
+
 node-abi@^2.7.0:
   version "2.17.0"
   resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.17.0.tgz#f167c92780497ff01eeaf473fcf8138e0fcc87fa"
@@ -3389,14 +3396,15 @@ node-fetch@^2.3.0:
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
   integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
 
-node-hid@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-1.2.0.tgz#d084a9750832b28fd6de6fe2ccd8063fe8e3e7c0"
-  integrity sha512-ap06Wo1E0aGrZf0t1zvjWSk+IzI6yvKpTDYQRIrdxLHEelifnGDx6XOb2VVlrQhxzM4etma8jH/i0M1LUB55dA==
+node-hid@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-1.3.0.tgz#346a468505cee13d69ccd760052cbaf749f66a41"
+  integrity sha512-BA6G4V84kiNd1uAChub/Z/5s/xS3EHBCxotQ0nyYrUG65mXewUDHE1tWOSqA2dp3N+mV0Ffq9wo2AW9t4p/G7g==
   dependencies:
     bindings "^1.5.0"
     nan "^2.14.0"
-    prebuild-install "^5.3.3"
+    node-abi "^2.18.0"
+    prebuild-install "^5.3.4"
 
 node-int64@^0.4.0:
   version "0.4.0"
@@ -3746,6 +3754,27 @@ prebuild-install@^5.3.3:
   version "5.3.4"
   resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.3.4.tgz#6982d10084269d364c1856550b7d090ea31fa293"
   integrity sha512-AkKN+pf4fSEihjapLEEj8n85YIw/tN6BQqkhzbDc0RvEZGdkpJBGMUYx66AAMcPG2KzmPQS7Cm16an4HVBRRMA==
+  dependencies:
+    detect-libc "^1.0.3"
+    expand-template "^2.0.3"
+    github-from-package "0.0.0"
+    minimist "^1.2.3"
+    mkdirp "^0.5.1"
+    napi-build-utils "^1.0.1"
+    node-abi "^2.7.0"
+    noop-logger "^0.1.1"
+    npmlog "^4.0.1"
+    pump "^3.0.0"
+    rc "^1.2.7"
+    simple-get "^3.0.3"
+    tar-fs "^2.0.0"
+    tunnel-agent "^0.6.0"
+    which-pm-runs "^1.0.0"
+
+prebuild-install@^5.3.4:
+  version "5.3.5"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.3.5.tgz#e7e71e425298785ea9d22d4f958dbaccf8bb0e1b"
+  integrity sha512-YmMO7dph9CYKi5IR/BzjOJlRzpxGGVo1EsLSUZ0mt/Mq0HWZIHOKHHcHdT69yG54C9m6i45GpItwRHpk0Py7Uw==
   dependencies:
     detect-libc "^1.0.3"
     expand-template "^2.0.3"
