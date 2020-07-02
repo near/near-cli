@@ -2,7 +2,7 @@
 set -ex
 rm  -rf tmp-project
 
-yarn create near-app --vanilla tmp-project
+yarn create near-app tmp-project
 
 cd tmp-project
 
