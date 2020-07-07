@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 rm  -rf tmp-project
-yarn create near-app --vanilla tmp-project
+yarn create near-app tmp-project
 cd tmp-project
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp.test.near
