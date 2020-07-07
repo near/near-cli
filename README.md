@@ -48,6 +48,11 @@ near <command>
   near tx-status <hash>                            # lookup transaction status by hash
 ```
 
+#### For validators:
+```bash
+  near validators <epoch>                          # lookup validating nodes by epoch(or "current", "next")
+```
+
 #### REPL:
 
 ```
