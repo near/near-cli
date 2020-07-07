@@ -180,6 +180,12 @@ yargs // eslint-disable-line
         desc: 'Expected top-level account for a network',
         type: 'string'
     })
+    .option('verbose', {
+        desc: 'Prints out verbose output',
+        type: 'boolean',
+        alias: 'v',
+        default: false
+    })
     .middleware(require('../middleware/initial-balance'))
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))

@@ -24,7 +24,7 @@ echo Deploying contract to temporary accountId
 echo Calling functions
 ../bin/near call $testaccount setGreeting '{"message":"TEST"}' --accountId=test.near
 
-RESULT=$(../bin/near view $testaccount getGreeting '{"accountId":"test.near"}' --accountId=test.near)
+RESULT=$(../bin/near view $testaccount getGreeting '{"accountId":"test.near"}' --accountId=test.near -v)
 TEXT=$RESULT
 EXPECTED='TEST'
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
