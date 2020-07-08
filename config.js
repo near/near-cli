@@ -41,7 +41,7 @@ function getConfig(env) {
             nodeUrl: 'https://rpc.openshards.io',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.guildnet.near.org',
-            helperUrl: 'http://164.90.144.140:3000',
+            helperUrl: 'https://helper.openshards.io',
             helperAccount: 'guildnet',
         };
     case 'local':
