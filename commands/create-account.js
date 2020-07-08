@@ -117,6 +117,19 @@ async function createAccount(options) {
     } else {
         await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_END, { success: true, new_keypair: false }, options);
     }
+    // Check to see if account already exists
+    try {
+        // This is expected to error because the account shouldn't exist
+        await near.account(options.accountId);
+        console.error(`Sorry, account '${options.accountId}' already exists.`);
+        return;
+    } catch (e) {
+        if (!e.message.includes('does not exist while viewing')) {
+            console.error('Error while checking for existence of account', e);
+            return;
+        }
+    }
+    // Create account
     try {
         await near.createAccount(options.accountId, publicKey);
     } catch(error) {
