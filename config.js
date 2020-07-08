@@ -38,7 +38,7 @@ function getConfig(env) {
     case 'guildnet':
         return {
             networkId: 'guildnet',
-            nodeUrl: 'http://66.73.0.194:3030',
+            nodeUrl: 'https://rpc.openshards.io',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.guildnet.near.org',
             helperUrl: 'http://164.90.144.140:3000',
