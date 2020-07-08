@@ -21,19 +21,21 @@ module.exports = async (accountId, keyPair, options) => {
             await keyStore.setKey(options.networkId, accountId, keyPair);
             console.log(chalk`Logged in as [ {bold ${accountId}} ] with public key [ {bold ${short(publicKey)}} ] successfully\n`
             );
+            return true;
         } else {
             console.log(chalk`The account you provided {bold.red [ {bold.white ${accountId}} ] has not authorized the expected key [ {bold.white ${short(publicKey)}} ]}  Please try again.\n`
             );
+            return false;
         }
     } catch (e) {
         if (/Account ID/.test(e.message)) {
             console.log(chalk`\n{bold.red You need to provide a valid account ID to login}. Please try logging in again.\n`);
+            return false;
         } else if (/does not exist/.test(e.message)) {
             console.log(chalk`\nThe account you provided {bold.red [ {bold.white ${accountId}} ] does not exist on the [ {bold.white ${options.networkId}} ] network} (using ${options.nodeUrl})\n`);
+            return false;
         } else {
             throw e;
         }
     }
-
-    return;
 };

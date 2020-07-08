@@ -32,8 +32,7 @@ module.exports = {
 };
 
 async function devDeploy(options) {
-    await eventtracking.askForConsentIfNeeded();
-    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_START, { node: options.nodeUrl });
+    await eventtracking.askForConsentIfNeeded(options);
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
 
     if (!helperUrl && !masterAccount) {
@@ -48,10 +47,9 @@ async function devDeploy(options) {
     const account = await near.account(accountId);
     await account.deployContract(contractData);
     console.log(`Done deploying to ${accountId}`);
-    await eventtracking.track(eventtracking.EVENT_ID_DEV_DEPLOY_END, { node: options.nodeUrl, success: true });
 }
 
-async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
+async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount }) {
     // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
     // https://github.com/nearprotocol/near-shell/issues/287
     const accountFilePath = `${PROJECT_KEY_DIR}/dev-account`;
@@ -75,8 +73,16 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init }) {
             }
         }
     }
+    let accountId;
+    // create random number with at least 7 digits
+    const randomNumber = Math.floor(Math.random() * (9999999 - 1000000) + 1000000);
 
-    const accountId = `dev-${Date.now()}`;
+    if (masterAccount) {
+        accountId = `dev-${Date.now()}.${masterAccount}`;
+    } else {
+        accountId = `dev-${Date.now()}-${randomNumber}`;
+    }
+
     const keyPair = await KeyPair.fromRandom('ed25519');
     await near.accountCreator.createAccount(accountId, keyPair.publicKey);
     await keyStore.setKey(networkId, accountId, keyPair);

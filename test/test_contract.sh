@@ -2,12 +2,12 @@
 set -ex
 rm  -rf tmp-project
 
-yarn create near-app --vanilla tmp-project
+yarn create near-app tmp-project
 
 cd tmp-project
 
 timestamp=$(date +%s)
-testaccount=testaccount$timestamp
+testaccount=testaccount$timestamp.test.near
 ../bin/near create_account $testaccount
 
 echo Building contract
@@ -24,9 +24,9 @@ echo Deploying contract to temporary accountId
 echo Calling functions
 ../bin/near call $testaccount setGreeting '{"message":"TEST"}' --accountId=test.near
 
-RESULT=$(../bin/near view $testaccount welcome '{"account_id":"test.near"}' --accountId=test.near)
+RESULT=$(../bin/near view $testaccount getGreeting '{"accountId":"test.near"}' --accountId=test.near -v)
 TEXT=$RESULT
-EXPECTED='TEST test.near'
+EXPECTED='TEST'
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
     echo FAILURE Unexpected output from near call: $RESULT
     exit 1

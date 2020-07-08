@@ -46,5 +46,5 @@ module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, n
         publicKey = await getPublicKeyForPath(newLedgerKey);
     }
 
-    return { signer, publicKey };
+    return { signer, publicKey, usingLedger: true };
 };

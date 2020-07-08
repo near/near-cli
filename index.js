@@ -5,6 +5,7 @@ ncp.limit = 16;
 const rimraf = require('rimraf');
 const readline = require('readline');
 const URL = require('url').URL;
+const qs = require('querystring');
 const chalk = require('chalk');  // colorize output
 const open = require('open');    // open URL in default browser
 const { spawn } = require('child_process');
@@ -21,7 +22,6 @@ const eventtracking = require('./utils/eventtracking');
 
 // For smart contract:
 exports.clean = async function () {
-    await eventtracking.track(eventtracking.EVENT_ID_CLEAN_START, {});
     const rmDirFn = () => {
         return new Promise(resolve => {
             rimraf(yargs.argv.outDir, response => resolve(response));
@@ -29,27 +29,22 @@ exports.clean = async function () {
     };
     await rmDirFn();
     console.log('Clean complete.');
-    await eventtracking.track(eventtracking.EVENT_ID_CLEAN_END, { success: true });
 };
 
 exports.deploy = async function (options) {
-    await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_START, { node: options.nodeUrl });
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
     const near = await connect(options);
     const contractData = [...fs.readFileSync(options.wasmFile)];
     const account = await near.account(options.accountId);
     await account.deployContract(contractData);
-    await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { node: options.nodeUrl, success: true });
 };
 
 exports.callViewFunction = async function (options) {
-    await eventtracking.track(eventtracking.EVENT_ID_CALL_VIEW_FN_START, { node: options.nodeUrl });
     console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
     const near = await connect(options);
     const account = await near.account(options.accountId || options.masterAccount || options.contractName);
     console.log(inspectResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
-    await eventtracking.track(eventtracking.EVENT_ID_CALL_VIEW_FN_END, { node: options.nodeUrl, success: true });
 };
 
 // open a given URL in browser in a safe way.
@@ -62,10 +57,10 @@ const openUrl = async function(url) {
 };
 
 exports.login = async function (options) {
-    await eventtracking.askForConsentIfNeeded();
-    await eventtracking.track(eventtracking.EVENT_ID_LOGIN_START, { node: options.nodeUrl });
+    await eventtracking.askForConsentIfNeeded(options);
     if (!options.walletUrl) {
         console.log('Log in is not needed on this environment. Please use appropriate master account for shell operations.');
+        await eventtracking.track(eventtracking.EVENT_ID_LOGIN_END, { success: true, login_is_not_needed: true }, options);
     } else {
         const newUrl = new URL(options.walletUrl + '/login/');
         const title = 'NEAR Shell';
@@ -147,16 +142,16 @@ exports.login = async function (options) {
         capture.cancel();
         // verify the accountId if we captured it or ...
         try {
-            await verify(accountId, keyPair, options);
+            const success = await verify(accountId, keyPair, options);
+            await eventtracking.track(eventtracking.EVENT_ID_LOGIN_END, { success }, options);
         } catch (error) {
+            await eventtracking.track(eventtracking.EVENT_ID_LOGIN_END, { success: false, error }, options);
             console.error('Failed to verify accountId.', error.message);
         }
     }
-    await eventtracking.track(eventtracking.EVENT_ID_LOGIN_END, { node: options.nodeUrl, success: true });
 };
 
 exports.viewAccount = async function (options) {
-    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_STATE_START, { node: options.nodeUrl });
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let state = await account.state();
@@ -165,11 +160,9 @@ exports.viewAccount = async function (options) {
     }
     console.log(`Account ${options.accountId}`);
     console.log(inspectResponse(state));
-    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_STATE_END, { node: options.nodeUrl, success: true });
 };
 
 exports.deleteAccount = async function (options) {
-    await eventtracking.track(eventtracking.EVENT_ID_DELETE_ACCOUNT_START, { node: options.nodeUrl });
 
     console.log(
         `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
@@ -177,40 +170,32 @@ exports.deleteAccount = async function (options) {
     const account = await near.account(options.accountId);
     await account.deleteAccount(options.beneficiaryId);
     console.log(`Account ${options.accountId} for network "${options.networkId}" was deleted.`);
-    await eventtracking.track(eventtracking.EVENT_ID_DELETE_ACCOUNT_END, { node: options.nodeUrl, success: true });
 };
 
 exports.keys = async function (options) {
-    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_KEYS_START, { node: options.nodeUrl });
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let accessKeys = await account.getAccessKeys();
     console.log(`Keys for account ${options.accountId}`);
     console.log(inspectResponse(accessKeys));
-    await eventtracking.track(eventtracking.EVENT_ID_ACCOUNT_KEYS_END, { node: options.nodeUrl, success: true });
 };
 
 exports.sendMoney = async function (options) {
-    await eventtracking.track(eventtracking.EVENT_ID_SEND_TOKENS_START, { node: options.nodeUrl, amount: options.amount });
     console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
     console.log(inspectResponse(await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount))));
-    await eventtracking.track(eventtracking.EVENT_ID_SEND_TOKENS_END, { node: options.nodeUrl, success: true });
 };
 
 exports.stake = async function (options) {
-    await eventtracking.track(eventtracking.EVENT_ID_STAKE_START, { node: options.nodeUrl, amount: options.amount });
-    console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${options.stakingKey}.`);
+    console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${qs.unescape(options.stakingKey)}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.stake(options.stakingKey, utils.format.parseNearAmount(options.amount));
+    const result = await account.stake(qs.unescape(options.stakingKey), utils.format.parseNearAmount(options.amount));
     console.log(inspectResponse(result));
-    await eventtracking.track(eventtracking.EVENT_ID_STAKE_END, { node: options.nodeUrl, success: true });
 };
 
 exports.build = async function () {
-    await eventtracking.track(eventtracking.EVENT_ID_BUILD_START, {});
     const gulp = spawn('gulp', [], { shell: process.platform == 'win32' });
     gulp.stdout.on('data', function (data) {
         console.log(data.toString());
@@ -221,5 +206,4 @@ exports.build = async function () {
     gulp.on('exit', function (code) {
         process.exit(code);
     });
-    await eventtracking.track(eventtracking.EVENT_ID_BUILD_END, { success: true });
 };

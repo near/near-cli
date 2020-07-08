@@ -164,27 +164,34 @@ yargs // eslint-disable-line
         type: 'string',
         default: "44'/397'/0'/0'/1'"
     })
-
     .option('walletUrl', {
         desc: 'Website for NEAR Wallet',
-        type: 'string',
-        hidden: true
+        type: 'string'
     })
     .option('contractName', {
         desc: 'Account name of contract',
-        type: 'string',
-        hidden: true
+        type: 'string'
     })
     .option('masterAccount', {
         desc: 'Master account used when creating new accounts',
-        type: 'string',
-        hidden: true
+        type: 'string'
+    })
+    .option('helperAccount', {
+        desc: 'Expected top-level account for a network',
+        type: 'string'
+    })
+    .option('verbose', {
+        desc: 'Prints out verbose output',
+        type: 'boolean',
+        alias: 'v',
+        default: false
     })
     .middleware(require('../middleware/initial-balance'))
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
     .middleware(require('../middleware/ledger'))
-    .command(require('../commands/create-account'))
+    .command(require('../commands/create-account').createAccountCommand)
+    .command(require('../commands/create-account').createAccountCommandDeprecated)
     .command(viewAccount)
     .command(deleteAccount)
     .command(keys)

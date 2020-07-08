@@ -18,9 +18,12 @@ class LocalTestEnvironment extends NodeEnvironment {
         this.global.window = {};
         let config = require('./get-config')();
         this.global.testSettings = this.global.nearConfig = config;
+        const now = Date.now();
+        // create random number with at least 7 digits
+        const randomNumber = Math.floor(Math.random() * (9999999 - 1000000) + 1000000);
         config = Object.assign(config, {
-            contractName: 'test' + Date.now(),
-            accountId: 'test' + Date.now()
+            contractName: 'test-account-' + now + '-' + randomNumber,
+            accountId: 'test-account-' + now + '-' + randomNumber
         });
         const keyStore = new nearAPI.keyStores.UnencryptedFileSystemKeyStore(PROJECT_KEY_DIR);
         config.deps = Object.assign(config.deps || {}, {
