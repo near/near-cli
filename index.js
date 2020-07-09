@@ -17,6 +17,7 @@ const capture = require('./utils/capture-login-success');
 
 const inspectResponse = require('./utils/inspect-response');
 const eventtracking = require('./utils/eventtracking');
+const explorer = require('./utils/explorer');
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -44,7 +45,7 @@ exports.callViewFunction = async function (options) {
     console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
     const near = await connect(options);
     const account = await near.account(options.accountId || options.masterAccount || options.contractName);
-    console.log(inspectResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
+    console.log(inspectResponse.prettyPrintResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
 };
 
 // open a given URL in browser in a safe way.
@@ -159,7 +160,7 @@ exports.viewAccount = async function (options) {
         state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
     }
     console.log(`Account ${options.accountId}`);
-    console.log(inspectResponse(state));
+    console.log(inspectResponse.prettyPrintResponse(state));
 };
 
 exports.deleteAccount = async function (options) {
@@ -177,14 +178,16 @@ exports.keys = async function (options) {
     let account = await near.account(options.accountId);
     let accessKeys = await account.getAccessKeys();
     console.log(`Keys for account ${options.accountId}`);
-    console.log(inspectResponse(accessKeys));
+    console.log(inspectResponse.prettyPrintResponse(accessKeys));
 };
 
 exports.sendMoney = async function (options) {
     console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
-    console.log(inspectResponse(await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount))));
+    const result = await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount));
+    console.log(inspectResponse.prettyPrintResponse(result));
+    explorer.printTransactionUrl(inspectResponse.getTxnId(result), options);
 };
 
 exports.stake = async function (options) {
@@ -192,7 +195,7 @@ exports.stake = async function (options) {
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const result = await account.stake(qs.unescape(options.stakingKey), utils.format.parseNearAmount(options.amount));
-    console.log(inspectResponse(result));
+    console.log(inspectResponse.prettyPrintResponse(result));
 };
 
 exports.build = async function () {

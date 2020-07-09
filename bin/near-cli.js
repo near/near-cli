@@ -180,6 +180,11 @@ yargs // eslint-disable-line
         desc: 'Expected top-level account for a network',
         type: 'string'
     })
+    .option('explorerUrl', {
+        hidden: true,
+        desc: 'Base url for explorer',
+        type: 'string',
+    })
     .option('verbose', {
         desc: 'Prints out verbose output',
         type: 'boolean',
