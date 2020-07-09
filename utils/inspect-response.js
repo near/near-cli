@@ -21,4 +21,4 @@ const getTxnId = (response) => {
 module.exports = {
     prettyPrintResponse,
     getTxnId,
-}
+};

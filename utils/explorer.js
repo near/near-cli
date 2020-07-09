@@ -11,7 +11,7 @@ const generateTransactionUrl = (txnId, options) => {
 const printTransactionUrl = (txnId, options) => {
     const txnUrl = generateTransactionUrl(txnId, options);
     if (txnUrl) {
-        console.log('To see the transaction in the transaction explorer, please open this url in your browser.')
+        console.log('To see the transaction in the transaction explorer, please open this url in your browser.');
         console.log(txnUrl);
     }
 };
