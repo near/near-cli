@@ -12,6 +12,7 @@ function getConfig(env) {
             walletUrl: 'https://wallet.near.org',
             helperUrl: 'https://helper.mainnet.near.org',
             helperAccount: 'near',
+            explorerUrl: 'https://explorer.mainnet.near.org',
         };
     case 'development':
     case 'testnet':
@@ -22,6 +23,7 @@ function getConfig(env) {
             walletUrl: 'https://wallet.testnet.near.org',
             helperUrl: 'https://helper.testnet.near.org',
             helperAccount: 'testnet',
+            explorerUrl: 'https://explorer.testnet.near.org',
         };
     case 'devnet':
         return {
@@ -31,6 +33,7 @@ function getConfig(env) {
             walletUrl: 'https://wallet.devnet.near.org',
             helperUrl: 'https://helper.devnet.near.org',
             helperAccount: 'devnet',
+            explorerUrl: 'https://explorer.devnet.near.org/',
         };
     case 'betanet':
         return {
@@ -40,6 +43,7 @@ function getConfig(env) {
             walletUrl: 'https://wallet.betanet.near.org',
             helperUrl: 'https://helper.betanet.near.org',
             helperAccount: 'betanet',
+            explorerUrl: 'https://explorer.testnet.near.org',
         };
     case 'local':
         return {
