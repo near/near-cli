@@ -194,16 +194,3 @@ exports.stake = async function (options) {
     const result = await account.stake(qs.unescape(options.stakingKey), utils.format.parseNearAmount(options.amount));
     console.log(inspectResponse(result));
 };
-
-exports.build = async function () {
-    const gulp = spawn('gulp', [], { shell: process.platform == 'win32' });
-    gulp.stdout.on('data', function (data) {
-        console.log(data.toString());
-    });
-    gulp.stderr.on('data', function (data) {
-        console.log(data.toString());
-    });
-    gulp.on('exit', function (code) {
-        process.exit(code);
-    });
-};

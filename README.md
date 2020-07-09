@@ -36,7 +36,6 @@ near <command>
 
 #### For smart contract:
 ```bash
-  near build                                       # build your smart contract
   near deploy                                      # deploy your smart contract
   near call <contractName> <methodName> [args]     # schedule smart contract call which can modify state
   near view <contractName> <methodName> [args]     # make smart contract call which can view state
