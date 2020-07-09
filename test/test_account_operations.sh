@@ -6,7 +6,7 @@ cd tmp-project
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp.test.near
 echo Create account
-../bin/near create_account $testaccount
+../bin/near create-account $testaccount
 
 echo Get account state
 RESULT=$(../bin/near state $testaccount -v | ../node_modules/.bin/strip-ansi)
