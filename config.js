@@ -40,7 +40,7 @@ function getConfig(env) {
             networkId: 'guildnet',
             nodeUrl: 'https://rpc.openshards.io',
             contractName: CONTRACT_NAME,
-            walletUrl: 'https://wallet.guildnet.near.org',
+            walletUrl: 'https://wallet.openshards.io',
             helperUrl: 'https://helper.openshards.io',
             helperAccount: 'guildnet',
         };
