@@ -8,7 +8,6 @@ const URL = require('url').URL;
 const qs = require('querystring');
 const chalk = require('chalk');  // colorize output
 const open = require('open');    // open URL in default browser
-const { spawn } = require('child_process');
 const { KeyPair, utils } = require('near-api-js');
 
 const connect = require('./utils/connect');
