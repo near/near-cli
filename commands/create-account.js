@@ -131,19 +131,17 @@ async function createAccount(options) {
     // Create account
     try {
         await near.createAccount(options.accountId, publicKey);
+        console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
     } catch(error) {
         if (error.message.includes('Timeout')) {
             console.warn('Received a timeout when creating account, please run:');
             console.warn(`near state ${options.accountId}`);
             console.warn('to confirm creation. Keyfile for this account has been saved.');
         } else {
-            near.connection.signer.keyStore.removeKey(options.networkId, options.accountId)
-                .then(() => {
-                    throw error;
-                }).catch((e) => console.error(e));
+            await near.connection.signer.keyStore.removeKey(options.networkId, options.accountId)
+            throw error;
         }
     }
-    console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
 }
 
 module.exports = {
