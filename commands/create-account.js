@@ -122,11 +122,10 @@ async function createAccount(options) {
         // This is expected to error because the account shouldn't exist
         await near.account(options.accountId);
         console.error(`Sorry, account '${options.accountId}' already exists.`);
-        return;
+        process.exit(1);
     } catch (e) {
         if (!e.message.includes('does not exist while viewing')) {
-            console.error('Error while checking for existence of account', e);
-            return;
+            throw e;
         }
     }
     // Create account
