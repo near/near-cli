@@ -93,13 +93,32 @@ const stake = {
 
 // For contract:
 const deploy = {
-    command: 'deploy',
+    command: 'deploy [accountId] [wasmFile] [initFunction] [initArgs] [initGas] [initDeposit]',
+    // command: 'deploy',
     desc: 'deploy your smart contract',
     builder: (yargs) => yargs
         .option('wasmFile', {
             desc: 'Path to wasm file to deploy',
             type: 'string',
             default: './out/main.wasm'
+        })
+        .option('initFunction', {
+            desc: 'Initialization method',
+            type: 'string',
+            default: 'new'
+        })
+        .option('initArgs', {
+            desc: 'Initialization arguments',
+        })
+        .option('initGas', {
+            desc: 'Gas for initialization call',
+            type: 'number',
+            default: 10000000000000
+        })
+        .option('initDeposit', {
+            desc: 'Deposit in Ⓝ to send for initialization call',
+            type: 'string',
+            default: '0'
         })
         .alias({
             'accountId': ['account_id', 'contractName', 'contract_name'],

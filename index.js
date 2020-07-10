@@ -9,7 +9,7 @@ const qs = require('querystring');
 const chalk = require('chalk');  // colorize output
 const open = require('open');    // open URL in default browser
 const { spawn } = require('child_process');
-const { KeyPair, utils } = require('near-api-js');
+const { KeyPair, utils, transactions } = require('near-api-js');
 
 const connect = require('./utils/connect');
 const verify = require('./utils/verify-account');
@@ -34,10 +34,22 @@ exports.clean = async function () {
 exports.deploy = async function (options) {
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
+
     const near = await connect(options);
     const contractData = [...fs.readFileSync(options.wasmFile)];
     const account = await near.account(options.accountId);
-    await account.deployContract(contractData);
+    if (options.initFunction) {
+        // Deploy with init function and args
+        await account.signAndSendTransaction(options.accountId,
+            [
+                transactions.deployContract(fs.readFileSync(options.wasmFile)),
+                transactions.functionCall(options.initFunction, Buffer.from(options.initArgs), options.initGas, options.initDeposit),
+            ]
+        );
+    } else {
+        // Normal deploy without initialization
+        await account.deployContract(contractData);
+    }
 };
 
 exports.callViewFunction = async function (options) {
