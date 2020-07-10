@@ -37,7 +37,14 @@ exports.deploy = async function (options) {
     const near = await connect(options);
     const contractData = [...fs.readFileSync(options.wasmFile)];
     const account = await near.account(options.accountId);
-    await account.deployContract(contractData);
+    const result = await account.deployContract(contractData);
+    if (options.verbose) {
+        console.log(inspectResponse.prettyPrintResponse(result));
+    }
+    const txnId = inspectResponse.getTxnId(result);
+    console.log(`Transaction Id ${txnId}`);
+    explorer.printTransactionUrl(txnId, options);
+    console.log(`Done deploying to ${options.accountId}`);
 };
 
 exports.callViewFunction = async function (options) {

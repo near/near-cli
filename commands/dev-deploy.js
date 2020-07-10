@@ -3,8 +3,13 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { readFile, writeFile, mkdir } = require('fs').promises;
 const { existsSync } = require('fs');
-const eventtracking = require('../utils/eventtracking');
+
 const { PROJECT_KEY_DIR } = require('../middleware/key-store');
+
+const eventtracking = require('../utils/eventtracking');
+const explorer = require('../utils/explorer');
+const inspectResponse = require('../utils/inspect-response');
+
 
 module.exports = {
     command: 'dev-deploy [wasmFile]',
@@ -45,7 +50,13 @@ async function devDeploy(options) {
         `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
     const contractData = await readFile(wasmFile);
     const account = await near.account(accountId);
-    await account.deployContract(contractData);
+    const result = await account.deployContract(contractData);
+    if (options.verbose) {
+        console.log(inspectResponse.prettyPrintResponse(result));
+    }
+    const txnId = inspectResponse.getTxnId(result);
+    console.log(`Transaction Id ${txnId}`);
+    explorer.printTransactionUrl(txnId, options);
     console.log(`Done deploying to ${accountId}`);
 }
 
