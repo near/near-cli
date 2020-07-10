@@ -186,8 +186,12 @@ exports.sendMoney = async function (options) {
     const near = await connect(options);
     const account = await near.account(options.sender);
     const result = await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount));
-    console.log(inspectResponse.prettyPrintResponse(result));
-    explorer.printTransactionUrl(inspectResponse.getTxnId(result), options);
+    if (options.verbose) {
+        console.log(inspectResponse.prettyPrintResponse(result));
+    }
+    const txnId = inspectResponse.getTxnId(result);
+    console.log(`Transaction Id ${txnId}`);
+    explorer.printTransactionUrl(txnId, options);
 };
 
 exports.stake = async function (options) {
