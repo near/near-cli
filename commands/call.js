@@ -32,5 +32,5 @@ async function scheduleFunctionCall(options) {
         options.gas,
         utils.format.parseNearAmount(options.amount));
     const result = providers.getTransactionLastResult(functionCallResponse);
-    console.log(inspectResponse.prettyPrintResponse(result));
+    inspectResponse.prettyPrintResponse(result, options);
 }

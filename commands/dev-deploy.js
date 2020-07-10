@@ -7,7 +7,6 @@ const { existsSync } = require('fs');
 const { PROJECT_KEY_DIR } = require('../middleware/key-store');
 
 const eventtracking = require('../utils/eventtracking');
-const explorer = require('../utils/explorer');
 const inspectResponse = require('../utils/inspect-response');
 
 
@@ -39,11 +38,9 @@ module.exports = {
 async function devDeploy(options) {
     await eventtracking.askForConsentIfNeeded(options);
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
-
     if (!helperUrl && !masterAccount) {
         throw new Error('Cannot create account as neither helperUrl nor masterAccount is specified in config for current NODE_ENV (see src/config.js)');
     }
-
     const near = await connect(options);
     const accountId = await createDevAccountIfNeeded({ ...options, near });
     console.log(
@@ -51,14 +48,9 @@ async function devDeploy(options) {
     const contractData = await readFile(wasmFile);
     const account = await near.account(accountId);
     const result = await account.deployContract(contractData);
-    if (options.verbose) {
-        console.log(inspectResponse.prettyPrintResponse(result));
-    }
-    const txnId = inspectResponse.getTxnId(result);
-    console.log(`Transaction Id ${txnId}`);
-    explorer.printTransactionUrl(txnId, options);
+    inspectResponse.prettyPrintResponse(result, options);
     console.log(`Done deploying to ${accountId}`);
-}
+};
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount }) {
     // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
