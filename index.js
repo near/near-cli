@@ -8,7 +8,6 @@ const URL = require('url').URL;
 const qs = require('querystring');
 const chalk = require('chalk');  // colorize output
 const open = require('open');    // open URL in default browser
-const { spawn } = require('child_process');
 const { KeyPair, utils } = require('near-api-js');
 
 const connect = require('./utils/connect');
@@ -193,17 +192,4 @@ exports.stake = async function (options) {
     const account = await near.account(options.accountId);
     const result = await account.stake(qs.unescape(options.stakingKey), utils.format.parseNearAmount(options.amount));
     console.log(inspectResponse(result));
-};
-
-exports.build = async function () {
-    const gulp = spawn('gulp', [], { shell: process.platform == 'win32' });
-    gulp.stdout.on('data', function (data) {
-        console.log(data.toString());
-    });
-    gulp.stderr.on('data', function (data) {
-        console.log(data.toString());
-    });
-    gulp.on('exit', function (code) {
-        process.exit(code);
-    });
 };
