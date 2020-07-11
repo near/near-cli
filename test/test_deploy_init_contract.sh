@@ -23,7 +23,7 @@ fi
 # Delete account, remake, redeploy
 ../bin/near delete $testaccount test.near
 ../bin/near create-account $testaccount
-../bin/near deploy --accountId $testaccount --wasmFile ../test/res/fungible_token.wasm --initFunction "new" --initArgs '{"owner_id": "test.near", "total_supply": "1000000"}'
+../bin/near deploy --accountId $testaccount --wasmFile ../test/res/fungible_token.wasm --initFunction new --initArgs '{"owner_id": "test.near", "total_supply": "1000000"}'
 RESULT=$(../bin/near view $testaccount get_balance '{"owner_id": "test.near"}' -v | ../node_modules/.bin/strip-ansi)
 echo $RESULT
 if [[ $RESULT -ne 1000000 ]]; then
