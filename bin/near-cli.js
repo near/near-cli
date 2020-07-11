@@ -112,7 +112,7 @@ const deploy = {
         .option('initGas', {
             desc: 'Gas for initialization call',
             type: 'number',
-            default: 10000000000000
+            default: 100000000000000
         })
         .option('initDeposit', {
             desc: 'Deposit in Ⓝ to send for initialization call',
