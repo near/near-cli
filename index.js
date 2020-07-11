@@ -39,6 +39,10 @@ exports.deploy = async function (options) {
     const contractData = [...fs.readFileSync(options.wasmFile)];
     const account = await near.account(options.accountId);
     if (options.initFunction) {
+        if (!options.initArgs) {
+            console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');
+            process.exit(1);
+        }
         // Deploy with init function and args
         await account.signAndSendTransaction(options.accountId,
             [
