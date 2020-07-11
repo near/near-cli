@@ -104,8 +104,7 @@ const deploy = {
         })
         .option('initFunction', {
             desc: 'Initialization method',
-            type: 'string',
-            default: 'new'
+            type: 'string'
         })
         .option('initArgs', {
             desc: 'Initialization arguments',
