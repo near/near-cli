@@ -8,7 +8,7 @@ cd tmp-project
 
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp.test.near
-../bin/near create_account $testaccount
+../bin/near create-account $testaccount
 
 echo Building contract
 yarn install

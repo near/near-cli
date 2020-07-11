@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "./test/index.sh",
+    "test": "jest && ./test/index.sh",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "eslint": "^7.0.0",
-    "jest": "^26.0.1",
+    "jest": "^26.1.0",
     "strip-ansi": "^6.0.0",
     "strip-ansi-cli": "^2.0.0"
   },

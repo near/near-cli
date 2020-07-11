@@ -132,12 +132,6 @@ const callViewFunction = {
     handler: exitOnError(main.callViewFunction)
 };
 
-const build = {
-    command: 'build',
-    desc: 'build your smart contract',
-    handler: exitOnError(main.build)
-};
-
 const clean = {
     command: 'clean',
     desc: 'clean the build environment',
@@ -198,6 +192,11 @@ yargs // eslint-disable-line
         desc: 'Expected top-level account for a network',
         type: 'string'
     })
+    .option('explorerUrl', {
+        hidden: true,
+        desc: 'Base url for explorer',
+        type: 'string',
+    })
     .option('verbose', {
         desc: 'Prints out verbose output',
         type: 'boolean',
@@ -214,7 +213,6 @@ yargs // eslint-disable-line
     .command(deleteAccount)
     .command(keys)
     .command(require('../commands/tx-status'))
-    .command(build)
     .command(deploy)
     .command(require('../commands/dev-deploy'))
     .command(require('../commands/call'))
