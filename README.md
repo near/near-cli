@@ -15,7 +15,7 @@ npm install -g near-shell
 
 ## Usage
 
-In command line, from directory with your project:
+In command line, from the directory with your project:
 
 ```bash
 near <command>
@@ -26,17 +26,19 @@ near <command>
 #### For account:
 ```bash
   near login                                       # logging in through NEAR protocol wallet
-  near create_account <accountId>                  # create a developer account with --masterAccount(required), publicKey and initialBalance
+  near create-account <accountId>                  # create a developer account with --masterAccount (required), publicKey and initialBalance
   near state <accountId>                           # view account state
   near keys <accountId>                            # view account public keys
   near send <sender> <receiver> <amount>           # send tokens to given receiver
   near stake <accountId> <stakingKey> <amount>     # create staking transaction (stakingKey is base58 encoded)
   near delete <accountId> <beneficiaryId>          # delete an account and transfer funds to beneficiary account
+  near delete-key [accessKey]                      # delete access key
 ```
 
 #### For smart contract:
 ```bash
-  near deploy                                      # deploy your smart contract
+  near deploy [accountId] [wasmFile] [initFunction] [initArgs] [initGas] [initDeposit]  # deploy your smart contract
+  near dev-deploy [wasmFile]                       # deploy your smart contract using temporary account (TestNet only)
   near call <contractName> <methodName> [args]     # schedule smart contract call which can modify state
   near view <contractName> <methodName> [args]     # make smart contract call which can view state
   near clean                                       # clean the smart contract build locally (remove ./out )
@@ -50,6 +52,7 @@ near <command>
 #### For validators:
 ```bash
   near validators <epoch>                          # lookup validating nodes by epoch(or "current", "next")
+  near proposals                                   # lookup current proposals
 ```
 
 #### REPL:
@@ -71,7 +74,7 @@ near repl --acountId bob
 
 ```bash
   near repl                                        # launch interactive Node.js shell with NEAR connection available to use
-  near generate-key <account-id>                   # generate key
+  near generate-key <account-id>                   # generate key locally (Note: this does not create another access key automatically)
 ```
 
 ### Options
