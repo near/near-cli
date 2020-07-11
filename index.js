@@ -43,7 +43,11 @@ exports.deploy = async function (options) {
         await account.signAndSendTransaction(options.accountId,
             [
                 transactions.deployContract(fs.readFileSync(options.wasmFile)),
-                transactions.functionCall(options.initFunction, Buffer.from(options.initArgs), options.initGas, options.initDeposit),
+                transactions.functionCall(
+                    options.initFunction,
+                    Buffer.from(options.initArgs),
+                    options.initGas,
+                    utils.format.parseNearAmount(options.initDeposit)),
             ]
         );
     } else {
