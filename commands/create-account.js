@@ -130,7 +130,7 @@ async function createAccount(options) {
         await near.createAccount(options.accountId, publicKey);
         console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
     } catch(error) {
-        if (error.message.includes('Timeout')) {
+        if (error.type === 'RetriesExceeded') {
             console.warn('Received a timeout when creating account, please run:');
             console.warn(`near state ${options.accountId}`);
             console.warn('to confirm creation. Keyfile for this account has been saved.');
