@@ -81,18 +81,16 @@ async function createAccount(options) {
     if (splitAccount.length === 1) {
         // TLA (bob-with-at-least-maximum-characters)
         if (splitAccount[0].length < TLA_MIN_LENGTH) {
-            console.log(`Top-level accounts must be at least ${TLA_MIN_LENGTH} characters.\n` +
+            throw new Error(`Top-level accounts must be at least ${TLA_MIN_LENGTH} characters.\n` +
               'Note: this is for advanced usage only. Typical account names are of the form:\n' +
               'app.alice.test, where the masterAccount shares the top-level account (.test).'
             );
-            return;
         }
     } else if (splitAccount.length > 1) {
         // Subaccounts (short.alice.near, even.more.bob.test, and eventually peter.potato)
         // Check that master account TLA matches
         if (!options.accountId.endsWith(`.${options.masterAccount}`)) {
-            console.log(`New account doesn't share the same top-level account. Expecting account name to end in ".${options.masterAccount}"`);
-            return;
+            throw new Error(`New account doesn't share the same top-level account. Expecting account name to end in ".${options.masterAccount}"`);
         }
 
         // Warn user if account seems to be using wrong network, where TLA is captured in config
@@ -121,8 +119,7 @@ async function createAccount(options) {
     try {
         // This is expected to error because the account shouldn't exist
         await near.account(options.accountId);
-        console.error(`Sorry, account '${options.accountId}' already exists.`);
-        process.exit(1);
+        throw new Error(`Sorry, account '${options.accountId}' already exists.`);
     } catch (e) {
         if (!e.message.includes('does not exist while viewing')) {
             throw e;
