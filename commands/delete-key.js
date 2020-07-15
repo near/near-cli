@@ -19,5 +19,5 @@ async function deleteAccessKey(options) {
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const result = await account.deleteKey(options.accessKey);
-    console.log(inspectResponse.prettyPrintResponse(result));
+    inspectResponse.prettyPrintResponse(result, options);
 }

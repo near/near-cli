@@ -37,14 +37,16 @@ exports.deploy = async function (options) {
     const near = await connect(options);
     const contractData = [...fs.readFileSync(options.wasmFile)];
     const account = await near.account(options.accountId);
-    await account.deployContract(contractData);
+    const result = await account.deployContract(contractData);
+    inspectResponse.prettyPrintResponse(result, options);
+    console.log(`Done deploying to ${options.accountId}`);
 };
 
 exports.callViewFunction = async function (options) {
     console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
     const near = await connect(options);
     const account = await near.account(options.accountId || options.masterAccount || options.contractName);
-    console.log(inspectResponse.prettyPrintResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
+    console.log(inspectResponse.formatResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
 };
 
 // open a given URL in browser in a safe way.
@@ -159,7 +161,7 @@ exports.viewAccount = async function (options) {
         state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
     }
     console.log(`Account ${options.accountId}`);
-    console.log(inspectResponse.prettyPrintResponse(state));
+    console.log(inspectResponse.formatResponse(state));
 };
 
 exports.deleteAccount = async function (options) {
@@ -177,7 +179,7 @@ exports.keys = async function (options) {
     let account = await near.account(options.accountId);
     let accessKeys = await account.getAccessKeys();
     console.log(`Keys for account ${options.accountId}`);
-    console.log(inspectResponse.prettyPrintResponse(accessKeys));
+    console.log(inspectResponse.formatResponse(accessKeys));
 };
 
 exports.sendMoney = async function (options) {
@@ -185,12 +187,7 @@ exports.sendMoney = async function (options) {
     const near = await connect(options);
     const account = await near.account(options.sender);
     const result = await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount));
-    if (options.verbose) {
-        console.log(inspectResponse.prettyPrintResponse(result));
-    }
-    const txnId = inspectResponse.getTxnId(result);
-    console.log(`Transaction Id ${txnId}`);
-    explorer.printTransactionUrl(txnId, options);
+    inspectResponse.prettyPrintResponse(result, options);
 };
 
 exports.stake = async function (options) {
@@ -198,5 +195,5 @@ exports.stake = async function (options) {
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const result = await account.stake(qs.unescape(options.stakingKey), utils.format.parseNearAmount(options.amount));
-    console.log(inspectResponse.prettyPrintResponse(result));
+    inspectResponse.prettyPrintResponse(result, options);
 };
