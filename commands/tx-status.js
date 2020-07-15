@@ -32,7 +32,7 @@ module.exports = {
 
         const status = await near.connection.provider.txStatus(bs58.decode(hash), accountId);
         console.log(`Transaction ${accountId}:${hash}`);
-        console.log(inspectResponse.prettyPrintResponse(status));
+        console.log(inspectResponse.formatResponse(status));
 
     })
 };
