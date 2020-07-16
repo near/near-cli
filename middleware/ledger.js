@@ -35,9 +35,9 @@ module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, n
             return getPublicKeyForPath(ledgerKeyPath);
         },
         async signMessage(message) {
-            const publicKey = await this.getPublicKey();
+            const publicKey = await getPublicKeyForPath(ledgerKeyPath);
             console.log('Waiting for confirmation on Ledger...');
-            const signature = await client.sign(message);
+            const signature = await client.sign(message, ledgerKeyPath);
             return { signature, publicKey };
         }
     };
