@@ -50,7 +50,7 @@ async function devDeploy(options) {
     const result = await account.deployContract(contractData);
     inspectResponse.prettyPrintResponse(result, options);
     console.log(`Done deploying to ${accountId}`);
-};
+}
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount }) {
     // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
