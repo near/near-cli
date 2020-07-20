@@ -35,32 +35,26 @@ exports.deploy = async function (options) {
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
 
     const near = await connect(options);
-    const contractData = [...fs.readFileSync(options.wasmFile)];
     const account = await near.account(options.accountId);
+    // Deploy with init function and args
+    const txs = [transactions.deployContract(fs.readFileSync(options.wasmFile))];
+
     if (options.initFunction) {
         if (!options.initArgs) {
             console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');
             process.exit(1);
         }
-        // Deploy with init function and args
-        const result = await account.signAndSendTransaction(options.accountId,
-            [
-                transactions.deployContract(fs.readFileSync(options.wasmFile)),
-                transactions.functionCall(
-                    options.initFunction,
-                    Buffer.from(options.initArgs),
-                    options.initGas,
-                    utils.format.parseNearAmount(options.initDeposit)),
-            ]
+        txs.push(transactions.functionCall(
+            options.initFunction,
+            Buffer.from(options.initArgs),
+            options.initGas,
+            utils.format.parseNearAmount(options.initDeposit)),
         );
-        inspectResponse.prettyPrintResponse(result, options);
-        console.log(`Done deploying and initializing to ${options.accountId}`);
-    } else {
-        // Normal deploy without initialization
-        const result = await account.deployContract(contractData);
-        inspectResponse.prettyPrintResponse(result, options);
-        console.log(`Done deploying to ${options.accountId}`);
     }
+
+    const result = await account.signAndSendTransaction(options.accountId, txs);
+    inspectResponse.prettyPrintResponse(result, options);
+    console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${options.accountId}`);
 };
 
 exports.callViewFunction = async function (options) {
