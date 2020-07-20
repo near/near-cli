@@ -1,7 +1,8 @@
 #!/bin/bash
 set -ex
 rm -rf tmp-project
-mkdir tmp-project
+# create-near-app only used to get access to test.near key file
+yarn create near-app tmp-project
 cd tmp-project
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp.test.near
