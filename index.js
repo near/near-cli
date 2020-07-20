@@ -8,7 +8,7 @@ const URL = require('url').URL;
 const qs = require('querystring');
 const chalk = require('chalk');  // colorize output
 const open = require('open');    // open URL in default browser
-const { KeyPair, utils } = require('near-api-js');
+const { KeyPair, utils, transactions } = require('near-api-js');
 
 const connect = require('./utils/connect');
 const verify = require('./utils/verify-account');
@@ -33,12 +33,28 @@ exports.clean = async function () {
 exports.deploy = async function (options) {
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
+
     const near = await connect(options);
-    const contractData = [...fs.readFileSync(options.wasmFile)];
     const account = await near.account(options.accountId);
-    const result = await account.deployContract(contractData);
+    // Deploy with init function and args
+    const txs = [transactions.deployContract(fs.readFileSync(options.wasmFile))];
+
+    if (options.initFunction) {
+        if (!options.initArgs) {
+            console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');
+            process.exit(1);
+        }
+        txs.push(transactions.functionCall(
+            options.initFunction,
+            Buffer.from(options.initArgs),
+            options.initGas,
+            utils.format.parseNearAmount(options.initDeposit)),
+        );
+    }
+
+    const result = await account.signAndSendTransaction(options.accountId, txs);
     inspectResponse.prettyPrintResponse(result, options);
-    console.log(`Done deploying to ${options.accountId}`);
+    console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${options.accountId}`);
 };
 
 exports.callViewFunction = async function (options) {
