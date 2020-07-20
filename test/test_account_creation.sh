@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp.test.near
