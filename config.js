@@ -43,7 +43,7 @@ function getConfig(env) {
             walletUrl: 'https://wallet.betanet.near.org',
             helperUrl: 'https://helper.betanet.near.org',
             helperAccount: 'betanet',
-            explorerUrl: 'https://explorer.testnet.near.org',
+            explorerUrl: 'https://explorer.betanet.near.org',
         };
     case 'local':
         return {
