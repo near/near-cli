@@ -3366,9 +3366,9 @@ near-api-js@^0.27.0:
     tweetnacl "^1.0.1"
 
 near-ledger-js@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/near-ledger-js/-/near-ledger-js-0.1.1.tgz#7eeb17cea58e07014d13f63048127b7e0abc6f0e"
-  integrity sha512-Gp65GDPlp3DUJUs51pgfH2LMrD27st03mao6VXc5az3x5vQKCWwMNlQyGlOxXSh9TKVZ+b+3HvHg0HBBs+ZLTA==
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/near-ledger-js/-/near-ledger-js-0.1.2.tgz#7766e530428db4f62ec8055aba3c80956caa3825"
+  integrity sha512-Lvhmy3/imXL+MLkCLE/UiZs+sVeEgKTvbw2y2+pSy1WN61axe4BJE6o58Ju/X5LaFdfMAjAHGE8kPl08g7KG5Q==
   dependencies:
     bs58 "^4.0.1"
 
