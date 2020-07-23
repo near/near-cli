@@ -25,16 +25,6 @@ function getConfig(env) {
             helperAccount: 'testnet',
             explorerUrl: 'https://explorer.testnet.near.org',
         };
-    case 'devnet':
-        return {
-            networkId: 'devnet',
-            nodeUrl: 'https://rpc.devnet.near.org',
-            contractName: CONTRACT_NAME,
-            walletUrl: 'https://wallet.devnet.near.org',
-            helperUrl: 'https://helper.devnet.near.org',
-            helperAccount: 'devnet',
-            explorerUrl: 'https://explorer.devnet.near.org/',
-        };
     case 'betanet':
         return {
             networkId: 'betanet',
