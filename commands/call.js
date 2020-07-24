@@ -24,6 +24,8 @@ module.exports = {
         })
         .option('accountId', {
             required: true,
+            desc: 'Unique identifier for the account that will be used to sign this call',
+            type: 'string',
         }),
     handler: exitOnError(scheduleFunctionCall)
 };
