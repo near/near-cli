@@ -128,7 +128,12 @@ const deploy = {
 const callViewFunction = {
     command: 'view <contractName> <methodName> [args]',
     desc: 'make smart contract call which can view state',
-    builder: (yargs) => yargs,
+    builder: (yargs) => yargs
+        .option('args', {
+            desc: 'Arguments to the view call, in JSON format (e.g. \'{"param_a": "value"}\')',
+            type: 'string',
+            default: null
+        }),
     handler: exitOnError(main.callViewFunction)
 };
 

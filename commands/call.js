@@ -16,6 +16,16 @@ module.exports = {
             desc: 'Number of tokens to attach',
             type: 'string',
             default: '0'
+        })
+        .option('args', {
+            desc: 'Arguments to the contract call, in JSON format (e.g. \'{"param_a": "value"}\')',
+            type: 'string',
+            default: null
+        })
+        .option('accountId', {
+            required: true,
+            desc: 'Unique identifier for the account that will be used to sign this call',
+            type: 'string',
         }),
     handler: exitOnError(scheduleFunctionCall)
 };
