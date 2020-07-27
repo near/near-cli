@@ -11,12 +11,13 @@ const prettyPrintResponse = (response, options) => {
 };
 
 const prettyPrintError = (error, options) => {
-    console.log(`An error occured`)
+    console.log('An error occured');
     console.log(formatResponse(error));
     const txnId = getTxnIdFromError(error);
     if (txnId) {
-        console.log(`We attempted to send a transaction with id ${txnId} to NEAR, but something went wrong.`);
+        console.log(`We attempted to send transaction ${txnId} to NEAR, but something went wrong.`);
         explorer.printTransactionUrl(txnId, options);
+        console.log('Note: if the transaction was invalid (e.g. not enough balance), it will show as Not started/Finalizing.');
     }
 };
 
@@ -26,17 +27,22 @@ const formatResponse = (response) => {
 
 const getTxnIdFromError = (error) => {
     // Currently supported error format: 
-    // TypedError: Exceeded 10 status check attempts for transaction GRPWi935e8Cm2PmPqrcrAyBuM9N13h5kHJNqhfVcY33q.
-    // at Account.retryTxResult (C:\Users\janed\near\near-api-js\lib\account.js:97:15)
-    // at Account.signAndSendTransaction (C:\Users\janed\near\near-api-js\lib\account.js:119:22)
-    // at Object. (C:\Users\janed\near\near-api-js\test\account.test.js:38:5) {
-    // type: 'RetriesExceeded',
-    // transactionHash: 'GRPWi935e8Cm2PmPqrcrAyBuM9N13h5kHJNqhfVcY33q'
-    // } 
+    // {
+    //     [stack]: 'Error: Sender jane.betanet does not have enough balance 45000000521675913419670000 for operation costing 1000000000002265303009375000\n' +
+    //     ...
+    //     [message]: 'Sender jane.betanet does not have enough balance 45000000521675913419670000 for operation costing 1000000000002265303009375000',
+    //     type: 'NotEnoughBalance',
+    //     context: ErrorContext {
+    //       transactionHash: 'FyavUCyvZ5G1JLTdnXSZd3VoaFEaGRXnmDFwhmNeaVC6'
+    //     },
+    //     balance: '45000000521675913419670000',
+    //     cost: '1000000000002265303009375000',
+    //     signer_id: 'jane.betanet'
+    //   }
     
-    if (!error) return null;
-    return error.transactionHash;
-}
+    if (!error || !error.context) return null;
+    return error.context.transactionHash;
+};
 
 const getTxnId = (response) => {
     // Currently supported response format: 
