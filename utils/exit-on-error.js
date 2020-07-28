@@ -1,4 +1,5 @@
 const eventtracking = require('./eventtracking');
+const inspectResponse = require('./inspect-response');
 
 // This is a workaround to get Mixpanel to log a crash
 process.on('exit', () => {
@@ -21,7 +22,8 @@ module.exports = (promiseFn) => async (...args) => {
     const command = args[0]['_'];
     process.env.NEAR_CLI_ERROR_LAST_COMMAND = command;
     process.env.NEAR_CLI_NETWORK_ID = require('../get-config')()['networkId'];
-    const optionsAsStr = JSON.stringify(args[0]);
+    const options = args[0];
+    const optionsAsStr = JSON.stringify(options);
     const eventId =  `event_id_shell_${command}_start`;
     require('child_process').fork(__dirname + '/log-event.js', ['node'], {
         silent: true,
@@ -38,7 +40,7 @@ module.exports = (promiseFn) => async (...args) => {
     } catch (e) {
         process.env.NEAR_CLI_LAST_ERROR = e.message;
         process.env.NEAR_CLI_OPTIONS = optionsAsStr;
-        console.log('Error: ', e);
+        inspectResponse.prettyPrintError(e, options);
         process.exit(1);
     }
 };
