@@ -17,7 +17,7 @@ const prettyPrintError = (error, options) => {
     if (txnId) {
         console.log(`We attempted to send transaction ${txnId} to NEAR, but something went wrong.`);
         explorer.printTransactionUrl(txnId, options);
-        console.log('Note: if the transaction was invalid (e.g. not enough balance), it will show as Not started/Finalizing.');
+        console.log('Note: if the transaction was invalid (e.g. not enough balance), it will show as "Not started" or "Finalizing"');
     }
 };
 
