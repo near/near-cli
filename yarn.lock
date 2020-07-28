@@ -3124,9 +3124,9 @@ lodash.sortby@^4.7.0:
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
 lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 loud-rejection@^1.0.0:
   version "1.6.0"
@@ -3348,10 +3348,10 @@ ncp@^2.0.0:
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
   integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
 
-near-api-js@^0.27.0:
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.27.0.tgz#d65d4d1059f0d8feb84a56795cb41f5b8c79d68e"
-  integrity sha512-84tNujERdEEj2uboTHd5CbaAQqOWrQfEFGs+2cdVFYWwcFvMgEMQDwXH0tRan0LRRMTlJXGDsKV8LYf37J9K7A==
+near-api-js@^0.28.0:
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.28.0.tgz#2d209b407a4356cd10990792c1e6a7958a51b21c"
+  integrity sha512-Fq6E+turnwCmAyv3GIQSTlM5cA/wiyh89xL64FfE8fuxXD77QjT3376bkuDg/he0cnhCwLGSctXnxeFs9Q7O1g==
   dependencies:
     "@types/bn.js" "^4.11.5"
     bn.js "^5.0.0"
@@ -3366,9 +3366,9 @@ near-api-js@^0.27.0:
     tweetnacl "^1.0.1"
 
 near-ledger-js@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/near-ledger-js/-/near-ledger-js-0.1.1.tgz#7eeb17cea58e07014d13f63048127b7e0abc6f0e"
-  integrity sha512-Gp65GDPlp3DUJUs51pgfH2LMrD27st03mao6VXc5az3x5vQKCWwMNlQyGlOxXSh9TKVZ+b+3HvHg0HBBs+ZLTA==
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/near-ledger-js/-/near-ledger-js-0.1.2.tgz#7766e530428db4f62ec8055aba3c80956caa3825"
+  integrity sha512-Lvhmy3/imXL+MLkCLE/UiZs+sVeEgKTvbw2y2+pSy1WN61axe4BJE6o58Ju/X5LaFdfMAjAHGE8kPl08g7KG5Q==
   dependencies:
     bs58 "^4.0.1"
 

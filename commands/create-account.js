@@ -135,7 +135,7 @@ async function createAccount(options) {
             console.warn(`near state ${options.accountId}`);
             console.warn('to confirm creation. Keyfile for this account has been saved.');
         } else {
-            await near.connection.signer.keyStore.removeKey(options.networkId, options.accountId);
+            if (!options.usingLedger) await near.connection.signer.keyStore.removeKey(options.networkId, options.accountId);
             throw error;
         }
     }
