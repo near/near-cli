@@ -1,7 +1,7 @@
 # NEAR CLI (command line interface)
 
-[![Build Status](https://travis-ci.com/near/near-shell.svg?branch=master)](https://travis-ci.com/near/near-shell)
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/near/near-shell) 
+[![Build Status](https://travis-ci.com/near/near-cli.svg?branch=master)](https://travis-ci.com/near/near-cli)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/near/near-cli) 
 
 NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.com/near/near-api-js) to generate secure keys, connect to the NEAR platform and send transactions to the network on your behalf.
 

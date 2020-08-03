@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/near/near-shell.git"
+    "url": "git+https://github.com/near/near-cli.git"
   },
   "author": "Jane Degtiareva",
   "license": "(MIT AND Apache-2.0)",
   "bugs": {
-    "url": "https://github.com/near/near-shell/issues"
+    "url": "https://github.com/near/near-cli/issues"
   },
-  "homepage": "https://github.com/near/near-shell#readme",
+  "homepage": "https://github.com/near/near-cli#readme",
   "bin": {
     "near": "./bin/near"
   },

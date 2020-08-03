@@ -95,7 +95,7 @@ async function createAccount(options) {
 
         // Warn user if account seems to be using wrong network, where TLA is captured in config
         // TODO: when "network" key is available, revisit logic to determine if user is on proper network
-        // See: https://github.com/near/near-shell/issues/387
+        // See: https://github.com/near/near-cli/issues/387
         if (options.helperAccount && masterRootTLA !== options.helperAccount) {
             console.log(`NOTE: In most cases, when connected to network "${options.networkId}", masterAccount will end in ".${options.helperAccount}"`);
         }
