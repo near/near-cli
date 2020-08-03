@@ -64,7 +64,7 @@ const getEventTrackingConsent = async () => {
         for (let attempts = 0; attempts < 10; attempts++) {
             const answer = await new Promise((resolve) => {
                 rl.question(
-                    chalk`We would like to collect data on near-shell usage to improve developer experience.` +
+                    chalk`We would like to collect data on near-cli usage to improve developer experience.` +
                     chalk` We will never send private information. We only collect which commands are run via an anonymous identifier.` +
                     chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
                     async (consentToEventTracking) => {
