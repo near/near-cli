@@ -54,7 +54,7 @@ async function devDeploy(options) {
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount }) {
     // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
-    // https://github.com/nearprotocol/near-shell/issues/287
+    // https://github.com/near/near-shell/issues/287
     const accountFilePath = `${PROJECT_KEY_DIR}/dev-account`;
     const accountFilePathEnv = `${PROJECT_KEY_DIR}/dev-account.env`;
     if (!init) {

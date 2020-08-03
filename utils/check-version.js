@@ -11,7 +11,7 @@ const isCI = require('is-ci');   // avoid output if running in CI server
 const UPDATE_CHECK_INTERVAL_SECONDS = 1;
 
 /**
-    check the current version of NEAR Shell against latest as published on npm
+    check the current version of NEAR CLI against latest as published on npm
  */
 module.exports = async function checkVersion() {
     const pkg = require('../package.json');
@@ -26,7 +26,7 @@ module.exports = async function checkVersion() {
         const { type: diff, current, latest } = notifier.update;
         const update = normalizePhrasingOf(diff);
         const updateCommand = '{updateCommand}';
-        const message = chalk`NEAR Shell has a ${update} available {dim ${current}} → {green ${latest}}
+        const message = chalk`NEAR CLI has a ${update} available {dim ${current}} → {green ${latest}}
 Run {cyan ${updateCommand}} to avoid unexpected behavior`;
 
         const boxenOpts = {

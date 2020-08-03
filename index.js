@@ -80,12 +80,12 @@ exports.login = async function (options) {
         await eventtracking.track(eventtracking.EVENT_ID_LOGIN_END, { success: true, login_is_not_needed: true }, options);
     } else {
         const newUrl = new URL(options.walletUrl + '/login/');
-        const title = 'NEAR Shell';
+        const title = 'NEAR CLI';
         newUrl.searchParams.set('title', title);
         const keyPair = await KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
 
-        console.log(chalk`\n{bold.yellow Please authorize NEAR Shell} on at least one of your accounts.`);
+        console.log(chalk`\n{bold.yellow Please authorize NEAR CLI} on at least one of your accounts.`);
 
         // attempt to capture accountId automatically via browser callback
         let tempUrl;
@@ -134,7 +134,7 @@ exports.login = async function (options) {
             return await new Promise((resolve) => {
                 rl.question(
                     chalk`Please authorize at least one account at the URL above.\n\n` +
-                    chalk`Which account did you authorize for use with NEAR Shell?\n` +
+                    chalk`Which account did you authorize for use with NEAR CLI?\n` +
                     chalk`{bold Enter it here${redirectAutomaticallyHint}:}\n`, async (accountId) => {
                         resolve(accountId);
                     });
