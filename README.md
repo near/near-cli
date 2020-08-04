@@ -1,5 +1,4 @@
 # NEAR CLI (command line interface)
-# NEAR Shell command line interface. [GUILDNET README](https://github.com/near-guildnet/near-shell/blob/master/README_GUILDNET.md)
 
 [![Build Status](https://travis-ci.com/near/near-cli.svg?branch=master)](https://travis-ci.com/near/near-cli)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/near/near-cli) 
@@ -11,7 +10,13 @@ NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.
 ## Installation
 
 ```bash
+<<<<<<< HEAD
 npm install -g near-cli
+=======
+git clone https://github.com/near-guildnet/near-shell.git near-shell-guildnet
+cd near-shell-guildnet
+npm install -g
+>>>>>>> Update README.md
 ```
 
 ## Usage
@@ -19,7 +24,15 @@ npm install -g near-cli
 In command line, from the directory with your project:
 
 ```bash
+export NODE_ENV = guildnet|testnet|mainnet|betanet
 near <command>
+```
+
+## Account creation
+Without a wallet this is how I created master accounts. Maybe there's a different way. Account creation requires [httpie](https://httpie.org/docs#installation)
+```bash
+near generate-key account_id.guildnet
+http post http://164.90.144.140:3000/account newAccountId=account_id.guildnet newAccountPublicKey=account_public_key
 ```
 
 ### Commands
