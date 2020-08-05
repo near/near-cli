@@ -1,4 +1,5 @@
 # NEAR CLI (command line interface)
+# NEAR Shell command line interface. [GUILDNET README](https://github.com/near-guildnet/near-shell/blob/master/README_GUILDNET.md)
 
 [![Build Status](https://travis-ci.com/near/near-cli.svg?branch=master)](https://travis-ci.com/near/near-cli)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/near/near-cli) 
