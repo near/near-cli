@@ -3,6 +3,7 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { KeyPair } = require('near-api-js');
 const eventtracking = require('../utils/eventtracking');
+const inspectResponse = require('../utils/inspect-response');
 // Top-level account (TLA) is testnet for foo.alice.testnet
 const TLA_MIN_LENGTH = 32;
 
@@ -127,8 +128,10 @@ async function createAccount(options) {
     }
     // Create account
     try {
-        await near.createAccount(options.accountId, publicKey);
+        const response = await near.createAccount(options.accountId, publicKey);
+        inspectResponse.prettyPrintResponse(response, options);
         console.log(`Account ${options.accountId} for network "${options.networkId}" was created.`);
+        
     } catch(error) {
         if (error.type === 'RetriesExceeded') {
             console.warn('Received a timeout when creating account, please run:');
