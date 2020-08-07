@@ -6,8 +6,10 @@ const prettyPrintResponse = (response, options) => {
         console.log(formatResponse(response));
     }
     const txnId = getTxnId(response);
-    console.log(`Transaction Id ${txnId}`);
-    explorer.printTransactionUrl(txnId, options);
+    if (txnId) {
+        console.log(`Transaction Id ${txnId}`);
+        explorer.printTransactionUrl(txnId, options);
+    }
 };
 
 const prettyPrintError = (error, options) => {

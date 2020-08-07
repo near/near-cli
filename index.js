@@ -185,7 +185,8 @@ exports.deleteAccount = async function (options) {
         `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    await account.deleteAccount(options.beneficiaryId);
+    const result = await account.deleteAccount(options.beneficiaryId);
+    inspectResponse.prettyPrintResponse(result, options);
     console.log(`Account ${options.accountId} for network "${options.networkId}" was deleted.`);
 };
 
