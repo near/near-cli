@@ -104,6 +104,8 @@ async function createAccount(options) {
     let near = await connect(options);
     let keyPair;
     let publicKey;
+    let keyRootPath;
+    let keyFilePath;
     if (options.publicKey) {
         publicKey = options.publicKey;
     } else {
@@ -111,6 +113,12 @@ async function createAccount(options) {
         publicKey = keyPair.getPublicKey();
     }
     if (keyPair) {
+        // keyFilePath = near.connection.signer.keyStore.getKeyFilePath(options.networkId, options.accountId);
+
+        if (near.connection.signer.keyStore.keyStores.length) {
+            keyRootPath = near.connection.signer.keyStore.keyStores[0].keyDir;
+        }
+        keyFilePath = `${keyRootPath}/${options.networkId}/${options.accountId}.json`;
         await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
         await eventtracking.track(eventtracking.EVENT_ID_CREATE_ACCOUNT_END, { success: true, new_keypair: true }, options);
     } else {
@@ -127,6 +135,7 @@ async function createAccount(options) {
         }
     }
     // Create account
+    console.log(`Saving key to '${keyFilePath}'`);
     try {
         const response = await near.createAccount(options.accountId, publicKey);
         inspectResponse.prettyPrintResponse(response, options);
