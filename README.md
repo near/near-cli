@@ -10,13 +10,8 @@ NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.
 ## Installation
 
 ```bash
-<<<<<<< HEAD
-npm install -g near-cli
-=======
-git clone https://github.com/near-guildnet/near-shell.git near-shell-guildnet
-cd near-shell-guildnet
+git clone https://github.com/near-guildnet/near-shell.git
 npm install -g
->>>>>>> Update README.md
 ```
 
 ## Usage
