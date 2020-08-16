@@ -16,8 +16,8 @@ npm uninstall -g near-shell
 ```
 ### Install near-cli
 ```bash
-git clone https://github.com/near-guildnet/near-shell.git
-cd near-shell
+git clone https://github.com/near-guildnet/near-cli.git
+cd near-cli
 # sudo may be needed.
 npm install -g
 ```
