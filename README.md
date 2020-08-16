@@ -8,11 +8,21 @@ NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.
 > note that **Node.js version 10+** is required to run NEAR CLI
 
 ## Installation
-
-### Uninstall near-shell
+Before you proceed, make sure you have to following software installed :
+```
+sudo apt install python3 git curl
+sudo apt install clang
+sudo apt install build-essential
+sudo apt install nodejs
+sudo apt install npm
+sudo npm install -g n
+sudo n stable
+PATH="$PATH"
+```
+### Uninstall near-cli
 ```bash
 # sudo may be needed.
-npm uninstall -g near-shell
+npm uninstall -g near-cli
 ```
 ### Install near-cli
 ```bash
@@ -27,14 +37,14 @@ npm install -g
 In command line, from the directory with your project:
 
 ```bash
-export NODE_ENV = guildnet|testnet|mainnet|betanet
+export NODE_ENV=guildnet|testnet|mainnet|betanet
 near <command>
 ```
 
 ## Account creation
 Without a wallet this is how I created master accounts. Maybe there's a different way. Account creation requires [httpie](https://httpie.org/docs#installation)
 ```bash
-near generate-key account_id.guildnet
+near generate-key <Account_id>.guildnet
 http post http://164.90.144.140:3000/account newAccountId=account_id.guildnet newAccountPublicKey=account_public_key
 ```
 
