@@ -2,7 +2,6 @@
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { KeyPair } = require('near-api-js');
-const eventtracking = require('../utils/eventtracking');
 const inspectResponse = require('../utils/inspect-response');
 // Top-level account (TLA) is testnet for foo.alice.testnet
 const TLA_MIN_LENGTH = 32;
