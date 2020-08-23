@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "jest && ./test/index.sh",
+    "test": "./test/cleanup.sh && jest && ./test/index.sh",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
