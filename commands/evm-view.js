@@ -36,7 +36,7 @@ async function scheduleEVMFunctionCall(options) {
     }));
     const contract = new web.eth.Contract(options.abi, options.contractName);
     const args = JSON.parse(options.args || '[]');
-    assert(contract.methods.hasOwnProperty(options.methodName), `${options.methodName} is not present in ABI`);
+    assert(options.methodName in contract.methods, `${options.methodName} is not present in ABI`);
     const result = await contract.methods[options.methodName](...args).call({ from: utils.nearAccountToEvmAddress(options.accountId) });
     console.log(result);
 }

@@ -50,6 +50,6 @@ async function scheduleEVMFunctionCall(options) {
         evmAccountId: options.evmAccount,
     }));
     const contract = new web.eth.Contract(options.abi, options.contractName);
-    assert(contract.methods.hasOwnProperty(options.methodName), `${options.methodName} is not present in ABI`);
+    assert(options.methodName in contract.methods, `${options.methodName} is not present in ABI`);
     await contract.methods[options.methodName](...args).send({ from: utils.nearAccountToEvmAddress(options.accountId) });
 }
