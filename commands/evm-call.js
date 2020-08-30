@@ -36,8 +36,9 @@ module.exports = {
 };
 
 async function scheduleEVMFunctionCall(options) {
+    const args = JSON.parse(options.args || '[]');
     console.log(`Scheduling a call inside ${options.evmAccount} EVM:`);
-    console.log(`${options.contractName}.${options.methodName}(${options.args || ''})` + 
+    console.log(`${options.contractName}.${options.methodName}(${args})` +
         (options.amount && options.amount != '0' ? ` with attached ${options.amount} NEAR` : ''));
     const web = new web3();
     web.setProvider(new NearProvider({
@@ -49,8 +50,6 @@ async function scheduleEVMFunctionCall(options) {
         evmAccountId: options.evmAccount,
     }));
     const contract = new web.eth.Contract(options.abi, options.contractName);
-    const args = JSON.parse(options.args || '[]');
     assert(contract.methods.hasOwnProperty(options.methodName), `${options.methodName} is not present in ABI`);
-    const result = await contract.methods[options.methodName](...args).send({ from: utils.nearAccountToEvmAddress(options.accountId) });
-    console.log(result);
+    await contract.methods[options.methodName](...args).send({ from: utils.nearAccountToEvmAddress(options.accountId) });
 }
