@@ -4,7 +4,7 @@ const { NearProvider, utils } = require('near-web3-provider');
 const assert = require('assert');
 
 module.exports = {
-    command: 'evm-call <evmAccount> <contractName> <methodName> [args]',
+    command: 'evm-call <nearEvmAccountId> <evmContractName> <methodName> [args]',
     desc: 'Schedule call inside EVM machine',
     builder: (yargs) => yargs
         .option('gas', {
@@ -37,9 +37,9 @@ module.exports = {
 
 async function scheduleEVMFunctionCall(options) {
     const args = JSON.parse(options.args || '[]');
-    console.log(`Scheduling a call inside ${options.evmAccount} EVM:`);
-    console.log(`${options.contractName}.${options.methodName}(${args})` +
-        (options.amount && options.amount != '0' ? ` with attached ${options.amount} NEAR` : ''));
+    console.log(`Scheduling a call inside ${options.nearEvmAccountId} EVM:`);
+    console.log(`${options.evmContractName}.${options.methodName}(${args})` +
+        (options.amount && options.amount !== '0' ? ` with attached ${options.amount} NEAR` : ''));
     const web = new web3();
     web.setProvider(new NearProvider({
         nodeUrl: options.nodeUrl,
@@ -47,9 +47,9 @@ async function scheduleEVMFunctionCall(options) {
         // keyStore: options.keyStore,
         masterAccountId: options.accountId, 
         networkId: options.networkId,
-        evmAccountId: options.evmAccount,
+        nearEvmAccountIdId: options.nearEvmAccountId,
     }));
-    const contract = new web.eth.Contract(options.abi, options.contractName);
+    const contract = new web.eth.Contract(options.abi, options.evmContractName);
     assert(options.methodName in contract.methods, `${options.methodName} is not present in ABI`);
     await contract.methods[options.methodName](...args).send({ from: utils.nearAccountToEvmAddress(options.accountId) });
 }
