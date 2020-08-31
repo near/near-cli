@@ -8,7 +8,7 @@ module.exports = {
     desc: 'Schedule call inside EVM machine',
     builder: (yargs) => yargs
         .option('gas', {
-            desc: 'Max amount of gas this call can use',
+            desc: 'Max amount of NEAR gas this call can use',
             type: 'string',
             default: '100000000000000'
         })
