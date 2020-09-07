@@ -26,6 +26,9 @@ module.exports = {
         let near = await require('../utils/connect')(argv);
 
         if (argv.usingLedger) {
+            if (argv.accountId) {
+                console.log('WARN: Account id is provided but ignored in case of using Ledger.');
+            }
             const publicKey = await argv.signer.getPublicKey();
             // NOTE: Command above already prints public key.
             console.log(`Implicit account: ${implicitAccountId(publicKey.toString())}`);
