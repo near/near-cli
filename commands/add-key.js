@@ -1,4 +1,3 @@
-const BN = require('bn.js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
@@ -24,7 +23,7 @@ module.exports = {
             required: false,
         })
         .option('allowance', {
-            desc: 'Allowance on the key (default 0)',
+            desc: 'Allowance in $NEAR for the key (default 0)',
             type: 'string',
             required: false,
         }),
@@ -35,7 +34,7 @@ async function addAccessKey(options) {
     if (!options.accountId) {
         return;
     }
-    console.log(`Adding ${options.contractId ? 'limited access' : 'full access'} key = ${options.accessKey} to ${options.accountId}.`);
+    console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key = ${options.accessKey} to ${options.accountId}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const allowance = utils.format.parseNearAmount(options.allowance);
