@@ -9,7 +9,7 @@ const qs = require('querystring');
 const chalk = require('chalk');  // colorize output
 const open = require('open');    // open URL in default browser
 const { KeyPair, utils, transactions } = require('near-api-js');
-
+const config = require('./get-config')();
 const connect = require('./utils/connect');
 const verify = require('./utils/verify-account');
 const capture = require('./utils/capture-login-success');
@@ -169,14 +169,35 @@ exports.login = async function (options) {
 };
 
 exports.viewAccount = async function (options) {
-    let near = await connect(options);
-    let account = await near.account(options.accountId);
-    let state = await account.state();
-    if (state && state.amount) {
-        state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
+    try {
+        let near = await connect(options);
+        let account = await near.account(options.accountId);
+        let state = await account.state();
+        if (state && state.amount) {
+            state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
+        }
+        console.log(`Account ${options.accountId}`);
+        console.log(inspectResponse.formatResponse(state));
+    } catch(e) {
+        console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${config.helperAccount}} network.\n}`);
+
+        const prefix = String(options.accountId).match(/[^\.]*$/gi)[0];
+        if(prefix) {
+            switch(prefix) {
+                case 'near':
+                    console.log(chalk`{bold.white Use export NEAR_ENV=mainnet to use MainNet accounts. \n}`);
+                    break;
+                case 'testnet': 
+                    console.log(chalk`{bold.white Use export NEAR_ENV=testnet to use TestNet accounts. \n}`);
+                    break;
+                case 'betanet': 
+                    console.log(chalk`{bold.white Use export NEAR_ENV=betanet to use BetaNet accounts. \n}`);
+                    break;
+            }
+        }
+
     }
-    console.log(`Account ${options.accountId}`);
-    console.log(inspectResponse.formatResponse(state));
+   
 };
 
 exports.deleteAccount = async function (options) {
