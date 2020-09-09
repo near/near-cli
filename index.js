@@ -180,7 +180,6 @@ exports.viewAccount = async function (options) {
 };
 
 exports.deleteAccount = async function (options) {
-
     console.log(
         `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
     const near = await connect(options);
