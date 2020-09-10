@@ -47,6 +47,10 @@ class Account2fa extends Account {
             }
         })));
 
+        // debugging
+        // console.log(actions)
+        // console.log(convertActions(actions, accountId, receiverId))
+
         try {
             await super.signAndSendTransaction(accountId, [
                 functionCall('add_request_and_confirm', args, WALLET_2FA_GAS, '0')
@@ -130,13 +134,14 @@ const getContract = (account) => {
 
 const convertActions = (actions, accountId, receiverId) => actions.map((a) => {
     const type = a.enum;
-    const { gas, publicKey, methodName, args, deposit, accessKey } = a[type];
+    const { gas, publicKey, methodName, args, deposit, accessKey, code } = a[type];
     const action = {
         type: type[0].toUpperCase() + type.substr(1),
         gas: (gas && gas.toString()) || undefined,
         public_key: (publicKey && convertPKForContract(publicKey)) || undefined,
         method_name: methodName,
         args: (args && Buffer.from(args).toString('base64')) || undefined,
+        code: (code && Buffer.from(code).toString('base64')) || undefined,
         amount: (deposit && deposit.toString()) || undefined,
     };
     if (accessKey) {
