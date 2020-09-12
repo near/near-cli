@@ -488,29 +488,29 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-5.23.0.tgz#30a0338dafba8264556011604abed08bf24979f3"
   integrity sha512-qtpX8aFrUUlYfOMu7BxTvxqUa8CniE+tEBpVEjYUhVbFdVJjM4ouwJD++RtQkMAU2c5jE7xb12WnUnf5BlAgLQ==
 
-"@ledgerhq/hw-transport-node-hid-noevents@^5.23.0":
-  version "5.23.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid-noevents/-/hw-transport-node-hid-noevents-5.23.0.tgz#9d1329306b58dba23c53f16720711425e88a4fa0"
-  integrity sha512-tJQRAosKxWu33U28Pu3XmrktafhA3Vdx83Jdw260NVpqWs6ImA7j0A6242FQzYFEi92II/02jsrW6OBZo8bNUA==
+"@ledgerhq/hw-transport-node-hid-noevents@^5.23.2":
+  version "5.23.2"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid-noevents/-/hw-transport-node-hid-noevents-5.23.2.tgz#0ee4b54c62d23b0f0cce258fe2c612f71b8d454a"
+  integrity sha512-8LiF87iIZWJaXMptXJ64ZnMb5T8Sjq66E6AkjnthCuBCPpz6oex50h5vNLVNNNpa/jGv0na7CADOkQkxyBQKmQ==
   dependencies:
     "@ledgerhq/devices" "^5.23.0"
     "@ledgerhq/errors" "^5.23.0"
     "@ledgerhq/hw-transport" "^5.23.0"
     "@ledgerhq/logs" "^5.23.0"
-    node-hid "^1.3.0"
+    node-hid "1.3.0"
 
 "@ledgerhq/hw-transport-node-hid@^5.15.0":
-  version "5.23.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-5.23.0.tgz#2153c5afb6f207e0ea4117a3cbdca3dbb7e5fb00"
-  integrity sha512-9mNc66S0s0C1Q5s2Vs8dhfHk5SRHvNVF2OsvXv8ir5r2O2ew4FOclZONJaVdFLrHLtoaFmtt8Az1e2NO6Xc8RA==
+  version "5.23.2"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-5.23.2.tgz#436d624334146c8a818e3270d7508e4dbb1a5b1c"
+  integrity sha512-u0oBoKFltMk05T5ySnemLKoUtUXmB25196PuDe8C+vdA34usoESiNZb49Ookp1vAw7BHzImZYo1moF+IlLGVZQ==
   dependencies:
     "@ledgerhq/devices" "^5.23.0"
     "@ledgerhq/errors" "^5.23.0"
     "@ledgerhq/hw-transport" "^5.23.0"
-    "@ledgerhq/hw-transport-node-hid-noevents" "^5.23.0"
+    "@ledgerhq/hw-transport-node-hid-noevents" "^5.23.2"
     "@ledgerhq/logs" "^5.23.0"
     lodash "^4.17.20"
-    node-hid "^1.3.0"
+    node-hid "1.3.0"
     usb "^1.6.3"
 
 "@ledgerhq/hw-transport@^5.23.0":
@@ -3421,7 +3421,7 @@ node-fetch@^2.3.0:
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
-node-hid@^1.3.0:
+node-hid@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-1.3.0.tgz#346a468505cee13d69ccd760052cbaf749f66a41"
   integrity sha512-BA6G4V84kiNd1uAChub/Z/5s/xS3EHBCxotQ0nyYrUG65mXewUDHE1tWOSqA2dp3N+mV0Ffq9wo2AW9t4p/G7g==
