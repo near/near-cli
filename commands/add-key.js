@@ -4,7 +4,7 @@ const inspectResponse = require('../utils/inspect-response');
 const { utils } = require('near-api-js');
 
 module.exports = {
-    command: 'add-key [access-key]',
+    command: 'add-key <account-id> <access-key>',
     desc: 'Add an access key to given account',
     builder: (yargs) => yargs
         .option('access-key', {
@@ -31,9 +31,6 @@ module.exports = {
 };
 
 async function addAccessKey(options) {
-    if (!options.accountId) {
-        return;
-    }
     console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key = ${options.accessKey} to ${options.accountId}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
