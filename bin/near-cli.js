@@ -34,7 +34,7 @@ const deleteAccount = {
     desc: 'delete an account and transfer funds to beneficiary account.',
     builder: (yargs) => yargs
         .option('accountId', {
-            desc: 'Account to view',
+            desc: 'Account to delete',
             type: 'string',
             required: true
         })
