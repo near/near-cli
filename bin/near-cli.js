@@ -228,7 +228,6 @@ yargs // eslint-disable-line
     .command(login)
     .command(require('../commands/repl'))
     .command(require('../commands/generate-key'))
-    .command(require('../commands/add-key'))
     .command(require('../commands/delete-key'))
     .command(require('../commands/validators'))
     .command(require('../commands/proposals'))
