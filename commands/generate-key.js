@@ -1,27 +1,11 @@
-const { decode } = require('bs58');
 const KeyPair = require('near-api-js').KeyPair;
 const exitOnError = require('../utils/exit-on-error');
-const { parseSeedPhrase } = require('near-seed-phrase');
-
-function implicitAccountId(publicKey) {
-    return decode(publicKey.replace('ed25519:', '')).toString('hex');
-}
+const implicitAccountId = require('../utils/implicit-accountid');
 
 module.exports = {
     command: 'generate-key [account-id]',
     desc: 'generate key or show key from Ledger',
-    builder: (yargs) => yargs
-        .options('seed-phrase', {
-            desc: 'Seed phrase mnemonic',
-            type: 'string',
-            required: false
-        })
-        .options('seed-path', {
-            desc: 'HD path derivation',
-            type: 'string',
-            default: "m/44'/397'/0'",
-            required: false
-        }),
+    builder: (yargs) => yargs,
     handler: exitOnError(async (argv) => {
         let near = await require('../utils/connect')(argv);
 
@@ -44,17 +28,15 @@ module.exports = {
             return;
         }
 
-        let publicKey, accountId;
-        if (argv.seedPhrase) {
-            const result = parseSeedPhrase(argv.seedPhrase, argv.seedPath);
-            publicKey = result.publicKey;
-            accountId = argv.accountId || implicitAccountId(publicKey);
-        } else {
+        // If key doesn't exist, create one and store in the keyStore.
+        // Otherwise, it's expected that both key and accountId are already provided in arguments.
+        if (!argv.publicKey) {
             const keyPair = KeyPair.fromRandom('ed25519');
-            publicKey = keyPair.publicKey.toString();
-            accountId = argv.accountId || implicitAccountId(publicKey);
-            await keyStore.setKey(argv.networkId, accountId, keyPair);
+            argv.publicKey = keyPair.publicKey.toString();
+            argv.accountId = argv.accountId || implicitAccountId(argv.publicKey);
+            await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
         }
-        console.log(`Key pair with ${publicKey} public key for account "${accountId}"`);
+            
+        console.log(`Key pair with ${argv.publicKey} public key for an account "${argv.accountId}"`);
     })
 };

@@ -42,7 +42,7 @@
     "mixpanel": "^0.11.0",
     "ncp": "^2.0.0",
     "near-api-js": "^0.29.1",
-    "near-seed-phrase": "^0.0.2",
+    "near-seed-phrase": "https://github.com/near/near-seed-phrase#8504106e5e9cb65d6cdfa61c57b6b7cb91812c1a",
     "open": "^7.0.1",
     "rimraf": "^3.0.0",
     "stoppable": "^1.1.0",
