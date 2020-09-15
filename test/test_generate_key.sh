@@ -13,7 +13,7 @@ if [[ ! -f "${KEY_FILE}" ]]; then
     exit 1
 fi
 
-EXPECTED=".*Generated key pair with ed25519:.+ public key.*"
+EXPECTED=".*Key pair with ed25519:.+ public key.*"
 if [[ ! "$RESULT" =~ $EXPECTED ]]; then
     echo FAILURE Unexpected output from near generate-key
     exit 1
