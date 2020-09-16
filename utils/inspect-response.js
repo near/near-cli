@@ -1,6 +1,31 @@
 const explorer = require('./explorer');
-
+const config = require('../get-config')();
+const chalk = require('chalk');  // colorize output
 const util = require('util');
+
+
+const checkExistAccount = (error, options) => {
+    if(!String(error).includes('does not exist while viewing')) return false;
+
+    console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${config.helperAccount}} network.\n}`);
+
+    const suffix = String(options.accountId).match(/[^\.]*$/gi)[0];
+            
+    switch(suffix) {
+        case 'near':
+            console.log(chalk`{bold.white Use export NEAR_ENV=mainnet to use MainNet accounts. \n}`);
+            break;
+        case 'testnet': 
+            console.log(chalk`{bold.white Use export NEAR_ENV=testnet to use TestNet accounts. \n}`);
+            break;
+        case 'betanet': 
+            console.log(chalk`{bold.white Use export NEAR_ENV=betanet to use BetaNet accounts. \n}`);
+            break;
+    }
+
+    return true;
+}
+
 const prettyPrintResponse = (response, options) => {
     if (options.verbose) {
         console.log(formatResponse(response));
@@ -13,6 +38,9 @@ const prettyPrintResponse = (response, options) => {
 };
 
 const prettyPrintError = (error, options) => {
+    const isCheckExistAccountError = checkExistAccount(error, options);
+    if(isCheckExistAccountError) return;
+
     console.log('An error occured');
     console.log(formatResponse(error));
     const txnId = getTxnIdFromError(error);

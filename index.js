@@ -169,34 +169,14 @@ exports.login = async function (options) {
 };
 
 exports.viewAccount = async function (options) {
-    try {
-        let near = await connect(options);
-        let account = await near.account(options.accountId);
-        let state = await account.state();
-        if (state && state.amount) {
-            state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
-        }
-        console.log(`Account ${options.accountId}`);
-        console.log(inspectResponse.formatResponse(state));
-    } catch(e) {
-        console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${config.helperAccount}} network.\n}`);
-
-        const suffix = String(options.accountId).match(/[^\.]*$/gi)[0];
-            
-        switch(suffix) {
-            case 'near':
-                console.log(chalk`{bold.white Use export NEAR_ENV=mainnet to use MainNet accounts. \n}`);
-                break;
-            case 'testnet': 
-                console.log(chalk`{bold.white Use export NEAR_ENV=testnet to use TestNet accounts. \n}`);
-                break;
-            case 'betanet': 
-                console.log(chalk`{bold.white Use export NEAR_ENV=betanet to use BetaNet accounts. \n}`);
-                break;
-        }
-
+    let near = await connect(options);
+    let account = await near.account(options.accountId);
+    let state = await account.state();
+    if (state && state.amount) {
+        state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
     }
-   
+    console.log(`Account ${options.accountId}`);
+    console.log(inspectResponse.formatResponse(state));
 };
 
 exports.deleteAccount = async function (options) {
