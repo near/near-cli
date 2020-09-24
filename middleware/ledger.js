@@ -17,6 +17,11 @@ module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, n
 
     let cachedPublicKeys = {};
     async function getPublicKeyForPath(hdKeyPath) {
+        // Handle shorthand syntax
+        if (/^\d+$/.exec(hdKeyPath)) {
+            hdKeyPath = `44'/397'/0'/0'/${hdKeyPath}'`
+        }
+
         // NOTE: Public key is cached to avoid confirming on Ledger multiple times
         if (cachedPublicKeys[ledgerKeyPath]) {
             return cachedPublicKeys[hdKeyPath];
