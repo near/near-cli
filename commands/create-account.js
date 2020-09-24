@@ -6,7 +6,7 @@ const inspectResponse = require('../utils/inspect-response');
 // Top-level account (TLA) is testnet for foo.alice.testnet
 const TLA_MIN_LENGTH = 32;
 
-const createAccountCommand = {
+module.exports = {
     command: 'create-account <accountId>',
     desc: 'create a new developer account (subaccount of the masterAccount, ex: app.alice.test)',
     builder: (yargs) => yargs
@@ -37,39 +37,6 @@ const createAccountCommand = {
         }),
     handler: exitOnError(createAccount)
 };
-
-const createAccountCommandDeprecated = {
-    command: 'create_account <accountId>',
-    builder: (yargs) => yargs
-        .option('accountId', {
-            desc: 'Unique identifier for the newly created account',
-            type: 'string',
-            required: true
-        })
-        .option('masterAccount', {
-            desc: 'Account used to create requested account.',
-            type: 'string',
-            required: true
-        })
-        .option('publicKey', {
-            desc: 'Public key to initialize the account with',
-            type: 'string',
-            required: false
-        })
-        .option('newLedgerKey', {
-            desc: 'HD key path to use with Ledger. Used to generate public key if not specified directly',
-            type: 'string',
-            default: "44'/397'/0'/0'/1'"
-        })
-        .option('initialBalance', {
-            desc: 'Number of tokens to transfer to newly created account',
-            type: 'string',
-            default: '100'
-        }),
-    handler: exitOnError(async (options) => {
-        console.log('near create_account is deprecated and will be removed in version 0.26.0. Please use near create-account.');
-        await createAccount(options); })
-}; 
 
 async function createAccount(options) {
     // NOTE: initialBalance is passed as part of config here, parsed in middleware/initial-balance
@@ -146,8 +113,3 @@ async function createAccount(options) {
         }
     }
 }
-
-module.exports = {
-    createAccountCommand,
-    createAccountCommandDeprecated
-};
