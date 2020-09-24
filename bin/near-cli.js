@@ -224,7 +224,7 @@ yargs // eslint-disable-line
     .middleware(require('../middleware/key-store'))
     .middleware(require('../middleware/ledger'))
     .middleware(require('../middleware/seed-phrase'))
-    .commandDir('../commands')
+    .commandDir('../commands', { recurse: true })
     .command(viewAccount)
     .command(deleteAccount)
     .command(keys)
