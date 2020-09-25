@@ -6,7 +6,7 @@ const implicitAccountId = require('../utils/implicit-accountid');
 
 // near ... --seedPhrase="phrase" --seedPath="m/44'/397'/0'"
 // near generate-key --seedPhrase="phrase"
-module.exports = async function useSeedPhrase({ seedPhrase, seedPath, publicKey, accountId }, yargs) {
+module.exports = async function useSeedPhrase({ seedPhrase, seedPath, publicKey, accountId, networkId }, yargs) {
     if (!seedPhrase) {
         return;
     }
@@ -17,7 +17,7 @@ module.exports = async function useSeedPhrase({ seedPhrase, seedPath, publicKey,
     publicKey = result.publicKey;
     let keyStore = new InMemoryKeyStore();
     accountId = accountId || implicitAccountId(publicKey);
-    await keyStore.setKey(yargs.networkId, accountId, KeyPair.fromString(result.secretKey));
+    await keyStore.setKey(networkId, accountId, KeyPair.fromString(result.secretKey));
     let signer = new InMemorySigner(keyStore);
     return { signer, publicKey, accountId };
 };
