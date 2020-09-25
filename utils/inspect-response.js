@@ -10,6 +10,7 @@ const prettyPrintResponse = (response, options) => {
         console.log(`Transaction Id ${txnId}`);
         explorer.printTransactionUrl(txnId, options);
     }
+    console.log();
 };
 
 const prettyPrintError = (error, options) => {
