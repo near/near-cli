@@ -23,58 +23,48 @@ module.exports = {
 
 async function stake(options) {
     const { accountId, poolAccountId } = options;
-    
-    // TODO: console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key = ${options.accessKey} to ${options.accountId}.`);
+    const prettyPrint = (result) => inspectResponse.prettyPrintResponse(result, options);
 
     const near = await connect(options);
     const account = await near.account(accountId);
 
     const LOCKUP_ACCOUNT_ID_SUFFIX = "lockup.vg";
+    const BASE_GAS = new BN("25 000 000 000 000");
+    const LOCKED_FOR_STORAGE = new BN(utils.format.parseNearAmount('35'));
     const lockupAccountId = sha256(accountId).substring(0, 40)  + '.' + LOCKUP_ACCOUNT_ID_SUFFIX;
-    const { total } = await getLockupBalance(account, lockupAccountId);
-
-    // TODO: Calculate what balance needs to be staked?
+    const lockupAccount = await near.account(lockupAccountId);
 
     // Verify staking pool exists
     await near.account(poolAccountId);
 
-    // Select staking pool
-    await account.functionCall(lockupAccountId, 'select_staking_pool', { staking_pool_account_id: poolAccountId }, new BN("75 000 000 000 000"));
+    const currentPoolAccountId = await account.viewFunction(lockupAccountId, 'get_staking_pool_account_id');
+    if (currentPoolAccountId == poolAccountId) {
+        console.log(`Staking pool ${poolAccountId} already selected for ${lockupAccountId}`);
+    } else {
+        console.log(`Selecting staking pool ${poolAccountId} for ${lockupAccountId}`);
 
-    // TODO: Pretty print response, tx hash, etc
-}
+        // TODO: Check if withdrawal needed
+        prettyPrint(await account.functionCall(lockupAccountId, 'unstake_all', {}, BASE_GAS.mul(new BN(5))));
 
-async function getLockupBalance(account, lockupAccountId) {
-    const { accountId } = account;
+        // TODO: Confirm withdrawal to avoid accidental delay
+        prettyPrint(await account.functionCall(lockupAccountId, 'withdraw_all_from_staking_pool', {}, BASE_GAS.mul(new BN(7))));
 
-    const balance = await account.getAccountBalance()
-    try {
-        // TODO: Makes sense for a lockup contract to return whole state as JSON instead of method per property
-        const [
-            ownersBalance,
-            liquidOwnersBalance,
-            lockedAmount,
-            unvestedAmount
-        ] = await Promise.all([
-            'get_owners_balance',
-            'get_liquid_owners_balance',
-            'get_locked_amount',
-            'get_unvested_amount'
-        ].map(methodName => account.viewFunction(lockupAccountId, methodName)))
-
-        return {
-            ...balance,
-            ownersBalance,
-            liquidOwnersBalance,
-            lockedAmount,
-            unvestedAmount,
-            total: new BN(balance.total).add(new BN(lockedAmount)).add(new BN(ownersBalance)).toString()
-        }
-    } catch (error) {
-        if (error.message.match(/Account ".+" doesn't exist/) || error.message.includes('cannot find contract code for account')) {
-            // TODO: Log original error in verbose mode
-            throw new Error(`Lockup account ${lockupAccountId} not configured yet for ${accountId}`);
-        }
-        throw error
+        prettyPrint(await account.functionCall(lockupAccountId, 'unselect_staking_pool', {}, BASE_GAS));
+        prettyPrint(await account.functionCall(lockupAccountId, 'select_staking_pool',
+            { staking_pool_account_id: poolAccountId }, BASE_GAS.mul(new BN(3))));
     }
+
+    const knownDeposited = await account.viewFunction(lockupAccountId, 'get_known_deposited_balance');
+    console.log(`Already staked ${utils.format.formatNearAmount(knownDeposited)} NEAR`);
+
+    const amount = new BN((await lockupAccount.getAccountBalance()).total).sub(LOCKED_FOR_STORAGE);
+    // TODO: Should there be min threshold for staking?
+    console.log(`Staking ${utils.format.formatNearAmount(amount)} NEAR`)
+
+    prettyPrint(await account.functionCall(lockupAccountId, 'deposit_and_stake',
+        { amount: amount.toString() }, BASE_GAS.mul(new BN(5))));
+
+    // TODO: Other staking steps: https://docs.near.org/docs/validator/delegation#1-lockup-contract
+
+    // TODO: Pretty print response, tx hash, etc even when error happens
 }
