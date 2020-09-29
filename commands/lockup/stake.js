@@ -28,8 +28,8 @@ async function stake(options) {
     const near = await connect(options);
     const account = await near.account(accountId);
 
-    const LOCKUP_ACCOUNT_ID_SUFFIX = "lockup.vg";
-    const BASE_GAS = new BN("25 000 000 000 000");
+    const LOCKUP_ACCOUNT_ID_SUFFIX = 'lockup.vg';
+    const BASE_GAS = new BN('25 000 000 000 000');
     const LOCKED_FOR_STORAGE = new BN(utils.format.parseNearAmount('35'));
     const lockupAccountId = sha256(accountId).substring(0, 40)  + '.' + LOCKUP_ACCOUNT_ID_SUFFIX;
     const lockupAccount = await near.account(lockupAccountId);
@@ -59,7 +59,7 @@ async function stake(options) {
 
     const amount = new BN((await lockupAccount.getAccountBalance()).total).sub(LOCKED_FOR_STORAGE);
     // TODO: Should there be min threshold for staking?
-    console.log(`Staking ${utils.format.formatNearAmount(amount)} NEAR`)
+    console.log(`Staking ${utils.format.formatNearAmount(amount)} NEAR`);
 
     prettyPrint(await account.functionCall(lockupAccountId, 'deposit_and_stake',
         { amount: amount.toString() }, BASE_GAS.mul(new BN(5))));
