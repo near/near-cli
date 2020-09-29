@@ -181,10 +181,6 @@ yargs // eslint-disable-line
         type: 'string',
         default: "44'/397'/0'/0'/1'"
     })
-    .option('use2fa', {
-        desc: 'Use 2FA for making and confirming requests',
-        type: 'boolean'
-    })
     .options('seedPhrase', {
         desc: 'Seed phrase mnemonic',
         type: 'string',

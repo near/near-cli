@@ -1,16 +1,31 @@
-const { connect: nearConnect } = require('near-api-js');
-const { Account2fa } = require('./2fa');
+const { 
+    connect: nearConnect,
+    Account,
+    multisig: {
+        MULTISIG_CHANGE_METHODS
+    }
+} = require('near-api-js');
+const { AccountMultisig } = require('./2fa');
 
 module.exports = async function connect({ keyStore, ...options }) {
-    // TODO: Avoid need to wrap in deps
     const near = await nearConnect({ ...options, deps: { keyStore }});
-    if (options.use2fa) {
-        console.log('USING 2FA');
-        near.account = async function (accountId) {
-            const account = new Account2fa(near.connection, accountId);
-            await account.state();
-            return account;
-        };
-    }
+    near.account = async (accountId) => {
+        const account = new Account(near.connection, accountId);
+        const accessKeys = await account.getAccessKeys();
+        const hasFAK = accessKeys.find((k) => k.access_key.permission && k.access_key.permission === 'FullAccess');
+        if (hasFAK) return account;
+        
+        const use2fa = accessKeys.find((k) => 
+            k.access_key.permission && 
+            k.access_key.permission.FunctionCall &&
+            k.access_key.permission.FunctionCall.method_names.some((mn) => MULTISIG_CHANGE_METHODS.includes(mn))
+        );
+        if (use2fa) {
+            console.log('Using 2FA Account')
+            return new AccountMultisig(near.connection, accountId)
+        }
+
+        throw Error('No account matching', accountId)
+    };
     return near;
 };
