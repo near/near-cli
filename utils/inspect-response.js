@@ -24,7 +24,12 @@ const prettyPrintError = (error, options) => {
 };
 
 const formatResponse = (response) => {
-    return util.inspect(response, { showHidden: true, depth: null, colors: true, maxArrayLength: null });
+    return util.inspect(response, {
+        showHidden: true,
+        depth: null,
+        colors: Boolean(process.stdout.isTTY && process.stdout.hasColors()),
+        maxArrayLength: null
+    });
 };
 
 const getTxnIdFromError = (error) => {

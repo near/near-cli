@@ -185,6 +185,17 @@ yargs // eslint-disable-line
         desc: 'Use 2FA for making and confirming requests',
         type: 'boolean'
     })
+    .options('seedPhrase', {
+        desc: 'Seed phrase mnemonic',
+        type: 'string',
+        required: false
+    })
+    .options('seedPath', {
+        desc: 'HD path derivation',
+        type: 'string',
+        default: "m/44'/397'/0'",
+        required: false
+    })
     .option('walletUrl', {
         desc: 'Website for NEAR Wallet',
         type: 'string'
@@ -216,6 +227,7 @@ yargs // eslint-disable-line
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
     .middleware(require('../middleware/ledger'))
+    .middleware(require('../middleware/seed-phrase'))
     .command(require('../commands/create-account').createAccountCommand)
     .command(require('../commands/create-account').createAccountCommandDeprecated)
     .command(viewAccount)
@@ -232,6 +244,7 @@ yargs // eslint-disable-line
     .command(login)
     .command(require('../commands/repl'))
     .command(require('../commands/generate-key'))
+    .command(require('../commands/add-key'))
     .command(require('../commands/delete-key'))
     .command(require('../commands/validators'))
     .command(require('../commands/proposals'))
