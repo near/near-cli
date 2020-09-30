@@ -1,15 +1,15 @@
-const MIXPANEL_TOKEN = "e98aa9d6d259d9d78f20cb05cb54f5cb";
+const MIXPANEL_TOKEN = 'e98aa9d6d259d9d78f20cb05cb54f5cb';
 
-const chalk = require("chalk"); // colorize output
-const crypto = require("crypto");
-const mixpanel = require("mixpanel").init(MIXPANEL_TOKEN);
-const near_cli_version = require("../package.json").version;
-const readline = require("readline");
-const settings = require("./settings");
-const uuid = require("uuid");
+const chalk = require('chalk'); // colorize output
+const crypto = require('crypto');
+const mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
+const near_cli_version = require('../package.json').version;
+const readline = require('readline');
+const settings = require('./settings');
+const uuid = require('uuid');
 
-const TRACKING_ENABLED_KEY = "trackingEnabled";
-const TRACKING_SESSION_ID_KEY = "trackingSessionId";
+const TRACKING_ENABLED_KEY = 'trackingEnabled';
+const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
 
 const isGitPod = () => {
     return !!process.env.GITPOD_WORKSPACE_URL;
@@ -20,9 +20,9 @@ const getGitPodUserHash = () => {
         return null;
     }
     return crypto
-        .createHash("sha256")
-        .update(process.env.GITPOD_GIT_USER_EMAIL, "utf8")
-        .digest("hex")
+        .createHash('sha256')
+        .update(process.env.GITPOD_GIT_USER_EMAIL, 'utf8')
+        .digest('hex')
         .toString();
 };
 
@@ -61,7 +61,7 @@ const track = async (eventType, eventProperties, options) => {
         await mixpanel.track(eventType, mixPanelProperties);
     } catch (e) {
         console.log(
-            "Warning: problem while sending developer event tracking data. This is not critical. Error: ",
+            'Warning: problem while sending developer event tracking data. This is not critical. Error: ',
             e
         );
     }
@@ -81,13 +81,13 @@ const getEventTrackingConsent = async () => {
                         chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
                     async (consentToEventTracking) => {
                         if (
-                            consentToEventTracking == "y" ||
-                            consentToEventTracking == "Y"
+                            consentToEventTracking == 'y' ||
+                            consentToEventTracking == 'Y'
                         ) {
                             resolve(true);
                         } else if (
-                            consentToEventTracking == "n" ||
-                            consentToEventTracking == "N"
+                            consentToEventTracking == 'n' ||
+                            consentToEventTracking == 'N'
                         ) {
                             resolve(false);
                         }
@@ -135,8 +135,8 @@ module.exports = {
     askForConsentIfNeeded,
     // Some of the event ids are auto-generated runtime with the naming convention event_id_shell_{command}_start
 
-    EVENT_ID_CREATE_ACCOUNT_END: "event_id_shell_create-account_end",
-    EVENT_ID_TRACKING_OPT_IN: "event_id_tracking_opt_in",
-    EVENT_ID_LOGIN_END: "event_id_shell_login_end",
-    EVENT_ID_ERROR: "event_id_shell_error",
+    EVENT_ID_CREATE_ACCOUNT_END: 'event_id_shell_create-account_end',
+    EVENT_ID_TRACKING_OPT_IN: 'event_id_tracking_opt_in',
+    EVENT_ID_LOGIN_END: 'event_id_shell_login_end',
+    EVENT_ID_ERROR: 'event_id_shell_error',
 };
