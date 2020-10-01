@@ -44,7 +44,6 @@
     "ncp": "^2.0.0",
     "near-api-js": "^0.30.0",
     "near-seed-phrase": "^0.1.0",
-    "node-fetch": "^2.6.1",
     "open": "^7.0.1",
     "prompts": "^2.3.2",
     "rimraf": "^3.0.0",

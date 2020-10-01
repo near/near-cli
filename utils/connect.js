@@ -21,11 +21,10 @@ module.exports = async function connect({ keyStore, ...options }) {
             k.access_key.permission.FunctionCall.method_names.some((mn) => MULTISIG_CHANGE_METHODS.includes(mn))
         );
         if (use2fa) {
-            console.log('Using 2FA Account')
-            return new AccountMultisig(near.connection, accountId)
+            return new AccountMultisig(near.connection, accountId);
         }
 
-        throw Error('No account matching', accountId)
+        throw Error('No account matching', accountId);
     };
     return near;
 };
