@@ -80,14 +80,10 @@ const getEventTrackingConsent = async () => {
                         chalk` We will never send private information. We only collect which commands are run via an anonymous identifier.` +
                         chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
                     async (consentToEventTracking) => {
-                        if (
-                            consentToEventTracking == 'y' ||
-                            consentToEventTracking == 'Y'
-                        ) {
+                        if (consentToEventTracking.toLowerCase() == 'y') {
                             resolve(true);
                         } else if (
-                            consentToEventTracking == 'n' ||
-                            consentToEventTracking == 'N'
+                            consentToEventTracking.toLowerCase() == 'n'
                         ) {
                             resolve(false);
                         }
@@ -118,14 +114,16 @@ const askForConsentIfNeeded = async (options) => {
             : undefined;
         settings.saveShellSettings(shellSettings);
         if (shellSettings[TRACKING_ENABLED_KEY]) {
-            await track(module.exports.EVENT_ID_TRACKING_OPT_IN, {}, options);
-            await mixpanel.people.set({
-                distinct_id: isGitPod()
-                    ? getGitPodUserHash()
-                    : shellSettings[TRACKING_SESSION_ID_KEY],
-                network_id: options.networkId,
-                node_url: options.nodeUrl,
-            });
+            await Promise.all([
+                track(module.exports.EVENT_ID_TRACKING_OPT_IN, {}, options),
+                mixpanel.people.set({
+                    distinct_id: isGitPod()
+                        ? getGitPodUserHash()
+                        : shellSettings[TRACKING_SESSION_ID_KEY],
+                    network_id: options.networkId,
+                    node_url: options.nodeUrl,
+                }),
+            ]);
         }
     }
 };
