@@ -11,9 +11,12 @@ module.exports = async function connect({ keyStore, ...options }) {
     const near = await nearConnect({ ...options, deps: { keyStore }});
     near.account = async (accountId) => {
         const account = new Account(near.connection, accountId);
+        await account.state();
         const accessKeys = await account.getAccessKeys();
         const hasFAK = accessKeys.find((k) => k.access_key.permission && k.access_key.permission === 'FullAccess');
-        if (hasFAK) return account;
+        if (hasFAK) {
+            return account;
+        }
         
         const use2fa = accessKeys.find((k) => 
             k.access_key.permission && 

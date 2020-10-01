@@ -15,7 +15,7 @@ class AccountMultisig extends AccountMultisigApi {
 
         if (this.isDeleteAction(actions)) {
             const { accountId } = this;
-            return await super.signAndSendTransaction(accountId, actions)
+            return await super.signAndSendTransaction(accountId, actions);
         }
 
         const method = await this.get2faMethod();
@@ -23,7 +23,7 @@ class AccountMultisig extends AccountMultisigApi {
             throw new Error('no active 2fa method found');
         }
         try {
-            console.log('creating multisig request ...')
+            console.log('creating multisig request ...');
             await super.signAndSendTransaction(receiverId, actions);
             await this.sendRequestCode();
             // say something and wait for input
@@ -32,11 +32,11 @@ class AccountMultisig extends AccountMultisigApi {
                 name: 'securityCode',
                 message: `Enter security code received via ${ method.kind.split('2fa-')[1] }`
             });
-            console.log('verifying security code ...')
+            console.log('verifying security code ...');
             const res = await this.verifyRequestCode(response.securityCode);
             if (res.success) {
                 if (typeof res.res === 'string' || res.res !== false) {
-                    console.log('Request confirmed with return value:', res.res)
+                    console.log('Request confirmed with return value:', res.res);
                 } else {
                     throw new Error('Request failed with error:', res);
                 }
