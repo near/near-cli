@@ -92,6 +92,13 @@ near repl --acountId bob
 | --publicKey               | Public key to initialize the account with     | [string]  [required]|             |
 | --initialBalance          | Number of tokens to transfer to newly account | [string]  [required]|             |
 
+#### Environments
+
+Use `NEAR_ENV` to define which network these commands will target. Default is `testnet`.
+```
+export NEAR_ENV=mainnet
+```
+
 ## License
 This repository is distributed under the terms of both the MIT license and the Apache License (Version 2.0).
 See [LICENSE](LICENSE) and [LICENSE-APACHE](LICENSE-APACHE) for details.
