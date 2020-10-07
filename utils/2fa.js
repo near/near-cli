@@ -2,11 +2,6 @@
 // const prompts = require('prompts');
 const readline = require('readline');
 const chalk = require('chalk');
-const {
-    multisig: {
-        AccountMultisig,
-    },
-} = require('near-api-js');
 
 const getCode = async(method) => {
     const rl = readline.createInterface({
@@ -24,12 +19,6 @@ const onResult = async(result) => {
     console.log('Request confirmed with result:', result)
 };
 
-class Account2FA extends AccountMultisig {
-    constructor(connection, accountId) {
-        super(connection, accountId, { getCode, onResult });
-    }
-}
-
 module.exports = {
-    Account2FA
+    options2fa: { getCode, onResult }
 };

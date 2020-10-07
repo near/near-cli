@@ -1,42 +1,13 @@
 const { 
     connect: nearConnect,
-    Account,
     multisig: {
-        MULTISIG_CHANGE_METHODS
+        modIfMultisig,
     }
 } = require('near-api-js');
-const { Account2FA } = require('./2fa');
+const { options2fa } = require('./2fa');
 
 module.exports = async function connect({ keyStore, ...options }) {
     const near = await nearConnect({ ...options, deps: { keyStore }});
-    near.account = async (accountId) => {
-        const account = new Account(near.connection, accountId);
-        await account.state();
-        const localKey = (await near.connection.signer.getPublicKey(account.accountId, near.connection.networkId)).toString();
-        const accessKeys = await account.getAccessKeys();
-
-        const hasFAK = accessKeys.find((k) => 
-            k.public_key === localKey &&
-            k.access_key.permission &&
-            k.access_key.permission === 'FullAccess'
-        );
-        
-        if (hasFAK) {
-            return account;
-        }
-        
-        const use2fa = accessKeys.find((k) => 
-            k.public_key === localKey &&
-            k.access_key.permission && 
-            k.access_key.permission.FunctionCall &&
-            k.access_key.permission.FunctionCall.method_names.some((mn) => MULTISIG_CHANGE_METHODS.includes(mn))
-        );
-
-        if (use2fa) {
-            return new Account2FA(near.connection, accountId);
-        }
-
-        throw new Error(`Account ${accountId} doesn't have full access keys or multisig enabled`);
-    };
+    modIfMultisig(near, options2fa);
     return near;
 };
