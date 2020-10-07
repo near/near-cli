@@ -1,12 +1,14 @@
 
-const prompts = require('prompts');
+// const prompts = require('prompts');
+const readline = require('readline');
+const chalk = require('chalk');
 const {
     multisig: {
-        AccountMultisig: AccountMultisigApi,
+        AccountMultisig,
     },
 } = require('near-api-js');
 
-class AccountMultisig extends AccountMultisigApi {
+class Account2FA extends AccountMultisig {
     constructor(connection, accountId) {
         super(connection, accountId);
     }
@@ -22,34 +24,40 @@ class AccountMultisig extends AccountMultisigApi {
         if (!method || !method.kind) {
             throw new Error('no active 2fa method found');
         }
+        
+        console.log('creating multisig request ...');
+        await super.signAndSendTransaction(receiverId, actions);
+        await this.sendRequestCode();
+
+        return await this.promptAndVerify(method)
+    }
+
+    async promptAndVerify(method) {
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+        const securityCode = await new Promise((res) => {
+            rl.question(chalk`{bold Enter security code received via ${ method.kind.split('2fa-')[1] }: }`, (accountId) => res(accountId));
+        });
+        rl.close();
+        
+        console.log('verifying security code ...');
+        
         try {
-            console.log('creating multisig request ...');
-            await super.signAndSendTransaction(receiverId, actions);
-            await this.sendRequestCode();
-            // say something and wait for input
-            const response = await prompts({
-                type: 'text',
-                name: 'securityCode',
-                message: `Enter security code received via ${ method.kind.split('2fa-')[1] }`
-            });
-            console.log('verifying security code ...');
-            const res = await this.verifyRequestCode(response.securityCode);
-            if (res.success) {
-                if (typeof res.res === 'string' || res.res !== false) {
-                    console.log('Request confirmed with return value:', res.res);
-                } else {
-                    throw new Error('Request failed with error:', res);
-                }
-            } else {
-                throw new Error('Invalid security code');
+            const { success, res: result } = await this.verifyRequestCode(securityCode);
+            if (!success || result === false) {
+                throw new Error('Request failed with error:', result);
             }
+            console.log('Request confirmed with result:', typeof result === 'string' && result.length === 0 ? 'true' : result);
+            return result
         } catch (e) {
-            console.log(e);
-            throw new Error('error creating request');
+            console.log('Invalid security code. Please try again.\n')
+            return await this.promptAndVerify(method);
         }
     }
 }
 
 module.exports = {
-    AccountMultisig
+    Account2FA
 };
