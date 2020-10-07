@@ -16,7 +16,7 @@ const getCode = async(method) => {
 };
 
 const onResult = async(result) => {
-    console.log('Request confirmed with result:', result)
+    console.log('Request confirmed with result:', result);
 };
 
 module.exports = {
