@@ -29,7 +29,7 @@ class Account2FA extends AccountMultisig {
         await super.signAndSendTransaction(receiverId, actions);
         await this.sendRequestCode();
 
-        return await this.promptAndVerify(method)
+        return await this.promptAndVerify(method);
     }
 
     async promptAndVerify(method) {
@@ -50,9 +50,9 @@ class Account2FA extends AccountMultisig {
                 throw new Error('Request failed with error:', result);
             }
             console.log('Request confirmed with result:', typeof result === 'string' && result.length === 0 ? 'true' : result);
-            return result
+            return result;
         } catch (e) {
-            console.log('Invalid security code. Please try again.\n')
+            console.log('Invalid security code. Please try again.\n');
             return await this.promptAndVerify(method);
         }
     }
