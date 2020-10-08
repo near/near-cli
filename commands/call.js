@@ -28,14 +28,14 @@ module.exports = {
             type: 'string',
         })
         .option('memo', {
-            desc: 'send a text memo instead of json params (e.g. \'near call exchange deposit --memo \'USER_123\' --amount 10\')',
+            desc: 'send a text memo instead of json params (e.g. >near call exchange deposit --memo \'USER_123\' --amount 10)',
             type: 'string',
         }),
     handler: exitOnError(scheduleFunctionCall)
 };
 
 async function scheduleFunctionCall(options) {
-    if (options.memo) options.args=`{"":"${options.memo}"}`
+    if (options.memo) options.args=`{"":"${options.memo}"}`;
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
         (options.amount && options.amount != '0' ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
