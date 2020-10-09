@@ -36,12 +36,15 @@ exports.deploy = async function (options) {
 
     const near = await connect(options);
     const account = await near.account(options.accountId);
+    let prevState = await account.state();
+    let prevCodeHash = prevState.code_hash;
     // Deploy with init function and args
     const txs = [transactions.deployContract(fs.readFileSync(options.wasmFile))];
 
     if (options.initFunction) {
         if (!options.initArgs) {
             console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');
+            await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: false }, options);
             process.exit(1);
         }
         txs.push(transactions.functionCall(
@@ -54,6 +57,10 @@ exports.deploy = async function (options) {
 
     const result = await account.signAndSendTransaction(options.accountId, txs);
     inspectResponse.prettyPrintResponse(result, options);
+    let state = await account.state();
+    let codeHash = state.code_hash;
+    await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: true, code_hash: codeHash, is_same_contract: prevCodeHash === codeHash, contract_id: options.accountId }, options);
+    eventtracking.trackDeployedContract();
     console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${options.accountId}`);
 };
 

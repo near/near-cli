@@ -56,9 +56,17 @@ const track = async (eventType, eventProperties, options) => {
             node_url: options.nodeUrl,
             wallet_url: options.walletUrl,
             is_gitpod: isGitPod(),
+            timestamp: new Date()
         };
         Object.assign(mixPanelProperties, eventProperties);
-        await mixpanel.track(eventType, mixPanelProperties);
+        await Promise.all([mixpanel.track(eventType, mixPanelProperties),
+            mixpanel.people.set_once({
+                distinct_id: isGitPod()
+                    ? getGitPodUserHash()
+                    : shellSettings[TRACKING_SESSION_ID_KEY],
+                network_id: options.networkId,
+                node_url: options.nodeUrl,
+            })]);
     } catch (e) {
         console.log(
             'Warning: problem while sending developer event tracking data. This is not critical. Error: ',
@@ -114,27 +122,24 @@ const askForConsentIfNeeded = async (options) => {
             : undefined;
         settings.saveShellSettings(shellSettings);
         if (shellSettings[TRACKING_ENABLED_KEY]) {
-            await Promise.all([
-                track(module.exports.EVENT_ID_TRACKING_OPT_IN, {}, options),
-                mixpanel.people.set({
-                    distinct_id: isGitPod()
-                        ? getGitPodUserHash()
-                        : shellSettings[TRACKING_SESSION_ID_KEY],
-                    network_id: options.networkId,
-                    node_url: options.nodeUrl,
-                }),
-            ]);
+            await track(module.exports.EVENT_ID_TRACKING_OPT_IN, {}, options);
         }
     }
+};
+
+const trackDeployedContract = async () => {
+    await mixpanel.people.increment({deployed_contracts: 1});
 };
 
 module.exports = {
     track,
     askForConsentIfNeeded,
+    trackDeployedContract,
     // Some of the event ids are auto-generated runtime with the naming convention event_id_shell_{command}_start
 
     EVENT_ID_CREATE_ACCOUNT_END: 'event_id_shell_create-account_end',
     EVENT_ID_TRACKING_OPT_IN: 'event_id_tracking_opt_in',
     EVENT_ID_LOGIN_END: 'event_id_shell_login_end',
+    EVENT_ID_DEPLOY_END: 'event_id_shell_deploy_end',
     EVENT_ID_ERROR: 'event_id_shell_error',
 };
