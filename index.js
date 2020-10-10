@@ -44,7 +44,7 @@ exports.deploy = async function (options) {
     if (options.initFunction) {
         if (!options.initArgs) {
             console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');
-            await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: false }, options);
+            await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: false, error: 'Must add initialization arguments' }, options);
             process.exit(1);
         }
         txs.push(transactions.functionCall(
