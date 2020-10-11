@@ -23,12 +23,15 @@ near <command>
 
 ### Commands
 
+For a list of up-to-date commands, run `near` in your terminal with no arguments. If you need to find a command that isn't listed here, look in the `/commands` folder.  And add it here :)
+
 #### For account:
 ```bash
   near login                                       # logging in through NEAR protocol wallet
   near create-account <accountId>                  # create a developer account with --masterAccount (required), publicKey and initialBalance
   near state <accountId>                           # view account state
   near keys <accountId>                            # view account public keys
+  near add-key <accountId> <accessKey>             # Add an access key to given account
   near send <sender> <receiver> <amount>           # send tokens to given receiver
   near stake <accountId> <stakingKey> <amount>     # create staking transaction (stakingKey is base58 encoded)
   near delete <accountId> <beneficiaryId>          # delete an account and transfer funds to beneficiary account
