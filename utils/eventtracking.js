@@ -85,7 +85,7 @@ const getEventTrackingConsent = async () => {
             const answer = await new Promise((resolve) => {
                 rl.question(
                     chalk`We would like to collect data on near-cli usage to improve developer experience.` +
-                        chalk` We will never send private information. We only collect which commands are run via an anonymous identifier.` +
+                        chalk` We will never send private information. We only collect which commands are run with attributes.` +
                         chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
                     async (consentToEventTracking) => {
                         if (consentToEventTracking.toLowerCase() == 'y') {
@@ -106,6 +106,53 @@ const getEventTrackingConsent = async () => {
         return false; // If they can't figure it out in this many attempts, just opt out
     } finally {
         rl.close();
+    }
+};
+
+const getIdTrackingConsent = async () => {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+    try {
+        for (let attempts = 0; attempts < 10; attempts++) {
+            const answer = await new Promise((resolve) => {
+                rl.question(
+                    chalk`We would like to help with your development journey with NEAR.` +
+                        chalk` We will ask you to expose your account Id while using command. ` +
+                        chalk`{bold.yellow  Would you like to expose the account Id (y/n)? }`,
+                    async (consentToEventTracking) => {
+                        if (consentToEventTracking.toLowerCase() == 'y') {
+                            resolve(true);
+                        } else if (
+                            consentToEventTracking.toLowerCase() == 'n'
+                        ) {
+                            resolve(false);
+                        }
+                        resolve(undefined);
+                    }
+                );
+            });
+            if (answer !== undefined) {
+                return answer;
+            }
+        }
+        return false; // If they can't figure it out in this many attempts, just opt out
+    } finally {
+        rl.close();
+    }
+};
+
+const askForId = async (options) => {
+    const answer = await getIdTrackingConsent();
+    if(answer){
+        const shellSettings = settings.getShellSettings();
+        const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
+        await Promise.all([
+            mixpanel.alias(options.accountId, id),
+            mixpanel.people.set({account_id: options.accountId})
+        ]);
+        
     }
 };
 
@@ -135,6 +182,7 @@ module.exports = {
     track,
     askForConsentIfNeeded,
     trackDeployedContract,
+    askForId,
     // Some of the event ids are auto-generated runtime with the naming convention event_id_shell_{command}_start
 
     EVENT_ID_CREATE_ACCOUNT_END: 'event_id_shell_create-account_end',
