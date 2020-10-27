@@ -23,12 +23,15 @@ near <command>
 
 ### Commands
 
+For a list of up-to-date commands, run `near` in your terminal with no arguments. If you need to find a command that isn't listed here, look in the `/commands` folder.  And add it here :)
+
 #### For account:
 ```bash
   near login                                       # logging in through NEAR protocol wallet
   near create-account <accountId>                  # create a developer account with --masterAccount (required), publicKey and initialBalance
   near state <accountId>                           # view account state
   near keys <accountId>                            # view account public keys
+  near add-key <accountId> <accessKey>             # Add an access key to given account
   near send <sender> <receiver> <amount>           # send tokens to given receiver
   near stake <accountId> <stakingKey> <amount>     # create staking transaction (stakingKey is base58 encoded)
   near delete <accountId> <beneficiaryId>          # delete an account and transfer funds to beneficiary account
@@ -91,6 +94,13 @@ near repl --acountId bob
 | --masterAccount           | Account used to create requested account.     | [string]  [required]|             |
 | --publicKey               | Public key to initialize the account with     | [string]  [required]|             |
 | --initialBalance          | Number of tokens to transfer to newly account | [string]  [required]|             |
+
+#### Environments
+
+Use `NEAR_ENV` to define which network these commands will target. Default is `testnet`.
+```
+export NEAR_ENV=mainnet
+```
 
 ## License
 This repository is distributed under the terms of both the MIT license and the Apache License (Version 2.0).

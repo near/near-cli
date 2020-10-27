@@ -3,10 +3,10 @@ const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
 
 module.exports = {
-    command: 'delete-key [accessKey]',
+    command: 'delete-key <account-id> <access-key>',
     desc: 'delete access key',
     builder: (yargs) => yargs
-        .option('accessKey', {
+        .option('access-key', {
             desc: 'Public key to delete (base58 encoded)',
             type: 'string',
             required: true,
