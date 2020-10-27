@@ -119,8 +119,8 @@ const getIdTrackingConsent = async () => {
             const answer = await new Promise((resolve) => {
                 rl.question(
                     chalk`We would like to help with your development journey with NEAR.` +
-                        chalk` We will ask you to expose your account Id while using command. ` +
-                        chalk`{bold.yellow  Would you like to expose the account Id (y/n)? }`,
+                        chalk` We will ask you to share your account Id while using command. ` +
+                        chalk`{bold.yellow  Would you like to share the account Id (y/n)? }`,
                     async (consentToEventTracking) => {
                         if (consentToEventTracking.toLowerCase() == 'y') {
                             resolve(true);
