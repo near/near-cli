@@ -10,6 +10,7 @@ const uuid = require('uuid');
 
 const TRACKING_ENABLED_KEY = 'trackingEnabled';
 const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
+const TRACKING_ID_KEY = 'trackingID';
 
 const isGitPod = () => {
     return !!process.env.GITPOD_WORKSPACE_URL;
@@ -37,6 +38,20 @@ const shouldTrack = (shellSettings) => {
     return (
         TRACKING_ENABLED_KEY in shellSettings &&
         shellSettings[TRACKING_ENABLED_KEY]
+    );
+};
+
+const shouldTrackID = (shellSettings) => {
+    return (
+        TRACKING_ID_KEY in shellSettings &&
+        shellSettings[TRACKING_ID_KEY]
+    );
+};
+
+const shouldNOTTrackID = (shellSettings) => {
+    return (
+        TRACKING_ID_KEY in shellSettings &&
+        !shellSettings[TRACKING_ID_KEY]
     );
 };
 
@@ -115,7 +130,7 @@ const getIdTrackingConsent = async () => {
         output: process.stdout,
     });
     try {
-        for (let attempts = 0; attempts < 10; attempts++) {
+        for (let attempts = 0; attempts < 3; attempts++) {
             const answer = await new Promise((resolve) => {
                 rl.question(
                     chalk`We would like to help with your development journey with NEAR.` +
@@ -144,15 +159,19 @@ const getIdTrackingConsent = async () => {
 };
 
 const askForId = async (options) => {
-    const answer = await getIdTrackingConsent();
-    if(answer){
-        const shellSettings = settings.getShellSettings();
+    const shellSettings = settings.getShellSettings();
+    if(shouldTrackID(shellSettings)){
         const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
         await Promise.all([
             mixpanel.alias(options.accountId, id),
-            mixpanel.people.set({account_id: options.accountId})
+            mixpanel.people.set_once({account_id: options.accountId})
         ]);
-        
+    }else if(shouldNOTTrackID(shellSettings)){
+        return;
+    }
+    else{
+        shellSettings[TRACKING_ID_KEY] = (await getIdTrackingConsent());
+        settings.saveShellSettings(shellSettings);
     }
 };
 
