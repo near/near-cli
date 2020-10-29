@@ -75,10 +75,8 @@ const track = async (eventType, eventProperties, options) => {
         };
         Object.assign(mixPanelProperties, eventProperties);
         await Promise.all([mixpanel.track(eventType, mixPanelProperties),
-            mixpanel.people.set_once({
-                distinct_id: isGitPod()
-                    ? getGitPodUserHash()
-                    : shellSettings[TRACKING_SESSION_ID_KEY],
+            mixpanel.people.set(mixPanelProperties.distinct_id, {
+                deployed_contracts: 0,
                 network_id: options.networkId,
                 node_url: options.nodeUrl,
             })]);
@@ -164,7 +162,7 @@ const askForId = async (options) => {
         const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
         await Promise.all([
             mixpanel.alias(options.accountId, id),
-            mixpanel.people.set_once({account_id: options.accountId})
+            mixpanel.people.append(id, {account_id: options.accountId})
         ]);
     }else if(shouldNOTTrackID(shellSettings)){
         return;
@@ -194,7 +192,9 @@ const askForConsentIfNeeded = async (options) => {
 };
 
 const trackDeployedContract = async () => {
-    await mixpanel.people.increment({deployed_contracts: 1});
+    const shellSettings = settings.getShellSettings();
+    const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
+    await mixpanel.people.increment(id, 'deployed_contracts');
 };
 
 module.exports = {
