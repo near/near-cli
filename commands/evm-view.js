@@ -21,10 +21,10 @@ module.exports = {
             desc: 'Path to ABI for given contract',
             type: 'string',
         }),
-    handler: exitOnError(scheduleEVMFunctionCall)
+    handler: exitOnError(scheduleEVMFunctionView)
 };
 
-async function scheduleEVMFunctionCall(options) {
+async function scheduleEVMFunctionView(options) {
     const web = new web3();
     web.setProvider(new NearProvider({
         nodeUrl: options.nodeUrl,
