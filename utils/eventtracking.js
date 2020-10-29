@@ -162,7 +162,7 @@ const askForId = async (options) => {
         const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
         await Promise.all([
             mixpanel.alias(options.accountId, id),
-            mixpanel.people.append(id, {account_id: options.accountId})
+            mixpanel.people.set(id, {account_id: options.accountId})
         ]);
     }else if(shouldNOTTrackID(shellSettings)){
         return;
