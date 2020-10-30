@@ -23,7 +23,7 @@ async function generateKey(options) {
         // NOTE: Command above already prints public key.
         console.log(`Implicit account: ${implicitAccountId(publicKey.toString())}`);
         // TODO: query all accounts with this public key here.
-        // TODO: check if implicit account exist, and if the key doen't match already.
+        // TODO: check if implicit account exist, and if the key doesn't match already.
         return;
     }
 
@@ -41,8 +41,10 @@ async function generateKey(options) {
         options.publicKey = keyPair.publicKey.toString();
         options.accountId = options.accountId || implicitAccountId(options.publicKey);
         await keyStore.setKey(options.networkId, options.accountId, keyPair);
+    } else if (options.seedPhrase) {
+        const seededKeyPair = await options.signer.keyStore.getKey(options.networkId, options.accountId);
+        await keyStore.setKey(options.networkId, options.accountId, seededKeyPair);
     }
-            
+
     console.log(`Key pair with ${options.publicKey} public key for an account "${options.accountId}"`);
-    
 }
