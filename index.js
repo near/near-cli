@@ -31,7 +31,6 @@ exports.clean = async function () {
 };
 
 exports.deploy = async function (options) {
-    await eventtracking.askForId(options);
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
 
@@ -83,7 +82,6 @@ const openUrl = async function(url) {
 
 exports.login = async function (options) {
     await eventtracking.askForConsentIfNeeded(options);
-    await eventtracking.askForId(options);
     if (!options.walletUrl) {
         console.log('Log in is not needed on this environment. Please use appropriate master account for shell operations.');
         await eventtracking.track(eventtracking.EVENT_ID_LOGIN_END, { success: true, login_is_not_needed: true }, options);
@@ -178,7 +176,6 @@ exports.login = async function (options) {
 };
 
 exports.viewAccount = async function (options) {
-    await eventtracking.askForId(options);
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let state = await account.state();
@@ -190,7 +187,7 @@ exports.viewAccount = async function (options) {
 };
 
 exports.deleteAccount = async function (options) {
-    await eventtracking.askForId(options);
+
     console.log(
         `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
     const near = await connect(options);
@@ -201,7 +198,6 @@ exports.deleteAccount = async function (options) {
 };
 
 exports.keys = async function (options) {
-    await eventtracking.askForId(options);
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let accessKeys = await account.getAccessKeys();
@@ -210,7 +206,6 @@ exports.keys = async function (options) {
 };
 
 exports.sendMoney = async function (options) {
-    await eventtracking.askForId(options);
     console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
@@ -219,7 +214,6 @@ exports.sendMoney = async function (options) {
 };
 
 exports.stake = async function (options) {
-    await eventtracking.askForId(options);
     console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${qs.unescape(options.stakingKey)}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);

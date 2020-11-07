@@ -10,7 +10,6 @@ const uuid = require('uuid');
 
 const TRACKING_ENABLED_KEY = 'trackingEnabled';
 const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
-const TRACKING_ID_KEY = 'trackingID';
 
 const isGitPod = () => {
     return !!process.env.GITPOD_WORKSPACE_URL;
@@ -41,20 +40,6 @@ const shouldTrack = (shellSettings) => {
     );
 };
 
-const shouldTrackID = (shellSettings) => {
-    return (
-        TRACKING_ID_KEY in shellSettings &&
-        shellSettings[TRACKING_ID_KEY]
-    );
-};
-
-const shouldNOTTrackID = (shellSettings) => {
-    return (
-        TRACKING_ID_KEY in shellSettings &&
-        !shellSettings[TRACKING_ID_KEY]
-    );
-};
-
 const track = async (eventType, eventProperties, options) => {
     const shellSettings = settings.getShellSettings();
     if (!shouldTrack(shellSettings)) {
@@ -75,8 +60,10 @@ const track = async (eventType, eventProperties, options) => {
         };
         Object.assign(mixPanelProperties, eventProperties);
         await Promise.all([mixpanel.track(eventType, mixPanelProperties),
-            mixpanel.people.set(mixPanelProperties.distinct_id, {
-                deployed_contracts: 0,
+            mixpanel.people.set_once({
+                distinct_id: isGitPod()
+                    ? getGitPodUserHash()
+                    : shellSettings[TRACKING_SESSION_ID_KEY],
                 network_id: options.networkId,
                 node_url: options.nodeUrl,
             })]);
@@ -98,7 +85,7 @@ const getEventTrackingConsent = async () => {
             const answer = await new Promise((resolve) => {
                 rl.question(
                     chalk`We would like to collect data on near-cli usage to improve developer experience.` +
-                        chalk` We will never send private information. We only collect which commands are run with attributes.` +
+                        chalk` We will never send private information. We only collect which commands are run via an anonymous identifier.` +
                         chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
                     async (consentToEventTracking) => {
                         if (consentToEventTracking.toLowerCase() == 'y') {
@@ -122,57 +109,6 @@ const getEventTrackingConsent = async () => {
     }
 };
 
-const getIdTrackingConsent = async () => {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-    try {
-        for (let attempts = 0; attempts < 3; attempts++) {
-            const answer = await new Promise((resolve) => {
-                rl.question(
-                    chalk`We would like to help with your development journey with NEAR.` +
-                        chalk` We will ask you to share your account Id while using command. ` +
-                        chalk`{bold.yellow  Would you like to share the account Id (y/n)? }`,
-                    async (consentToEventTracking) => {
-                        if (consentToEventTracking.toLowerCase() == 'y') {
-                            resolve(true);
-                        } else if (
-                            consentToEventTracking.toLowerCase() == 'n'
-                        ) {
-                            resolve(false);
-                        }
-                        resolve(undefined);
-                    }
-                );
-            });
-            if (answer !== undefined) {
-                return answer;
-            }
-        }
-        return false; // If they can't figure it out in this many attempts, just opt out
-    } finally {
-        rl.close();
-    }
-};
-
-const askForId = async (options) => {
-    const shellSettings = settings.getShellSettings();
-    if(shouldTrackID(shellSettings)){
-        const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
-        await Promise.all([
-            mixpanel.alias(options.accountId, id),
-            mixpanel.people.set(id, {account_id: options.accountId})
-        ]);
-    }else if(shouldNOTTrackID(shellSettings)){
-        return;
-    }
-    else{
-        shellSettings[TRACKING_ID_KEY] = (await getIdTrackingConsent());
-        settings.saveShellSettings(shellSettings);
-    }
-};
-
 const askForConsentIfNeeded = async (options) => {
     const shellSettings = settings.getShellSettings();
     // if the appropriate option is not in settings, ask now and save settings.
@@ -192,16 +128,13 @@ const askForConsentIfNeeded = async (options) => {
 };
 
 const trackDeployedContract = async () => {
-    const shellSettings = settings.getShellSettings();
-    const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
-    await mixpanel.people.increment(id, 'deployed_contracts');
+    await mixpanel.people.increment({deployed_contracts: 1});
 };
 
 module.exports = {
     track,
     askForConsentIfNeeded,
     trackDeployedContract,
-    askForId,
     // Some of the event ids are auto-generated runtime with the naming convention event_id_shell_{command}_start
 
     EVENT_ID_CREATE_ACCOUNT_END: 'event_id_shell_create-account_end',
