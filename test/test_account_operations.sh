@@ -9,7 +9,7 @@ echo Create account
 ../bin/near create-account $testaccount
 
 echo Get account state
-RESULT=$(yes | ../bin/near state $testaccount -v | ../node_modules/.bin/strip-ansi)
+RESULT=$(../bin/near state $testaccount -v | ../node_modules/.bin/strip-ansi)
 echo $RESULT
 EXPECTED=".+Account $testaccount.+amount:.+'100000000000000000000000000'.+ "
 if [[ ! "$RESULT" =~ $EXPECTED ]]; then
