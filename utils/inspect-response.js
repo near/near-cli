@@ -9,7 +9,7 @@ const checkExistAccount = (error, options) => {
 
     console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${config.helperAccount}} network.\n}`);
     
-    const re = new RegExp('[^\.]*$', 'gi');
+    const re = new RegExp('[^.]*$', 'gi');
     const suffix = String(options.accountId).match(re)[0];
             
     switch(suffix) {
