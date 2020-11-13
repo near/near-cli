@@ -9,7 +9,6 @@ const qs = require('querystring');
 const chalk = require('chalk');  // colorize output
 const open = require('open');    // open URL in default browser
 const { KeyPair, utils, transactions } = require('near-api-js');
-const config = require('./get-config')();
 const connect = require('./utils/connect');
 const verify = require('./utils/verify-account');
 const capture = require('./utils/capture-login-success');

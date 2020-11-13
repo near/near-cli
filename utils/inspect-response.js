@@ -8,23 +8,24 @@ const checkExistAccount = (error, options) => {
     if(!String(error).includes('does not exist while viewing')) return false;
 
     console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${config.helperAccount}} network.\n}`);
-
-    const suffix = String(options.accountId).match(/[^\.]*$/gi)[0];
+    
+    const re = new RegExp("[^\.]*$", "gi")
+    const suffix = String(options.accountId).match(re)[0];
             
     switch(suffix) {
-        case 'near':
-            console.log(chalk`{bold.white Use export NEAR_ENV=mainnet to use MainNet accounts. \n}`);
-            break;
-        case 'testnet': 
-            console.log(chalk`{bold.white Use export NEAR_ENV=testnet to use TestNet accounts. \n}`);
-            break;
-        case 'betanet': 
-            console.log(chalk`{bold.white Use export NEAR_ENV=betanet to use BetaNet accounts. \n}`);
-            break;
+    case 'near':
+        console.log(chalk`{bold.white Use export NEAR_ENV=mainnet to use MainNet accounts. \n}`);
+        break;
+    case 'testnet': 
+        console.log(chalk`{bold.white Use export NEAR_ENV=testnet to use TestNet accounts. \n}`);
+        break;
+    case 'betanet': 
+        console.log(chalk`{bold.white Use export NEAR_ENV=betanet to use BetaNet accounts. \n}`);
+        break;
     }
 
     return true;
-}
+};
 
 const prettyPrintResponse = (response, options) => {
     if (options.verbose) {
