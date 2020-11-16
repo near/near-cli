@@ -35,6 +35,9 @@ module.exports = {
             argv.publicKey = keyPair.publicKey.toString();
             argv.accountId = argv.accountId || implicitAccountId(argv.publicKey);
             await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
+        } else if (argv.seedPhrase) {
+            const seededKeyPair = await argv.signer.keyStore.getKey(argv.networkId, argv.accountId);
+            await keyStore.setKey(argv.networkId, argv.accountId, seededKeyPair);
         }
             
         console.log(`Key pair with ${argv.publicKey} public key for an account "${argv.accountId}"`);
