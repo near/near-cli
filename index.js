@@ -31,7 +31,7 @@ exports.clean = async function () {
 };
 
 exports.deploy = async function (options) {
-    let wasmFile = await findWasmFile(options.wasmFile, "release")
+    let wasmFile = await findWasmFile(options.wasmFile, 'release');
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${wasmFile}`);
 
