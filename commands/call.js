@@ -8,12 +8,12 @@ module.exports = {
     desc: 'schedule smart contract call which can modify state',
     builder: (yargs) => yargs
         .option('gas', {
-            desc: 'Max amount of gas this call can use',
+            desc: 'Max amount of gas this call can use (in gas units)',
             type: 'string',
             default: '100000000000000'
         })
         .option('amount', {
-            desc: 'Number of tokens to attach',
+            desc: 'Number of tokens to attach (in NEAR)',
             type: 'string',
             default: '0'
         })
