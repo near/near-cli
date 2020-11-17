@@ -38,13 +38,19 @@ For a list of up-to-date commands, run `near` in your terminal with no arguments
   near delete-key [accessKey]                      # delete access key
 ```
 
-#### For smart contract:
+#### For native smart contracts:
 ```bash
   near deploy [accountId] [wasmFile] [initFunction] [initArgs] [initGas] [initDeposit]  # deploy your smart contract
   near dev-deploy [wasmFile]                       # deploy your smart contract using temporary account (TestNet only)
   near call <contractName> <methodName> [args]     # schedule smart contract call which can modify state
   near view <contractName> <methodName> [args]     # make smart contract call which can view state
   near clean                                       # clean the smart contract build locally (remove ./out )
+```
+
+#### For NEAR EVM smart contracts:
+```bash
+  near evm-view <evmAccount> <contractName> <methodName> [args]     # make an EVM smart contract call which can view state
+  near evm-call <evmAccount> <contractName> <methodName> [args]     # schedule an EVM smart contract call which can modify state
 ```
 
 #### For transactions:
