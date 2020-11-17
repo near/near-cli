@@ -7,12 +7,15 @@ const util = require('util');
 const checkForAccDoesNotExist = (error, options) => {
     if(!String(error).includes('does not exist while viewing')) return false;
 
+    const suffixesToNetworks = {near:'mainnet', testnet:'testnet', betanet:'betanet'};
+
     const currentNetwork = config.helperAccount;
-    console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${currentNetwork}} network.\n}`);
+    console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${suffixesToNetworks[currentNetwork]}}\n}`);
     
     const accSuffix = String(options.accountId).match('[^.]*$')[0];
-    if (currentNetwork != accSuffix && (accSuffix == 'betanet' || accSuffix == 'testnet')) {
-        console.log(chalk`{bold.white Use export NEAR_ENV=${accSuffix} to use ${accSuffix} accounts. \n}`);
+    const accNetwork = suffixesToNetworks[accSuffix];
+    if (currentNetwork != accSuffix && accNetwork) {
+        console.log(chalk`{bold.white Use export NEAR_ENV=${accNetwork} to use ${accNetwork} accounts. \n}`);
     }
 
     return true;
