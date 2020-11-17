@@ -223,6 +223,7 @@ yargs // eslint-disable-line
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
     .middleware(require('../middleware/ledger'))
+    .middleware(require('../middleware/abi'))
     .middleware(require('../middleware/seed-phrase'))
     .command(require('../commands/create-account').createAccountCommand)
     .command(require('../commands/create-account').createAccountCommandDeprecated)
@@ -244,6 +245,8 @@ yargs // eslint-disable-line
     .command(require('../commands/delete-key'))
     .command(require('../commands/validators'))
     .command(require('../commands/proposals'))
+    .command(require('../commands/evm-call'))
+    .command(require('../commands/evm-view'))
     .config(config)
     .alias({
         'accountId': ['account_id'],
