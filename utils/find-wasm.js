@@ -12,24 +12,31 @@ async function findWasm(target) {
 }
 
 async function findWasmFile(wasmFile, target) {
-    if (!fs.existsSync(wasmFile)) {
-        if (wasmFile === './out/main.wasm') {
-            let res = await findWasm(target);
-            if (res.length == 0) {
-                console.error(`Wasm file ${wasmFile} does not exist and none could be found for target ${target}.`);
-                process.exit(1);
-            }
-            if (res.length > 1) {
-                console.error(`Multiple Wasm files found ${res.join(', ')} please pass one with --wasmFile=file`);
-                process.exit(1);
-            }
-            return res[0];
-        } else {
-            console.error(`Wasm file ${wasmFile} does not exist.`);
-            process.exit(1);
-        }
-    }
-    return wasmFile;
+  try {
+    return fileWasmFileSafe(wasmFile, target);
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
 }
 
-module.exports = findWasmFile;
+async function findWasmFileSafe(wasmFile, target) {
+  if (fs.existsSync(wasmFile)) {
+      return wasmFile;
+  }
+  if (wasmFile === './out/main.wasm') {
+      let res = await findWasm(target);
+      if (res.length == 0) {
+          throw new Error(`Wasm file ${wasmFile} does not exist and none could be found for target ${target}.`);
+      }
+      if (res.length > 1) {
+          throw new Error(`Multiple Wasm files found:\n\t• ${res.join('\n\t• ')}\n\nPlease pass one with --wasmFile=file`);
+      }
+      return res[0];
+  }
+  throw new Error(`Wasm file ${wasmFile} does not exist.`);
+
+}
+
+
+module.exports = {findWasmFile, findWasmFileSafe};

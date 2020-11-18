@@ -3,7 +3,7 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { readFile, writeFile, mkdir } = require('fs').promises;
 const { existsSync } = require('fs');
-const findWasmFile = require('../utils/find-wasm');
+const { findWasmFile } = require('../utils/find-wasm');
 
 const { PROJECT_KEY_DIR } = require('../middleware/key-store');
 

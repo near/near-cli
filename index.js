@@ -15,7 +15,7 @@ const capture = require('./utils/capture-login-success');
 
 const inspectResponse = require('./utils/inspect-response');
 const eventtracking = require('./utils/eventtracking');
-const findWasmFile = require('./utils/find-wasm');
+const { findWasmFile } = require('./utils/find-wasm');
 
 // TODO: Fix promisified wrappers to handle error properly
 
