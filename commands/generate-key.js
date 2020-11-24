@@ -41,8 +41,12 @@ async function generateKey(options) {
         options.publicKey = keyPair.publicKey.toString();
         options.accountId = options.accountId || implicitAccountId(options.publicKey);
         await keyStore.setKey(options.networkId, options.accountId, keyPair);
+    } else if (options.seedPhrase) {
+        const seededKeyPair = await options.signer.keyStore.getKey(options.networkId, options.accountId);
+        await keyStore.setKey(options.networkId, options.accountId, seededKeyPair);
     }
-            
+        
     console.log(`Key pair with ${options.publicKey} public key for an account "${options.accountId}"`);
     
 }
+

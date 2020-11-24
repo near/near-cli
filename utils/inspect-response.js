@@ -1,6 +1,26 @@
 const explorer = require('./explorer');
-
+const config = require('../get-config')();
+const chalk = require('chalk');  // colorize output
 const util = require('util');
+
+
+const checkForAccDoesNotExist = (error, options) => {
+    if(!String(error).includes('does not exist while viewing')) return false;
+
+    const suffixesToNetworks = {near:'mainnet', testnet:'testnet', betanet:'betanet'};
+
+    const currentNetwork = config.helperAccount;
+    console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${suffixesToNetworks[currentNetwork]}}\n}`);
+    
+    const accSuffix = String(options.accountId).match('[^.]*$')[0];
+    const accNetwork = suffixesToNetworks[accSuffix];
+    if (currentNetwork != accSuffix && accNetwork) {
+        console.log(chalk`{bold.white Use export NEAR_ENV=${accNetwork} to use ${accNetwork} accounts. \n}`);
+    }
+
+    return true;
+};
+
 const prettyPrintResponse = (response, options) => {
     if (options.verbose) {
         console.log(formatResponse(response));
@@ -13,6 +33,8 @@ const prettyPrintResponse = (response, options) => {
 };
 
 const prettyPrintError = (error, options) => {
+    if (checkForAccDoesNotExist(error, options)) return;
+
     console.log('An error occured');
     console.log(formatResponse(error));
     const txnId = getTxnIdFromError(error);
