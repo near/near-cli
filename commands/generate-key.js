@@ -2,7 +2,6 @@ const KeyPair = require('near-api-js').KeyPair;
 const exitOnError = require('../utils/exit-on-error');
 const implicitAccountId = require('../utils/implicit-accountid');
 const connect = require('../utils/connect');
-const eventtracking = require('../utils/eventtracking');
 
 module.exports = {
     command: 'generate-key [account-id]',
@@ -12,7 +11,6 @@ module.exports = {
 };
 
 async function generateKey(options) {
-    await eventtracking.askForId(options);
     const near = await connect(options);
 
     if (options.usingLedger) {

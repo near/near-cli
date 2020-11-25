@@ -10,7 +10,7 @@ const uuid = require('uuid');
 
 const TRACKING_ENABLED_KEY = 'trackingEnabled';
 const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
-const TRACKING_ID_KEY = 'trackingID';
+const TRACKING_ID_KEY = 'trackingAccountID';
 
 const isGitPod = () => {
     return !!process.env.GITPOD_WORKSPACE_URL;
@@ -48,7 +48,7 @@ const shouldTrackID = (shellSettings) => {
     );
 };
 
-const shouldNOTTrackID = (shellSettings) => {
+const shouldNotTrackID = (shellSettings) => {
     return (
         TRACKING_ID_KEY in shellSettings &&
         !shellSettings[TRACKING_ID_KEY]
@@ -128,7 +128,7 @@ const getIdTrackingConsent = async () => {
         output: process.stdout,
     });
     try {
-        for (let attempts = 0; attempts < 3; attempts++) {
+        for (let attempts = 0; attempts < 10; attempts++) {
             const answer = await new Promise((resolve) => {
                 rl.question(
                     chalk`We would like to help with your development journey with NEAR.` +
@@ -164,7 +164,7 @@ const askForId = async (options) => {
             mixpanel.alias(options.accountId, id),
             mixpanel.people.set(id, {account_id: options.accountId})
         ]);
-    }else if(shouldNOTTrackID(shellSettings)){
+    }else if(shouldNotTrackID(shellSettings)){
         return;
     }
     else{
@@ -173,7 +173,7 @@ const askForId = async (options) => {
     }
 };
 
-const askForConsentIfNeeded = async (options) => {
+const askForOptInAndAccountID = async (options) => {
     const shellSettings = settings.getShellSettings();
     // if the appropriate option is not in settings, ask now and save settings.
     if (!(TRACKING_ENABLED_KEY in shellSettings)) {
@@ -189,6 +189,7 @@ const askForConsentIfNeeded = async (options) => {
             await track(module.exports.EVENT_ID_TRACKING_OPT_IN, {}, options);
         }
     }
+    await askForId(options);
 };
 
 const trackDeployedContract = async () => {
@@ -199,9 +200,8 @@ const trackDeployedContract = async () => {
 
 module.exports = {
     track,
-    askForConsentIfNeeded,
+    askForOptInAndAccountID,
     trackDeployedContract,
-    askForId,
     // Some of the event ids are auto-generated runtime with the naming convention event_id_shell_{command}_start
 
     EVENT_ID_CREATE_ACCOUNT_END: 'event_id_shell_create-account_end',
