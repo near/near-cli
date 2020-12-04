@@ -13,14 +13,14 @@ async function findWasm(target) {
 
 async function findWasmFile(wasmFile, target) {
     try {
-        return findWasmFileSafe(wasmFile, target);
+        return await findWasmFileUnsafe(wasmFile, target);
     } catch (err) {
         console.error(err.message);
         process.exit(1);
     }
 }
 
-async function findWasmFileSafe(wasmFile, target) {
+async function findWasmFileUnsafe(wasmFile, target) {
     if (fs.existsSync(wasmFile)) {
         return wasmFile;
     }
@@ -39,4 +39,4 @@ async function findWasmFileSafe(wasmFile, target) {
 }
 
 
-module.exports = {findWasmFile, findWasmFileSafe};
+module.exports = {findWasmFile, findWasmFileUnsafe};

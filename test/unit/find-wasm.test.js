@@ -1,4 +1,4 @@
-const findWasmFile = require('../../utils/find-wasm').findWasmFileSafe;
+const findWasmFile = require('../../utils/find-wasm').findWasmFileUnsafe;
 const path = require('path');
 
 const currentDir = path.dirname(__dirname);
