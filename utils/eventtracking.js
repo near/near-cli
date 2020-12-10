@@ -97,8 +97,8 @@ const getEventTrackingConsent = async () => {
         for (let attempts = 0; attempts < 10; attempts++) {
             const answer = await new Promise((resolve) => {
                 rl.question(
-                    chalk`We would like to collect data on near-cli usage to improve developer experience.` +
-                        chalk` We will never send private information. We only collect which commands are run with attributes.` +
+                    chalk`We would like to collect data on near-cli usage to improve developer experience. ` +
+                        chalk` We will never send private information. We only collect which commands are run with attributes. ` +
                         chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
                     async (consentToEventTracking) => {
                         if (consentToEventTracking.toLowerCase() == 'y') {
@@ -131,8 +131,9 @@ const getIdTrackingConsent = async () => {
         for (let attempts = 0; attempts < 10; attempts++) {
             const answer = await new Promise((resolve) => {
                 rl.question(
-                    chalk`We would like to help with your development journey with NEAR.` +
-                        chalk` We will ask you to share your account Id while using command. ` +
+                    chalk`We would like to help with your development journey with NEAR. ` +
+                        chalk`We will ask you to share your account ID while using command. ` +
+                        chalk`Note that your account ID and all associated on-chain transactions are already being recorded on public blockchain. ` +
                         chalk`{bold.yellow  Would you like to share the account Id (y/n)? }`,
                     async (consentToEventTracking) => {
                         if (consentToEventTracking.toLowerCase() == 'y') {
@@ -164,16 +165,15 @@ const askForId = async (options) => {
             mixpanel.alias(options.accountId, id),
             mixpanel.people.set(id, {account_id: options.accountId})
         ]);
-    }else if(shouldNotTrackID(shellSettings)){
+    } else if(shouldNotTrackID(shellSettings)){
         return;
-    }
-    else{
+    } else{
         shellSettings[TRACKING_ID_KEY] = (await getIdTrackingConsent());
         settings.saveShellSettings(shellSettings);
     }
 };
 
-const askForOptInAndAccountID = async (options) => {
+const askForConsentIfNeeded = async (options) => {
     const shellSettings = settings.getShellSettings();
     // if the appropriate option is not in settings, ask now and save settings.
     if (!(TRACKING_ENABLED_KEY in shellSettings)) {
@@ -200,7 +200,7 @@ const trackDeployedContract = async () => {
 
 module.exports = {
     track,
-    askForOptInAndAccountID,
+    askForConsentIfNeeded,
     trackDeployedContract,
     // Some of the event ids are auto-generated runtime with the naming convention event_id_shell_{command}_start
 

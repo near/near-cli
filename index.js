@@ -30,7 +30,7 @@ exports.clean = async function () {
 };
 
 exports.deploy = async function (options) {
-    await eventtracking.askForOptInAndAccountID(options);
+    await eventtracking.askForConsentIfNeeded(options);
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
 
@@ -81,7 +81,7 @@ const openUrl = async function(url) {
 };
 
 exports.login = async function (options) {
-    await eventtracking.askForOptInAndAccountID(options);
+    await eventtracking.askForConsentIfNeeded(options);
     if (!options.walletUrl) {
         console.log('Log in is not needed on this environment. Please use appropriate master account for shell operations.');
         await eventtracking.track(eventtracking.EVENT_ID_LOGIN_END, { success: true, login_is_not_needed: true }, options);
@@ -176,7 +176,7 @@ exports.login = async function (options) {
 };
 
 exports.viewAccount = async function (options) {
-    await eventtracking.askForOptInAndAccountID(options);
+    await eventtracking.askForConsentIfNeeded(options);
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let state = await account.state();

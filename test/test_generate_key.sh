@@ -5,7 +5,7 @@ KEY_FILE=~/.near-credentials/$NODE_ENV/generate-key-test.json
 rm -f "$KEY_FILE"
 echo "Testing generating-key: new key"
 
-RESULT=$(yes |./bin/near generate-key generate-key-test --networkId $NODE_ENV -v)
+RESULT=$(./bin/near generate-key generate-key-test --networkId $NODE_ENV -v)
 echo $RESULT
 
 if [[ ! -f "${KEY_FILE}" ]]; then
@@ -21,7 +21,7 @@ fi
 
 echo "Testing generating-key: key for account already exists"
 
-RESULT2=$(yes |./bin/near generate-key generate-key-test --networkId $NODE_ENV -v)
+RESULT2=$(./bin/near generate-key generate-key-test --networkId $NODE_ENV -v)
 echo $RESULT2
 
 EXPECTED2=".*Account has existing key pair with ed25519:.+ public key.*"

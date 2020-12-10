@@ -8,7 +8,7 @@ module.exports = {
            '    near repl --acountId bob\n    > console.log(account)\n    > .load script.js',
     builder: (yargs) => yargs,
     handler: async (argv) => {
-        await eventtracking.askForOptInAndAccountID(argv);
+        await eventtracking.askForConsentIfNeeded(argv);
         const repl = require('repl');
         const context = repl.start('> ').context;
         context.nearAPI = require('near-api-js');

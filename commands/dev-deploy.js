@@ -36,7 +36,7 @@ module.exports = {
 };
 
 async function devDeploy(options) {
-    await eventtracking.askForOptInAndAccountID(options);
+    await eventtracking.askForConsentIfNeeded(options);
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
     if (!helperUrl && !masterAccount) {
         throw new Error('Cannot create account as neither helperUrl nor masterAccount is specified in config for current NODE_ENV (see src/config.js)');
