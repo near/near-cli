@@ -157,13 +157,14 @@ const getIdTrackingConsent = async () => {
     }
 };
 
-const askForId = async (options) => {
+const askForId = async (options, masterAccount) => {
     const shellSettings = settings.getShellSettings();
+    const accountID = masterAccount ? masterAccount : options.accountId;
     if(shouldTrackID(shellSettings)){
         const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
         await Promise.all([
-            mixpanel.alias(options.accountId, id),
-            mixpanel.people.set(id, {account_id: options.accountId})
+            mixpanel.alias(accountID, id),
+            mixpanel.people.set(id, {account_id: accountID})
         ]);
     } else if(shouldNotTrackID(shellSettings)){
         return;
@@ -173,7 +174,7 @@ const askForId = async (options) => {
     }
 };
 
-const askForConsentIfNeeded = async (options) => {
+const askForConsentIfNeeded = async (options, masterAccount) => {
     const shellSettings = settings.getShellSettings();
     // if the appropriate option is not in settings, ask now and save settings.
     if (!(TRACKING_ENABLED_KEY in shellSettings)) {
@@ -189,7 +190,7 @@ const askForConsentIfNeeded = async (options) => {
             await track(module.exports.EVENT_ID_TRACKING_OPT_IN, {}, options);
         }
     }
-    await askForId(options);
+    await askForId(options, masterAccount);
 };
 
 const trackDeployedContract = async () => {
