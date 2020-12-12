@@ -5040,9 +5040,9 @@ near-seed-phrase@^0.1.0:
     tweetnacl "^1.0.2"
 
 near-web3-provider@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/near-web3-provider/-/near-web3-provider-1.0.2.tgz#d3a16a3008518ef352579ae23fc0c00105888b39"
-  integrity sha512-s7rwmM5ueu5qsBQT1i8zjH3D7O3nnCSUSuwo42MnOVWCnhiVftUPcIWEFUxeP0LwXJDNnYiRNWorsgs/hNiIVA==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/near-web3-provider/-/near-web3-provider-1.0.3.tgz#7101fe64b1d24bcdf029f79a0c43e39dc780a8fc"
+  integrity sha512-INoY14KfUCnLwv4QjDBa5nrvz+N8AKxk5SkCr4asGKZi/9yOD3WdPhl89asx22x5snEIMib0M7BTq4XWcd9R7w==
   dependencies:
     bn.js "^5.1.2"
     bs58 "^4.0.1"
