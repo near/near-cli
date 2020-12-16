@@ -5039,7 +5039,7 @@ near-seed-phrase@^0.1.0:
     near-hd-key "^1.0.0"
     tweetnacl "^1.0.2"
 
-near-web3-provider@^1.0.0:
+near-web3-provider@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/near-web3-provider/-/near-web3-provider-1.0.5.tgz#18e5233fb36a97ca21a3e7961caab6191bc8603c"
   integrity sha512-i2Kj+DNmo3CBkRt8BASHdzhsxx05iXM8Fu69Apj8zLCSRUUF2liiHM0FH9Lvj1YZpf+JvXqlujg4sW6n1oBrSg==
