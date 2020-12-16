@@ -49,6 +49,7 @@ async function scheduleEVMFunctionCall(options) {
         masterAccountId: options.accountId,
         networkId: options.networkId,
         evmAccountId: options.evmAccount,
+        keyPath: options.keyPath,
     }));
     const contract = new web.eth.Contract(options.abi, options.contractName);
     assert(options.methodName in contract.methods, `${options.methodName} is not present in ABI`);
