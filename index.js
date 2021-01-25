@@ -30,7 +30,6 @@ exports.clean = async function () {
 };
 
 exports.deploy = async function (options) {
-    await eventtracking.askForConsentIfNeeded(options);
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
 
@@ -176,7 +175,6 @@ exports.login = async function (options) {
 };
 
 exports.viewAccount = async function (options) {
-    await eventtracking.askForConsentIfNeeded(options);
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let state = await account.state();
@@ -188,6 +186,7 @@ exports.viewAccount = async function (options) {
 };
 
 exports.deleteAccount = async function (options) {
+
     console.log(
         `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
     const near = await connect(options);
