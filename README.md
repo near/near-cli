@@ -92,7 +92,7 @@ near repl --acountId bob
 | --------------------------|:----------------------------------------------| :---------|:----------------------|
 | --help                    | Show help                                     | [boolean] |                       |
 | --version                 | Show version number                           | [boolean] |                       |
-| --nodeUrl                 | NEAR node URL                                 | [string]  |"http://localhost:3030"|
+| --nodeUrl                 | NEAR node URL                                 | [string]  |"https://rpc.testnet.near.org"|
 | --networkId               | NEAR network ID for different keys by network | [string]  |"default"              |
 | --helperUrl               | NEAR contract helper URL                      | [string]  |                       |
 | --keyPath                 | Path to master account key                    | [string]  |                       |
