@@ -75,7 +75,6 @@ const createAccountCommandDeprecated = {
 async function createAccount(options) {
     // NOTE: initialBalance is passed as part of config here, parsed in middleware/initial-balance
     // periods are disallowed in top-level accounts and can only be used for subaccounts
-    await eventtracking.askForConsentIfNeeded(options, options.masterAccount);
     const splitAccount = options.accountId.split('.');
 
     const splitMaster = options.masterAccount.split('.');
