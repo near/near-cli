@@ -19,7 +19,7 @@ echo Deploying contract
 
 echo Deploying contract to temporary accountId
 # TODO: Specify helperUrl in project template
-../bin/near dev-deploy
+yes | ../bin/near dev-deploy
 
 echo Calling functions
 ../bin/near call $testaccount setGreeting '{"message":"TEST"}' --accountId=test.near
