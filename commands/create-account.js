@@ -5,7 +5,6 @@ const { KeyPair } = require('near-api-js');
 const inspectResponse = require('../utils/inspect-response');
 // Top-level account (TLA) is testnet for foo.alice.testnet
 const TLA_MIN_LENGTH = 32;
-const eventtracking = require('../utils/eventtracking');
 
 const createAccountCommand = {
     command: 'create-account <accountId>',
