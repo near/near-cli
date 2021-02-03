@@ -67,7 +67,7 @@ const track = async (eventType, eventProperties, options) => {
                 : shellSettings[TRACKING_SESSION_ID_KEY],
             near_cli_version,
             os: process.platform,
-            network_id: options.networkId,
+            network_id: options.networkId === 'default' ? 'testnet': options.networkId,
             node_url: options.nodeUrl,
             wallet_url: options.walletUrl,
             is_gitpod: isGitPod(),
