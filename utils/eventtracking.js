@@ -4,8 +4,8 @@ const chalk = require('chalk'); // colorize output
 const crypto = require('crypto');
 const mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
 const near_cli_version = require('../package.json').version;
-const readline = require('readline');
 const settings = require('./settings');
+const { askYesNoQuestion } = require('./readline');
 const uuid = require('uuid');
 
 const TRACKING_ENABLED_KEY = 'trackingEnabled';
@@ -89,72 +89,18 @@ const track = async (eventType, eventProperties, options) => {
 };
 
 const getEventTrackingConsent = async () => {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-    try {
-        for (let attempts = 0; attempts < 10; attempts++) {
-            const answer = await new Promise((resolve) => {
-                rl.question(
-                    chalk`We would like to collect data on near-cli usage to improve developer experience. ` +
-                        chalk` We will never send private information. We only collect which commands are run with attributes. ` +
-                        chalk`{bold.yellow  Would you like to opt in (y/n)? }`,
-                    async (consentToEventTracking) => {
-                        if (consentToEventTracking.toLowerCase() == 'y') {
-                            resolve(true);
-                        } else if (
-                            consentToEventTracking.toLowerCase() == 'n'
-                        ) {
-                            resolve(false);
-                        }
-                        resolve(undefined);
-                    }
-                );
-            });
-            if (answer !== undefined) {
-                return answer;
-            }
-        }
-        return false; // If they can't figure it out in this many attempts, just opt out
-    } finally {
-        rl.close();
-    }
+    return askYesNoQuestion(
+        chalk`We would like to collect data on near-cli usage to improve developer experience. ` +
+        chalk` We will never send private information. We only collect which commands are run with attributes. ` +
+        chalk`{bold.yellow  Would you like to opt in (y/n)? }`);
 };
 
 const getIdTrackingConsent = async () => {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-    try {
-        for (let attempts = 0; attempts < 10; attempts++) {
-            const answer = await new Promise((resolve) => {
-                rl.question(
-                    chalk`We would like to help with your development journey with NEAR. ` +
-                        chalk`We will ask you to share your account ID while using command. ` +
-                        chalk`Note that your account ID and all associated on-chain transactions are already being recorded on public blockchain. ` +
-                        chalk`{bold.yellow  Would you like to share the account Id (y/n)? }`,
-                    async (consentToEventTracking) => {
-                        if (consentToEventTracking.toLowerCase() == 'y') {
-                            resolve(true);
-                        } else if (
-                            consentToEventTracking.toLowerCase() == 'n'
-                        ) {
-                            resolve(false);
-                        }
-                        resolve(undefined);
-                    }
-                );
-            });
-            if (answer !== undefined) {
-                return answer;
-            }
-        }
-        return false; // If they can't figure it out in this many attempts, just opt out
-    } finally {
-        rl.close();
-    }
+    return askYesNoQuestion(
+        chalk`We would like to help with your development journey with NEAR. ` +
+        chalk`We will ask you to share your account ID while using command. ` +
+        chalk`Note that your account ID and all associated on-chain transactions are already being recorded on public blockchain. ` +
+        chalk`{bold.yellow  Would you like to share the account Id (y/n)? }`);
 };
 
 const askForId = async (options, masterAccount) => {
