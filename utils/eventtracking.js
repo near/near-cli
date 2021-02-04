@@ -40,19 +40,29 @@ const shouldTrackID = (shellSettings) => {
 };
 
 const shouldNotTrackID = (shellSettings) => {
-    return  shellSettings.trackingAccountID !== undefined && !shellSettings.trackingAccountID;
+    return shellSettings.trackingAccountID !== undefined && !shellSettings.trackingAccountID;
 };
+
+const getMixpanelID = (shellSettings) => isGitPod() ? getGitPodUserHash() : shellSettings.trackingSessionId;
 
 const track = async (eventType, eventProperties, options) => {
     const shellSettings = settings.getShellSettings();
     if (!shouldTrack(shellSettings)) {
         return;
     }
+
+    if (shouldTrackID(shellSettings)) {
+        const accountID = options.accountId;
+        const id = getMixpanelID(shellSettings);
+        await Promise.all([
+            mixpanel.alias(accountID, id),
+            mixpanel.people.set(id, {account_id: accountID})
+        ]);
+    }
+
     try {
         const mixPanelProperties = {
-            distinct_id: isGitPod()
-                ? getGitPodUserHash()
-                : shellSettings.trackingSessionId,
+            distinct_id: getMixpanelID(shellSettings),
             near_cli_version,
             os: process.platform,
             network_id: options.networkId === 'default' ? 'testnet': options.networkId,
@@ -91,24 +101,18 @@ const getIdTrackingConsent = async () => {
         chalk`{bold.yellow  Would you like to share the account Id (y/n)? }`);
 };
 
-const askForId = async (options, masterAccount) => {
+const askForId = async () => {
     const shellSettings = settings.getShellSettings();
-    const accountID = masterAccount ? masterAccount : options.accountId;
-    if(shouldTrackID(shellSettings)){
-        const id = isGitPod() ? getGitPodUserHash() : shellSettings.trackingSessionId;
-        await Promise.all([
-            mixpanel.alias(accountID, id),
-            mixpanel.people.set(id, {account_id: accountID})
-        ]);
-    } else if(shouldNotTrackID(shellSettings)){
+
+    if (shouldNotTrackID(shellSettings) || shouldTrackID(shellSettings)) {
         return;
-    } else{
-        shellSettings.trackingAccountID = (await getIdTrackingConsent());
-        settings.saveShellSettings(shellSettings);
     }
+
+    shellSettings.trackingAccountID = await getIdTrackingConsent();
+    settings.saveShellSettings(shellSettings);
 };
 
-const askForConsentIfNeeded = async (options, masterAccount) => {
+const askForConsentIfNeeded = async (options) => {
     const shellSettings = settings.getShellSettings();
     // if the appropriate option is not in settings, ask now and save settings.
     if (shellSettings.trackingEnabled === undefined) {
@@ -119,7 +123,7 @@ const askForConsentIfNeeded = async (options, masterAccount) => {
             await track(module.exports.EVENT_ID_TRACKING_OPT_IN, {}, options);
         }
     }
-    await askForId(options, masterAccount);
+    await askForId(options);
 };
 
 const trackDeployedContract = async () => {
