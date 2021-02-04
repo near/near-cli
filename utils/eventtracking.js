@@ -8,10 +8,6 @@ const settings = require('./settings');
 const { askYesNoQuestion } = require('./readline');
 const uuid = require('uuid');
 
-const TRACKING_ENABLED_KEY = 'trackingEnabled';
-const TRACKING_SESSION_ID_KEY = 'trackingSessionId';
-const TRACKING_ID_KEY = 'trackingAccountID';
-
 const isGitPod = () => {
     return !!process.env.GITPOD_WORKSPACE_URL;
 };
@@ -35,24 +31,16 @@ const shouldTrack = (shellSettings) => {
     if (shouldOptInByDefault()) {
         return true;
     }
-    return (
-        TRACKING_ENABLED_KEY in shellSettings &&
-        shellSettings[TRACKING_ENABLED_KEY]
-    );
+
+    return !!shellSettings.trackingEnabled;
 };
 
 const shouldTrackID = (shellSettings) => {
-    return (
-        TRACKING_ID_KEY in shellSettings &&
-        shellSettings[TRACKING_ID_KEY]
-    );
+    return !!shellSettings.trackingAccountID;
 };
 
 const shouldNotTrackID = (shellSettings) => {
-    return (
-        TRACKING_ID_KEY in shellSettings &&
-        !shellSettings[TRACKING_ID_KEY]
-    );
+    return  shellSettings.trackingAccountID !== undefined && !shellSettings.trackingAccountID;
 };
 
 const track = async (eventType, eventProperties, options) => {
@@ -64,7 +52,7 @@ const track = async (eventType, eventProperties, options) => {
         const mixPanelProperties = {
             distinct_id: isGitPod()
                 ? getGitPodUserHash()
-                : shellSettings[TRACKING_SESSION_ID_KEY],
+                : shellSettings.trackingSessionId,
             near_cli_version,
             os: process.platform,
             network_id: options.networkId === 'default' ? 'testnet': options.networkId,
@@ -107,7 +95,7 @@ const askForId = async (options, masterAccount) => {
     const shellSettings = settings.getShellSettings();
     const accountID = masterAccount ? masterAccount : options.accountId;
     if(shouldTrackID(shellSettings)){
-        const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
+        const id = isGitPod() ? getGitPodUserHash() : shellSettings.trackingSessionId;
         await Promise.all([
             mixpanel.alias(accountID, id),
             mixpanel.people.set(id, {account_id: accountID})
@@ -115,7 +103,7 @@ const askForId = async (options, masterAccount) => {
     } else if(shouldNotTrackID(shellSettings)){
         return;
     } else{
-        shellSettings[TRACKING_ID_KEY] = (await getIdTrackingConsent());
+        shellSettings.trackingAccountID = (await getIdTrackingConsent());
         settings.saveShellSettings(shellSettings);
     }
 };
@@ -123,16 +111,11 @@ const askForId = async (options, masterAccount) => {
 const askForConsentIfNeeded = async (options, masterAccount) => {
     const shellSettings = settings.getShellSettings();
     // if the appropriate option is not in settings, ask now and save settings.
-    if (!(TRACKING_ENABLED_KEY in shellSettings)) {
-        shellSettings[TRACKING_ENABLED_KEY] =
-            shouldOptInByDefault() || (await getEventTrackingConsent());
-        shellSettings[TRACKING_SESSION_ID_KEY] = shellSettings[
-            TRACKING_ENABLED_KEY
-        ]
-            ? uuid.v4()
-            : undefined;
+    if (shellSettings.trackingEnabled === undefined) {
+        shellSettings.trackingEnabled = shouldOptInByDefault() || (await getEventTrackingConsent());
+        shellSettings.trackingSessionId = shellSettings.trackingEnabled ? uuid.v4() : undefined;
         settings.saveShellSettings(shellSettings);
-        if (shellSettings[TRACKING_ENABLED_KEY]) {
+        if (shellSettings.trackingEnabled) {
             await track(module.exports.EVENT_ID_TRACKING_OPT_IN, {}, options);
         }
     }
@@ -141,7 +124,7 @@ const askForConsentIfNeeded = async (options, masterAccount) => {
 
 const trackDeployedContract = async () => {
     const shellSettings = settings.getShellSettings();
-    const id = isGitPod() ? getGitPodUserHash() : shellSettings[TRACKING_SESSION_ID_KEY];
+    const id = isGitPod() ? getGitPodUserHash() : shellSettings.trackingSessionId;
     await mixpanel.people.increment(id, 'deployed_contracts');
 };
 
