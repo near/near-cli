@@ -32,6 +32,6 @@ const askYesNoQuestion = async (question, defaultResponse = false) =>  {
     } finally {
         rl.close();
     }
-}
+};
 
-module.exports = { askYesNoQuestion }
+module.exports = { askYesNoQuestion };
