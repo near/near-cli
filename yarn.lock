@@ -5006,24 +5006,7 @@ ncp@^2.0.0:
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
   integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
 
-near-api-js@^0.34.0:
-  version "0.34.0"
-  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.34.0.tgz#2deba01d877859edb87d9f338b3446e3240d7db2"
-  integrity sha512-wYSPerV5/AcdlMvJ1Ntzxb1RxeiETrLqBplv2yF0/Fi8USXhZV0Kk5svrA1Uxx4OI2diTY46+rvXs7gQqtkgPA==
-  dependencies:
-    "@types/bn.js" "^4.11.5"
-    bn.js "^5.0.0"
-    bs58 "^4.0.0"
-    depd "^2.0.0"
-    error-polyfill "^0.1.2"
-    http-errors "^1.7.2"
-    js-sha256 "^0.9.0"
-    mustache "^4.0.0"
-    node-fetch "^2.6.1"
-    text-encoding-utf-8 "^1.0.2"
-    tweetnacl "^1.0.1"
-
-near-api-js@^0.36.3:
+near-api-js@^0.36.2, near-api-js@^0.36.3:
   version "0.36.3"
   resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.36.3.tgz#f374ec33ecb774ec5ad19a8e464d679d8b4438d6"
   integrity sha512-/pWMoUkoP3/8XJRL+uHUReW40XCa31+33tZX2QgACvrMHXJ41HzEK9+RxjaSDsJZ70BtOB4ybfuk4Pj5MEhqCQ==
@@ -5068,15 +5051,16 @@ near-seed-phrase@^0.1.0:
     tweetnacl "^1.0.2"
 
 near-web3-provider@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/near-web3-provider/-/near-web3-provider-1.0.6.tgz#d7c7e5c613af87c6782fbf405402446db2192b00"
-  integrity sha512-nrpyOGYLsoOZbuXEDXB8j5NjKDjE4PDGnCSHpH3aC8lOE5K2v5JaJxglSBssWky+qi+pUgVrc6GFvMb9UrUZlw==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/near-web3-provider/-/near-web3-provider-1.1.0.tgz#080d5091112d6110f614ecb9eb7bafcd210f4436"
+  integrity sha512-OFot+fGGh32PfswFqr6lDpiXH0d7hc+HyURsgEJzdW/BW48VKlM/jFYvPaeCUTNCCI+Qww1DNQYnh5xqWXIwYQ==
   dependencies:
     bn.js "^5.1.2"
     bs58 "^4.0.1"
     bsert "0.0.10"
     eth-sig-util "^2.5.3"
-    near-api-js "^0.34.0"
+    near-api-js "^0.36.2"
+    rlp "^2.2.6"
     tweetnacl "^1.0.3"
     web3-provider-engine "^15.0.7"
     web3-utils "^1.2.8"
@@ -6021,7 +6005,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rlp@^2.0.0, rlp@^2.2.3:
+rlp@^2.0.0, rlp@^2.2.3, rlp@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/rlp/-/rlp-2.2.6.tgz#c80ba6266ac7a483ef1e69e8e2f056656de2fb2c"
   integrity sha512-HAfAmL6SDYNWPUOJNrM500x4Thn4PZsEy5pijPh40U9WfNk0z15hUYzO9xVIMAdIHdFtD8CBDHd75Td1g36Mjg==
