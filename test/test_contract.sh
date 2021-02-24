@@ -28,9 +28,18 @@ RESULT=$(../bin/near view $testaccount getGreeting '{"accountId":"test.near"}' -
 TEXT=$RESULT
 EXPECTED='TEST'
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
-    cd ..
     echo FAILURE Unexpected output from near call: $RESULT
     exit 1
-else
-    cd ..
+fi
+
+# base64-encoded '{"message":"BASE64ROCKS"}'
+../bin/near call $testaccount setGreeting --base64 'eyJtZXNzYWdlIjoiQkFTRTY0Uk9DS1MifQ==' --accountId=test.near
+
+RESULT=$(../bin/near view $testaccount getGreeting '{"accountId":"test.near"}' --accountId=test.near -v)
+# TODO: Refactor asserts
+TEXT=$RESULT
+EXPECTED='BASE64ROCKS'
+if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
+    echo FAILURE Unexpected output from near call: $RESULT
+    exit 1
 fi
