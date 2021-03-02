@@ -791,6 +791,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/bn.js@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@types/bn.js/-/bn.js-5.1.0.tgz#32c5d271503a12653c62cf4d2b45e6eab8cebc68"
+  integrity sha512-QSSVYj7pYFN49kW77o2s9xTCwZ8F2xLbjLLSEVh8D2F4JUhZtPAGOFLTD+ffqksBx/u4cE/KImFjyhqCjn/LIA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/graceful-fs@^4.1.2":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@types/graceful-fs/-/graceful-fs-4.1.4.tgz#4ff9f641a7c6d1a3508ff88bc3141b152772e753"
@@ -5144,12 +5151,30 @@ ncp@^2.0.0:
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
   integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
 
-near-api-js@^0.36.2, near-api-js@^0.36.3:
+near-api-js@^0.36.2:
   version "0.36.3"
   resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.36.3.tgz#f374ec33ecb774ec5ad19a8e464d679d8b4438d6"
   integrity sha512-/pWMoUkoP3/8XJRL+uHUReW40XCa31+33tZX2QgACvrMHXJ41HzEK9+RxjaSDsJZ70BtOB4ybfuk4Pj5MEhqCQ==
   dependencies:
     "@types/bn.js" "^4.11.5"
+    bn.js "^5.0.0"
+    borsh "^0.3.1"
+    bs58 "^4.0.0"
+    depd "^2.0.0"
+    error-polyfill "^0.1.2"
+    http-errors "^1.7.2"
+    js-sha256 "^0.9.0"
+    mustache "^4.0.0"
+    node-fetch "^2.6.1"
+    text-encoding-utf-8 "^1.0.2"
+    tweetnacl "^1.0.1"
+
+near-api-js@^0.37.0:
+  version "0.37.0"
+  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.37.0.tgz#210ea6ecd2b82a7a9992bd84fe9b90088e7269d6"
+  integrity sha512-cixppt3FBTT5l8fTdJNLv1K6FF0NUxNseZ6FZV/tx8pGjhVr8pR049QfHRRAj6Bk9Jzw79sH1vLR4sMupgvkNw==
+  dependencies:
+    "@types/bn.js" "^5.1.0"
     bn.js "^5.0.0"
     borsh "^0.3.1"
     bs58 "^4.0.0"
