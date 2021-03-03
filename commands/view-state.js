@@ -1,8 +1,6 @@
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { formatResponse } = require('../utils/inspect-response');
-const { utils } = require('near-api-js');
-
 
 module.exports = {
     command: 'view-state <account-id> [prefix]',
@@ -41,7 +39,7 @@ async function viewState(options) {
 
     let state = await account.viewState(prefix, { blockId, finality });
     if (utf8) {
-        state = state.map(({ key, value}) => ({ key: key.toString('utf-8'), value: value.toString('utf-8') }))
+        state = state.map(({ key, value}) => ({ key: key.toString('utf-8'), value: value.toString('utf-8') }));
     }
     console.log(formatResponse(state, options));
 }
