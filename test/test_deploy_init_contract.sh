@@ -11,10 +11,10 @@ echo Creating account
 
 echo Deploying contract without init method
 ../bin/near deploy --accountId $testaccount --wasmFile ../test/res/fungible_token.wasm
-RESULT=$(../bin/near view $testaccount get_balance '{"owner_id": "test.near"}' -v | ../node_modules/.bin/strip-ansi)
-echo $RESULT
-EXPECTED=".+Fun token should be initialized before usage+"
-if [[ ! "$RESULT" =~ $EXPECTED ]]; then
+ERROR=$(../bin/near view $testaccount get_balance '{"owner_id": "test.near"}' -v 2>&1 >/dev/null | ../node_modules/.bin/strip-ansi)
+echo $ERROR
+EXPECTED_ERROR=".+Fun token should be initialized before usage+"
+if [[ ! "$ERROR" =~ $EXPECTED_ERROR ]]; then
     echo FAILURE Expected message requiring initialization of contract
     exit 1
 else
