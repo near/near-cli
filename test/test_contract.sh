@@ -12,7 +12,7 @@ testaccount=testaccount$timestamp.test.near
 
 echo Building contract
 yarn install
-yarn build
+yarn build:contract
 
 echo Deploying contract
 ../bin/near deploy --accountId=$testaccount --wasmFile=out/main.wasm
