@@ -114,7 +114,8 @@ async function createAccount(options) {
     // Check to see if account already exists
     try {
         // This is expected to error because the account shouldn't exist
-        await near.account(options.accountId);
+        const account = await near.account(options.accountId);
+        await account.state();
         throw new Error(`Sorry, account '${options.accountId}' already exists.`);
     } catch (e) {
         if (!e.message.includes('does not exist while viewing')) {

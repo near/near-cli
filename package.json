@@ -1,6 +1,6 @@
 {
   "name": "near-cli",
-  "version": "1.5.2",
+  "version": "1.5.4",
   "description": "General purpose command line tools for interacting with NEAR Protocol",
   "engines": {
     "node": ">= 12"
@@ -42,9 +42,9 @@
     "jest-environment-node": "^26.0.0",
     "mixpanel": "^0.13.0",
     "ncp": "^2.0.0",
-    "near-web3-provider": "^1.0.6",
-    "near-api-js": "^0.34.0",
+    "near-api-js": "^0.37.0",
     "near-seed-phrase": "^0.1.0",
+    "near-web3-provider": "^1.0.6",
     "open": "^7.0.1",
     "rimraf": "^3.0.0",
     "stoppable": "^1.1.0",

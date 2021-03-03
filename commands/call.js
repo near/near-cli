@@ -17,8 +17,13 @@ module.exports = {
             type: 'string',
             default: '0'
         })
+        .option('base64',  {
+            desc: 'Treat arguments as base64-encoded BLOB.',
+            type: 'boolean',
+            default: false
+        })
         .option('args', {
-            desc: 'Arguments to the contract call, in JSON format (e.g. \'{"param_a": "value"}\')',
+            desc: 'Arguments to the contract call, in JSON format by default (e.g. \'{"param_a": "value"}\')',
             type: 'string',
             default: null
         })
@@ -35,10 +40,11 @@ async function scheduleFunctionCall(options) {
         (options.amount && options.amount != '0' ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
+    const parsedArgs = options.base64 ? Buffer.from(options.args, 'base64') : JSON.parse(options.args || '{}');
     const functionCallResponse = await account.functionCall(
         options.contractName,
         options.methodName,
-        JSON.parse(options.args || '{}'),
+        parsedArgs,
         options.gas,
         utils.format.parseNearAmount(options.amount));
     const result = providers.getTransactionLastResult(functionCallResponse);
