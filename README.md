@@ -18,6 +18,7 @@ npm install -g near-cli
 In command line, from the directory with your project:
 
 ```bash
+export NEAR_ENV=<mainnet | testnet | betanet | guildnet>
 near <command>
 ```
 
