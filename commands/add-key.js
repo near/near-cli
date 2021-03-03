@@ -19,7 +19,7 @@ module.exports = {
             required: false,
         })
         .option('method-names', {
-            desc: 'Method names to limit access key to (command separated)',
+            desc: 'Method names to limit access key to (comma separated)',
             type: 'string',
             required: false,
         })
@@ -36,6 +36,6 @@ async function addAccessKey(options) {
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const allowance = utils.format.parseNearAmount(options.allowance);
-    const result = await account.addKey(options.accessKey, options.contractId, options.methodNames, allowance);
+    const result = await account.addKey(options.accessKey, options.contractId, options.methodNames && options.methodNames.split(','), allowance);
     inspectResponse.prettyPrintResponse(result, options);
 }
