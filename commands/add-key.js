@@ -19,8 +19,8 @@ module.exports = {
             required: false,
         })
         .option('method-names', {
-            desc: 'Method names to limit access key to (command separated)',
-            type: 'string',
+            desc: 'Method names to limit access key to (example: --method-names meth1 meth2)',
+            type: 'array',
             required: false,
         })
         .option('allowance', {
