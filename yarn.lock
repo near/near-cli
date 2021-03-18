@@ -5191,10 +5191,10 @@ near-api-js@^0.36.2:
     text-encoding-utf-8 "^1.0.2"
     tweetnacl "^1.0.1"
 
-near-api-js@^0.37.0:
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.37.0.tgz#210ea6ecd2b82a7a9992bd84fe9b90088e7269d6"
-  integrity sha512-cixppt3FBTT5l8fTdJNLv1K6FF0NUxNseZ6FZV/tx8pGjhVr8pR049QfHRRAj6Bk9Jzw79sH1vLR4sMupgvkNw==
+near-api-js@^0.39.0:
+  version "0.39.0"
+  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.39.0.tgz#8c6b040e92f01266f35d358aee3914f26af2d83f"
+  integrity sha512-RX2oLOg438QCY3UQLb6FMkXmInFQIS0S+xg/auNZP292ySsMTKppoD07g/ExEFbW8Uyej8/TvjhBjKxnDBUigQ==
   dependencies:
     "@types/bn.js" "^5.1.0"
     bn.js "^5.0.0"
