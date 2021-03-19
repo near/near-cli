@@ -12,8 +12,7 @@ process.on('exit', () => {
         detached: true,
         env: {
             NEAR_CLI_EVENT_ID: eventtracking.EVENT_ID_ERROR,
-            NEAR_CLI_EVENT_DATA: JSON.stringify(crashEventProperties),
-            NEAR_CLI_OPTIONS: process.env.NEAR_CLI_OPTIONS
+            NEAR_CLI_EVENT_DATA: JSON.stringify(crashEventProperties)
         }
     });
 });
@@ -23,15 +22,13 @@ module.exports = (promiseFn) => async (...args) => {
     process.env.NEAR_CLI_ERROR_LAST_COMMAND = command;
     process.env.NEAR_CLI_NETWORK_ID = require('../get-config')()['networkId'];
     const options = args[0];
-    const optionsAsStr = JSON.stringify(options);
     const eventId =  `event_id_shell_${command}_start`;
     require('child_process').fork(__dirname + '/log-event.js', ['node'], {
         silent: true,
         detached: true,
         env: {
             NEAR_CLI_EVENT_ID: eventId,
-            NEAR_CLI_EVENT_DATA: JSON.stringify({}),
-            NEAR_CLI_OPTIONS: optionsAsStr
+            NEAR_CLI_EVENT_DATA: JSON.stringify({})
         }
     });
     const promise = promiseFn.apply(null, args);
@@ -39,7 +36,6 @@ module.exports = (promiseFn) => async (...args) => {
         await promise;
     } catch (e) {
         process.env.NEAR_CLI_LAST_ERROR = e.message;
-        process.env.NEAR_CLI_OPTIONS = optionsAsStr;
         inspectResponse.prettyPrintError(e, options);
         process.exit(1);
     }
