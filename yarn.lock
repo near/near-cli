@@ -5233,9 +5233,9 @@ near-seed-phrase@^0.1.0:
     tweetnacl "^1.0.2"
 
 near-web3-provider@^1.0.6:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/near-web3-provider/-/near-web3-provider-1.1.0.tgz#080d5091112d6110f614ecb9eb7bafcd210f4436"
-  integrity sha512-OFot+fGGh32PfswFqr6lDpiXH0d7hc+HyURsgEJzdW/BW48VKlM/jFYvPaeCUTNCCI+Qww1DNQYnh5xqWXIwYQ==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/near-web3-provider/-/near-web3-provider-1.2.0.tgz#cf73b0728b1c7a3574d49fdb2f54ecdd10c76dd8"
+  integrity sha512-+PRqAe+bcbJVR2M/FHyXmK0YPj7J6zzNPCXESiynm6mJrGn7mi6Bjo0LqrK0kAKKLSI9twlaSx/if93QKJdEbg==
   dependencies:
     bn.js "^5.1.2"
     bs58 "^4.0.1"
@@ -5245,7 +5245,7 @@ near-web3-provider@^1.0.6:
     rlp "^2.2.6"
     tweetnacl "^1.0.3"
     web3-provider-engine "^15.0.7"
-    web3-utils "^1.2.8"
+    web3-utils "1.3.3"
 
 negotiator@0.6.2:
   version "0.6.2"
@@ -7620,7 +7620,21 @@ web3-shh@1.3.4:
     web3-core-subscriptions "1.3.4"
     web3-net "1.3.4"
 
-web3-utils@1.3.4, web3-utils@^1.2.8:
+web3-utils@1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/web3-utils/-/web3-utils-1.3.3.tgz#71b837958f1fcc970223eb14a1d0110233348305"
+  integrity sha512-ZwpdqEcBBzqRgXUbCj+kyu1jFnsDauURSQ79yVqgnTKSI4C3s0Qjpp4WLThV+LKhCKR5GZtBTkgGHeiq0FT88A==
+  dependencies:
+    bn.js "^4.11.9"
+    eth-lib "0.2.8"
+    ethereum-bloom-filters "^1.0.6"
+    ethjs-unit "0.1.6"
+    number-to-bn "1.7.0"
+    randombytes "^2.1.0"
+    underscore "1.9.1"
+    utf8 "3.0.0"
+
+web3-utils@1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/web3-utils/-/web3-utils-1.3.4.tgz#9b1aa30d7549f860b573e7bb7e690999e7192198"
   integrity sha512-/vC2v0MaZNpWooJfpRw63u0Y3ag2gNjAWiLtMSL6QQLmCqCy4SQIndMt/vRyx0uMoeGt1YTwSXEcHjUzOhLg0A==
