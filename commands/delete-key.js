@@ -1,6 +1,7 @@
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
+const checkCredentials = require('../utils/check-credentials');
 
 module.exports = {
     command: 'delete-key <account-id> <access-key>',
@@ -15,6 +16,7 @@ module.exports = {
 };
 
 async function deleteAccessKey(options) {
+    checkCredentials(options);
     console.log(`Deleting key = ${options.accessKey} on ${options.accountId}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);

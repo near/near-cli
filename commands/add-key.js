@@ -2,6 +2,7 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
 const { utils } = require('near-api-js');
+const checkCredentials = require('../utils/check-credentials');
 
 
 module.exports = {
@@ -32,6 +33,7 @@ module.exports = {
 };
 
 async function addAccessKey(options) {
+    checkCredentials(options);
     console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key = ${options.accessKey} to ${options.accountId}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);

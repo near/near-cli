@@ -2,6 +2,7 @@ const exitOnError = require('../utils/exit-on-error');
 const web3 = require('web3');
 const { NearProvider, utils } = require('near-web3-provider');
 const assert = require('assert');
+const checkCredentials = require('../utils/check-credentials');
 
 module.exports = {
     command: 'evm-call <evmAccount> <contractName> <methodName> [args]',
@@ -36,6 +37,7 @@ module.exports = {
 };
 
 async function scheduleEVMFunctionCall(options) {
+    checkCredentials(options);
     const args = JSON.parse(options.args || '[]');
     console.log(`Scheduling a call inside ${options.evmAccount} EVM:`);
     console.log(`${options.contractName}.${options.methodName}()` +
