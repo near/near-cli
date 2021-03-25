@@ -1,19 +1,23 @@
 const homedir = require('os').homedir();
 const credentials_dir = homedir + '/.near-credentials';
+const fs = require('fs').promises;
+const { askYesNoQuestion } = require('./readline');
 
-module.exports = async function checkCredentials(options) {
-  if(!(await options.keyStore.getKey(options.networkId, options.accountId))) {
-    console.log(`Unable to find ${options.networkId} credentials for ${options.accountId}`);
-    const hasInDefault = await options.keyStore.getKey('default', options.accountId);
+module.exports = async function checkCredentials(accountId, networkId, keyStore) {
+  console.log('networkId', networkId);
+  console.log('accountId', accountId);
+  if(!(await keyStore.getKey(networkId, accountId))) {
+    console.log(`Unable to find ${networkId} credentials for ${accountId}`);
+    const hasInDefault = await keyStore.getKey('default', accountId);
     if(hasInDefault) {
         const answer = await askYesNoQuestion('Key found in deprecated \'default\' folder. Would you like to move key to \'testnet\' folder? (y/n): ', false);
         if(answer) {
             console.log('Moving files...');
-            await fs.copyFile(`${credentials_dir}/default/${option.accountId}`, `${credentials_dir}/testnet/${options.accountId}`)
+            await fs.copyFile(`${credentials_dir}/default/${accountId}.json`, `${credentials_dir}/testnet/${accountId}.json`)
+            throw ('Please run command again.')
         } else {
-            console.log('Please relocate credentials found in \'default\' directory to \'testnet\'.');
-            return;
+            throw ('Please relocate credentials found in \'default\' directory to \'testnet\'.');
         }
-    }
+    } else throw ('error')
   }
 }
