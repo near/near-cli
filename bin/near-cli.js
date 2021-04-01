@@ -235,6 +235,7 @@ yargs // eslint-disable-line
     .command(require('../commands/dev-deploy'))
     .command(require('../commands/call'))
     .command(callViewFunction)
+    .command(require('../commands/view-state'))
     .command(sendMoney)
     .command(clean)
     .command(stake)

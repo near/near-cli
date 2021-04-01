@@ -35,8 +35,9 @@ const prettyPrintResponse = (response, options) => {
 const prettyPrintError = (error, options) => {
     if (checkForAccDoesNotExist(error, options)) return;
 
-    console.log('An error occured');
-    console.log(formatResponse(error));
+    console.error('An error occured');
+    console.error(error.stack);
+    console.error(formatResponse(error));
     const txnId = getTxnIdFromError(error);
     if (txnId) {
         console.log(`We attempted to send transaction ${txnId} to NEAR, but something went wrong.`);
@@ -47,7 +48,7 @@ const prettyPrintError = (error, options) => {
 
 const formatResponse = (response) => {
     return util.inspect(response, {
-        showHidden: true,
+        // showHidden: true,
         depth: null,
         colors: Boolean(process.stdout.isTTY && process.stdout.hasColors()),
         maxArrayLength: null
