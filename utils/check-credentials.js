@@ -1,5 +1,3 @@
-const homedir = require('os').homedir();
-const credentials_dir = homedir + '/.near-credentials';
 const { askYesNoQuestion } = require('./readline');
 
 module.exports = async function checkCredentials(
