@@ -4,7 +4,6 @@ const inspectResponse = require('../utils/inspect-response');
 const { utils } = require('near-api-js');
 const checkCredentials = require('../utils/check-credentials');
 
-
 module.exports = {
     command: 'add-key <account-id> <access-key>',
     desc: 'Add an access key to given account',
