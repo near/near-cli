@@ -37,7 +37,7 @@ module.exports = {
 };
 
 async function scheduleEVMFunctionCall(options) {
-    checkCredentials(options);
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
     const args = JSON.parse(options.args || '[]');
     console.log(`Scheduling a call inside ${options.evmAccount} EVM:`);
     console.log(`${options.contractName}.${options.methodName}()` +
