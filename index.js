@@ -66,7 +66,6 @@ exports.deploy = async function (options) {
 };
 
 exports.callViewFunction = async function (options) {
-    checkCredentials(options);
     console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
     const near = await connect(options);
     const account = await near.account(options.accountId || options.masterAccount || options.contractName);
