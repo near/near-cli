@@ -32,7 +32,7 @@ module.exports = {
 };
 
 async function addAccessKey(options) {
-    checkCredentials(options.accountId, options.network, options.keystore);
+    await checkCredentials(options.account_id, options.network_id, options.keyStore);
     console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key = ${options.accessKey} to ${options.accountId}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
