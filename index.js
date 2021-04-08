@@ -190,7 +190,7 @@ exports.viewAccount = async function (options) {
 };
 
 exports.deleteAccount = async function (options) {
-    checkCredentials(options);
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(
         `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
     const near = await connect(options);
@@ -218,7 +218,7 @@ exports.sendMoney = async function (options) {
 };
 
 exports.stake = async function (options) {
-    checkCredentials(options);
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${qs.unescape(options.stakingKey)}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
