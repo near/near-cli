@@ -31,7 +31,7 @@ exports.clean = async function () {
 };
 
 exports.deploy = async function (options) {
-    checkCredentials(options);
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
 
