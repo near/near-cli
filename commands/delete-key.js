@@ -16,7 +16,7 @@ module.exports = {
 };
 
 async function deleteAccessKey(options) {
-    await checkCredentials(options.accountId, options.networkId, options.keyStore);
+    if(options.networkId === 'default' | 'testnet') await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(`Deleting key = ${options.accessKey} on ${options.accountId}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);

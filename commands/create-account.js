@@ -73,11 +73,10 @@ const createAccountCommandDeprecated = {
 }; 
 
 async function createAccount(options) {
+    if(options.networkId === 'default' | 'testnet') await checkCredentials(options.masterAccount, options.networkId, options.keyStore);
     // NOTE: initialBalance is passed as part of config here, parsed in middleware/initial-balance
     // periods are disallowed in top-level accounts and can only be used for subaccounts
-    await checkCredentials(options.masterAccount, options.networkId, options.keyStore);
     const splitAccount = options.accountId.split('.');
-
     const splitMaster = options.masterAccount.split('.');
     const masterRootTLA = splitMaster[splitMaster.length - 1];
     if (splitAccount.length === 1) {

@@ -37,7 +37,7 @@ module.exports = {
 };
 
 async function scheduleFunctionCall(options) {
-    await checkCredentials(options.accountId, options.networkId, options.keyStore);
+    if(options.networkId === 'default' | 'testnet') await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
         (options.amount && options.amount != '0' ? ` with attached ${options.amount} NEAR` : ''));
     const near = await connect(options);
