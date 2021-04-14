@@ -5,6 +5,7 @@ module.exports = async function checkCredentials(
     networkId,
     keyStore
 ) {
+    if(networkId != 'testnet' || networkId != 'default') return;
     if (!(await keyStore.getKey(networkId, accountId))) {
         console.log(
             `Unable to find [ ${networkId} ] credentials for [ ${accountId} ]`
