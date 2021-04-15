@@ -72,8 +72,6 @@ exports.callViewFunction = async function (options) {
     console.log(inspectResponse.formatResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
 };
 
-
-
 // open a given URL in browser in a safe way.
 const openUrl = async function(url) {
     try {
