@@ -11,6 +11,9 @@ async function validatorsInfo(near, epochId) {
 }
 
 async function showValidatorsTable(near, epochId) {
+    if (epochId) {
+        epochId = parseInt(epochId);
+    }
     const result = await validatorsInfo(near, epochId);
     const seatPrice = validators.findSeatPrice(result.current_validators, result.numSeats);
     result.current_validators = result.current_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
