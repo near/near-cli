@@ -36,6 +36,10 @@ module.exports = {
 };
 
 async function devDeploy(options) {
+    const currentNetwork = options.networkId;
+    if (currentNetwork !== 'testnet' && currentNetwork !== 'default') {
+        throw Error(`Network ${currentNetwork} doesn't support dev-deploy. Use export NEAR_ENV=testnet to switch to TestNet`);
+    }
     await eventtracking.askForConsentIfNeeded(options);
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
     if (!helperUrl && !masterAccount) {
