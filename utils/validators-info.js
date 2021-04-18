@@ -2,19 +2,19 @@ const { validators, utils } = require('near-api-js');
 const BN = require('bn.js');
 const AsciiTable = require('ascii-table');
 
-async function validatorsInfo(near, epochId) {
+async function validatorsInfo(near, blockNumber) {
     const genesisConfig = await near.connection.provider.sendJsonRpc('EXPERIMENTAL_genesis_config', {});
-    const result = await near.connection.provider.sendJsonRpc('validators', [epochId]);
+    const result = await near.connection.provider.sendJsonRpc('validators', [blockNumber]);
     result.genesisConfig = genesisConfig;
     result.numSeats = genesisConfig.num_block_producer_seats + genesisConfig.avg_hidden_validator_seats_per_shard.reduce((a, b) => a + b);
     return result;
 }
 
-async function showValidatorsTable(near, epochId) {
-    if (epochId) {
-        epochId = parseInt(epochId);
+async function showValidatorsTable(near, blockNumber) {
+    if (blockNumber) {
+        blockNumber = parseInt(blockNumber);
     }
-    const result = await validatorsInfo(near, epochId);
+    const result = await validatorsInfo(near, blockNumber);
     const seatPrice = validators.findSeatPrice(result.current_validators, result.numSeats);
     result.current_validators = result.current_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     var validatorsTable = new AsciiTable();
