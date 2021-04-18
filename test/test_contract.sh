@@ -19,7 +19,10 @@ echo Deploying contract
 
 echo Deploying contract to temporary accountId
 # TODO: Specify helperUrl in project template
+# dev-deploy is supported only on testnet, that is why we are temporary changing NEAR_ENV
+ENV_STORAGE=$(echo $NEAR_ENV) && NEAR_ENV=testnet
 yes | ../bin/near dev-deploy
+NEAR_ENV=$(echo $ENV_STORAGE)
 
 echo Calling functions
 ../bin/near call $testaccount setGreeting '{"message":"TEST"}' --accountId=test.near
