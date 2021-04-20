@@ -2,19 +2,20 @@ const { validators, utils } = require('near-api-js');
 const BN = require('bn.js');
 const AsciiTable = require('ascii-table');
 
-async function validatorsInfo(near, blockNumber) {
+async function validatorsInfo(near, blockNumberOrHash) {
+    // converts block number to integer
+    if (blockNumberOrHash && !isNaN(parseInt(blockNumberOrHash))) {
+        blockNumberOrHash = parseInt(blockNumberOrHash);
+    }
     const genesisConfig = await near.connection.provider.sendJsonRpc('EXPERIMENTAL_genesis_config', {});
-    const result = await near.connection.provider.sendJsonRpc('validators', [blockNumber]);
+    const result = await near.connection.provider.sendJsonRpc('validators', [blockNumberOrHash]);
     result.genesisConfig = genesisConfig;
     result.numSeats = genesisConfig.num_block_producer_seats + genesisConfig.avg_hidden_validator_seats_per_shard.reduce((a, b) => a + b);
     return result;
 }
 
-async function showValidatorsTable(near, blockNumber) {
-    if (blockNumber) {
-        blockNumber = parseInt(blockNumber);
-    }
-    const result = await validatorsInfo(near, blockNumber);
+async function showValidatorsTable(near, blockNumberOrHash) {
+    const result = await validatorsInfo(near, blockNumberOrHash);
     const seatPrice = validators.findSeatPrice(result.current_validators, result.numSeats);
     result.current_validators = result.current_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     var validatorsTable = new AsciiTable();
