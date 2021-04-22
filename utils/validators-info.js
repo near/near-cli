@@ -4,8 +4,8 @@ const AsciiTable = require('ascii-table');
 
 async function validatorsInfo(near, blockNumberOrHash) {
     // converts block number to integer
-    if (blockNumberOrHash && !isNaN(parseInt(blockNumberOrHash))) {
-        blockNumberOrHash = parseInt(blockNumberOrHash);
+    if (blockNumberOrHash && !isNaN(Number(blockNumberOrHash))) {
+        blockNumberOrHash = Number(blockNumberOrHash);
     }
     const genesisConfig = await near.connection.provider.sendJsonRpc('EXPERIMENTAL_genesis_config', {});
     const result = await near.connection.provider.sendJsonRpc('validators', [blockNumberOrHash]);
