@@ -29,7 +29,7 @@
     "eslint": "^7.0.0",
     "jest": "^26.1.0",
     "strip-ansi": "^6.0.0",
-    "strip-ansi-cli": "^2.0.0"
+    "strip-ansi-cli": "^3.0.0"
   },
   "dependencies": {
     "ascii-table": "0.0.9",
