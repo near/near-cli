@@ -37,7 +37,7 @@ module.exports = {
 
 async function devDeploy(options) {
     if (options.networkId === 'mainnet') {
-        throw Error(`MainNet doesn't support dev-deploy. Use export NEAR_ENV=testnet to switch to TestNet`);
+        throw Error('MainNet doesn\'t support dev-deploy. Use export NEAR_ENV=testnet to switch to TestNet');
     }
     await eventtracking.askForConsentIfNeeded(options);
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
