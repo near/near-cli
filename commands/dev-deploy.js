@@ -36,9 +36,8 @@ module.exports = {
 };
 
 async function devDeploy(options) {
-    const currentNetwork = options.networkId;
-    if (currentNetwork !== 'testnet' && currentNetwork !== 'default') {
-        throw Error(`Network ${currentNetwork} doesn't support dev-deploy. Use export NEAR_ENV=testnet to switch to TestNet`);
+    if (options.networkId === 'mainnet') {
+        throw Error(`MainNet doesn't support dev-deploy. Use export NEAR_ENV=testnet to switch to TestNet`);
     }
     await eventtracking.askForConsentIfNeeded(options);
     const { nodeUrl, helperUrl, masterAccount, wasmFile } = options;
@@ -81,8 +80,8 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init, maste
         }
     }
     let accountId;
-    // create random number with at least 7 digits
-    const randomNumber = Math.floor(Math.random() * (9999999 - 1000000) + 1000000);
+    // create random number with at least 14 digits
+    const randomNumber = Math.floor(Math.random() * (99999999999999 - 10000000000000) + 10000000000000);
 
     if (masterAccount) {
         accountId = `dev-${Date.now()}.${masterAccount}`;
