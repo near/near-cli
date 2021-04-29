@@ -1,7 +1,11 @@
 const eventtracking = require('./eventtracking');
 const inspectResponse = require('./inspect-response');
 
-function relevantDataFromCmdlineOpts(options) {
+/* `yargs` puts rich objects on the `options` object, which could include sensitive data (like a keystore!).
+ * This ensures we only put explicit, known non-private data that is relevant to tracking into the environment
+ * when we run `log-event.js`
+ */
+function getNonPrivateDataFromCmdlineOpts(options) {
     return {
         accountId: options.accountId,
         networkId: options.networkId,
@@ -32,7 +36,7 @@ module.exports = (promiseFn) => async (...args) => {
     process.env.NEAR_CLI_ERROR_LAST_COMMAND = command;
     process.env.NEAR_CLI_NETWORK_ID = require('../get-config')()['networkId'];
     const options = args[0];
-    const optionsAsStr = JSON.stringify(relevantDataFromCmdlineOpts(options));
+    const optionsAsStr = JSON.stringify(getNonPrivateDataFromCmdlineOpts(options));
     const eventId = `event_id_shell_${command}_start`;
     require('child_process').fork(__dirname + '/log-event.js', ['node'], {
         silent: true,
