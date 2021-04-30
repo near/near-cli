@@ -5,7 +5,7 @@
 
 NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.com/near/near-api-js) to connect to and interact with the NEAR blockchain. Create accounts, access keys, sign & send transactions with this versatile command line interface tool.
 
-**Note:**  Node.js version 10+ is required to run NEAR CLI.
+**Note:** Node.js version 10+ is required to run NEAR CLI.
 
 ## Overview
 
@@ -16,7 +16,7 @@ _Click on a command for more information and examples._
 | **ACCESS KEYS**                                       |                                                                                                                                        |
 | [`near login`](#near-login)                           | stores a full access key locally using [NEAR Wallet](https://wallet.testnet.near.org/)                                                 |
 | [`near keys`](#near-keys)                             | displays all access keys and their details for a given account                                                                         |
-| [`near generate-key`](#near-generate-key)             | generates a local key pair **or** shows public key & [implicit account](http://docs.near.org/docs/roles/integrator/implicit-accounts)                      |
+| [`near generate-key`](#near-generate-key)             | generates a local key pair **or** shows public key & [implicit account](http://docs.near.org/docs/roles/integrator/implicit-accounts)  |
 | [`near add-key`](#near-add-key)                       | adds a new access key to an account                                                                                                    |
 | [`near delete-key`](#near-delete-key)                 | deletes an access key from an account                                                                                                  |
 | **ACCOUNTS**                                          |                                                                                                                                        |
@@ -37,9 +37,9 @@ _Click on a command for more information and examples._
 | **TRANSACTIONS**                                      |                                                                                                                                        |
 | [`near tx-status`](#near-tx-status)                   | queries a transaction's status by `txHash`                                                                                             |
 | **VALIDATORS**                                        |                                                                                                                                        |
-| [`near validators current`](#near-validators-current) | displays current [epoch](http://docs.near.org/docs/concepts/epoch) validator pool details                                                                  |
-| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](http://docs.near.org/docs/concepts/epoch)                                                                  |
-| [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](http://docs.near.org/docs/concepts/epoch) _after_ next                                                        |
+| [`near validators current`](#near-validators-current) | displays current [epoch](http://docs.near.org/docs/concepts/epoch) validator pool details                                              |
+| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](http://docs.near.org/docs/concepts/epoch)                                              |
+| [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](http://docs.near.org/docs/concepts/epoch) _after_ next                                    |
 | **REPL**                                              |                                                                                                                                        |
 | [`near repl`](#near-repl)                             | launches an interactive connection to the NEAR blockchain ([REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) |
 
@@ -115,7 +115,7 @@ near login
 
 #### Access Key Location:
 
--   Once complete, you will now have your Access Key stored locally in a hidden directory called `.near-credentials`
+-   Once complete you will now have your Access Key stored locally in a hidden directory called `.near-credentials`
 
     -   This directory is located at the root of your `HOME` directory:
         -   `~/.near-credentials` _(MAC / Linux)_
@@ -156,7 +156,7 @@ near keys client.chainlink.testnet
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary> <strong>Example Response</strong> </summary>
 <p>
 
 ```
@@ -208,7 +208,7 @@ near generate-key
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```bash
@@ -231,7 +231,7 @@ near generate-key example.testnet
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```bash
@@ -259,7 +259,7 @@ You should then see the following prompt to confirm this request on your Ledger 
 After confirming the request on your Ledger device, a public key and implicit accountId will be displayed.
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```bash
@@ -288,7 +288,7 @@ You should then see the following prompt to confirm this request on your Ledger 
 After confirming the request on your Ledger device, a public key and implicit accountId will be displayed.
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```bash
@@ -310,7 +310,7 @@ near generate-key --seedPhrase="cow moon right send now cool dense quark pretty 
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Key pair with ed25519:GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi public key for an account "e9fa50ac20522987a87e566fcd6febdc97bd35c8c489999ca8aff465c56969c3"
@@ -329,7 +329,7 @@ near generate-key example.testnet --seedPhrase="cow moon right send now cool den
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Key pair with ed25519:GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi public key for an account "example.testnet"
@@ -356,7 +356,7 @@ near add-key example-acct.testnet Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1S
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Adding full access key = Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1S to example-acct.testnet.
@@ -389,7 +389,7 @@ near add-key example-acct.testnet GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi -
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Adding function call access key = GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi to example-acct.testnet.
@@ -418,7 +418,7 @@ near delete-key example-acct.testnet Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Transaction Id 4PwW7vjzTCno7W433nu4ieA6FvsAjp7zNFwicNLKjQFT
@@ -460,7 +460,7 @@ near create-account sub-acct2.example-acct.testnet --masterAccount example-acct.
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Saving key to '/HOME_DIR/.near-credentials/default/sub-acct2.example-acct.testnet.json'
@@ -485,7 +485,7 @@ near state example.testnet
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```json
@@ -522,7 +522,7 @@ near send sender.testnet receiver.testnet 10
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Sending 10 NEAR to receiver.testnet from sender.testnet
@@ -549,7 +549,7 @@ near delete sub-acct2.example-acct.testnet example-acct.testnet
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Deleting account. Account id: sub-acct2.example-acct.testnet, node: https://rpc.testnet.near.org, helper: https://helper.testnet.near.org, beneficiary: example-acct.testnet
@@ -587,7 +587,7 @@ near deploy --accountId example-contract.testnet --wasmFile out/example.wasm --i
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Starting deployment. Account id: example-contract.testnet, node: https://rpc.testnet.near.org, helper: https://helper.testnet.near.org, file: main.wasm
@@ -613,7 +613,7 @@ near dev-deploy out/main.wasm
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Starting deployment. Account id: dev-1603749005325-6432576, node: https://rpc.testnet.near.org, helper: https://helper.testnet.near.org, file: out/main.wasm
@@ -643,7 +643,7 @@ near call guest-book.testnet addMessage '{"text": "Aloha"}' --account-id example
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Scheduling a call: guest-book.testnet.addMessage({"text": "Aloha"})
@@ -671,7 +671,7 @@ near view guest-book.testnet getMessages '{}'
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     View call: guest-book.testnet.getMessages({})
@@ -714,7 +714,7 @@ near evm-view evm 0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521 getAdopters '[]' --
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```json
@@ -759,7 +759,7 @@ near evm-call evm 0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521 adopt '["6"]' --abi
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
     Scheduling a call inside evm EVM:
@@ -802,7 +802,7 @@ near tx-status FY8hBam2iyQfdHkdR1dp6w5XEPJzJSosX1wUeVPyUvVK --accountId guest-bo
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```json
@@ -908,7 +908,7 @@ NEAR_ENV=mainnet near validators current
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```bash
@@ -998,7 +998,7 @@ NEAR_ENV=mainnet near validators next
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```bash
@@ -1088,7 +1088,7 @@ NEAR_ENV=mainnet near proposals
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```bash
@@ -1193,7 +1193,7 @@ console.log(account)
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary><strong>Example Response</strong></summary>
 <p>
 
 ```json
@@ -1230,13 +1230,13 @@ const myPrivateKey =
     "3fKM9Rr7LHyzhhzmmedXLvc59rayfh1oUYS3VfUcxwpAFQZtdx1G9aTY6i8hG9mQtYoycTEFTBtatgNKHRtYamrS";
 ```
 
--   Then, run:
+-   Then run:
 
 ```js
 nearAPI.KeyPair.fromString(myPrivateKey).publicKey.toString();
 ```
 
-With NEAR REPL, you have complete access to [`near-api-js`](https://github.com/near/near-api-js) to help you develop on the NEAR platform.
+With NEAR REPL you have complete access to [`near-api-js`](https://github.com/near/near-api-js) to help you develop on the NEAR platform.
 
 ---
 
@@ -1246,7 +1246,7 @@ With NEAR REPL, you have complete access to [`near-api-js`](https://github.com/n
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `--help`                      | shows help _(can be used alone or on any command)_                                                                                     |
 | `--version`                   | shows installed version of `near-cli`                                                                                                  |
-| `--nodeUrl`, `--node_url`     | selects an [RPC URL](http://docs.near.org/docs/develop/front-end/rpc) _(`testnet`, `mainnet`, `betanet`)_                                                  |
+| `--nodeUrl`, `--node_url`     | selects an [RPC URL](http://docs.near.org/docs/develop/front-end/rpc) _(`testnet`, `mainnet`, `betanet`)_                              |
 | `--helperUrl`                 | points to a [contract helper](https://github.com/near/near-contract-helper) instance you want to use for account creation / management |
 | `--keyPath`                   | specify a path to `--masterAccount` key                                                                                                |
 | `--accountId`, `--account_id` | selects an account ID                                                                                                                  |
