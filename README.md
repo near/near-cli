@@ -37,9 +37,9 @@ _Click on a command for more information and examples._
 | **TRANSACTIONS**                                      |                                                                                                                                        |
 | [`near tx-status`](#near-tx-status)                   | queries a transaction's status by `txHash`                                                                                             |
 | **VALIDATORS**                                        |                                                                                                                                        |
-| [`near validators current`](#near-validators-current) | displays current [epoch](/http://docs.near.org/docs/concepts/epoch) validator pool details                                                                  |
-| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](/http://docs.near.org/docs/concepts/epoch)                                                                  |
-| [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](/http://docs.near.org/docs/concepts/epoch) _after_ next                                                        |
+| [`near validators current`](#near-validators-current) | displays current [epoch](http://docs.near.org/docs/concepts/epoch) validator pool details                                                                  |
+| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](http://docs.near.org/docs/concepts/epoch)                                                                  |
+| [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](http://docs.near.org/docs/concepts/epoch) _after_ next                                                        |
 | **REPL**                                              |                                                                                                                                        |
 | [`near repl`](#near-repl)                             | launches an interactive connection to the NEAR blockchain ([REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) |
 
@@ -201,7 +201,7 @@ Keys for account client.chainlink.testnet
 
 #### 1) `near generate-key`
 
-> Creates a key pair locally in `.near-credentials` with an [implicit account](/http://docs.near.org/docs/roles/integrator/implicit-accounts) as the accountId. _(hash representation of the public key)_
+> Creates a key pair locally in `.near-credentials` with an [implicit account](http://docs.near.org/docs/roles/integrator/implicit-accounts) as the accountId. _(hash representation of the public key)_
 
 ```bash
 near generate-key
@@ -245,7 +245,7 @@ Key pair with ed25519:CcH3oMEFg8tpJLekyvF7Wp49G81K3QLhGbaWEFwtCjht public key fo
 
 #### 3a) `near generate-key --useLedgerKey`
 
-> Uses a connected Ledger device to display a public key and [implicit account](/http://docs.near.org/docs/roles/integrator/implicit-accounts) using the default HD path (`"44'/397'/0'/0'/1'"`)
+> Uses a connected Ledger device to display a public key and [implicit account](http://docs.near.org/docs/roles/integrator/implicit-accounts) using the default HD path (`"44'/397'/0'/0'/1'"`)
 
 ```bash
 near generate-key --useLedgerKey
@@ -274,7 +274,7 @@ Implicit account: 42c320xc20739fd9a6bqf2f89z61rd14efe5d3de234199bc771235a4bb8b0e
 
 #### 3b) `near generate-key --useLedgerKey="HD path you specify"`
 
-> Uses a connected Ledger device to display a public key and [implicit account](/http://docs.near.org/docs/roles/integrator/implicit-accounts) using a custom HD path.
+> Uses a connected Ledger device to display a public key and [implicit account](http://docs.near.org/docs/roles/integrator/implicit-accounts) using a custom HD path.
 
 ```bash
 near generate-key --useLedgerKey="44'/397'/0'/0'/2'"
@@ -303,7 +303,7 @@ Implicit account: 42c320xc20739ASD9a6bqf2Dsaf289z61rd14efe5d3de23213789009afDsd5
 
 #### 4a) `near generate-key --seedPhrase="your seed phrase"`
 
-> Uses a seed phrase to display a public key and [implicit account](/http://docs.near.org/docs/roles/integrator/implicit-accounts)
+> Uses a seed phrase to display a public key and [implicit account](http://docs.near.org/docs/roles/integrator/implicit-accounts)
 
 ```bash
 near generate-key --seedPhrase="cow moon right send now cool dense quark pretty see light after"
@@ -322,7 +322,7 @@ near generate-key --seedPhrase="cow moon right send now cool dense quark pretty 
 
 #### 4b) `near generate-key accountId --seedPhrase="your seed phrase"`
 
-> Uses a seed phrase to display a public key **without** the [implicit account](/http://docs.near.org/docs/roles/integrator/implicit-accounts).
+> Uses a seed phrase to display a public key **without** the [implicit account](http://docs.near.org/docs/roles/integrator/implicit-accounts).
 
 ```bash
 near generate-key example.testnet --seedPhrase="cow moon right send now cool dense quark pretty see light after"
@@ -343,7 +343,7 @@ near generate-key example.testnet --seedPhrase="cow moon right send now cool den
 
 > Adds an either a **full access** or **function access** key to a given account.
 
-**Note:** You will use an _existing_ full access key for the account you would like to add a _new_ key to. ([`near login`](/http://docs.near.org/docs/tools/near-cli#near-login))
+**Note:** You will use an _existing_ full access key for the account you would like to add a _new_ key to. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
 #### 1) add a `full access` key
 
@@ -409,7 +409,7 @@ near add-key example-acct.testnet GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi -
 -   arguments: `accountId` `publicKey`
 -   options: `default`
 
-**Note:** You will need separate full access key for the account you would like to delete a key from. ([`near login`](/http://docs.near.org/docs/tools/near-cli#near-login))
+**Note:** You will need separate full access key for the account you would like to delete a key from. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
 **Example:**
 
@@ -513,7 +513,7 @@ near state example.testnet
 -   arguments: `senderId` `receiverId` `amount`
 -   options: `default`
 
-**Note:** You will need a full access key for the sending account. ([`near login`](/http://docs.near.org/docs/tools/near-cli#near-login))
+**Note:** You will need a full access key for the sending account. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
 **Example:**
 
@@ -572,7 +572,7 @@ near delete sub-acct2.example-acct.testnet example-acct.testnet
 -   arguments: `accountId` `.wasmFile`
 -   options: `initFunction` `initArgs` `initGas` `initDeposit`
 
-**Note:** You will need a full access key for the account you are deploying the contract to. ([`near login`](/http://docs.near.org/docs/tools/near-cli#near-login))
+**Note:** You will need a full access key for the account you are deploying the contract to. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
 **Example:**
 
@@ -631,7 +631,7 @@ near dev-deploy out/main.wasm
 
 > makes a contract call which can modify _or_ view state.
 
-**Note:** Contract calls require a transaction fee (gas) so you will need an access key for the `--accountId` that will be charged. ([`near login`](/http://docs.near.org/docs/tools/near-cli#near-login))
+**Note:** Contract calls require a transaction fee (gas) so you will need an access key for the `--accountId` that will be charged. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
 -   arguments: `contractName` `method_name` `{ args }` `--accountId`
 -   options: `--gas` `--amount`
@@ -747,7 +747,7 @@ near evm-view evm 0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521 getAdopters '[]' --
 
 > makes an EVM contract call which can modify _or_ view state.
 
-**Note:** Contract calls require a transaction fee (gas) so you will need an access key for the `--accountId` that will be charged. ([`near login`](/http://docs.near.org/docs/tools/near-cli#near-login))
+**Note:** Contract calls require a transaction fee (gas) so you will need an access key for the `--accountId` that will be charged. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
 -   arguments: `evmAccount` `contractName` `methodName` `[arguments]` `--abi` `--accountId`
 -   options: `default` (`--gas` and `--amount` coming soon…)
@@ -1065,7 +1065,7 @@ Next validators (total: 49, seat price: 1,983,932):
 
 ### `near proposals`
 
-> Displays validator proposals for [epoch](/http://docs.near.org/docs/concepts/epoch) after next.
+> Displays validator proposals for [epoch](http://docs.near.org/docs/concepts/epoch) after next.
 >
 > -   expected seat price
 > -   status of proposals
@@ -1246,7 +1246,7 @@ With NEAR REPL, you have complete access to [`near-api-js`](https://github.com/n
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `--help`                      | shows help _(can be used alone or on any command)_                                                                                     |
 | `--version`                   | shows installed version of `near-cli`                                                                                                  |
-| `--nodeUrl`, `--node_url`     | selects an [RPC URL](/http://docs.near.org/docs/develop/front-end/rpc) _(`testnet`, `mainnet`, `betanet`)_                                                  |
+| `--nodeUrl`, `--node_url`     | selects an [RPC URL](http://docs.near.org/docs/develop/front-end/rpc) _(`testnet`, `mainnet`, `betanet`)_                                                  |
 | `--helperUrl`                 | points to a [contract helper](https://github.com/near/near-contract-helper) instance you want to use for account creation / management |
 | `--keyPath`                   | specify a path to `--masterAccount` key                                                                                                |
 | `--accountId`, `--account_id` | selects an account ID                                                                                                                  |
