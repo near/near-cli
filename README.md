@@ -1261,17 +1261,7 @@ With NEAR REPL, you have complete access to [`near-api-js`](https://github.com/n
 | `--gas`                       | specifies amount of gas to use for a contract call `[default: "100000000000000"]`                                                      |
 | `--amount`                    | Number of NEAR tokens (Ⓝ) to attach `[default: "0"]`                                                                                   |
 
-> Got a question?
->
-> <a href="https://stackoverflow.com/questions/tagged/nearprotocol"> > <h8>Ask it on StackOverflow!</h8></a>
-
-#### Environments
-
-Use `NEAR_ENV` to define which network these commands will target. Default is `testnet`.
-
-```
-export NEAR_ENV=mainnet
-```
+> Got a question? <a href="https://stackoverflow.com/questions/tagged/nearprotocol"> <h8>Ask it on StackOverflow!</h8></a>
 
 ## License
 
