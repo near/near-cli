@@ -19,33 +19,27 @@ _Click on a command for more information and examples._
 | [`near generate-key`](#near-generate-key)             | generates a local key pair **or** shows public key & [implicit account](/docs/roles/integrator/implicit-accounts)                      |
 | [`near add-key`](#near-add-key)                       | adds a new access key to an account                                                                                                    |
 | [`near delete-key`](#near-delete-key)                 | deletes an access key from an account                                                                                                  |
-|                                                       |                                                                                                                                        |
-| **Accounts**                                          |                                                                                                                                        |
+| **ACCOUNTS**                                          |                                                                                                                                        |
 | [`near create-account`](#near-create-account)         | creates an account                                                                                                                     |
 | [`near state`](#near-state)                           | shows general details of an account                                                                                                    |
 | [`near keys`](#near-keys)                             | displays all access keys for a given account                                                                                           |
 | [`near send`](#near-send)                             | sends tokens from one account to another                                                                                               |
 | [`near delete`](#near-delete)                         | deletes an account and transfers remaining balance to a beneficiary account                                                            |
-|                                                       |                                                                                                                                        |
-| **Contracts**                                         |                                                                                                                                        |
+| **CONTRACTS**                                         |                                                                                                                                        |
 | [`near deploy`](#near-deploy)                         | deploys a smart contract to the NEAR blockchain                                                                                        |
 | [`near dev-deploy`](#near-dev-deploy)                 | creates a development account and deploys a contract to it _(`testnet` only)_                                                          |
 | [`near call`](#near-call)                             | makes a contract call which can invoke `change` _or_ `view` methods                                                                    |
 | [`near view`](#near-view)                             | makes a contract call which can **only** invoke a `view` method                                                                        |
-|                                                       |                                                                                                                                        |
-| **NEAR EVM Contracts**                                |                                                                                                                                        |
+| **NEAR EVM CONTRACTS**                                |                                                                                                                                        |
 | [`near evm-view`](#near-evm-view)                     | makes an EVM contract call which can **only** invoke a `view` method                                                                   |
 | [`near evm-call`](#near-evm-call)                     | an EVM contract call which can invoke `change` _or_ `view` methods                                                                     |
 | [`near evm-dev-init`](#near-evm-dev-init)             | creates test accounts for the specified network                                                                                        |
-|                                                       |                                                                                                                                        |
-| **Transactions**                                      |                                                                                                                                        |
+| **TRANSACTIONS**                                      |                                                                                                                                        |
 | [`near tx-status`](#near-tx-status)                   | queries a transaction's status by `txHash`                                                                                             |
-|                                                       |                                                                                                                                        |
-| **Validators**                                        |                                                                                                                                        |
+| **VALIDATORS**                                        |                                                                                                                                        |
 | [`near validators current`](#near-validators-current) | displays current [epoch](/docs/concepts/epoch) validator pool details                                                                  |
 | [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](/docs/concepts/epoch)                                                                  |
 | [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](/docs/concepts/epoch) _after_ next                                                        |
-|                                                       |                                                                                                                                        |
 | **REPL**                                              |                                                                                                                                        |
 | [`near repl`](#near-repl)                             | launches an interactive connection to the NEAR blockchain ([REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) |
 
