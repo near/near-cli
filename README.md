@@ -43,6 +43,8 @@ _Click on a command for more information and examples._
 | **REPL**                                              |                                                                                                                                        |
 | [`near repl`](#near-repl)                             | launches an interactive connection to the NEAR blockchain ([REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) |
 
+[ [**OPTIONS**](#options) ]
+
 ---
 
 ## Setup
