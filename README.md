@@ -103,44 +103,6 @@ npm install -g near-cli
 
 ---
 
-### Update `near-cli`
-
-> If a `near-cli` update is available, you will be notified in the terminal after running any command. _(see example below)_
-
-![NEAR CLI detects a new version](/docs/assets/update_near-cli.png)
-
--   Follow the instructions to update by running:
-
-```bash
-npm install -g near-cli
-```
-
--   You can always check your current version by running:
-
-```bash
-near --version  # version info appears on the last line of output
-```
-
--   Also, you can see the latest available version using `npm outdated`.
-
-```bash
-npm outdated -g  # note the difference between Current and Latest
-```
-
-**Troubleshooting:**
-
-> If you have any issues upgrading NEAR CLI, the fastest way to resolve the issue is to uninstall then reinstall.
-
-```bash
-npm uninstall -g near-cli
-```
-
-```bash
-npm install -g near-cli
-```
-
----
-
 ### Network selection
 
 > The default network for `near-cli` is `testnet`.
@@ -216,7 +178,9 @@ near login
 near keys client.chainlink.testnet
 ```
 
-**Example Response:**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
 ```
 Keys for account client.chainlink.testnet
@@ -241,6 +205,9 @@ Keys for account client.chainlink.testnet
   [length]: 2
 ]
 ```
+
+</p>
+</details>
 
 ---
 
@@ -473,11 +440,16 @@ near add-key example-acct.testnet GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi -
 near delete-key example-acct.testnet Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1S
 ```
 
-**Example Response:**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
     Transaction Id 4PwW7vjzTCno7W433nu4ieA6FvsAjp7zNFwicNLKjQFT
     To see the transaction in the transaction explorer, please open this url in your browser
     https://explorer.testnet.near.org/transactions/4PwW7vjzTCno7W433nu4ieA6FvsAjp7zNFwicNLKjQFT
+
+</p>
+</details>
 
 ---
 
@@ -535,7 +507,9 @@ near create-account sub-acct2.example-acct.testnet --masterAccount example-acct.
 near state example.testnet
 ```
 
-**Example Response:**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
 ```json
 {
@@ -549,6 +523,9 @@ near state example.testnet
     "formattedAmount": "99.999999303364037168535"
 }
 ```
+
+</p>
+</details>
 
 ---
 
@@ -567,12 +544,17 @@ near state example.testnet
 near send sender.testnet receiver.testnet 10
 ```
 
-**Example Response**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
     Sending 10 NEAR to receiver.testnet from sender.testnet
     Transaction Id BYTr6WNyaEy2ykAiQB9P5VvTyrJcFk6Yw95HPhXC6KfN
     To see the transaction in the transaction explorer, please open this url in your browser
     https://explorer.testnet.near.org/transactions/BYTr6WNyaEy2ykAiQB9P5VvTyrJcFk6Yw95HPhXC6KfN
+
+</p>
+</details>
 
 ---
 
@@ -589,13 +571,18 @@ near send sender.testnet receiver.testnet 10
 near delete sub-acct2.example-acct.testnet example-acct.testnet
 ```
 
-**Example Response:**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
     Deleting account. Account id: sub-acct2.example-acct.testnet, node: https://rpc.testnet.near.org, helper: https://helper.testnet.near.org, beneficiary: example-acct.testnet
     Transaction Id 4x8xohER1E3yxeYdXPfG8GvXin1ShiaroqE5GdCd5YxX
     To see the transaction in the transaction explorer, please open this url in your browser
     https://explorer.testnet.near.org/transactions/4x8xohER1E3yxeYdXPfG8GvXin1ShiaroqE5GdCd5YxX
     Account sub-acct2.example-acct.testnet for network "default" was deleted.
+
+</p>
+</details>
 
 ---
 
@@ -648,13 +635,18 @@ near deploy --accountId example-contract.testnet --wasmFile out/example.wasm --i
 near dev-deploy out/main.wasm
 ```
 
-**Example Response:**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
     Starting deployment. Account id: dev-1603749005325-6432576, node: https://rpc.testnet.near.org, helper: https://helper.testnet.near.org, file: out/main.wasm
     Transaction Id 5nixQT87KeN3eZFX7zwBLUAKSY4nyjhwzLF27SWWKkAp
     To see the transaction in the transaction explorer, please open this url in your browser
     https://explorer.testnet.near.org/transactions/5nixQT87KeN3eZFX7zwBLUAKSY4nyjhwzLF27SWWKkAp
     Done deploying to dev-1603749005325-6432576
+
+</p>
+</details>
 
 ---
 
@@ -673,13 +665,18 @@ near dev-deploy out/main.wasm
 near call guest-book.testnet addMessage '{"text": "Aloha"}' --account-id example-acct.testnet
 ```
 
-**Example Response:**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
     Scheduling a call: guest-book.testnet.addMessage({"text": "Aloha"})
     Transaction Id FY8hBam2iyQfdHkdR1dp6w5XEPJzJSosX1wUeVPyUvVK
     To see the transaction in the transaction explorer, please open this url in your browser
     https://explorer.testnet.near.org/transactions/FY8hBam2iyQfdHkdR1dp6w5XEPJzJSosX1wUeVPyUvVK
     ''
+
+</p>
+</details>
 
 ---
 
@@ -696,7 +693,9 @@ near call guest-book.testnet addMessage '{"text": "Aloha"}' --account-id example
 near view guest-book.testnet getMessages '{}'
 ```
 
-**Example Response:**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
     View call: guest-book.testnet.getMessages({})
     [
@@ -716,6 +715,9 @@ near view guest-book.testnet getMessages '{}'
       { premium: false, sender: 'example-acct.testnet', text: 'Aloha' },
       [length]: 10
     ]
+
+</p>
+</details>
 
 ---
 
@@ -779,11 +781,16 @@ near evm-view evm 0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521 getAdopters '[]' --
 near evm-call evm 0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521 adopt '["6"]' --abi /path/to/contract/abi/Adoption.json --accountId test.near
 ```
 
-**Example Response:**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
     Scheduling a call inside evm EVM:
     0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521.adopt()
       with args [ '6' ]
+
+</p>
+</details>
 
 ---
 
@@ -1208,7 +1215,9 @@ near repl --accountId example-acct.testnet
 console.log(account)
 ```
 
-**Example Response:**
+<details>
+<summary>**Example Response:**</summary>
+<p>
 
 ```json
 Account {
@@ -1231,6 +1240,9 @@ Account {
   }
 }
 ```
+
+</p>
+</details>
 
 > You can also get a private key's public key.
 
