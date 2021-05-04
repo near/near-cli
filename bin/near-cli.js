@@ -246,9 +246,6 @@ yargs // eslint-disable-line
     .command(require('../commands/delete-key'))
     .command(require('../commands/validators'))
     .command(require('../commands/proposals'))
-    .command(require('../commands/evm-call'))
-    .command(require('../commands/evm-dev-init'))
-    .command(require('../commands/evm-view'))
     .config(config)
     .alias({
         'accountId': ['account_id'],
