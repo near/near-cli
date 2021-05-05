@@ -30,10 +30,6 @@ _Click on a command for more information and examples._
 | [`near dev-deploy`](#near-dev-deploy)                 | creates a development account and deploys a contract to it _(`testnet` only)_                                                          |
 | [`near call`](#near-call)                             | makes a contract call which can invoke `change` _or_ `view` methods                                                                    |
 | [`near view`](#near-view)                             | makes a contract call which can **only** invoke a `view` method                                                                        |
-| **NEAR EVM CONTRACTS**                                |                                                                                                                                        |
-| [`near evm-view`](#near-evm-view)                     | makes an EVM contract call which can **only** invoke a `view` method                                                                   |
-| [`near evm-call`](#near-evm-call)                     | an EVM contract call which can invoke `change` _or_ `view` methods                                                                     |
-| [`near evm-dev-init`](#near-evm-dev-init)             | creates test accounts for the specified network                                                                                        |
 | **TRANSACTIONS**                                      |                                                                                                                                        |
 | [`near tx-status`](#near-tx-status)                   | queries a transaction's status by `txHash`                                                                                             |
 | **VALIDATORS**                                        |                                                                                                                                        |
@@ -44,6 +40,8 @@ _Click on a command for more information and examples._
 | [`near repl`](#near-repl)                             | launches an interactive connection to the NEAR blockchain ([REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) |
 
 [ [**OPTIONS**](#options) ]
+
+> For EVM support see [Project Aurora's](https://aurora.dev) [`aurora-cli`](https://github.com/aurora-is-near/aurora-cli).
 
 ---
 
