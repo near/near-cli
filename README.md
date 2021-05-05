@@ -30,6 +30,10 @@ _Click on a command for more information and examples._
 | [`near dev-deploy`](#near-dev-deploy)                 | creates a development account and deploys a contract to it _(`testnet` only)_                                                          |
 | [`near call`](#near-call)                             | makes a contract call which can invoke `change` _or_ `view` methods                                                                    |
 | [`near view`](#near-view)                             | makes a contract call which can **only** invoke a `view` method                                                                        |
+| **NEAR EVM CONTRACTS**                                |                                                                                                                                        |
+| [`near evm-view`](#near-evm-view)                     | makes an EVM contract call which can **only** invoke a `view` method                                                                   |
+| [`near evm-call`](#near-evm-call)                     | an EVM contract call which can invoke `change` _or_ `view` methods                                                                     |
+| [`near evm-dev-init`](#near-evm-dev-init)             | creates test accounts for the specified network                                                                                        |
 | **TRANSACTIONS**                                      |                                                                                                                                        |
 | [`near tx-status`](#near-tx-status)                   | queries a transaction's status by `txHash`                                                                                             |
 | **VALIDATORS**                                        |                                                                                                                                        |
@@ -691,6 +695,94 @@ near view guest-book.testnet getMessages '{}'
 
 </p>
 </details>
+
+---
+
+## NEAR EVM Contracts
+
+### `near evm-view`
+
+> Makes an EVM contract call which can **only** view state. _(Call is free of charge)_
+
+-   arguments: `evmAccount` `contractName` `methodName` `[arguments]` `--abi` `--accountId`
+-   options: `default`
+
+**Example:**
+
+```bash
+near evm-view evm 0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521 getAdopters '[]' --abi /path/to/contract/abi/Adoption.json --accountId test.near
+```
+
+<details>
+<summary><strong>Example Response</strong></summary>
+<p>
+
+```json
+[
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0xCBdA96B3F2B8eb962f97AE50C3852CA976740e2B",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000"
+]
+```
+
+</p>
+</details>
+
+---
+
+### `near evm-call`
+
+> makes an EVM contract call which can modify _or_ view state.
+
+**Note:** Contract calls require a transaction fee (gas) so you will need an access key for the `--accountId` that will be charged. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
+
+-   arguments: `evmAccount` `contractName` `methodName` `[arguments]` `--abi` `--accountId`
+-   options: `default` (`--gas` and `--amount` coming soon…)
+
+**Example:**
+
+```bash
+near evm-call evm 0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521 adopt '["6"]' --abi /path/to/contract/abi/Adoption.json --accountId test.near
+```
+
+<details>
+<summary><strong>Example Response</strong></summary>
+<p>
+
+    Scheduling a call inside evm EVM:
+    0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521.adopt()
+      with args [ '6' ]
+
+</p>
+</details>
+
+---
+
+### `near evm-dev-init`
+
+> Used for running EVM tests — creates a given number of test accounts on the desired network using a master NEAR account
+
+-   arguments: `accountId`
+-   options: `numAccounts`
+
+```bash
+NEAR_ENV=betanet near evm-dev-init you.betanet 3
+```
+
+The above will create 3 subaccounts of `you.betanet`. This is useful for tests that require multiple accounts, for instance, sending fungible tokens back and forth. If the `3` value were to be omitted, it would use the default of 5.
 
 ---
 
