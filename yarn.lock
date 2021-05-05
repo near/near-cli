@@ -6715,9 +6715,9 @@ string_decoder@~1.1.1:
     safe-buffer "~5.1.0"
 
 strip-ansi-cli@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/strip-ansi-cli/-/strip-ansi-cli-3.0.0.tgz#53fc15cc0da0482e9f18f390a533dfa2b2853787"
-  integrity sha512-dudouUoNit0fdW1/4D7aVmgYG2M0L5jn7fn20jlrlSEexassdEhQs0F6PjCJ2uuWa2IMuny4KNzyZb10AkcQCQ==
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi-cli/-/strip-ansi-cli-3.0.1.tgz#9061b828d3791e78a44a67261c6f269704084920"
+  integrity sha512-iLTUGQ0XT0QM/MsG5MJzl91C48/NekgP1M5K41rDG+z1zvgsaXgwYnL0i7+a3JixnGmjWsqa9JpFY3q/Zn92Rg==
   dependencies:
     get-stdin "^9.0.0"
     meow "^9.0.0"
