@@ -1,5 +1,5 @@
 const { parseSeedPhrase } = require('near-seed-phrase');
-const { utils: { KeyPair }, InMemorySigner } = require('near-api-js');
+const { utils: { KeyPair } } = require('near-api-js');
 const { InMemoryKeyStore, MergeKeyStore } = require('near-api-js/lib/key_stores');
 
 const implicitAccountId = require('../utils/implicit-accountid');
