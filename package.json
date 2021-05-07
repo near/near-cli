@@ -42,7 +42,7 @@
     "mixpanel": "^0.13.0",
     "ncp": "^2.0.0",
     "near-api-js": "^0.39.0",
-    "near-seed-phrase": "^0.1.0",
+    "near-seed-phrase": "^0.2.0",
     "open": "^7.0.1",
     "rimraf": "^3.0.0",
     "stoppable": "^1.1.0",
