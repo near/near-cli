@@ -1,30 +1,21 @@
 #!/bin/bash
-set -ex
-rm  -rf tmp-project
-
-yarn create near-app tmp-project
-
-cd tmp-project
+set -e
 
 timestamp=$(date +%s)
 testaccount=testaccount$timestamp.test.near
-../bin/near create-account $testaccount
-
-echo Building contract
-yarn install
-yarn build:contract
+./bin/near create-account $testaccount
 
 echo Deploying contract
-../bin/near deploy --accountId=$testaccount --wasmFile=out/main.wasm
+./bin/near deploy --accountId=$testaccount --wasmFile=./test/res/guest_book.wasm
 
 echo Deploying contract to temporary accountId
 # TODO: Specify helperUrl in project template
-yes | ../bin/near dev-deploy
+yes | ./bin/near dev-deploy ./test/res/guest_book.wasm > /dev/null
 
 echo Calling functions
-../bin/near call $testaccount setGreeting '{"message":"TEST"}' --accountId=test.near
+./bin/near call $testaccount addMessage '{"text":"TEST"}' --accountId=test.near > /dev/null
 
-RESULT=$(../bin/near view $testaccount getGreeting '{"accountId":"test.near"}' --accountId=test.near -v)
+RESULT=$(./bin/near view $testaccount getMessages '{}' --accountId=test.near -v)
 TEXT=$RESULT
 EXPECTED='TEST'
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
@@ -33,12 +24,13 @@ if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
 fi
 
 # base64-encoded '{"message":"BASE64ROCKS"}'
-../bin/near call $testaccount setGreeting --base64 'eyJtZXNzYWdlIjoiQkFTRTY0Uk9DS1MifQ==' --accountId=test.near
+./bin/near call $testaccount addMessage --base64 'eyJ0ZXh0IjoiVEVTVCJ9' --accountId=test.near > /dev/null
 
-RESULT=$(../bin/near view $testaccount getGreeting '{"accountId":"test.near"}' --accountId=test.near -v)
+RESULT=$(./bin/near view $testaccount getMessages '{}' --accountId=test.near -v)
 # TODO: Refactor asserts
 TEXT=$RESULT
-EXPECTED='BASE64ROCKS'
+echo $RESULT
+EXPECTED="[ { premium: false, sender: 'test.near', text: 'TEST' }, { premium: false, sender: 'test.near', text: 'TEST' } ]"
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
     echo FAILURE Unexpected output from near call: $RESULT
     exit 1
