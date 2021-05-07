@@ -2,6 +2,7 @@ const yargs = require('yargs');
 const main = require('../');
 const exitOnError = require('../utils/exit-on-error');
 const chalk = require('chalk');
+const { DEFAULT_FUNC_CALL_GAS } = require('near-api-js');
 
 // For account:
 
@@ -112,7 +113,7 @@ const deploy = {
         .option('initGas', {
             desc: 'Gas for initialization call',
             type: 'number',
-            default: 100000000000000
+            default: DEFAULT_FUNC_CALL_GAS
         })
         .option('initDeposit', {
             desc: 'Deposit in Ⓝ to send for initialization call',

@@ -817,7 +817,7 @@ Transaction guest-book.testnet:FY8hBam2iyQfdHkdR1dp6w5XEPJzJSosX1wUeVPyUvVK
         FunctionCall: {
           method_name: 'addMessage',
           args: 'eyJ0ZXh0IjoiQWxvaGEifQ==',
-          gas: 100000000000000,
+          gas: 300000000000000,
           deposit: '0'
         }
       },
@@ -1256,7 +1256,7 @@ With NEAR REPL you have complete access to [`near-api-js`](https://github.com/ne
 | `--masterAccount`             | selects a master account                                                                                                               |
 | `--helperAccount`             | selects an expected top-level account for a network                                                                                    |
 | `--verbose`, `-v`             | shows verbose output                                                                                                                   |
-| `--gas`                       | specifies amount of gas to use for a contract call `[default: "100000000000000"]`                                                      |
+| `--gas`                       | specifies amount of gas to use for a contract call `[default: "300000000000000"]`                                                      |
 | `--amount`                    | Number of NEAR tokens (Ⓝ) to attach `[default: "0"]`                                                                                   |
 
 > Got a question? <a href="https://stackoverflow.com/questions/tagged/nearprotocol"> <h8>Ask it on StackOverflow!</h8></a>
