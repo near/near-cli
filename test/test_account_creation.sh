@@ -1,6 +1,6 @@
 #!/bin/bash
 timestamp=$(date +%s)
-testaccount=testaccount$timestamp.test.near
+testaccount=testaccount$timestamp$RANDOM.test.near
 
 ERROR=$(./bin/near create-account $testaccount --masterAccount test.far 2>&1 >/dev/null)
 EXPECTED_ERROR=".+New account doesn't share the same top-level account.+ "

@@ -2,7 +2,7 @@
 set -e
 
 timestamp=$(date +%s)
-testaccount=testaccount$timestamp.test.near
+testaccount=testaccount$timestamp$RANDOM.test.near
 
 echo Create account
 ./bin/near create-account $testaccount
