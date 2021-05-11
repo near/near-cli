@@ -159,6 +159,11 @@ yargs // eslint-disable-line
         type: 'string',
         default: config.nodeUrl
     })
+    .option('nodeArchivalUrl', {
+        desc: 'NEAR node archival URL',
+        type: 'string',
+        default: config.nodeArchivalUrl
+    })
     .option('networkId', {
         desc: 'NEAR network ID, allows using different keys based on network',
         type: 'string',

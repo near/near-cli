@@ -29,10 +29,17 @@ module.exports = {
         if (!accountId) {
             throw new Error('Please specify account id, either as part of transaction hash or using --accountId flag.');
         }
-
-        const status = await near.connection.provider.txStatus(bs58.decode(hash), accountId);
+        let status = {};
+        try {
+            status = await near.connection.provider.txStatus(bs58.decode(hash), accountId);
+        } catch (error) {
+            if (argv.nodeArchivalUrl && error.message && error.message.includes('doesn\'t exist') !== -1) {
+                argv.nodeUrl = argv.nodeArchivalUrl;
+                const archival = await connect(argv);
+                status = await archival.connection.provider.txStatus(bs58.decode(hash), accountId);
+            }
+        }
         console.log(`Transaction ${accountId}:${hash}`);
         console.log(inspectResponse.formatResponse(status));
-
     })
 };

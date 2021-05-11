@@ -8,6 +8,7 @@ function getConfig(env) {
         return {
             networkId: 'mainnet',
             nodeUrl: 'https://rpc.mainnet.near.org',
+            nodeArchivalUrl: 'https://archival-rpc.mainnet.near.org',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.near.org',
             helperUrl: 'https://helper.mainnet.near.org',
@@ -19,6 +20,7 @@ function getConfig(env) {
         return {
             networkId: 'testnet',
             nodeUrl: 'https://rpc.testnet.near.org',
+            nodeArchivalUrl: 'https://archival-rpc.testnet.near.org',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.testnet.near.org',
             helperUrl: 'https://helper.testnet.near.org',
