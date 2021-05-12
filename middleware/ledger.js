@@ -22,7 +22,17 @@ module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, n
             return cachedPublicKeys[hdKeyPath];
         }
         console.log('Waiting for confirmation on Ledger...');
-        const rawPublicKey = await client.getPublicKey(hdKeyPath);
+        let rawPublicKey = '';
+        try {
+            rawPublicKey = await client.getPublicKey(false, true);
+            console.log("Approved");
+        } catch (e) {
+            if (e.statusText === 'CONDITIONS_OF_USE_NOT_SATISFIED') {
+                console.log('Rejected from the Ledger ');
+                return;
+            }
+            throw (e);
+        }
         const publicKey = new PublicKey({ keyType: KeyType.ED25519, data: rawPublicKey });
         if (enableCashing) { cachedPublicKeys[hdKeyPath] = publicKey; }
         console.log('Using public key:', publicKey.toString());

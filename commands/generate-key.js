@@ -15,8 +15,9 @@ module.exports = {
             }
             console.log(`Please, confirm on the Ledger receiveng of the public key for HD path ${argv.useLedgerKey}`);
             const publicKey = await argv.signer.getPublicKey(false);
-            console.log("Please confirm that this key is the one that is displayed on the Ledger screen");
-            await argv.signer.getPublicKey(false, true);
+            if (!publicKey) return;
+            console.log("Please, confirm that this key is the one that is displayed on the Ledger screen now");
+            if (!await argv.signer.getPublicKey(false)) return;
             console.log(`Implicit account: ${implicitAccountId(publicKey.toString())}`);
             // TODO: query all accounts with this public key here.
             // TODO: check if implicit account exist, and if the key doen't match already.
@@ -41,7 +42,7 @@ module.exports = {
             const seededKeyPair = await argv.signer.keyStore.getKey(argv.networkId, argv.accountId);
             await keyStore.setKey(argv.networkId, argv.accountId, seededKeyPair);
         }
-            
+
         console.log(`Key pair with ${argv.publicKey} public key for an account "${argv.accountId}"`);
     })
 };
