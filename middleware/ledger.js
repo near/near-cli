@@ -16,23 +16,22 @@ module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, n
     const client = await createClient(transport);
 
     let cachedPublicKeys = {};
-    async function getPublicKeyForPath(hdKeyPath) {
+    async function getPublicKeyForPath(hdKeyPath, enableCashing = true) {
         // NOTE: Public key is cached to avoid confirming on Ledger multiple times
-        if (cachedPublicKeys[ledgerKeyPath]) {
+        if (cachedPublicKeys[ledgerKeyPath] && enableCashing) {
             return cachedPublicKeys[hdKeyPath];
         }
-
         console.log('Waiting for confirmation on Ledger...');
         const rawPublicKey = await client.getPublicKey(hdKeyPath);
         const publicKey = new PublicKey({ keyType: KeyType.ED25519, data: rawPublicKey });
-        cachedPublicKeys[hdKeyPath] = publicKey;
+        if (enableCashing) { cachedPublicKeys[hdKeyPath] = publicKey; }
         console.log('Using public key:', publicKey.toString());
         return publicKey;
     }
 
     let signer = {
-        async getPublicKey() {
-            return getPublicKeyForPath(ledgerKeyPath);
+        async getPublicKey(enableCashing = true) {
+            return getPublicKeyForPath(ledgerKeyPath, enableCashing);
         },
         async signMessage(message) {
             const publicKey = await getPublicKeyForPath(ledgerKeyPath);
