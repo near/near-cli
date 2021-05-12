@@ -16,7 +16,7 @@ module.exports = {
             console.log(`Please, confirm on the Ledger receiveng of the public key for HD path ${argv.useLedgerKey}`);
             const publicKey = await argv.signer.getPublicKey(false);
             if (!publicKey) return;
-            console.log("Please, confirm that this key is the one that is displayed on the Ledger screen now");
+            console.log('Please, confirm that this key is the one that is displayed on the Ledger screen now');
             if (!await argv.signer.getPublicKey(false)) return;
             console.log(`Implicit account: ${implicitAccountId(publicKey.toString())}`);
             // TODO: query all accounts with this public key here.

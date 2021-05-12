@@ -25,7 +25,7 @@ module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, n
         let rawPublicKey = '';
         try {
             rawPublicKey = await client.getPublicKey(false, true);
-            console.log("Approved");
+            console.log('Approved');
         } catch (e) {
             if (e.statusText === 'CONDITIONS_OF_USE_NOT_SATISFIED') {
                 console.log('Rejected from the Ledger ');
