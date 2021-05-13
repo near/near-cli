@@ -68,6 +68,8 @@
       "bin",
       "commands",
       "middleware",
-      "utils"
+      "utils",
+      "config.js",
+      "get-config.js"
   ]
 }
