@@ -14,10 +14,10 @@ module.exports = {
                 console.log('WARN: Account id is provided but ignored in case of using Ledger.');
             }
             console.log(`Please, confirm on the Ledger receiveng of the public key for HD path ${argv.useLedgerKey}`);
-            const publicKey = await argv.signer.getPublicKey(false);
+            const publicKey = await argv.signer.getPublicKey({ enableCaching: false });
             if (!publicKey) return;
             console.log('Please, confirm that this key is the one that is displayed on the Ledger screen now');
-            if (!await argv.signer.getPublicKey(false)) return;
+            if (!await argv.signer.getPublicKey({ enableCaching: false })) return;
             console.log(`Implicit account: ${implicitAccountId(publicKey.toString())}`);
             // TODO: query all accounts with this public key here.
             // TODO: check if implicit account exist, and if the key doen't match already.
