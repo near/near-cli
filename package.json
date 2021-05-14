@@ -70,6 +70,7 @@
     "middleware",
     "utils",
     "config.js",
-    "get-config.js"
+    "get-config.js",
+    "test_environment.js"
   ]
 }
