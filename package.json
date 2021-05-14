@@ -63,5 +63,13 @@
     "distributed",
     "applications",
     "distributed applications"
+  ],
+  "files": [
+      "bin",
+      "commands",
+      "middleware",
+      "utils",
+      "config.js",
+      "get-config.js"
   ]
 }
