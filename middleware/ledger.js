@@ -34,7 +34,9 @@ module.exports = async function useLedgerSigner({ useLedgerKey: ledgerKeyPath, n
             throw e;
         }
         const publicKey = new PublicKey({ keyType: KeyType.ED25519, data: rawPublicKey });
-        if (enableCaching) { cachedPublicKeys[hdKeyPath] = publicKey; }
+        if (enableCaching) {
+            cachedPublicKeys[hdKeyPath] = publicKey;
+        }
         console.log('Using public key:', publicKey.toString());
         return publicKey;
     }
