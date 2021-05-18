@@ -5,7 +5,11 @@ const implicitAccountId = require('../utils/implicit-accountid');
 module.exports = {
     command: 'generate-key [account-id]',
     desc: 'generate key or show key from Ledger',
-    builder: (yargs) => yargs,
+    builder: (yargs) => yargs
+        .option('yolo', {
+            description: 'Do not ask for extra confitmation when using Ledger',
+            type: 'boolean',
+        }),
     handler: exitOnError(async (argv) => {
         let near = await require('../utils/connect')(argv);
 
@@ -15,9 +19,15 @@ module.exports = {
             }
             console.log(`Please, confirm on the Ledger receiveng of the public key for HD path ${argv.useLedgerKey}`);
             const publicKey = await argv.signer.getPublicKey({ enableCaching: false });
-            if (!publicKey) return;
-            console.log('Please, confirm that this key is the one that is displayed on the Ledger screen now');
-            if (!await argv.signer.getPublicKey({ enableCaching: false })) return;
+            if (!publicKey) {
+                return;
+            }
+            if (!argv.yolo) {
+                console.log('Please, confirm that this key is the one that is displayed on the Ledger screen now');
+                if (!await argv.signer.getPublicKey({ enableCaching: false })) {
+                    return
+                };
+            }
             console.log(`Implicit account: ${implicitAccountId(publicKey.toString())}`);
             // TODO: query all accounts with this public key here.
             // TODO: check if implicit account exist, and if the key doen't match already.
