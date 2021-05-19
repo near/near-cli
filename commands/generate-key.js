@@ -7,7 +7,7 @@ module.exports = {
     desc: 'generate key or show key from Ledger',
     builder: (yargs) => yargs
         .option('yolo', {
-            description: 'Do not ask for extra confitmation when using Ledger',
+            description: 'Do not ask for extra confirmation when using Ledger',
             type: 'boolean',
         }),
     handler: exitOnError(async (argv) => {
@@ -17,7 +17,7 @@ module.exports = {
             if (argv.accountId) {
                 console.log('WARN: Account id is provided but ignored in case of using Ledger.');
             }
-            console.log(`Please, confirm on the Ledger receiveng of the public key for HD path ${argv.useLedgerKey}`);
+            console.log(`Please, confirm on the Ledger receiving the public key for HD path ${argv.useLedgerKey}`);
             const publicKey = await argv.signer.getPublicKey({ enableCaching: false });
             if (!publicKey) {
                 return;
