@@ -9,7 +9,7 @@ module.exports = {
             type: 'string',
             default: '100000000000000'
         })
-        .option('amount', {
+        .option('deposit', {
             desc: 'Number of tokens to attach',
             type: 'string',
             default: '0'
