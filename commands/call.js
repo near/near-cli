@@ -14,7 +14,7 @@ module.exports = {
             default: '100000000000000'
         })
         .option('deposit', {
-            desc: 'Number of tokens to attach (in NEAR) in a function call',
+            desc: 'Number of tokens to attach (in NEAR) to a function call',
             type: 'string',
             default: '0',
             alias: 'amount'
