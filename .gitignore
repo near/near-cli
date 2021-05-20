@@ -3,3 +3,4 @@ node_modules
 tmp-project
 package-lock.json
 .idea
+neardev/dev-account*
