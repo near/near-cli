@@ -16,7 +16,8 @@ module.exports = {
         .option('deposit', {
             desc: 'Number of tokens to attach (in NEAR) in a function call',
             type: 'string',
-            default: '0'
+            default: '0',
+            alias: 'amount'
         })
         .option('base64',  {
             desc: 'Treat arguments as base64-encoded BLOB.',

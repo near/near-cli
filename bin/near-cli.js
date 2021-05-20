@@ -257,7 +257,6 @@ yargs // eslint-disable-line
         'wasmFile': 'wasm_file',
         'projectDir': 'project_dir',
         'outDir': 'out_dir',
-        'deposit': 'amount'
     })
     .showHelpOnFail(true)
     .recommendCommands()
