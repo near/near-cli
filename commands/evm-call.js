@@ -12,7 +12,8 @@ module.exports = {
         .option('deposit', {
             desc: 'Number of tokens to attach',
             type: 'string',
-            default: '0'
+            default: '0',
+            alias: 'amount',
         })
         .option('args', {
             desc: 'Arguments to the contract call, in JSON format (e.g. \'[1, "str"]\') based on contract ABI',
