@@ -256,7 +256,7 @@ yargs // eslint-disable-line
         'networkId': ['network_id'],
         'wasmFile': 'wasm_file',
         'projectDir': 'project_dir',
-        'outDir': 'out_dir'
+        'outDir': 'out_dir',
     })
     .showHelpOnFail(true)
     .recommendCommands()
