@@ -2,7 +2,7 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
 const { utils } = require('near-api-js');
-
+const checkCredentials = require('../utils/check-credentials');
 
 module.exports = {
     command: 'add-key <account-id> <access-key>',
@@ -19,8 +19,8 @@ module.exports = {
             required: false,
         })
         .option('method-names', {
-            desc: 'Method names to limit access key to (command separated)',
-            type: 'string',
+            desc: 'Method names to limit access key to (example: --method-names meth1 meth2)',
+            type: 'array',
             required: false,
         })
         .option('allowance', {
@@ -32,6 +32,7 @@ module.exports = {
 };
 
 async function addAccessKey(options) {
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key = ${options.accessKey} to ${options.accountId}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);

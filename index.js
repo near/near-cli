@@ -15,6 +15,7 @@ const capture = require('./utils/capture-login-success');
 
 const inspectResponse = require('./utils/inspect-response');
 const eventtracking = require('./utils/eventtracking');
+const checkCredentials = require('./utils/check-credentials');
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -30,6 +31,7 @@ exports.clean = async function () {
 };
 
 exports.deploy = async function (options) {
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(
         `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
 
@@ -116,7 +118,7 @@ exports.login = async function (options) {
                 // Browser not opened, as will open automatically for opened port
             } else {
                 newUrl.searchParams.set('success_url', `http://${tempUrl.hostname}:${tempUrl.port}`);
-                openUrl(newUrl); 
+                openUrl(newUrl);
             }
         } else if (isWin) {
             // redirect automatically on windows, but do not use the browser callback
@@ -186,6 +188,7 @@ exports.viewAccount = async function (options) {
 };
 
 exports.deleteAccount = async function (options) {
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(
         `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
     const near = await connect(options);
@@ -204,6 +207,7 @@ exports.keys = async function (options) {
 };
 
 exports.sendMoney = async function (options) {
+    await checkCredentials(options.sender, options.networkId, options.keyStore);
     console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
@@ -212,6 +216,7 @@ exports.sendMoney = async function (options) {
 };
 
 exports.stake = async function (options) {
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}) on ${options.accountId} with public key = ${qs.unescape(options.stakingKey)}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);

@@ -235,6 +235,7 @@ yargs // eslint-disable-line
     .command(require('../commands/dev-deploy'))
     .command(require('../commands/call'))
     .command(callViewFunction)
+    .command(require('../commands/view-state'))
     .command(sendMoney)
     .command(clean)
     .command(stake)
@@ -255,7 +256,7 @@ yargs // eslint-disable-line
         'networkId': ['network_id'],
         'wasmFile': 'wasm_file',
         'projectDir': 'project_dir',
-        'outDir': 'out_dir'
+        'outDir': 'out_dir',
     })
     .showHelpOnFail(true)
     .recommendCommands()

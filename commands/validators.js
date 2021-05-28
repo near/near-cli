@@ -7,7 +7,7 @@ module.exports = {
     desc: 'lookup validators for given epoch (or current / next)',
     builder: (yargs) => yargs
         .option('epoch', {
-            desc: 'epoch defined by block number or current / next',
+            desc: 'epoch defined by it\'s last block number, block hash or current / next keyword',
             type: 'string',
             required: true
         }),

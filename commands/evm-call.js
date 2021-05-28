@@ -1,7 +1,4 @@
-const exitOnError = require('../utils/exit-on-error');
-const web3 = require('web3');
-const { NearProvider, utils } = require('near-web3-provider');
-const assert = require('assert');
+const { evmDeprecated } = require('../utils/deprecation-warning');
 
 module.exports = {
     command: 'evm-call <evmAccount> <contractName> <methodName> [args]',
@@ -12,10 +9,11 @@ module.exports = {
             type: 'string',
             default: '100000000000000'
         })
-        .option('amount', {
+        .option('deposit', {
             desc: 'Number of tokens to attach',
             type: 'string',
-            default: '0'
+            default: '0',
+            alias: 'amount',
         })
         .option('args', {
             desc: 'Arguments to the contract call, in JSON format (e.g. \'[1, "str"]\') based on contract ABI',
@@ -32,26 +30,5 @@ module.exports = {
             desc: 'Path to ABI for given contract',
             type: 'string',
         }),
-    handler: exitOnError(scheduleEVMFunctionCall)
+    handler: () => console.log(evmDeprecated)
 };
-
-async function scheduleEVMFunctionCall(options) {
-    const args = JSON.parse(options.args || '[]');
-    console.log(`Scheduling a call inside ${options.evmAccount} EVM:`);
-    console.log(`${options.contractName}.${options.methodName}()` +
-        (options.amount && options.amount !== '0' ? ` with attached ${options.amount} NEAR` : ''));
-    console.log('  with args', args);
-    const web = new web3();
-    web.setProvider(new NearProvider({
-        nodeUrl: options.nodeUrl,
-        // TODO: make sure near-api-js has the same version between near-web3-provider.
-        // keyStore: options.keyStore,
-        masterAccountId: options.accountId,
-        networkId: options.networkId,
-        evmAccountId: options.evmAccount,
-        keyPath: options.keyPath,
-    }));
-    const contract = new web.eth.Contract(options.abi, options.contractName);
-    assert(options.methodName in contract.methods, `${options.methodName} is not present in ABI`);
-    await contract.methods[options.methodName](...args).send({ from: utils.nearAccountToEvmAddress(options.accountId) });
-}

@@ -1,6 +1,4 @@
-const exitOnError = require('../utils/exit-on-error');
-const { utils } = require('near-web3-provider');
-const connect = require('../utils/connect');
+const { evmDeprecated } = require('../utils/deprecation-warning');
 
 module.exports = {
     command: 'evm-dev-init <accountId> [numAccounts]',
@@ -16,11 +14,5 @@ module.exports = {
             type: 'number',
             default: '5'
         }),
-    handler: exitOnError(scheduleEVMDevInit)
+    handler: () => console.log(evmDeprecated)
 };
-
-async function scheduleEVMDevInit(options) {
-    const near = await connect(options);
-    const account = await near.account(options.accountId);
-    await utils.createTestAccounts(account, options.numAccounts);
-}

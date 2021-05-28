@@ -1,7 +1,4 @@
-const exitOnError = require('../utils/exit-on-error');
-const web3 = require('web3');
-const { NearProvider, utils } = require('near-web3-provider');
-const assert = require('assert');
+const { evmDeprecated } = require('../utils/deprecation-warning');
 
 module.exports = {
     command: 'evm-view <evmAccount> <contractName> <methodName> [args]',
@@ -21,22 +18,5 @@ module.exports = {
             desc: 'Path to ABI for given contract',
             type: 'string',
         }),
-    handler: exitOnError(scheduleEVMFunctionView)
+    handler: () => console.log(evmDeprecated)
 };
-
-async function scheduleEVMFunctionView(options) {
-    const web = new web3();
-    web.setProvider(new NearProvider({
-        nodeUrl: options.nodeUrl,
-        // TODO: make sure near-api-js has the same version between near-web3-provider.
-        // keyStore: options.keyStore,
-        masterAccountId: options.accountId,
-        networkId: options.networkId,
-        evmAccountId: options.evmAccount,
-    }));
-    const contract = new web.eth.Contract(options.abi, options.contractName);
-    const args = JSON.parse(options.args || '[]');
-    assert(options.methodName in contract.methods, `${options.methodName} is not present in ABI`);
-    const result = await contract.methods[options.methodName](...args).call({ from: utils.nearAccountToEvmAddress(options.accountId) });
-    console.log(result);
-}

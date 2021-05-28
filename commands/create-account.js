@@ -3,6 +3,7 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { KeyPair } = require('near-api-js');
 const inspectResponse = require('../utils/inspect-response');
+const checkCredentials = require('../utils/check-credentials');
 // Top-level account (TLA) is testnet for foo.alice.testnet
 const TLA_MIN_LENGTH = 32;
 
@@ -72,10 +73,10 @@ const createAccountCommandDeprecated = {
 }; 
 
 async function createAccount(options) {
+    await checkCredentials(options.masterAccount, options.networkId, options.keyStore);
     // NOTE: initialBalance is passed as part of config here, parsed in middleware/initial-balance
     // periods are disallowed in top-level accounts and can only be used for subaccounts
     const splitAccount = options.accountId.split('.');
-
     const splitMaster = options.masterAccount.split('.');
     const masterRootTLA = splitMaster[splitMaster.length - 1];
     if (splitAccount.length === 1) {
@@ -127,10 +128,11 @@ async function createAccount(options) {
             keyRootPath = near.connection.signer.keyStore.keyStores[0].keyDir;
         }
         keyFilePath = `${keyRootPath}/${options.networkId}/${options.accountId}.json`;
+        console.log(`Saving key to '${keyFilePath}'`);
         await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
     }
+    
     // Create account
-    console.log(`Saving key to '${keyFilePath}'`);
     try {
         const response = await near.createAccount(options.accountId, publicKey);
         inspectResponse.prettyPrintResponse(response, options);

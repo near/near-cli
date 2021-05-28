@@ -2,6 +2,7 @@ const { providers, utils } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
+const checkCredentials = require('../utils/check-credentials');
 
 module.exports = {
     command: 'call <contractName> <methodName> [args]',
@@ -12,10 +13,11 @@ module.exports = {
             type: 'string',
             default: '100000000000000'
         })
-        .option('amount', {
-            desc: 'Number of tokens to attach (in NEAR)',
+        .option('deposit', {
+            desc: 'Number of tokens to attach (in NEAR) to a function call',
             type: 'string',
-            default: '0'
+            default: '0',
+            alias: 'amount'
         })
         .option('base64',  {
             desc: 'Treat arguments as base64-encoded BLOB.',
@@ -36,8 +38,9 @@ module.exports = {
 };
 
 async function scheduleFunctionCall(options) {
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
-        (options.amount && options.amount != '0' ? ` with attached ${options.amount} NEAR` : ''));
+        (options.deposit && options.deposit != '0' ? ` with attached ${options.deposit} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const parsedArgs = options.base64 ? Buffer.from(options.args, 'base64') : JSON.parse(options.args || '{}');
@@ -46,7 +49,7 @@ async function scheduleFunctionCall(options) {
         options.methodName,
         parsedArgs,
         options.gas,
-        utils.format.parseNearAmount(options.amount));
+        utils.format.parseNearAmount(options.deposit));
     const result = providers.getTransactionLastResult(functionCallResponse);
     inspectResponse.prettyPrintResponse(functionCallResponse, options);
     console.log(inspectResponse.formatResponse(result));
