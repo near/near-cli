@@ -37,12 +37,12 @@ function getConfig(env) {
         };
     case 'guildnet':
         return {
-           networkId: 'guildnet',
-           nodeUrl: 'https://rpc.openshards.io',
-           contractName: CONTRACT_NAME,
-           walletUrl: 'https://wallet.openshards.io',
-           helperUrl: 'https://helper.openshards.io',
-           helperAccount: 'guildnet',
+            networkId: 'guildnet',
+            nodeUrl: 'https://rpc.openshards.io',
+            contractName: CONTRACT_NAME,
+            walletUrl: 'https://wallet.openshards.io',
+            helperUrl: 'https://helper.openshards.io',
+            helperAccount: 'guildnet',
         };
     case 'local':
         return {
