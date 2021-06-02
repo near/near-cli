@@ -11,28 +11,28 @@ module.exports = {
         .option('gas', {
             desc: 'Max amount of gas this call can use (in gas units)',
             type: 'string',
-            default: '100000000000000',
+            default: '100000000000000'
         })
         .option('deposit', {
             desc: 'Number of tokens to attach (in NEAR) to a function call',
             type: 'string',
             default: '0',
-            alias: 'amount',
+            alias: 'amount'
         })
         .option('base64', {
             desc: 'Treat arguments as base64-encoded BLOB.',
             type: 'boolean',
-            default: false,
+            default: false
         })
         .option('args', {
             desc: 'Arguments to the contract call, in JSON format by default (e.g. \'{"param_a": "value"}\')',
             type: 'string',
-            default: null,
+            default: null
         })
         .option('accountId', {
             required: true,
             desc: 'Unique identifier for the account that will be used to sign this call',
-            type: 'string',
+            type: 'string'
         }),
     handler: exitOnError(scheduleFunctionCall)
 };
@@ -40,7 +40,7 @@ module.exports = {
 async function scheduleFunctionCall(options) {
     await checkCredentials(options.accountId, options.networkId, options.keyStore);
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
-            (options.deposit && options.deposit != '0' ? ` with attached ${options.deposit} NEAR` : ''));
+        (options.deposit && options.deposit != '0' ? ` with attached ${options.deposit} NEAR` : ''));
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const parsedArgs = options.base64 ? Buffer.from(options.args, 'base64') : JSON.parse(options.args || '{}');
