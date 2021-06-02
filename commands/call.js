@@ -19,7 +19,7 @@ module.exports = {
             default: '0',
             alias: 'amount'
         })
-        .option('base64',  {
+        .option('base64', {
             desc: 'Treat arguments as base64-encoded BLOB.',
             type: 'boolean',
             default: false
@@ -32,7 +32,7 @@ module.exports = {
         .option('accountId', {
             required: true,
             desc: 'Unique identifier for the account that will be used to sign this call',
-            type: 'string',
+            type: 'string'
         }),
     handler: exitOnError(scheduleFunctionCall)
 };
@@ -44,12 +44,13 @@ async function scheduleFunctionCall(options) {
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const parsedArgs = options.base64 ? Buffer.from(options.args, 'base64') : JSON.parse(options.args || '{}');
-    const functionCallResponse = await account.functionCall(
-        options.contractName,
-        options.methodName,
-        parsedArgs,
-        options.gas,
-        utils.format.parseNearAmount(options.deposit));
+    const functionCallResponse = await account.functionCall({
+        contractId: options.contractName,
+        methodName: options.methodName,
+        args: parsedArgs,
+        gas: options.gas,
+        attachedDeposit: utils.format.parseNearAmount(options.deposit),
+    });
     const result = providers.getTransactionLastResult(functionCallResponse);
     inspectResponse.prettyPrintResponse(functionCallResponse, options);
     console.log(inspectResponse.formatResponse(result));
