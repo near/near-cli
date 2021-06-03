@@ -57,8 +57,8 @@ exports.deploy = async function (options) {
     }
 
     const result = await account.signAndSendTransaction({
-        receiverId:options.accountId, 
-        actions:txs
+        receiverId: options.accountId, 
+        actions: txs
     });
     inspectResponse.prettyPrintResponse(result, options);
     let state = await account.state();
