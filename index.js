@@ -188,16 +188,16 @@ exports.viewAccount = async function (options) {
     }
     const storageInM=state.storage_usage/1e+6;
     const accountDetails={
-        "Account:":`${options.accountId} at block ${state.block_height} (https://explorer.testnet.near.org/blocks/${state.block_hash})`,
-        [chalk.bold("amount:")]:`${state.amount} ${chalk.bold("yn")}`,
-        "locked:":state.locked,
-        "storage:":`${storageInM}M (${state.storage_usage} bytes)`,
-        "code_hash:":`'${state.code_hash}'`
+        'Account:':`${options.accountId} at block ${state.block_height} (https://explorer.testnet.near.org/blocks/${state.block_hash})`,
+        [chalk.bold('amount:')]:`${state.amount} ${chalk.bold('yn')}`,
+        'locked:':state.locked,
+        'storage:':`${storageInM}M (${state.storage_usage} bytes)`,
+        'code_hash:':`'${state.code_hash}'`
     };
     for(const property in accountDetails){
         console.log(property,accountDetails[property]);
     }
-    console.log(`\nFor more details see https://explorer.testnet.near.org/accounts/${options.accountId}`)
+    console.log(`\nFor more details see https://explorer.testnet.near.org/accounts/${options.accountId}`);
 };
 
 exports.deleteAccount = async function (options) {
