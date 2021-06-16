@@ -22,7 +22,7 @@ module.exports = {
                 '`final` is for a block that has been validated on at least 66% of the nodes in the network',
             type: 'string',
             choices: ['optimistic', 'final'],
-            
+            default: 'final',
         })
         .option('utf8', {
             desc: 'Decode keys and values as UTF-8 strings',
