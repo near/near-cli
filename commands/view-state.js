@@ -36,10 +36,10 @@ async function viewState(options) {
     const near = await connect(options);
     const account = await near.account(accountId);
     if (finality && blockId) {
-        console.error("Only one of --finality and --blockId can be provided");
+        console.error('Only one of --finality and --blockId can be provided');
         process.exit(1);
     } else if (!finality && !blockId) {
-        console.error("Must provide either --finality or --blockId");
+        console.error('Must provide either --finality or --blockId');
         process.exit(1);
     }
     // near-api-js takes block_id instead of blockId
