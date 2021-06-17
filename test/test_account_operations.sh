@@ -15,4 +15,20 @@ if [[ ! "$RESULT" =~ $EXPECTED ]]; then
     exit 1
 fi
 
+echo Get account storage --finality final
+RESULT=$(./bin/near view-state $testaccount --finality final)
+EXPECTED="[]"
+if [[ ! "$RESULT" == $EXPECTED ]]; then
+    echo FAILURE Unexpected output from near view-state
+    exit 1
+fi
+
+echo Get account storage --finality optimistic
+RESULT=$(./bin/near view-state $testaccount --finality optimistic)
+EXPECTED="[]"
+if [[ ! "$RESULT" == $EXPECTED ]]; then
+    echo FAILURE Unexpected output from near view-state
+    exit 1
+fi
+
 ./bin/near delete $testaccount test.near
