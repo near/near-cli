@@ -187,12 +187,16 @@ exports.viewAccount = async function (options) {
         state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
     }
     const storageInM=state.storage_usage/1e+6;
+    const storage=storageInM<1?`${storageInM*1000} Kb `:`${storageInM} Mb`;
+    const amount=parseFloat(utils.format.formatNearAmount(`${state.amount}`)).toFixed(1);
     const accountDetails={
-        'Account:':`${options.accountId} at block ${state.block_height} (https://explorer.testnet.near.org/blocks/${state.block_hash})`,
-        [chalk.bold('amount:')]:`${state.amount} ${chalk.bold('yn')}`,
-        'locked:':state.locked,
-        'storage:':`${storageInM}M (${state.storage_usage} bytes)`,
-        'code_hash:':`'${state.code_hash}'`
+        [chalk.bold('Account:')]:`${options.accountId} at block ${state.block_height}`,
+        [chalk.bold('Amount:')]:`~${amount} ${chalk.bold('yn')}`,
+        [chalk.bold('Raw Amount:')]:`${state.amount} ${chalk.bold('yn')}`,
+        [chalk.bold('Locked:')]:state.locked,
+        [chalk.bold('Storage:')]:`${storage}`,
+        [chalk.bold('Storage paid at:')]:`${state.storage_paid_at}`,
+        [chalk.bold('Code hash:')]:`'${state.code_hash}'`
     };
     for(const property in accountDetails){
         console.log(property,accountDetails[property]);
