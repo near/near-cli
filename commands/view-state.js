@@ -40,6 +40,8 @@ async function viewState(options) {
     let state = await account.viewState(prefix, { blockId, finality });
     if (utf8) {
         state = state.map(({ key, value}) => ({ key: key.toString('utf-8'), value: value.toString('utf-8') }));
+    } else {
+        state = state.map(({ key, value}) => ({ key: key.toString('base64'), value: value.toString('base64') }));
     }
     console.log(formatResponse(state, options));
 }
