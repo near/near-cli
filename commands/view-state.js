@@ -1,6 +1,7 @@
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { formatResponse } = require('../utils/inspect-response');
+const yargs = require('yargs');
 
 module.exports = {
     command: 'view-state <account-id> [prefix]',
@@ -10,7 +11,6 @@ module.exports = {
             desc: 'Return keys only with given prefix.',
             type: 'string',
             default: ''
-            
         })
         .option('block-id', {
             desc: 'The block number OR the block hash (base58-encoded).',
@@ -27,6 +27,21 @@ module.exports = {
             desc: 'Decode keys and values as UTF-8 strings',
             type: 'boolean',
             default: false
+        })
+        .conflicts('block-id', 'finality')
+        .check((argv, _) => {
+            if (!argv.finality && !argv.blockId) {
+                throw new Error('Must provide either --finality or --blockId');
+            }
+            return true;
+        })
+        .coerce({
+            blockId: (blockId) => {
+                if (blockId && !isNaN(blockId)) {
+                    return Number(blockId);
+                }
+                return blockId;
+            }
         }),
     handler: exitOnError(viewState)
 };
@@ -35,21 +50,9 @@ async function viewState(options) {
     const { accountId, prefix, finality, blockId, utf8 } = options;
     const near = await connect(options);
     const account = await near.account(accountId);
-    if (finality && blockId) {
-        console.error('Only one of --finality and --blockId can be provided');
-        process.exit(1);
-    } else if (!finality && !blockId) {
-        console.error('Must provide either --finality or --blockId');
-        process.exit(1);
-    }
+
     // near-api-js takes block_id instead of blockId
-    let block_id = blockId;
-    if (blockId && !isNaN(Number(blockId))) {
-        // If block id is a number (still string as command line args), it must be convert to JavaScript Number
-        // for near-api-js.
-        block_id = Number(blockId);
-    }
-    let state = await account.viewState(prefix, { block_id, finality });
+    let state = await account.viewState(prefix, { block_id: blockId, finality });
     if (utf8) {
         state = state.map(({ key, value}) => ({ key: key.toString('utf-8'), value: value.toString('utf-8') }));
     } else {
