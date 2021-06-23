@@ -1,7 +1,6 @@
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { formatResponse } = require('../utils/inspect-response');
-const yargs = require('yargs');
 
 module.exports = {
     command: 'view-state <account-id> [prefix]',
@@ -29,7 +28,7 @@ module.exports = {
             default: false
         })
         .conflicts('block-id', 'finality')
-        .check((argv, _) => {
+        .check((argv) => {
             if (!argv.finality && !argv.blockId) {
                 throw new Error('Must provide either --finality or --blockId');
             }
