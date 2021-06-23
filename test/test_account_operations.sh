@@ -51,18 +51,32 @@ if [[ ! "$RESULT" == $EXPECTED ]]; then
     exit 1
 fi
 
-echo Get account storage --blockId $BLOCK_HASH --finality optimistic should fail
-EXPECTED="Only one of --finality and --blockId can be provided"
 set +e
+
+echo Get account storage --blockId $BLOCK_HASH --finality optimistic should fail
+EXPECTED="Arguments block-id and finality are mutually exclusive"
 ./bin/near view-state $testaccount --blockId $BLOCK_HASH  --finality optimistic 2> ${testaccount}.stderr
 if [[ ! $? == 1 ]]; then
     echo view-state should fail given both blockId and finality
     exit 1
 fi
-if [[ ! $(cat ${testaccount}.stderr) == $EXPECTED ]]; then
+if [[ ! $(cat ${testaccount}.stderr) =~ $EXPECTED ]]; then
     echo FAILURE Unexpected output from near view-state
     exit 1
 fi
+
+echo Get account storage without one of blockId or finality should fail
+EXPECTED="Must provide either --finality or --blockId"
+./bin/near view-state $testaccount 2> ${testaccount}.stderr
+if [[ ! $? == 1 ]]; then
+    echo view-state should fail without one of blockId or finality should fail
+    exit 1
+fi
+if [[ ! $(cat ${testaccount}.stderr) =~ $EXPECTED ]]; then
+    echo FAILURE Unexpected output from near view-state
+    exit 1
+fi
+
 set -e
 
 
