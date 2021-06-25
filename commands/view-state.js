@@ -16,6 +16,14 @@ module.exports = {
             type: 'string',
             
         })
+        .coerce({
+            blockId: (blockId) => {
+                if (blockId && !isNaN(blockId)) {
+                    return Number(blockId);
+                }
+                return blockId;
+            }
+        })
         .option('finality', {
             desc: '`optimistic` uses the latest block recorded on the node that responded to your query,\n' + 
                 '`final` is for a block that has been validated on at least 66% of the nodes in the network',
@@ -33,14 +41,6 @@ module.exports = {
                 throw new Error('Must provide either --finality or --blockId');
             }
             return true;
-        })
-        .coerce({
-            blockId: (blockId) => {
-                if (blockId && !isNaN(blockId)) {
-                    return Number(blockId);
-                }
-                return blockId;
-            }
         }),
     handler: exitOnError(viewState)
 };
