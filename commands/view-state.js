@@ -14,15 +14,13 @@ module.exports = {
         .option('block-id', {
             desc: 'The block number OR the block hash (base58-encoded).',
             type: 'string',
-            
-        })
-        .coerce({
-            blockId: (blockId) => {
+            coerce: (blockId) => {
                 if (blockId && !isNaN(blockId)) {
                     return Number(blockId);
                 }
                 return blockId;
             }
+            
         })
         .option('finality', {
             desc: '`optimistic` uses the latest block recorded on the node that responded to your query,\n' + 
