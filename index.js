@@ -193,7 +193,7 @@ exports.viewAccount = async function (options) {
         [chalk.bold('Account:')]:`${options.accountId} at block ${state.block_height}`,
         [chalk.bold('Amount:')]:`~${amount} ${chalk.bold('yn')}`,
         [chalk.bold('Raw Amount:')]:`${state.amount} ${chalk.bold('yn')}`,
-        [chalk.bold('Locked:')]:state.locked,
+        [chalk.bold('Locked:')]:`${state.locked} yn`,
         [chalk.bold('Storage:')]:`${storage}`,
         [chalk.bold('Storage paid at:')]:`${state.storage_paid_at}`,
         [chalk.bold('Code hash:')]:`'${state.code_hash}'`
