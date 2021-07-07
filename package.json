@@ -53,7 +53,7 @@
     "yargs": "^16.0.3"
   },
   "optionalDependencies": {
-    "@ledgerhq/hw-transport-node-hid": "^5.15.0",
+    "@ledgerhq/hw-transport-node-hid": "^6.1.0",
     "near-ledger-js": "^0.1.1"
   },
   "keywords": [
