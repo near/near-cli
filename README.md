@@ -1238,7 +1238,8 @@ With NEAR REPL you have complete access to [`near-api-js`](https://github.com/ne
 
 ---
 
-## Options                                                                         |
+## Options
+
 | Option                     | Description                                                                                                                            |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `--help`                   |  Show help  [boolean]                                                                                                                  |
