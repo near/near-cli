@@ -817,7 +817,7 @@ Transaction guest-book.testnet:FY8hBam2iyQfdHkdR1dp6w5XEPJzJSosX1wUeVPyUvVK
         FunctionCall: {
           method_name: 'addMessage',
           args: 'eyJ0ZXh0IjoiQWxvaGEifQ==',
-          gas: 100000000000000,
+          gas: 300000000000000,
           deposit: '0'
         }
       },

@@ -1,4 +1,4 @@
-const { providers, utils } = require('near-api-js');
+const { DEFAULT_FUNCTION_CALL_GAS, providers, utils } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
@@ -11,7 +11,7 @@ module.exports = {
         .option('gas', {
             desc: 'Max amount of gas this call can use (in gas units)',
             type: 'string',
-            default: '100000000000000'
+            default: DEFAULT_FUNCTION_CALL_GAS
         })
         .option('deposit', {
             desc: 'Number of tokens to attach (in NEAR) to a function call',

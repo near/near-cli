@@ -1,4 +1,5 @@
 const { evmDeprecated } = require('../utils/deprecation-warning');
+const { DEFAULT_FUNCTION_CALL_GAS } = require('near-api-js');
 
 module.exports = {
     command: 'evm-call <evmAccount> <contractName> <methodName> [args]',
@@ -7,7 +8,7 @@ module.exports = {
         .option('gas', {
             desc: 'Max amount of NEAR gas this call can use',
             type: 'string',
-            default: '100000000000000'
+            default: DEFAULT_FUNCTION_CALL_GAS
         })
         .option('deposit', {
             desc: 'Number of tokens to attach',
