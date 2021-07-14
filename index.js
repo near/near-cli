@@ -56,7 +56,10 @@ exports.deploy = async function (options) {
         );
     }
 
-    const result = await account.signAndSendTransaction(options.accountId, txs);
+    const result = await account.signAndSendTransaction({
+        receiverId: options.accountId, 
+        actions: txs
+    });
     inspectResponse.prettyPrintResponse(result, options);
     let state = await account.state();
     let codeHash = state.code_hash;
@@ -211,8 +214,6 @@ exports.sendMoney = async function (options) {
     console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
     const near = await connect(options);
     const account = await near.account(options.sender);
-    const receiver = await near.account(options.receiver);
-    await receiver.state();
     const result = await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount));
     inspectResponse.prettyPrintResponse(result, options);
 };

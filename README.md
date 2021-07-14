@@ -632,7 +632,7 @@ near dev-deploy out/main.wasm
 **Note:** Contract calls require a transaction fee (gas) so you will need an access key for the `--accountId` that will be charged. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
 -   arguments: `contractName` `method_name` `{ args }` `--accountId`
--   options: `--gas` `--amount`
+-   options: `--gas` `--deposit`
 
 **Example:**
 
@@ -741,14 +741,14 @@ near evm-view evm 0x89dfB1Cd61F05ad3971EC1f83056Fd9793c2D521 getAdopters '[]' --
 
 ---
 
-### `near evm-call`
+### `near evm-call (deprecated)`
 
 > makes an EVM contract call which can modify _or_ view state.
 
 **Note:** Contract calls require a transaction fee (gas) so you will need an access key for the `--accountId` that will be charged. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
 -   arguments: `evmAccount` `contractName` `methodName` `[arguments]` `--abi` `--accountId`
--   options: `default` (`--gas` and `--amount` coming soon…)
+-   options: `default` (`--gas` and `--deposit` coming soon…)
 
 **Example:**
 
@@ -1238,26 +1238,24 @@ With NEAR REPL you have complete access to [`near-api-js`](https://github.com/ne
 
 ---
 
-## Options
-
-| Option                        | Description                                                                                                                            |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `--help`                      | shows help _(can be used alone or on any command)_                                                                                     |
-| `--version`                   | shows installed version of `near-cli`                                                                                                  |
-| `--nodeUrl`, `--node_url`     | selects an [RPC URL](http://docs.near.org/docs/develop/front-end/rpc) _(`testnet`, `mainnet`, `betanet`)_                              |
-| `--helperUrl`                 | points to a [contract helper](https://github.com/near/near-contract-helper) instance you want to use for account creation / management |
-| `--keyPath`                   | specify a path to `--masterAccount` key                                                                                                |
-| `--accountId`, `--account_id` | selects an account ID                                                                                                                  |
-| `--useLedgerKey`              | uses Ledger with given HD key path `[default: "44'/397'/0'/0'/1'"]`                                                                    |
-| `--seedPhrase`                | uses a mnemonic seed phrase                                                                                                            |
-| `--seedPath`                  | specify a HD path derivation `[default: "m/44'/397'/0'"]`                                                                              |
-| `--walletUrl`                 | selects a [NEAR wallet](http://wallet.testnet.near.org) URL                                                                            |
-| `--contractName`              | selects an account contract name                                                                                                       |
-| `--masterAccount`             | selects a master account                                                                                                               |
-| `--helperAccount`             | selects an expected top-level account for a network                                                                                    |
-| `--verbose`, `-v`             | shows verbose output                                                                                                                   |
-| `--gas`                       | specifies amount of gas to use for a contract call `[default: "300000000000000"]`                                                      |
-| `--amount`                    | Number of NEAR tokens (Ⓝ) to attach `[default: "0"]`                                                                                   |
+## Options                                                                         |
+| Option                     | Description                                                                                                                            |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `--help`                   |  Show help  [boolean]                                                                                                                  |
+| `--version`                |  Show version number  [boolean]                                                                                                        | 
+| `--nodeUrl, --node_url`    |  NEAR node URL  [string] [default: "https://rpc.testnet.near.org"]                                                                     |
+| `--networkId, --network_id`|  NEAR network ID, allows using different keys based on network  [string] [default: "testnet"]                                          |
+| `--helperUrl`              |  NEAR contract helper URL  [string]                                                                                                    |
+| `--keyPath`                |  Path to master account key  [string]                                                                                                  |
+| `--accountId, --account_id`|  Unique identifier for the account  [string]                                                                                           |
+| `--useLedgerKey`           |  Use Ledger for signing with given HD key path  [string] [default: "44'/397'/0'/0'/1'"]                                                |
+| `--seedPhrase`             |  Seed phrase mnemonic  [string]                                                                                                        |
+| `--seedPath`               |  HD path derivation  [string] [default: "m/44'/397'/0'"]                                                                               |
+| `--walletUrl`              |  Website for NEAR Wallet  [string]                                                                                                     |
+| `--contractName`           |  Account name of contract  [string]                                                                                                    |
+| `--masterAccount`          |  Master account used when creating new accounts  [string]                                                                              |
+| `--helperAccount`          |  Expected top-level account for a network  [string]                                                                                    |
+| `-v, --verbose`            |  Prints out verbose output  [boolean] [default: false]                                                                                 |
 
 > Got a question? <a href="https://stackoverflow.com/questions/tagged/nearprotocol"> <h8>Ask it on StackOverflow!</h8></a>
 

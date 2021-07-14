@@ -128,10 +128,11 @@ async function createAccount(options) {
             keyRootPath = near.connection.signer.keyStore.keyStores[0].keyDir;
         }
         keyFilePath = `${keyRootPath}/${options.networkId}/${options.accountId}.json`;
+        console.log(`Saving key to '${keyFilePath}'`);
         await near.connection.signer.keyStore.setKey(options.networkId, options.accountId, keyPair);
     }
+    
     // Create account
-    console.log(`Saving key to '${keyFilePath}'`);
     try {
         const response = await near.createAccount(options.accountId, publicKey);
         inspectResponse.prettyPrintResponse(response, options);
