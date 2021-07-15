@@ -54,7 +54,7 @@
   },
   "optionalDependencies": {
     "@ledgerhq/hw-transport-node-hid": "^6.1.0",
-    "near-ledger-js": "^0.1.1"
+    "near-ledger-js": "^0.2.0"
   },
   "keywords": [
     "blockchain",
