@@ -1,10 +1,10 @@
-import { schedule, danger } from 'danger';
-import {
+const { schedule, danger } = require('danger');
+const {
     checkForRelease,
     checkForNewDependencies,
     checkForLockfileDiff,
     checkForTypesInDeps
-} from 'danger-plugin-yarn';
+} = require('danger-plugin-yarn');
 
 schedule(async () => {
     const packageDiff = await danger.git.JSONDiffForFile("package.json")
