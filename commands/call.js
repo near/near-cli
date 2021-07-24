@@ -44,7 +44,7 @@ module.exports = {
 
 async function scheduleFunctionCall(options) {
     await checkCredentials(options.accountId, options.networkId, options.keyStore);
-    const deposit = options.depositYocto ?? utils.format.parseNearAmount(options.deposit);
+    const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
         (deposit && deposit != '0' ? ` with attached ${utils.format.formatNearAmount(deposit)} NEAR` : ''));
 
