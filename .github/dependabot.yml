@@ -3,8 +3,8 @@ updates:
 - package-ecosystem: npm
   directory: "/"
   schedule:
-    interval: daily
-  open-pull-requests-limit: 10
+    interval: monthly
+  open-pull-requests-limit: 20
   ignore:
   - dependency-name: open
     versions:
