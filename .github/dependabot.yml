@@ -3,17 +3,6 @@ updates:
 - package-ecosystem: npm
   directory: "/"
   schedule:
-    interval: monthly
-  open-pull-requests-limit: 20
-  ignore:
-  - dependency-name: eslint
-    versions:
-    - 7.20.0
-    - 7.21.0
-    - 7.23.0
-  - dependency-name: update-notifier
-    versions:
-    - 5.1.0
-  - dependency-name: tcp-port-used
-    versions:
-    - 1.0.2
+    interval: daily
+  open-pull-requests-limit: 0
+  target-branch: "dump"
