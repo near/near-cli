@@ -12,6 +12,7 @@ const { KeyPair, utils, transactions } = require('near-api-js');
 const connect = require('./utils/connect');
 const verify = require('./utils/verify-account');
 const capture = require('./utils/capture-login-success');
+const formatBytes = require('./utils/formatBytes-to-KB-GB');
 
 const inspectResponse = require('./utils/inspect-response');
 const eventtracking = require('./utils/eventtracking');
@@ -186,8 +187,7 @@ exports.viewAccount = async function (options) {
     if (state && state.amount) {
         state['formattedAmount'] = utils.format.formatNearAmount(state.amount);
     }
-    const storageInM=state.storage_usage/1e+6;
-    const storage=storageInM<1?`${storageInM*1000} Kb `:`${storageInM} Mb`;
+    const storage=formatBytes(state.storage_usage);
     const amount=parseFloat(utils.format.formatNearAmount(`${state.amount}`)).toFixed(1);
     const accountDetails={
         [chalk.bold('Account:')]:`${options.accountId} at block ${state.block_height}`,
