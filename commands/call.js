@@ -1,4 +1,4 @@
-const { providers, utils } = require('near-api-js');
+const { DEFAULT_FUNCTION_CALL_GAS, providers, utils } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
@@ -11,13 +11,18 @@ module.exports = {
         .option('gas', {
             desc: 'Max amount of gas this call can use (in gas units)',
             type: 'string',
-            default: '100000000000000'
+            default: DEFAULT_FUNCTION_CALL_GAS
         })
         .option('deposit', {
             desc: 'Number of tokens to attach (in NEAR) to a function call',
             type: 'string',
             default: '0',
             alias: 'amount'
+        })
+        .option('depositYocto', {
+            desc: 'Number of tokens to attach (in yocto NEAR) to a function call',
+            type: 'string',
+            default: null,
         })
         .option('base64', {
             desc: 'Treat arguments as base64-encoded BLOB.',
@@ -39,8 +44,10 @@ module.exports = {
 
 async function scheduleFunctionCall(options) {
     await checkCredentials(options.accountId, options.networkId, options.keyStore);
+    const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +
-        (options.deposit && options.deposit != '0' ? ` with attached ${options.deposit} NEAR` : ''));
+        (deposit && deposit != '0' ? ` with attached ${utils.format.formatNearAmount(deposit)} NEAR` : ''));
+
     const near = await connect(options);
     const account = await near.account(options.accountId);
     const parsedArgs = options.base64 ? Buffer.from(options.args, 'base64') : JSON.parse(options.args || '{}');
@@ -49,7 +56,7 @@ async function scheduleFunctionCall(options) {
         methodName: options.methodName,
         args: parsedArgs,
         gas: options.gas,
-        attachedDeposit: utils.format.parseNearAmount(options.deposit),
+        attachedDeposit: deposit,
     });
     const result = providers.getTransactionLastResult(functionCallResponse);
     inspectResponse.prettyPrintResponse(functionCallResponse, options);

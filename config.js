@@ -35,6 +35,15 @@ function getConfig(env) {
             helperAccount: 'betanet',
             explorerUrl: 'https://explorer.betanet.near.org',
         };
+    case 'guildnet':
+        return {
+            networkId: 'guildnet',
+            nodeUrl: 'https://rpc.openshards.io',
+            contractName: CONTRACT_NAME,
+            walletUrl: 'https://wallet.openshards.io',
+            helperUrl: 'https://helper.openshards.io',
+            helperAccount: 'guildnet',
+        };
     case 'local':
         return {
             networkId: 'local',

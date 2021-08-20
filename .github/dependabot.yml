@@ -4,50 +4,5 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-  open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: open
-    versions:
-    - 7.3.1
-    - 7.4.0
-    - 7.4.1
-    - 7.4.2
-    - 8.0.0
-    - 8.0.1
-    - 8.0.2
-    - 8.0.3
-    - 8.0.4
-    - 8.0.5
-    - 8.0.6
-  - dependency-name: eslint
-    versions:
-    - 7.20.0
-    - 7.21.0
-    - 7.23.0
-  - dependency-name: "@ledgerhq/hw-transport-node-hid"
-    versions:
-    - 5.41.0
-    - 5.43.0
-    - 5.44.1
-    - 5.45.0
-    - 5.46.0
-  - dependency-name: near-api-js
-    versions:
-    - 0.37.0
-    - 0.38.0
-  - dependency-name: web3
-    versions:
-    - 1.3.3
-    - 1.3.4
-  - dependency-name: update-notifier
-    versions:
-    - 5.1.0
-  - dependency-name: ini
-    versions:
-    - 1.3.7
-  - dependency-name: node-notifier
-    versions:
-    - 8.0.1
-  - dependency-name: tcp-port-used
-    versions:
-    - 1.0.2
+  open-pull-requests-limit: 0
+  target-branch: "dump"
