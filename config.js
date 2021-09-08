@@ -45,8 +45,9 @@ function getConfig(env) {
             helperAccount: 'guildnet',
         };
     case 'local':
+    case 'localnet':
         return {
-            networkId: 'local',
+            networkId: 'localnet',
             nodeUrl: 'http://localhost:3030',
             keyPath: `${process.env.HOME}/.near/validator_key.json`,
             walletUrl: 'http://localhost:4000/wallet',
