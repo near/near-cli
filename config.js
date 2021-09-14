@@ -47,7 +47,7 @@ function getConfig(env) {
     case 'local':
     case 'localnet':
         return {
-            networkId: 'localnet',
+            networkId: 'local',
             nodeUrl: 'http://localhost:3030',
             keyPath: `${process.env.HOME}/.near/validator_key.json`,
             walletUrl: 'http://localhost:4000/wallet',
