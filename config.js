@@ -45,6 +45,7 @@ function getConfig(env) {
             helperAccount: 'guildnet',
         };
     case 'local':
+    case 'localnet':
         return {
             networkId: 'local',
             nodeUrl: 'http://localhost:3030',
