@@ -48,10 +48,13 @@ function getConfig(env) {
     case 'localnet':
         return {
             networkId: 'local',
-            nodeUrl: 'http://localhost:3030',
+            nodeUrl: process.env.NEAR_NODE_URL || 'http://localhost:3030',
             keyPath: `${process.env.HOME}/.near/validator_key.json`,
-            walletUrl: 'http://localhost:4000/wallet',
+            walletUrl: process.env.NEAR_WALLET_URL || 'http://localhost:4000/wallet',
             contractName: CONTRACT_NAME,
+            helperUrl: process.env.NEAR_HELPER_URL || 'http://localhost:3000',
+            helperAccount: process.env.NEAR_HELPER_ACCOUNT || 'node0',
+            explorerUrl: process.env.NEAR_EXPLORER_URL || 'http://localhost:9001',
         };
     case 'test':
     case 'ci':
