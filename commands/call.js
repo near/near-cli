@@ -11,7 +11,7 @@ module.exports = {
         .option('gas', {
             desc: 'Max amount of gas this call can use (in gas units)',
             type: 'string',
-            default: DEFAULT_FUNCTION_CALL_GAS
+            default: DEFAULT_FUNCTION_CALL_GAS.toNumber(),
         })
         .option('deposit', {
             desc: 'Number of tokens to attach (in NEAR) to a function call',
