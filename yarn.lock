@@ -569,13 +569,13 @@
     rxjs "6"
     semver "^7.3.5"
 
-"@ledgerhq/devices@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-6.1.0.tgz#54963409011c0bb83e2cc3d4d55ad9b905e296ff"
-  integrity sha512-Swl08sVuvx7IL9yx9P0ZzvwjIl4JXl51X34Po3pT2uRRaLnh/fRRSNe9tSC1gFMioviiLJlkmO+yydE4XeV+Jg==
+"@ledgerhq/devices@^6.10.0":
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-6.10.0.tgz#34d536caa0c426ba7e7b1fc0169d285b2ce2c1c2"
+  integrity sha512-rmSTpAwhf37FrVMuOGWdXfH7J+NFHDmXwu9OoefI50pfvuFnWe2lkRIQ4trQFh6uByOLF81t2ENw6BxgW++tVw==
   dependencies:
-    "@ledgerhq/errors" "^6.0.2"
-    "@ledgerhq/logs" "^6.0.2"
+    "@ledgerhq/errors" "^6.10.0"
+    "@ledgerhq/logs" "^6.10.0"
     rxjs "6"
     semver "^7.3.5"
 
@@ -584,32 +584,32 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-5.50.0.tgz#e3a6834cb8c19346efca214c1af84ed28e69dad9"
   integrity sha512-gu6aJ/BHuRlpU7kgVpy2vcYk6atjB4iauP2ymF7Gk0ez0Y/6VSMVSJvubeEQN+IV60+OBK0JgeIZG7OiHaw8ow==
 
-"@ledgerhq/errors@^6.0.2":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-6.0.2.tgz#7c88d16620db08c96de6a2636440db1c0e541da1"
-  integrity sha512-m42ZMzR/EKpOrZfPR3DzusE98DoF3d03cbBkQG6ddm6diwVXFSa7MabaKzgD+41EYQ+hrCGOEZK1K0kosX1itg==
+"@ledgerhq/errors@^6.10.0":
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-6.10.0.tgz#dda9127b65f653fbb2f74a55e8f0e550d69de6e4"
+  integrity sha512-fQFnl2VIXh9Yd41lGjReCeK+Q2hwxQJvLZfqHnKqWapTz68NHOv5QcI0OHuZVNEbv0xhgdLhi5b65kgYeQSUVg==
 
-"@ledgerhq/hw-transport-node-hid-noevents@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid-noevents/-/hw-transport-node-hid-noevents-6.1.0.tgz#b894dbe07234eb2a7a6751b1a298d00758b91731"
-  integrity sha512-U7VFaLIG46ohe92N7ZXqgJSLuIWTPXS6BxT+K45VIkHr/OZYlJhtrI/5Ly3FOUOnWsI+O7QCg/yTBdEkfVSfRw==
+"@ledgerhq/hw-transport-node-hid-noevents@^6.10.0":
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid-noevents/-/hw-transport-node-hid-noevents-6.10.0.tgz#64d1af2de103cfeee12224865607491b3e8d9eb9"
+  integrity sha512-ItKhR/LdJRK4Wzs6yT9UBKWzOdmwJgXBKpY8Z2tRAfRB24qq6XGQgaNe+/67vT9/l9nr1dTh0FgiMFuY2kap5Q==
   dependencies:
-    "@ledgerhq/devices" "^6.1.0"
-    "@ledgerhq/errors" "^6.0.2"
-    "@ledgerhq/hw-transport" "^6.1.0"
-    "@ledgerhq/logs" "^6.0.2"
+    "@ledgerhq/devices" "^6.10.0"
+    "@ledgerhq/errors" "^6.10.0"
+    "@ledgerhq/hw-transport" "^6.10.0"
+    "@ledgerhq/logs" "^6.10.0"
     node-hid "2.1.1"
 
 "@ledgerhq/hw-transport-node-hid@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-6.1.0.tgz#b8fff70c96f53af65aaab3d425c4ef33b1c18c88"
-  integrity sha512-WmVkc/bOKxnesv3wadooNVdWR2lRhti5asn6kw7OstRNOAXlSgYyPexLsliCfIe9APwOSt+S5SDci+oEh8Oh/Q==
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-6.10.0.tgz#8997d9155e7768573c01a455a9eee4258982647c"
+  integrity sha512-GAq+MQTOcSkSIP3areQZPrXwT+7xchnkbeeUzqZb+QlD5z6rqreqW3PRHn1Fy7kXFa16hELjMJuNr6KJIRUUKw==
   dependencies:
-    "@ledgerhq/devices" "^6.1.0"
-    "@ledgerhq/errors" "^6.0.2"
-    "@ledgerhq/hw-transport" "^6.1.0"
-    "@ledgerhq/hw-transport-node-hid-noevents" "^6.1.0"
-    "@ledgerhq/logs" "^6.0.2"
+    "@ledgerhq/devices" "^6.10.0"
+    "@ledgerhq/errors" "^6.10.0"
+    "@ledgerhq/hw-transport" "^6.10.0"
+    "@ledgerhq/hw-transport-node-hid-noevents" "^6.10.0"
+    "@ledgerhq/logs" "^6.10.0"
     lodash "^4.17.21"
     node-hid "2.1.1"
     usb "^1.7.0"
@@ -653,13 +653,13 @@
     "@ledgerhq/errors" "^5.50.0"
     events "^3.3.0"
 
-"@ledgerhq/hw-transport@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-6.1.0.tgz#b50151c6199e9ad6d3ab9e447532a22170c9f3b7"
-  integrity sha512-j9IyvksI9PjFoFrk/B3p8wCXWRWc8uK24gc20pAaXQiDtqMkWqEge8iZyPKWBVIv69vDQF3LE3Y6EeRwwA7wJA==
+"@ledgerhq/hw-transport@^6.10.0":
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-6.10.0.tgz#fb07670c6b1455417e0f0fb14369db86e3d6c5b9"
+  integrity sha512-e8OvmDn2zs+stVJDdgyCDveMw3KWoCu2/sVw8bqsHQ8pJVNC2ee5KBPb0gxg7oaf8I5Qdv8jzjv3kJFpolNu5A==
   dependencies:
-    "@ledgerhq/devices" "^6.1.0"
-    "@ledgerhq/errors" "^6.0.2"
+    "@ledgerhq/devices" "^6.10.0"
+    "@ledgerhq/errors" "^6.10.0"
     events "^3.3.0"
 
 "@ledgerhq/logs@^5.30.0", "@ledgerhq/logs@^5.50.0":
@@ -667,10 +667,10 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
-"@ledgerhq/logs@^6.0.2":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-6.0.2.tgz#a6063ed99461c0d2c36a48de89ed0283f13cb908"
-  integrity sha512-4lU3WBwugG+I/dv/qE8HQ2f7MNsKfU58FEzSE1PAELvW96umrlO4ogwuO1tRCPmrtOo9ssam1QVYotwELY8zvw==
+"@ledgerhq/logs@^6.10.0":
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-6.10.0.tgz#c012c1ecc1a0e53d50e6af381618dca5268461c1"
+  integrity sha512-lLseUPEhSFUXYTKj6q7s2O3s2vW2ebgA11vMAlKodXGf5AFw4zUoEbTz9CoFOC9jS6xY4Qr8BmRnxP/odT4Uuw==
 
 "@octokit/auth-token@^2.4.0":
   version "2.4.5"
