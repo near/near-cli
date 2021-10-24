@@ -20,6 +20,13 @@ async function deleteAccessKey(options) {
     console.log(`Deleting key = ${options.accessKey} on ${options.accountId}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const result = await account.deleteKey(options.accessKey);
-    inspectResponse.prettyPrintResponse(result, options);
+    let accessKeys = await account.getAccessKeys();
+    let fullAccessKeys = accessKeys.filter(accessKey => accessKey.access_key.permission === 'FullAccess');
+
+    if(fullAccessKeys.length === 1 && fullAccessKeys[0].public_key.includes(options.accessKey)){
+        console.log('You can\'t delete last FullAccess key');
+    } else {
+        const result = await account.deleteKey(options.accessKey);
+        inspectResponse.prettyPrintResponse(result, options);
+    }
 }
