@@ -37,7 +37,7 @@ async function deleteAccessKey(options) {
         if(['N', 'n', 'no', 'No', 'NO'].includes(answer)) {
             console.log('Deleting key canceled.');
             rl.close();
-            exit(0);
+            process.exit(1);
         }
     }
 
