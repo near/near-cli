@@ -2,6 +2,8 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
 const checkCredentials = require('../utils/check-credentials');
+const readline = require('readline');
+const {exit} = require('yargs');
 
 module.exports = {
     command: 'delete-key <account-id> <access-key>',
@@ -23,10 +25,22 @@ async function deleteAccessKey(options) {
     let accessKeys = await account.getAccessKeys();
     let fullAccessKeys = accessKeys.filter(accessKey => accessKey.access_key.permission === 'FullAccess');
 
-    if(fullAccessKeys.length === 1 && fullAccessKeys[0].public_key.includes(options.accessKey)){
-        console.log('You can\'t delete last FullAccess key');
-    } else {
-        const result = await account.deleteKey(options.accessKey);
-        inspectResponse.prettyPrintResponse(result, options);
+    if (fullAccessKeys.length === 1 && fullAccessKeys[0].public_key.includes(options.accessKey)){
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+
+        const question = (str) => new Promise(resolve => rl.question(str, resolve));
+        const answer = await question('WARN: you want to remove the last full access key and forgot access to this account [Y/n]? ');
+
+        if(['N', 'n', 'no', 'No', 'NO'].includes(answer)) {
+            console.log('Deleting key cancelled.');
+            rl.close();
+            exit(0);
+        }
     }
+
+    const result = await account.deleteKey(options.accessKey);
+    inspectResponse.prettyPrintResponse(result, options);
 }
