@@ -35,7 +35,7 @@ async function deleteAccessKey(options) {
         const answer = await question('WARN: you want to remove the last full access key and forgot access to this account [Y/n]? ');
 
         if(['N', 'n', 'no', 'No', 'NO'].includes(answer)) {
-            console.log('Deleting key cancelled.');
+            console.log('Deleting key canceled.');
             rl.close();
             exit(0);
         }
