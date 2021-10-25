@@ -3,7 +3,6 @@ const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
 const checkCredentials = require('../utils/check-credentials');
 const readline = require('readline');
-const {exit} = require('yargs');
 
 module.exports = {
     command: 'delete-key <account-id> <access-key>',
