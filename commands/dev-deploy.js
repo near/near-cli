@@ -80,8 +80,8 @@ async function createDevAccountIfNeeded({ near, keyStore, networkId, init, maste
         }
     }
     let accountId;
-    // create random number with at least 14 digits
-    const randomNumber = Math.floor(Math.random() * (99999999999999 - 10000000000000) + 10000000000000);
+    // create random number with at least 15 digits
+    const randomNumber = Math.floor(Math.random() * (10 ** 22)) % (10 ** 15);
 
     if (masterAccount) {
         accountId = `dev-${Date.now()}.${masterAccount}`;
