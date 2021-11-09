@@ -37,8 +37,8 @@ async function deleteAccessKey(options) {
             const result = await account.deleteKey(options.accessKey);
             inspectResponse.prettyPrintResponse(result, options);
         } else {
-            console.log('Deleting key canceled.');
             rl.close();
+            console.log('Deleting key canceled.');
         }
     }
 }
