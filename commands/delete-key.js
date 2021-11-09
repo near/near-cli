@@ -33,13 +33,12 @@ async function deleteAccessKey(options) {
         const question = (str) => new Promise(resolve => rl.question(str, resolve));
         const answer = await question('WARN: you want to remove the last full access key and forgot access to this account [Y/n]? ');
 
-        if(['N', 'n', 'no', 'No', 'NO'].includes(answer)) {
+        if (['YES', 'Yes', 'yes', 'Y', 'y'].includes(answer)) {
+            const result = await account.deleteKey(options.accessKey);
+            inspectResponse.prettyPrintResponse(result, options);
+        } else {
             console.log('Deleting key canceled.');
             rl.close();
-            process.exit(1);
         }
     }
-
-    const result = await account.deleteKey(options.accessKey);
-    inspectResponse.prettyPrintResponse(result, options);
 }
