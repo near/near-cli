@@ -160,6 +160,11 @@ yargs // eslint-disable-line
         type: 'string',
         default: config.nodeUrl
     })
+    .option('headers', {
+        hidden: true,
+        desc: 'headers for NEAR RPC server calls',
+        type: 'string',
+    })
     .option('networkId', {
         desc: 'NEAR network ID, allows using different keys based on network',
         type: 'string',
