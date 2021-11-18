@@ -96,6 +96,19 @@ export NEAR_ENV=mainnet
 
 ---
 
+### API keys
+You can pass your `x-api-key` for a custom RPC server by setting environment variables.
+
+Set your RPC server URL first. Note, that this command will replace RPC server for all networks. Clear it in case you want to get back to the default RPC server.
+```bash
+export NEAR_CLI_RPC_SERVER_URL=<put_your_rpc_server_url_here>
+```
+Set your X-API-KEY:
+```bash
+export NEAR_CLI_RPC_SERVER_API_KEY=<put_your_x_api_key_here>
+```
+---
+
 ## Access Keys
 
 ### `near login`
