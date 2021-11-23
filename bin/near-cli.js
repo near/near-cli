@@ -122,6 +122,12 @@ const deploy = {
         })
         .alias({
             'accountId': ['account_id', 'contractName', 'contract_name'],
+        })
+        .option('force', {
+            desc: 'Forcefully deploy the contract even if there is already an existing contract',
+            type: 'boolean',
+            default: false,
+            alias: 'f'
         }),
     handler: exitOnError(main.deploy)
 };

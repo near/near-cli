@@ -16,6 +16,7 @@ const capture = require('./utils/capture-login-success');
 const inspectResponse = require('./utils/inspect-response');
 const eventtracking = require('./utils/eventtracking');
 const checkCredentials = require('./utils/check-credentials');
+const {askYesNoQuestion} = require('./utils/readline');
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -39,6 +40,19 @@ exports.deploy = async function (options) {
     const account = await near.account(options.accountId);
     let prevState = await account.state();
     let prevCodeHash = prevState.code_hash;
+
+    // Checks if there is an existing contract deployed on this account
+    // (code hash consisting of 32 ones means that the contract code is missing)
+    if (!options.force && prevCodeHash !== '11111111111111111111111111111111') {
+        const answer = await askYesNoQuestion(
+            chalk`{bold.white This account already has a deployed contract [ {bold.blue ${prevCodeHash}} ]. Do you want to proceed? {bold.green (y/n) }}`,
+            false
+        );
+        if (!answer) {
+            process.exit(1);
+        }
+    }
+
     // Deploy with init function and args
     const txs = [transactions.deployContract(fs.readFileSync(options.wasmFile))];
 
