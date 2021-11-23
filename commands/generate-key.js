@@ -10,6 +10,10 @@ module.exports = {
         .option('yolo', {
             description: 'Do not ask for extra confirmation when using Ledger',
             type: 'boolean',
+        })
+        .option('curveType', {
+            description: 'Use curve type ed25519 or secp256k1 for key pair generate',
+            type: 'string',
         }),
     handler: exitOnError(async (argv) => {
         let near = await require('../utils/connect')(argv);
