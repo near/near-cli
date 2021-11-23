@@ -16,6 +16,7 @@ const capture = require('./utils/capture-login-success');
 const inspectResponse = require('./utils/inspect-response');
 const eventtracking = require('./utils/eventtracking');
 const checkCredentials = require('./utils/check-credentials');
+const {askYesNoQuestion} = require('./utils/readline');
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -30,42 +31,60 @@ exports.clean = async function () {
     console.log('Clean complete.');
 };
 
+// Checks if there is an existing contract deployed on this account
+// (code hash consisting of 32 ones means that the contract code is missing).
+// Returns `true` if the contract is either missing or if the user agreed to replace it.
+// Returns `false` otherwise.
+const checkExistingContract = async function(prevCodeHash) {
+    if (prevCodeHash !== '11111111111111111111111111111111') {
+        return await askYesNoQuestion(
+            chalk`{bold.white This account already has a deployed contract [ {bold.blue ${prevCodeHash}} ]. Do you want to proceed? {bold.green (y/n) }}`,
+            false
+        );
+    }
+    return true;
+};
+
 exports.deploy = async function (options) {
     await checkCredentials(options.accountId, options.networkId, options.keyStore);
-    console.log(
-        `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
 
     const near = await connect(options);
     const account = await near.account(options.accountId);
     let prevState = await account.state();
     let prevCodeHash = prevState.code_hash;
-    // Deploy with init function and args
-    const txs = [transactions.deployContract(fs.readFileSync(options.wasmFile))];
 
-    if (options.initFunction) {
-        if (!options.initArgs) {
-            console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');
-            await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: false, error: 'Must add initialization arguments' }, options);
-            process.exit(1);
+    if (options.force || await checkExistingContract(prevCodeHash)) {
+        console.log(
+            `Starting deployment. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, file: ${options.wasmFile}`);
+
+        // Deploy with init function and args
+        const txs = [transactions.deployContract(fs.readFileSync(options.wasmFile))];
+
+        if (options.initFunction) {
+            if (!options.initArgs) {
+                console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');
+                await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: false, error: 'Must add initialization arguments' }, options);
+                process.exit(1);
+            }
+            txs.push(transactions.functionCall(
+                options.initFunction,
+                Buffer.from(options.initArgs),
+                options.initGas,
+                utils.format.parseNearAmount(options.initDeposit)),
+            );
         }
-        txs.push(transactions.functionCall(
-            options.initFunction,
-            Buffer.from(options.initArgs),
-            options.initGas,
-            utils.format.parseNearAmount(options.initDeposit)),
-        );
-    }
 
-    const result = await account.signAndSendTransaction({
-        receiverId: options.accountId, 
-        actions: txs
-    });
-    inspectResponse.prettyPrintResponse(result, options);
-    let state = await account.state();
-    let codeHash = state.code_hash;
-    await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: true, code_hash: codeHash, is_same_contract: prevCodeHash === codeHash, contract_id: options.accountId }, options);
-    eventtracking.trackDeployedContract();
-    console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${options.accountId}`);
+        const result = await account.signAndSendTransaction({
+            receiverId: options.accountId,
+            actions: txs
+        });
+        inspectResponse.prettyPrintResponse(result, options);
+        let state = await account.state();
+        let codeHash = state.code_hash;
+        await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: true, code_hash: codeHash, is_same_contract: prevCodeHash === codeHash, contract_id: options.accountId }, options);
+        eventtracking.trackDeployedContract();
+        console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${options.accountId}`);
+    }
 };
 
 exports.callViewFunction = async function (options) {
