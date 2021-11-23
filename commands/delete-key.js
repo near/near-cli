@@ -2,7 +2,8 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
 const checkCredentials = require('../utils/check-credentials');
-const readline = require('readline');
+const chalk = require('chalk');
+const { askYesNoQuestion } = require('./readline');
 
 module.exports = {
     command: 'delete-key <account-id> <access-key>',
@@ -25,19 +26,14 @@ async function deleteAccessKey(options) {
     let fullAccessKeys = accessKeys.filter(accessKey => accessKey.access_key.permission === 'FullAccess');
 
     if (fullAccessKeys.length === 1 && fullAccessKeys[0].public_key.includes(options.accessKey)){
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-
-        const question = (str) => new Promise(resolve => rl.question(str, resolve));
-        const answer = await question('WARN: you want to remove the last full access key and forgot access to this account [Y/n]? ');
-
-        if (['YES', 'Yes', 'yes', 'Y', 'y'].includes(answer)) {
+        const answer = await askYesNoQuestion(
+            chalk`{bold.white You want to remove the last full access key and forgot access to this account ? {bold.green (y/n)}}`,
+            false
+        );
+        if (answer) {
             const result = await account.deleteKey(options.accessKey);
             inspectResponse.prettyPrintResponse(result, options);
         } else {
-            rl.close();
             console.log('Deleting key canceled.');
         }
     }
