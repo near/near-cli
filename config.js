@@ -47,9 +47,9 @@ function getConfig(env) {
     case 'local':
     case 'localnet':
         return {
-            networkId: process.env.NETWORK_ID || 'local',
+            networkId: process.env.NEAR_NETWORK_ID || 'local',
             nodeUrl: process.env.NEAR_NODE_URL || 'http://localhost:3030',
-            keyPath: process.env.KEY_PATH || `${process.env.HOME}/.near/validator_key.json`,
+            keyPath: process.env.NEAR_KEY_PATH || `${process.env.HOME}/.near/validator_key.json`,
             walletUrl: process.env.NEAR_WALLET_URL || 'http://localhost:4000/wallet',
             contractName: CONTRACT_NAME,
             helperUrl: process.env.NEAR_HELPER_URL || 'http://localhost:3000',
