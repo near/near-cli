@@ -101,8 +101,9 @@ You can set your RPC server URL with the next command. Note, that this command w
 ```bash
 export NEAR_CLI_RPC_SERVER_URL=<put_your_rpc_server_url_here>
 ```
-You can pass `x-api-key` for a this server by setting the next environment variable.
+Some RPC servers may require that you provide a valid API key to use them.  NEAR CLI supports passing an API key using the `X-API-KEY` request header for providers that do not include the API key in the RPC URL itself.
 
+You can control the value that NEAR-CLI provides by setting the next environment variable:
 ```bash
 export NEAR_CLI_RPC_SERVER_API_KEY=<put_your_x_api_key_here>
 ```
