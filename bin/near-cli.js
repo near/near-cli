@@ -122,12 +122,6 @@ const deploy = {
         })
         .alias({
             'accountId': ['account_id', 'contractName', 'contract_name'],
-        })
-        .option('force', {
-            desc: 'Forcefully deploy the contract even if there is already an existing contract',
-            type: 'boolean',
-            default: false,
-            alias: 'f'
         }),
     handler: exitOnError(main.deploy)
 };
@@ -225,6 +219,12 @@ yargs // eslint-disable-line
         type: 'boolean',
         alias: 'v',
         default: false
+    })
+    .option('force', {
+        desc: 'Forcefully execute the desired action even if it is unsafe to do so',
+        type: 'boolean',
+        default: false,
+        alias: 'f'
     })
     .middleware(require('../middleware/initial-balance'))
     .middleware(require('../middleware/print-options'))
