@@ -7,6 +7,10 @@ NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.
 
 **Note:** Node.js version 10+ is required to run NEAR CLI.
 
+## Release notes
+
+**Release notes and unreleased changes can be found in the [CHANGELOG](CHANGELOG.md)**
+
 ## Overview
 
 _Click on a command for more information and examples._
