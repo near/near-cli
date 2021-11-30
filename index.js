@@ -110,8 +110,8 @@ exports.login = async function (options) {
         await eventtracking.track(eventtracking.EVENT_ID_LOGIN_END, { success: true, login_is_not_needed: true }, options);
     } else {
         const newUrl = new URL(options.walletUrl + '/login/');
-        const title = 'NEAR CLI';
-        newUrl.searchParams.set('title', title);
+        const referrer = 'NEAR CLI';
+        newUrl.searchParams.set('referrer', referrer);
         const keyPair = await KeyPair.fromRandom('ed25519');
         newUrl.searchParams.set('public_key', keyPair.getPublicKey());
 
