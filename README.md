@@ -1257,6 +1257,8 @@ With NEAR REPL you have complete access to [`near-api-js`](https://github.com/ne
 | `--masterAccount`          |  Master account used when creating new accounts  [string]                                                                              |
 | `--helperAccount`          |  Expected top-level account for a network  [string]                                                                                    |
 | `-v, --verbose`            |  Prints out verbose output  [boolean] [default: false]                                                                                 |
+|`-f, --force`               |  Forcefully execute the desired action even if it is unsafe to do so  [boolean] [default: false]|
+
 
 > Got a question? <a href="https://stackoverflow.com/questions/tagged/nearprotocol"> <h8>Ask it on StackOverflow!</h8></a>
 
