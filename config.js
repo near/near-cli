@@ -51,10 +51,10 @@ function getConfig(env) {
     case 'local':
     case 'localnet':
         return {
-            networkId: 'local',
+            networkId: process.env.NEAR_CLI_LOCALNET_NETWORK_ID || 'local',
             nodeUrl: process.env.NEAR_NODE_URL || 'http://localhost:3030',
             headers: { 'x-api-key': process.env.NEAR_CLI_RPC_SERVER_API_KEY },
-            keyPath: `${process.env.HOME}/.near/validator_key.json`,
+            keyPath: process.env.NEAR_CLI_LOCALNET_KEY_PATH || `${process.env.HOME}/.near/validator_key.json`,
             walletUrl: process.env.NEAR_WALLET_URL || 'http://localhost:4000/wallet',
             contractName: CONTRACT_NAME,
             helperUrl: process.env.NEAR_HELPER_URL || 'http://localhost:3000',
@@ -66,14 +66,6 @@ function getConfig(env) {
         return {
             networkId: 'shared-test',
             nodeUrl: process.env.NEAR_CLI_RPC_SERVER_URL || 'https://rpc.ci-testnet.near.org',
-            headers: { 'x-api-key': process.env.NEAR_CLI_RPC_SERVER_API_KEY },
-            contractName: CONTRACT_NAME,
-            masterAccount: 'test.near',
-        };
-    case 'ci-betanet':
-        return {
-            networkId: 'shared-test-staging',
-            nodeUrl: process.env.NEAR_CLI_RPC_SERVER_URL || 'https://rpc.ci-betanet.near.org',
             headers: { 'x-api-key': process.env.NEAR_CLI_RPC_SERVER_API_KEY },
             contractName: CONTRACT_NAME,
             masterAccount: 'test.near',

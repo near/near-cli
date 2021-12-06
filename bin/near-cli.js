@@ -225,6 +225,12 @@ yargs // eslint-disable-line
         alias: 'v',
         default: false
     })
+    .option('force', {
+        desc: 'Forcefully execute the desired action even if it is unsafe to do so',
+        type: 'boolean',
+        default: false,
+        alias: 'f'
+    })
     .middleware(require('../middleware/initial-balance'))
     .middleware(require('../middleware/print-options'))
     .middleware(require('../middleware/key-store'))
