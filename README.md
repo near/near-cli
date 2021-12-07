@@ -101,15 +101,28 @@ export NEAR_ENV=mainnet
 ---
 
 ### Custom RPC server selection
-You can set your RPC server URL with the next command. Note, that this command will replace the RPC server for all networks except `local/localnet`. Clear it in case you want to get back to the default RPC server.
+You can set custom RPC server URL by setting this env variables:
 ```bash
-export NEAR_CLI_RPC_SERVER_URL=<put_your_rpc_server_url_here>
+NEAR_CLI_MAINNET_RPC_SERVER_URL
+NEAR_CLI_TESTNET_RPC_SERVER_URL
+NEAR_CLI_BETANET_RPC_SERVER_URL
+NEAR_CLI_GUILDNET_RPC_SERVER_URL
+NEAR_CLI_GUILDNET_RPC_SERVER_URL
+NEAR_CLI_CI_RPC_SERVER_URL
 ```
-Some RPC servers may require that you provide a valid API key to use them.  NEAR CLI supports passing an API key using the `x-api-key` request header for providers that do not include the API key in the RPC URL itself.
+Clear them in case you want to get back to the default RPC server.
 
-You can control the value that NEAR-CLI provides by setting the next environment variable:
+Example:
 ```bash
-export NEAR_CLI_RPC_SERVER_API_KEY=<put_your_x_api_key_here>
+export NEAR_CLI_TESTNET_RPC_SERVER_URL=<put_your_rpc_server_url_here>
+``` 
+
+### RPC server API Keys
+Some RPC servers may require that you provide a valid API key to use them.
+
+You can set `x-api-key` for a server by running next command 
+```bash
+near set-api-key <rpc-server-url> <api-key>
 ```
 ---
 
