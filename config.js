@@ -10,7 +10,9 @@ function getConfig(env) {
         return {
             networkId: 'mainnet',
             nodeUrl: process.env.NEAR_CLI_RPC_SERVER_URL || 'https://rpc.mainnet.near.org',
-            headers: { 'x-api-key': getXApiKey(this.nodeUrl) },
+            headers: { 'x-api-key': function() {
+                return getXApiKey(this.nodeUrl);
+            }},
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.near.org',
             helperUrl: 'https://helper.mainnet.near.org',
@@ -22,7 +24,9 @@ function getConfig(env) {
         return {
             networkId: 'testnet',
             nodeUrl: process.env.NEAR_CLI_RPC_SERVER_URL || 'https://rpc.testnet.near.org',
-            headers: { 'x-api-key': getXApiKey(this.nodeUrl) },
+            headers: { 'x-api-key': function() {
+                return getXApiKey(this.nodeUrl);
+            }},
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.testnet.near.org',
             helperUrl: 'https://helper.testnet.near.org',
@@ -33,7 +37,9 @@ function getConfig(env) {
         return {
             networkId: 'betanet',
             nodeUrl: process.env.NEAR_CLI_RPC_SERVER_URL || 'https://rpc.betanet.near.org',
-            headers: { 'x-api-key': getXApiKey(this.nodeUrl) },
+            headers: { 'x-api-key': function() {
+                return getXApiKey(this.nodeUrl);
+            }},
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.betanet.near.org',
             helperUrl: 'https://helper.betanet.near.org',
@@ -44,7 +50,9 @@ function getConfig(env) {
         return {
             networkId: 'guildnet',
             nodeUrl: process.env.NEAR_CLI_RPC_SERVER_URL || 'https://rpc.openshards.io',
-            headers: { 'x-api-key': getXApiKey(this.nodeUrl) },
+            headers: { 'x-api-key': function() {
+                return getXApiKey(this.nodeUrl);
+            }},
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.openshards.io',
             helperUrl: 'https://helper.openshards.io',
@@ -55,7 +63,9 @@ function getConfig(env) {
         return {
             networkId: process.env.NEAR_CLI_LOCALNET_NETWORK_ID || 'local',
             nodeUrl: process.env.NEAR_NODE_URL || 'http://localhost:3030',
-            headers: { 'x-api-key': getXApiKey(this.nodeUrl) },
+            headers: { 'x-api-key': function() {
+                return getXApiKey(this.nodeUrl);
+            }},
             keyPath: process.env.NEAR_CLI_LOCALNET_KEY_PATH || `${process.env.HOME}/.near/validator_key.json`,
             walletUrl: process.env.NEAR_WALLET_URL || 'http://localhost:4000/wallet',
             contractName: CONTRACT_NAME,
@@ -68,7 +78,9 @@ function getConfig(env) {
         return {
             networkId: 'shared-test',
             nodeUrl: process.env.NEAR_CLI_RPC_SERVER_URL || 'https://rpc.ci-testnet.near.org',
-            headers: { 'x-api-key': getXApiKey(this.nodeUrl) },
+            headers: { 'x-api-key': function() {
+                return getXApiKey(this.nodeUrl);
+            }},
             contractName: CONTRACT_NAME,
             masterAccount: 'test.near',
         };

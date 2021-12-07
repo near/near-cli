@@ -18,7 +18,7 @@ function getXApiKey(rpcServerUrl) {
     if (!rpcServerUrl) {
         throw new Error(`Empty value provided. RPC Server URL: ${rpcServerUrl}`);
     }
-    return getShellSettings()?.rpcServerApiKeys[rpcServerUrl];
+    return getShellSettings().rpcServerApiKeys[rpcServerUrl];
 }
 
 module.exports = {
