@@ -116,14 +116,16 @@ Example:
 ```bash
 export NEAR_CLI_TESTNET_RPC_SERVER_URL=<put_your_rpc_server_url_here>
 ``` 
-
+---
 ### RPC server API Keys
 Some RPC servers may require that you provide a valid API key to use them.
 
-You can set `x-api-key` for a server by running next command 
+You can set `x-api-key` for a server by running the next command:
 ```bash
 near set-api-key <rpc-server-url> <api-key>
 ```
+This API Key will be saved in a config and used for each command you execute with this RPC URL.
+
 ---
 
 ## Access Keys
