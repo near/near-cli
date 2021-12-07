@@ -1,0 +1,11 @@
+Account testaccount163890127715061.test.near
+{
+  amount: '100000000000000000000000000',
+  locked: '0',
+  code_hash: '11111111111111111111111111111111',
+  storage_usage: 182,
+  storage_paid_at: 0,
+  block_height: 597777,
+  block_hash: 'Fyfui8Nqc3LZUVoBLKVQUtwBMpWwuKohocikPSEuRgwZ',
+  formattedAmount: '100'
+}
