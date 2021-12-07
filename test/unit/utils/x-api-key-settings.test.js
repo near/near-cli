@@ -7,6 +7,8 @@ const RPC_SERVER_API_KEY_1 = '1814c8b3-d7e1-4145-ba75-d6fc9787b27d';
 const RPC_SERVER_API_KEY_2 = '2814c8b3-d7e1-4145-ba75-d6fc9787b27d';
 const RPC_SERVER_API_KEY_3 = '3814c8b3-d7e1-4145-ba75-d6fc9787b27d';
 
+const EMPTY_VALUES = [null, undefined, ''];
+
 describe('x-api-key-settings tests', () => {
     // set tests
     test('set and get functionality works', async () => {
@@ -21,39 +23,27 @@ describe('x-api-key-settings tests', () => {
         expect(apiKey3FromConfig).toEqual(RPC_SERVER_API_KEY_3);
     });
 
-    test('set with null throws error', async () => {
-        expect(() => {
-            setXApiKey(null, RPC_SERVER_API_KEY_1);
-        }).toThrow(`Empty value provided. RPC Server URL: null, X-API-Key: ${RPC_SERVER_API_KEY_1}`);
+    test('set API key for empty URL', async () => {
+        EMPTY_VALUES.map(val => {
+            expect(() => {
+                setXApiKey(val, RPC_SERVER_API_KEY_1);
+            }).toThrow('Empty value provided');
+        });
     });
 
-    test('set with undefined throws error', async () => {
-        expect(() => {
-            setXApiKey(undefined, RPC_SERVER_API_KEY_1);
-        }).toThrow(`Empty value provided. RPC Server URL: undefined, X-API-Key: ${RPC_SERVER_API_KEY_1}`);
+    test('set empty API key', async () => {
+        EMPTY_VALUES.map(val => {
+            expect(() => {
+                setXApiKey(RPC_SERVER_URL_1, val);
+            }).toThrow('Empty value provided');
+        });
     });
 
-    test('set with empty string throws error', async () => {
-        expect(() => {
-            setXApiKey(RPC_SERVER_URL_1, '');
-        }).toThrow(`Empty value provided. RPC Server URL: ${RPC_SERVER_URL_1}, X-API-Key: `);
-    });
-
-    test('get API key for undefined throws error', async () => {
-        expect(() => {
-            getXApiKey(undefined);
-        }).toThrow('Empty value provided. RPC Server URL: undefined');
-    });
-
-    test('get API key for empty string', async () => {
-        expect(() => {
-            getXApiKey('');
-        }).toThrow('Empty value provided. RPC Server URL: ');
-    });
-
-    test('get API key for null', async () => {
-        expect(() => {
-            getXApiKey(null);
-        }).toThrow('Empty value provided. RPC Server URL: null');
+    test('get API key for empty value', async () => {
+        EMPTY_VALUES.map(val => {
+            expect(() => {
+                getXApiKey(val);
+            }).toThrow('Empty value provided');
+        });
     });
 });

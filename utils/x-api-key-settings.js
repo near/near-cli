@@ -2,9 +2,7 @@ const { saveShellSettings, getShellSettings } = require('./settings');
 
 function setXApiKey(rpcServerUrl, xApiKey) {
     if (!rpcServerUrl || !xApiKey) {
-        throw new Error(
-            `Empty value provided. RPC Server URL: ${rpcServerUrl}, X-API-Key: ${xApiKey}`
-        );
+        throw new Error('Empty value provided');
     }
     let shellSettings = getShellSettings();
     if (!shellSettings.rpcServerApiKeys) {
@@ -16,7 +14,7 @@ function setXApiKey(rpcServerUrl, xApiKey) {
 
 function getXApiKey(rpcServerUrl) {
     if (!rpcServerUrl) {
-        throw new Error(`Empty value provided. RPC Server URL: ${rpcServerUrl}`);
+        throw new Error('Empty value provided');
     }
     const rpcServerApiKeys = getShellSettings().rpcServerApiKeys;
     return rpcServerApiKeys ? rpcServerApiKeys[rpcServerUrl] : undefined;
