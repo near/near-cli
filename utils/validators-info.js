@@ -8,7 +8,7 @@ async function validatorsInfo(near, blockNumberOrHash) {
         blockNumberOrHash = Number(blockNumberOrHash);
     }
     const genesisConfig = await near.connection.provider.sendJsonRpc('EXPERIMENTAL_genesis_config', {});
-    const protocolConfig = await near.connection.provider.sendJsonRpc('EXPERIMENTAL_protocol_config', { "finality": "final" });
+    const protocolConfig = await near.connection.provider.sendJsonRpc('EXPERIMENTAL_protocol_config', { 'finality': 'final' });
     const result = await near.connection.provider.sendJsonRpc('validators', [blockNumberOrHash]);
     result.genesisConfig = genesisConfig;
     result.protocolConfig = protocolConfig;
