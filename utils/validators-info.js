@@ -21,7 +21,7 @@ async function showValidatorsTable(near, blockNumberOrHash) {
     const seatPrice = validators.findSeatPrice(
         result.current_validators,
         result.numSeats,
-        result.genesisConfig.minimum_stake_ratio[1],
+        result.genesisConfig.minimum_stake_ratio,
         result.protocolConfig.protocol_version);
     result.current_validators = result.current_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     var validatorsTable = new AsciiTable();
@@ -44,7 +44,7 @@ async function showNextValidatorsTable(near) {
     const nextSeatPrice = validators.findSeatPrice(
         result.next_validators,
         result.numSeats,
-        result.genesisConfig.minimum_stake_ratio[1],
+        result.genesisConfig.minimum_stake_ratio,
         result.protocolConfig.protocol_version);
     result.next_validators = result.next_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     const diff = validators.diffEpochValidators(result.current_validators, result.next_validators);
@@ -81,7 +81,7 @@ async function showProposalsTable(near) {
     const expectedSeatPrice = validators.findSeatPrice(
         combinedProposals,
         result.numSeats,
-        result.genesisConfig.minimum_stake_ratio[1],
+        result.genesisConfig.minimum_stake_ratio,
         result.protocolConfig.protocol_version);
     const combinedPassingProposals = combinedProposals.filter((p) => new BN(p.stake).gte(expectedSeatPrice));
     console.log(`Proposals for the epoch after next (new: ${proposals.size}, passing: ${combinedPassingProposals.length}, expected seat price = ${utils.format.formatNearAmount(expectedSeatPrice, 0)})`);
