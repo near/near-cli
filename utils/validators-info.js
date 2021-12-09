@@ -31,7 +31,7 @@ async function showValidatorsTable(near, blockNumberOrHash) {
         validatorsTable.addRow(
             validator.account_id,
             utils.format.formatNearAmount(validator.stake, 0),
-            new BN(validator.stake).div(seatPrice),
+            getNumberOfSeats(result.protocolConfig.protocol_version, validator.stake, seatPrice),
             `${Math.floor(validator.num_produced_blocks / validator.num_expected_blocks * 10000) / 100}%`,
             validator.num_produced_blocks,
             validator.num_expected_blocks);
@@ -55,12 +55,12 @@ async function showNextValidatorsTable(near) {
         'New',
         validator.account_id,
         utils.format.formatNearAmount(validator.stake, 0),
-        new BN(validator.stake).div(nextSeatPrice)));
+        getNumberOfSeats(result.protocolConfig.protocol_version, validator.stake, nextSeatPrice)));
     diff.changedValidators.forEach((changeValidator) => nextValidatorsTable.addRow(
         'Rewarded',
         changeValidator.next.account_id,
         `${utils.format.formatNearAmount(changeValidator.current.stake, 0)} -> ${utils.format.formatNearAmount(changeValidator.next.stake, 0)}`,
-        new BN(changeValidator.next.stake).div(nextSeatPrice)));
+        getNumberOfSeats(result.protocolConfig.protocol_version, changeValidator.next.stake, nextSeatPrice)));
     diff.removedValidators.forEach((validator) => nextValidatorsTable.addRow('Kicked out', validator.account_id, '-', '-'));
     console.log(nextValidatorsTable.toString());
 }
@@ -102,13 +102,18 @@ async function showProposalsTable(near) {
             kind,
             proposal.account_id,
             stake_fmt,
-            new BN(proposal.stake).div(expectedSeatPrice)
+            getNumberOfSeats(result.protocolConfig.protocol_version, proposal.stake, expectedSeatPrice)
         );
     });
     console.log(proposalsTable.toString());
     console.log('Expected seat price is calculated based on observed so far proposals and validators.');
     console.log('It can change from new proposals or some validators going offline.');
     console.log('Note: this currently doesn\'t account for offline kickouts and rewards for current epoch');
+}
+
+// starting from protocol version 49 each validator has 1 seat
+function getNumberOfSeats(protocolVersion, stake, seatPrice) {
+    return protocolVersion < 49 ? new BN(stake).div(seatPrice) : new BN(1);
 }
 
 module.exports = { showValidatorsTable, showNextValidatorsTable, showProposalsTable };
