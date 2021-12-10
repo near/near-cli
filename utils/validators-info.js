@@ -8,15 +8,21 @@ async function validatorsInfo(near, blockNumberOrHash) {
         blockNumberOrHash = Number(blockNumberOrHash);
     }
     const genesisConfig = await near.connection.provider.sendJsonRpc('EXPERIMENTAL_genesis_config', {});
+    const protocolConfig = await near.connection.provider.sendJsonRpc('EXPERIMENTAL_protocol_config', { 'finality': 'final' });
     const result = await near.connection.provider.sendJsonRpc('validators', [blockNumberOrHash]);
     result.genesisConfig = genesisConfig;
+    result.protocolConfig = protocolConfig;
     result.numSeats = genesisConfig.num_block_producer_seats + genesisConfig.avg_hidden_validator_seats_per_shard.reduce((a, b) => a + b);
     return result;
 }
 
 async function showValidatorsTable(near, blockNumberOrHash) {
     const result = await validatorsInfo(near, blockNumberOrHash);
-    const seatPrice = validators.findSeatPrice(result.current_validators, result.numSeats);
+    const seatPrice = validators.findSeatPrice(
+        result.current_validators,
+        result.numSeats,
+        result.genesisConfig.minimum_stake_ratio,
+        result.protocolConfig.protocol_version);
     result.current_validators = result.current_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     var validatorsTable = new AsciiTable();
     validatorsTable.setHeading('Validator Id', 'Stake', '# Seats', '% Online', 'Blocks produced', 'Blocks expected');
@@ -25,7 +31,7 @@ async function showValidatorsTable(near, blockNumberOrHash) {
         validatorsTable.addRow(
             validator.account_id,
             utils.format.formatNearAmount(validator.stake, 0),
-            new BN(validator.stake).div(seatPrice),
+            getNumberOfSeats(result.protocolConfig.protocol_version, validator.stake, seatPrice),
             `${Math.floor(validator.num_produced_blocks / validator.num_expected_blocks * 10000) / 100}%`,
             validator.num_produced_blocks,
             validator.num_expected_blocks);
@@ -35,7 +41,11 @@ async function showValidatorsTable(near, blockNumberOrHash) {
 
 async function showNextValidatorsTable(near) {
     const result = await validatorsInfo(near, null);
-    const nextSeatPrice = validators.findSeatPrice(result.next_validators, result.numSeats);
+    const nextSeatPrice = validators.findSeatPrice(
+        result.next_validators,
+        result.numSeats,
+        result.genesisConfig.minimum_stake_ratio,
+        result.protocolConfig.protocol_version);
     result.next_validators = result.next_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     const diff = validators.diffEpochValidators(result.current_validators, result.next_validators);
     console.log(`\nNext validators (total: ${result.next_validators.length}, seat price: ${utils.format.formatNearAmount(nextSeatPrice, 0)}):`);
@@ -45,12 +55,12 @@ async function showNextValidatorsTable(near) {
         'New',
         validator.account_id,
         utils.format.formatNearAmount(validator.stake, 0),
-        new BN(validator.stake).div(nextSeatPrice)));
+        getNumberOfSeats(result.protocolConfig.protocol_version, validator.stake, nextSeatPrice)));
     diff.changedValidators.forEach((changeValidator) => nextValidatorsTable.addRow(
-        'Rewarded', 
-        changeValidator.next.account_id, 
+        'Rewarded',
+        changeValidator.next.account_id,
         `${utils.format.formatNearAmount(changeValidator.current.stake, 0)} -> ${utils.format.formatNearAmount(changeValidator.next.stake, 0)}`,
-        new BN(changeValidator.next.stake).div(nextSeatPrice)));
+        getNumberOfSeats(result.protocolConfig.protocol_version, changeValidator.next.stake, nextSeatPrice)));
     diff.removedValidators.forEach((validator) => nextValidatorsTable.addRow('Kicked out', validator.account_id, '-', '-'));
     console.log(nextValidatorsTable.toString());
 }
@@ -68,7 +78,11 @@ async function showProposalsTable(near) {
     let proposals = new Map();
     result.current_proposals.forEach((p) => proposals.set(p.account_id, p));
     const combinedProposals = combineValidatorsAndProposals(result.current_validators, proposals);
-    const expectedSeatPrice = validators.findSeatPrice(combinedProposals, result.numSeats);
+    const expectedSeatPrice = validators.findSeatPrice(
+        combinedProposals,
+        result.numSeats,
+        result.genesisConfig.minimum_stake_ratio,
+        result.protocolConfig.protocol_version);
     const combinedPassingProposals = combinedProposals.filter((p) => new BN(p.stake).gte(expectedSeatPrice));
     console.log(`Proposals for the epoch after next (new: ${proposals.size}, passing: ${combinedPassingProposals.length}, expected seat price = ${utils.format.formatNearAmount(expectedSeatPrice, 0)})`);
     const proposalsTable = new AsciiTable();
@@ -88,13 +102,18 @@ async function showProposalsTable(near) {
             kind,
             proposal.account_id,
             stake_fmt,
-            new BN(proposal.stake).div(expectedSeatPrice)
+            getNumberOfSeats(result.protocolConfig.protocol_version, proposal.stake, expectedSeatPrice)
         );
     });
     console.log(proposalsTable.toString());
     console.log('Expected seat price is calculated based on observed so far proposals and validators.');
     console.log('It can change from new proposals or some validators going offline.');
     console.log('Note: this currently doesn\'t account for offline kickouts and rewards for current epoch');
+}
+
+// starting from protocol version 49 each validator has 1 seat
+function getNumberOfSeats(protocolVersion, stake, seatPrice) {
+    return protocolVersion < 49 ? new BN(stake).div(seatPrice) : new BN(1);
 }
 
 module.exports = { showValidatorsTable, showNextValidatorsTable, showProposalsTable };
