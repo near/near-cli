@@ -2,6 +2,7 @@ const {
     KeyPair,
     transactions,
     DEFAULT_FUNCTION_CALL_GAS,
+    utils,
 } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
@@ -69,6 +70,8 @@ async function devDeploy(options) {
     const near = await connect(options);
     const accountId = await createDevAccountIfNeeded({ ...options, near });
     const account = await near.account(accountId);
+    let prevState = await account.state();
+    let prevCodeHash = prevState.code_hash;
 
     console.log(
         `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
