@@ -1,9 +1,13 @@
-const { KeyPair } = require('near-api-js');
+const {
+    KeyPair,
+    transactions,
+    DEFAULT_FUNCTION_CALL_GAS,
+} = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { readFile, writeFile, mkdir } = require('fs').promises;
+const { readFileSync } = require('fs');
 const { existsSync } = require('fs');
-const { deploy } = require('../');
 
 const { PROJECT_KEY_DIR } = require('../middleware/key-store');
 
@@ -64,14 +68,38 @@ async function devDeploy(options) {
     }
     const near = await connect(options);
     const accountId = await createDevAccountIfNeeded({ ...options, near });
+    const account = await near.account(accountId);
 
     console.log(
         `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
-    const contractData = await readFile(wasmFile);
-    const account = await near.account(accountId);
-    const result = await account.deployContract(contractData);
+
+    // Deploy with init function and args
+    const txs = [transactions.deployContract(readFileSync(options.wasmFile))];
+
+    if (options.initFunction) {
+        if (!options.initArgs) {
+            console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');
+            await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: false, error: 'Must add initialization arguments' }, options);
+            throw Error('--initArgs is a required argument if --initFunction where specified');
+        }
+        txs.push(transactions.functionCall(
+            options.initFunction,
+            Buffer.from(options.initArgs),
+            options.initGas,
+            utils.format.parseNearAmount(options.initDeposit)),
+        );
+    }
+
+    const result = await account.signAndSendTransaction({
+        receiverId: accountId,
+        actions: txs
+    });
     inspectResponse.prettyPrintResponse(result, options);
-    console.log(`Done deploying to ${accountId}`);
+    let state = await account.state();
+    let codeHash = state.code_hash;
+    await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: true, code_hash: codeHash, is_same_contract: prevCodeHash === codeHash, contract_id: options.accountId }, options);
+    eventtracking.trackDeployedContract();
+    console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${accountId}`);
 }
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount }) {
