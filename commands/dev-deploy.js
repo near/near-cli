@@ -77,14 +77,14 @@ async function devDeploy(options) {
         `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
 
     // Deploy with init function and args
-    const txs = [transactions.deployContract(readFileSync(options.wasmFile))];
+    const actions = [transactions.deployContract(readFileSync(options.wasmFile))];
 
     if (options.initFunction) {
         if (!options.initArgs) {
             await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: false, error: 'Must add initialization arguments' }, options);
             throw Error('Must add initialization arguments.\nExample: near dev-deploy --initFunction "new" --initArgs \'{"key": "value"}\'');
         }
-        txs.push(transactions.functionCall(
+        actions.push(transactions.functionCall(
             options.initFunction,
             Buffer.from(options.initArgs),
             options.initGas,
@@ -94,7 +94,7 @@ async function devDeploy(options) {
 
     const result = await account.signAndSendTransaction({
         receiverId: accountId,
-        actions: txs
+        actions: actions
     });
     inspectResponse.prettyPrintResponse(result, options);
     let state = await account.state();
