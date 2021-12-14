@@ -3,6 +3,7 @@ const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { readFile, writeFile, mkdir } = require('fs').promises;
 const { existsSync } = require('fs');
+const { deploy } = require('../');
 
 const { PROJECT_KEY_DIR } = require('../middleware/key-store');
 
@@ -18,6 +19,23 @@ module.exports = {
             desc: 'Path to wasm file to deploy',
             type: 'string',
             default: './out/main.wasm'
+        })
+        .option('initFunction', {
+            desc: 'Initialization method',
+            type: 'string'
+        })
+        .option('initArgs', {
+            desc: 'Initialization arguments',
+        })
+        .option('initGas', {
+            desc: 'Gas for initialization call',
+            type: 'number',
+            default: DEFAULT_FUNCTION_CALL_GAS
+        })
+        .option('initDeposit', {
+            desc: 'Deposit in Ⓝ to send for initialization call',
+            type: 'string',
+            default: '0'
         })
         .option('init', {
             desc: 'Create new account for deploy (even if there is one already available)',
@@ -46,6 +64,7 @@ async function devDeploy(options) {
     }
     const near = await connect(options);
     const accountId = await createDevAccountIfNeeded({ ...options, near });
+
     console.log(
         `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
     const contractData = await readFile(wasmFile);
