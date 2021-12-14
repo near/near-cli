@@ -16,7 +16,7 @@ const inspectResponse = require('../utils/inspect-response');
 
 
 module.exports = {
-    command: 'dev-deploy [wasmFile]',
+    command: 'dev-deploy [wasmFile] [initFunction] [initArgs] [initGas] [initDeposit] [initialBalance] [force]',
     desc: 'deploy your smart contract using temporary account (TestNet only)',
     builder: (yargs) => yargs
         .option('wasmFile', {
@@ -41,15 +41,15 @@ module.exports = {
             type: 'string',
             default: '0'
         })
-        .option('init', {
-            desc: 'Create new account for deploy (even if there is one already available)',
-            type: 'boolean',
-            default: false
-        })
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
             default: '100'
+        })
+        .option('init', {
+            desc: 'Create new account for deploy (even if there is one already available)',
+            type: 'boolean',
+            default: false
         })
         .alias({
             'init': ['force', 'f'],
