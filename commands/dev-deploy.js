@@ -78,9 +78,8 @@ async function devDeploy(options) {
 
     if (options.initFunction) {
         if (!options.initArgs) {
-            console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');
             await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: false, error: 'Must add initialization arguments' }, options);
-            throw Error('--initArgs is a required argument if --initFunction where specified');
+            throw Error('Must add initialization arguments.\nExample: near dev-deploy --initFunction "new" --initArgs \'{"key": "value"}\'');
         }
         txs.push(transactions.functionCall(
             options.initFunction,
