@@ -1,7 +1,13 @@
-const { KeyPair } = require('near-api-js');
+const {
+    KeyPair,
+    transactions,
+    DEFAULT_FUNCTION_CALL_GAS,
+    utils,
+} = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const { readFile, writeFile, mkdir } = require('fs').promises;
+const { readFileSync } = require('fs');
 const { existsSync } = require('fs');
 
 const { PROJECT_KEY_DIR } = require('../middleware/key-store');
@@ -11,7 +17,7 @@ const inspectResponse = require('../utils/inspect-response');
 
 
 module.exports = {
-    command: 'dev-deploy [wasmFile]',
+    command: 'dev-deploy [wasmFile] [initFunction] [initArgs] [initGas] [initDeposit] [initialBalance] [force]',
     desc: 'deploy your smart contract using temporary account (TestNet only)',
     builder: (yargs) => yargs
         .option('wasmFile', {
@@ -19,15 +25,32 @@ module.exports = {
             type: 'string',
             default: './out/main.wasm'
         })
-        .option('init', {
-            desc: 'Create new account for deploy (even if there is one already available)',
-            type: 'boolean',
-            default: false
+        .option('initFunction', {
+            desc: 'Initialization method',
+            type: 'string'
+        })
+        .option('initArgs', {
+            desc: 'Initialization arguments',
+        })
+        .option('initGas', {
+            desc: 'Gas for initialization call',
+            type: 'number',
+            default: DEFAULT_FUNCTION_CALL_GAS
+        })
+        .option('initDeposit', {
+            desc: 'Deposit in Ⓝ to send for initialization call',
+            type: 'string',
+            default: '0'
         })
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
             default: '100'
+        })
+        .option('init', {
+            desc: 'Create new account for deploy (even if there is one already available)',
+            type: 'boolean',
+            default: false
         })
         .alias({
             'init': ['force', 'f'],
@@ -46,13 +69,39 @@ async function devDeploy(options) {
     }
     const near = await connect(options);
     const accountId = await createDevAccountIfNeeded({ ...options, near });
+    const account = await near.account(accountId);
+    let prevState = await account.state();
+    let prevCodeHash = prevState.code_hash;
+
     console.log(
         `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${wasmFile}`);
-    const contractData = await readFile(wasmFile);
-    const account = await near.account(accountId);
-    const result = await account.deployContract(contractData);
+
+    // Deploy with init function and args
+    const actions = [transactions.deployContract(readFileSync(options.wasmFile))];
+
+    if (options.initFunction) {
+        if (!options.initArgs) {
+            await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: false, error: 'Must add initialization arguments' }, options);
+            throw Error('Must add initialization arguments.\nExample: near dev-deploy --initFunction "new" --initArgs \'{"key": "value"}\'');
+        }
+        actions.push(transactions.functionCall(
+            options.initFunction,
+            Buffer.from(options.initArgs),
+            options.initGas,
+            utils.format.parseNearAmount(options.initDeposit)),
+        );
+    }
+
+    const result = await account.signAndSendTransaction({
+        receiverId: accountId,
+        actions: actions
+    });
     inspectResponse.prettyPrintResponse(result, options);
-    console.log(`Done deploying to ${accountId}`);
+    let state = await account.state();
+    let codeHash = state.code_hash;
+    await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: true, code_hash: codeHash, is_same_contract: prevCodeHash === codeHash, contract_id: options.accountId }, options);
+    eventtracking.trackDeployedContract();
+    console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${accountId}`);
 }
 
 async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount }) {

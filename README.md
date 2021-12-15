@@ -633,13 +633,18 @@ near deploy --accountId example-contract.testnet --wasmFile out/example.wasm --i
 
 > Creates a development account and deploys a smart contract to it. No access keys needed. **_(`testnet` only)_**
 
--   arguments: `.wasmFile`
--   options: `default`
+-   options: `wasmFile`, `initFunction`, `initArgs`, `initGas`, `initDeposit`, `initialBalance`, `force`
 
 **Example:**
 
 ```bash
-near dev-deploy out/main.wasm
+near dev-deploy --wasmFile out/example.wasm
+```
+
+**Initialize Example:**
+
+```bash
+near dev-deploy --wasmFile out/example.wasm --initFunction new --initArgs '{"owner_id": "example-contract.testnet", "total_supply": "10000000"}'
 ```
 
 <details>
