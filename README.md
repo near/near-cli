@@ -42,6 +42,7 @@ _Click on a command for more information and examples._
 | [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](http://docs.near.org/docs/concepts/epoch) _after_ next                                    |
 | **REPL**                                              |                                                                                                                                        |
 | [`near repl`](#near-repl)                             | launches an interactive connection to the NEAR blockchain ([REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) |
+|                                                       | can also run a script passed which exports an async main function that takes a [context](./context/index.d.ts) object                  |
 
 [ [**OPTIONS**](#options) ]
 

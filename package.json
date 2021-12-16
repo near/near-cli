@@ -73,6 +73,7 @@
     "utils",
     "config.js",
     "get-config.js",
-    "test_environment.js"
+    "test_environment.js",
+    "context"
   ]
 }
