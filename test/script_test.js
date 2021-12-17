@@ -1,11 +1,12 @@
 const assert = require('assert');
 
 
-async function main(context) {
-    assert(context.account, "account Id should exist");
-    assert(context.account.accountId === "test.near");
-    assert(context.near.config._[0] == 'repl');
-    assert(context.nearAPI.keyStores);
+async function main({account, near, nearAPI, argv}) {
+    assert(account, "accountId should have been passed");
+    assert(account.accountId === "test.near");
+    assert(near.config._[0] == 'repl');
+    assert(nearAPI.keyStores);
+    assert(argv.includes("arg"))
 }
 
 module.exports.main = main;

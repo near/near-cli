@@ -1,19 +1,23 @@
 const eventtracking = require('../utils/eventtracking');
-const resolve = require('path').resolve;
+const {resolve, relative } = require('path');
 
 module.exports = {
     command: 'repl',
     desc: 'launch interactive Node.js shell with NEAR connection available to use. The repl\'s initial context contains `nearAPI`, `near`and `account` if an accountId cli argument is provided. ' +
            'To load a script into the repl use  ".load script.js".\n\n' + 
+           'Use the the \'script\' option to pass context to a provided javascript file which exports a main function. Arguments after "--" are passed to script \n\n' +
            'USAGE:\n' +
-           '    near repl --accountId bob\n    > console.log(account)\n    > .load script.js',
+           '    near repl --accountId bob\n    > console.log(account)\n    > .load script.js\n\n' +
+           '    near repl -s ./scripts/delpoyContracts.js\n' +
+           '    near repl -s ./scripts/run.js -- test.near bob.test.near\n',
     builder: (yargs) => yargs
         .option('script', {
-            desc: 'Path to a JS file which exports a function `main`, which takes a `context` object\nwhich includes `nearAPI`, `near`, and `account` if `--accountId` is passed',
+            desc: '\'repl\': Path to a JS file which exports an async function `main`,\nwhich takes a `context` object.',
             type: 'string',
             alias: 's',
         }),
     handler: async (argv) => {
+        const extraArgs = argv._.slice(1);
         const {script, accountId } = argv;
         await eventtracking.askForConsentIfNeeded(argv);
         const nearContext = {
@@ -23,8 +27,18 @@ module.exports = {
         if (accountId) {
             nearContext.account = await nearContext.near.account(accountId);
         }
+        if (extraArgs.length > 0) {
+          nearContext.argv = extraArgs;
+        }
         if (script) {
-          await require(resolve(process.cwd(), script)).main(nearContext);
+          const scriptPath = resolve(process.cwd(), script);
+          try {
+            await require(scriptPath).main(nearContext);
+          } catch (error) {
+            console.error(`${scriptPath} Failed\n`);
+            console.error(error);
+            process.exit(1);
+          }
         } else {
             const repl = require('repl');
             const replContext = repl.start('> ').context;
