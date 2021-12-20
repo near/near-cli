@@ -28,7 +28,7 @@
   "devDependencies": {
     "danger": "^10.6.6",
     "danger-plugin-yarn": "^1.3.2",
-    "eslint": "^7.0.0",
+    "eslint": "^8.5.0",
     "jest": "^26.1.0",
     "strip-ansi": "^7.0.0",
     "strip-ansi-cli": "^3.0.0"
