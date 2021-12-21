@@ -1,5 +1,5 @@
 const eventtracking = require('../utils/eventtracking');
-const {resolve, relative } = require('path');
+const {resolve } = require('path');
 
 module.exports = {
     command: 'repl',
@@ -18,35 +18,35 @@ module.exports = {
         }),
     handler: async (argv) => {
         const extraArgs = argv._.slice(1);
-        const {script, accountId } = argv;
+        const { script, accountId } = argv;
         await eventtracking.askForConsentIfNeeded(argv);
         const nearContext = {
-          nearAPI: require('near-api-js'),
-          near: await require('../utils/connect')(argv),
+            nearAPI: require("near-api-js"),
+            near: await require("../utils/connect")(argv),
         };
         if (accountId) {
             nearContext.account = await nearContext.near.account(accountId);
         }
         if (extraArgs.length > 0) {
-          nearContext.argv = extraArgs;
+            nearContext.argv = extraArgs;
         }
         if (script) {
-          const scriptModule = loadScript(script);
-          try {
-            await scriptModule.main(nearContext);
-          } catch (error) {
-            console.error(`${script} Failed\n`);
-            console.error(error);
-            process.exit(1);
-          }
+            const scriptModule = loadScript(script);
+            try {
+                await scriptModule.main(nearContext);
+            } catch (error) {
+                console.error(`${script} Failed\n`);
+                console.error(error);
+                process.exit(1);
+            }
         } else {
-            const repl = require('repl');
-            const replContext = repl.start('> ').context;
-            const {near, nearAPI, account} = nearContext;
+            const repl = require("repl");
+            const replContext = repl.start("> ").context;
+            const { near, nearAPI, account } = nearContext;
             replContext.nearAPI = nearAPI;
             replContext.near = near;
             if (account) {
-              replContext.account = account;
+                replContext.account = account;
             }
         }
     }
