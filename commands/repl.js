@@ -31,11 +31,11 @@ module.exports = {
           nearContext.argv = extraArgs;
         }
         if (script) {
-          const scriptPath = resolve(process.cwd(), script);
+          const scriptModule = loadScript(script);
           try {
-            await require(scriptPath).main(nearContext);
+            await scriptModule.main(nearContext);
           } catch (error) {
-            console.error(`${scriptPath} Failed\n`);
+            console.error(`${script} Failed\n`);
             console.error(error);
             process.exit(1);
           }
@@ -51,3 +51,16 @@ module.exports = {
         }
     }
 };
+
+function loadScript(script) {
+    const scriptPath = script.startsWith(".")
+        ? resolve(process.cwd(), script)
+        : script;
+    try {
+        return require(scriptPath);
+    } catch (error) {
+        console.error(`Failed to load ${scriptPath}.\n`);
+        console.error(error);
+        process.exit(1);
+    }
+}
