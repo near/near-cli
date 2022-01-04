@@ -26,8 +26,8 @@ module.exports = {
         const { script, accountId } = argv;
         await eventtracking.askForConsentIfNeeded(argv);
         const nearContext = {
-            nearAPI: require("near-api-js"),
-            near: await require("../utils/connect")(argv),
+            nearAPI: require('near-api-js'),
+            near: await require('../utils/connect')(argv),
         };
         if (accountId) {
             nearContext.account = await nearContext.near.account(accountId);
@@ -45,8 +45,8 @@ module.exports = {
                 process.exit(1);
             }
         } else {
-            const repl = require("repl");
-            const replContext = repl.start("> ").context;
+            const repl = require('repl');
+            const replContext = repl.start('> ').context;
             const { near, nearAPI, account } = nearContext;
             replContext.nearAPI = nearAPI;
             replContext.near = near;
@@ -58,11 +58,11 @@ module.exports = {
 };
 
 function loadScript(script) {
-    const scriptPath = script.startsWith(".")
+    const scriptPath = script.startsWith('.')
         ? resolve(process.cwd(), script)
         : script;
     try {
-        if (scriptPath.endsWith(".ts")) {
+        if (scriptPath.endsWith('.ts')) {
             loadTs(scriptPath);
         }
         return require(scriptPath);
@@ -75,7 +75,7 @@ function loadScript(script) {
 
 function loadTs(scriptPath) {
     try {
-        require("ts-node").register({ transpileOnly: true });
+        require('ts-node').register({ transpileOnly: true });
     } catch (error) {
         console.error(
             `Failed to load \`ts-node\` for typescript file ${scriptPath}. Probably need to install \`ts-node\` and \`typescript\`.\n`
