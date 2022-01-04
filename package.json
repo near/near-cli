@@ -31,7 +31,9 @@
     "eslint": "^7.0.0",
     "jest": "^26.1.0",
     "strip-ansi": "^7.0.0",
-    "strip-ansi-cli": "^3.0.0"
+    "strip-ansi-cli": "^3.0.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
   },
   "dependencies": {
     "ascii-table": "0.0.9",

@@ -57,9 +57,24 @@ function loadScript(script) {
         ? resolve(process.cwd(), script)
         : script;
     try {
+        if (scriptPath.endsWith(".ts")) {
+            loadTs(scriptPath);
+        }
         return require(scriptPath);
     } catch (error) {
         console.error(`Failed to load ${scriptPath}.\n`);
+        console.error(error);
+        process.exit(1);
+    }
+}
+
+function loadTs(scriptPath) {
+    try {
+        require("ts-node").register({ transpileOnly: true });
+    } catch {
+        console.error(
+            `Failed to load \`ts-node\` for typescript file ${scriptPath}. Probably need to install \`ts-node\` and \`typescript\`.\n`
+        );
         console.error(error);
         process.exit(1);
     }
