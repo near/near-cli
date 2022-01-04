@@ -3,16 +3,21 @@ const {resolve } = require('path');
 
 module.exports = {
     command: 'repl',
-    desc: 'launch interactive Node.js shell with NEAR connection available to use. The repl\'s initial context contains `nearAPI`, `near`and `account` if an accountId cli argument is provided. ' +
+    desc: 'launch interactive Node.js shell with NEAR connection available to use.\n'+
+           'The repl\'s initial context contains `nearAPI`, `near` and `account`\n'+
+           'if an accountId cli argument is provided.\n' +
            'To load a script into the repl use  ".load script.js".\n\n' + 
-           'Use the the \'script\' option to pass context to a provided javascript file which exports a main function. Arguments after "--" are passed to script \n\n' +
+           'Use the the \'script\' option to pass context to a provided\n' +
+           'javascript/typescript file which exports a main function.\n' +
+           'Arguments after "--" are passed to script \n\n' +
            'USAGE:\n' +
            '    near repl --accountId bob\n    > console.log(account)\n    > .load script.js\n\n' +
            '    near repl -s ./scripts/delpoyContracts.js\n' +
-           '    near repl -s ./scripts/run.js -- test.near bob.test.near\n',
+           '    near repl -s ./scripts/run.js -- test.near bob.test.near\n' + 
+           '    near repl -s ./script.ts \n',
     builder: (yargs) => yargs
         .option('script', {
-            desc: '\'repl\': Path to a JS file which exports an async function `main`,\nwhich takes a `context` object.',
+            desc: '\'repl\': Path to a JS/TS file which exports an async function `main`,\nwhich takes a `context` object.',
             type: 'string',
             alias: 's',
         }),
