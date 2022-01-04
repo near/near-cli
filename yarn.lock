@@ -4355,10 +4355,10 @@ ncp@^2.0.0:
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
   integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
 
-near-api-js@^0.44.1:
-  version "0.44.1"
-  resolved "https://registry.npmjs.org/near-api-js/-/near-api-js-0.44.1.tgz#92f40b2260ccb181e3927e495edd9f141cfd84ef"
-  integrity sha512-c3kE5tBdlQJTKk9gC9CnToMnO2fSAuM/PRuAhMme2PUV+1KcRtmgczG9Q4kZi2KyeSYQFnlkyYyolz66iNhpxw==
+near-api-js@^0.44.2:
+  version "0.44.2"
+  resolved "https://registry.npmjs.org/near-api-js/-/near-api-js-0.44.2.tgz#e451f68f2c56bd885c7b918db5818a3e6e9423d0"
+  integrity sha512-eMnc4V+geggapEUa3nU2p8HSHn/njtloI4P2mceHQWO8vDE1NGpnAw8FuTBrLmXSgIv9m6oocgFc9t3VNf5zwg==
   dependencies:
     bn.js "5.2.0"
     borsh "^0.6.0"
