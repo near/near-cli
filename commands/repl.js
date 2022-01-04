@@ -76,7 +76,7 @@ function loadScript(script) {
 function loadTs(scriptPath) {
     try {
         require("ts-node").register({ transpileOnly: true });
-    } catch {
+    } catch (error) {
         console.error(
             `Failed to load \`ts-node\` for typescript file ${scriptPath}. Probably need to install \`ts-node\` and \`typescript\`.\n`
         );
