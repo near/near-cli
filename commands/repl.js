@@ -41,8 +41,7 @@ module.exports = {
                 await scriptModule.main(nearContext);
             } catch (error) {
                 console.error(`${script} Failed\n`);
-                console.error(error);
-                process.exit(1);
+                throw error;
             }
         } else {
             const repl = require('repl');
@@ -68,8 +67,7 @@ function loadScript(script) {
         return require(scriptPath);
     } catch (error) {
         console.error(`Failed to load ${scriptPath}.\n`);
-        console.error(error);
-        process.exit(1);
+        throw error;
     }
 }
 
@@ -80,7 +78,6 @@ function loadTs(scriptPath) {
         console.error(
             `Failed to load \`ts-node\` for typescript file ${scriptPath}. Probably need to install \`ts-node\` and \`typescript\`.\n`
         );
-        console.error(error);
-        process.exit(1);
+        throw error;
     }
 }
