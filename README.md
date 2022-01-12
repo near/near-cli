@@ -1216,7 +1216,15 @@ nearAPI.utils.format.parseNearAmount('1000')
 
 > You can also use an `--accountId` with `near repl`.
 
-The `script` argument allows you to pass the path to a javascript/typescript file that exports a `main` function taking a [`Context`](./context/index.d.ts) as an argument. Anything passed after `--` is passed to the script as the `argv` argument.
+The `script` argument allows you to pass the path to a javascript/typescript file that exports a `main` function taking a [`Context`](./context/index.d.ts) as an argument. Anything passed after `--` is passed to the script as the `argv` argument. 
+
+Note: you will need to add `near-cli` as a dependency in order to import the types.
+
+e.g.
+
+```ts
+import { Context } from "near-cli/context";
+```
 
 **Example:**
 
