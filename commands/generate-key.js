@@ -47,7 +47,6 @@ module.exports = {
 
         // If key doesn't exist, create one and store in the keyStore.
         // Otherwise, it's expected that both key and accountId are already provided in arguments.
-
         if (!argv.publicKey) {
             const keyPair = KeyPair.fromRandom('ed25519');
             argv.publicKey = keyPair.publicKey.toString();
