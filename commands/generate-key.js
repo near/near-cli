@@ -9,6 +9,10 @@ module.exports = {
         .option('yolo', {
             description: 'Do not ask for extra confirmation when using Ledger',
             type: 'boolean',
+        })
+        .option('seedPhrase', {
+            description: 'Seed phrase mnemonic',
+            type: 'string',
         }),
     handler: exitOnError(async (argv) => {
         let near = await require('../utils/connect')(argv);
@@ -36,13 +40,14 @@ module.exports = {
 
         const { deps: { keyStore } } = near.config;
         const existingKey = await keyStore.getKey(argv.networkId, argv.accountId);
-        if (existingKey) {
+        if (existingKey && !argv.seedPhrase) {
             console.log(`Account has existing key pair with ${existingKey.publicKey} public key`);
             return;
         }
 
         // If key doesn't exist, create one and store in the keyStore.
         // Otherwise, it's expected that both key and accountId are already provided in arguments.
+
         if (!argv.publicKey) {
             const keyPair = KeyPair.fromRandom('ed25519');
             argv.publicKey = keyPair.publicKey.toString();
