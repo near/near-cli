@@ -42,6 +42,7 @@ _Click on a command for more information and examples._
 | [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](http://docs.near.org/docs/concepts/epoch) _after_ next                                    |
 | **REPL**                                              |                                                                                                                                        |
 | [`near repl`](#near-repl)                             | launches an interactive connection to the NEAR blockchain ([REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) |
+|                                                       | can also run a JS/TS file which exports an async main function that takes a [context](./context/index.d.ts) object                  |
 
 [ [**OPTIONS**](#options) ]
 
@@ -1198,7 +1199,7 @@ Proposals for the epoch after next (new: 51, passing: 49, expected seat price = 
 > Launches NEAR [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) _(an interactive JavaScript programming invironment)_ connected to NEAR.
 
 -   arguments: `none`
--   options: `--accountId`
+-   options: `--accountId`, `--script`
 
 To launch, run:
 
@@ -1215,6 +1216,16 @@ nearAPI.utils.format.parseNearAmount('1000')
 
 > You can also use an `--accountId` with `near repl`.
 
+The `script` argument allows you to pass the path to a javascript/typescript file that exports a `main` function taking a [`Context`](./context/index.d.ts) as an argument. Anything passed after `--` is passed to the script as the `argv` argument. 
+
+Note: you will need to add `near-cli` as a dependency in order to import the types.
+
+e.g.
+
+```ts
+import { Context } from "near-cli/context";
+```
+
 **Example:**
 
 ```bash
@@ -1225,6 +1236,14 @@ near repl --accountId example-acct.testnet
 
 ```bash
 console.log(account)
+```
+
+Or in a JS files
+
+```js
+module.exports.main = async function main({account, near, nearAPI, argv}) {
+    console.log(account);
+}
 ```
 
 <details>
