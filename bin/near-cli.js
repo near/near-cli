@@ -134,6 +134,9 @@ const callViewFunction = {
             desc: 'Arguments to the view call, in JSON format (e.g. \'{"param_a": "value"}\')',
             type: 'string',
             default: null
+        })
+        .alias({
+            'contractName': ['accountId'],
         }),
     handler: exitOnError(main.callViewFunction)
 };
