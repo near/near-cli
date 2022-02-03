@@ -10,6 +10,7 @@ const checkForAccDoesNotExist = (error, options) => {
     const suffixesToNetworks = {near:'mainnet', testnet:'testnet', betanet:'betanet'};
 
     // contactName used for 'view' command, instead of accountId
+    // below is optional approach, but "alias" in command options is better
     // const accountId = (options.accountId)? options.accountId : options.contractName;
     const currentNetwork = config.helperAccount;
     console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${suffixesToNetworks[currentNetwork]}}\n}`);
