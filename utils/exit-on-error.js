@@ -32,7 +32,6 @@ process.on('exit', () => {
 });
 
 module.exports = (promiseFn) => async (...args) => {
-
     const command = args[0]['_'];
     process.env.NEAR_CLI_ERROR_LAST_COMMAND = command;
     process.env.NEAR_CLI_NETWORK_ID = require('../get-config')()['networkId'];
