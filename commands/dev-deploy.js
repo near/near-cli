@@ -52,6 +52,11 @@ module.exports = {
             type: 'boolean',
             default: false
         })
+        .option('projectKeyDirectory', {
+            desc: 'Specify a directory which will be used for generating the keys other than the default one',
+            type: 'string',
+            default: PROJECT_KEY_DIR
+        })
         .alias({
             'init': ['force', 'f'],
         }),
@@ -104,11 +109,11 @@ async function devDeploy(options) {
     console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${accountId}`);
 }
 
-async function createDevAccountIfNeeded({ near, keyStore, networkId, init, masterAccount }) {
+async function createDevAccountIfNeeded({ near, keyStore, networkId, init, projectKeyDirectory, masterAccount }) {
     // TODO: once examples and create-near-app use the dev-account.env file, we can remove the creation of dev-account
     // https://github.com/near/near-cli/issues/287
-    const accountFilePath = `${PROJECT_KEY_DIR}/dev-account`;
-    const accountFilePathEnv = `${PROJECT_KEY_DIR}/dev-account.env`;
+    const accountFilePath = `${projectKeyDirectory}/dev-account`;
+    const accountFilePathEnv = `${projectKeyDirectory}/dev-account.env`;
     if (!init) {
         try {
             // throws if either file is missing
