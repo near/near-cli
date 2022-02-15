@@ -65,7 +65,7 @@ async function scheduleFunctionCall(options) {
             parsedArgs = Buffer.from(fileargs, 'base64');
             console.log(`Loaded base64 args file, size ${parsedArgs.length}`);
         } catch (e) {
-            console.log('Could not load base64 file!');
+            throw new Error('Could not load base64 file!');
         }
     }
     if (!parsedArgs && options.base64) parsedArgs = Buffer.from(readFileSync(options.args), 'base64');
