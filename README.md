@@ -1312,6 +1312,7 @@ With NEAR REPL you have complete access to [`near-api-js`](https://github.com/ne
 | `--contractName`           |  Account name of contract  [string]                                                                                                    |
 | `--masterAccount`          |  Master account used when creating new accounts  [string]                                                                              |
 | `--helperAccount`          |  Expected top-level account for a network  [string]                                                                                    |
+| `--base64file`             |  Load a base64-encoded BLOB file into the args sent to a function call  [string]                                                       |
 | `-v, --verbose`            |  Prints out verbose output  [boolean] [default: false]                                                                                 |
 |`-f, --force`               |  Forcefully execute the desired action even if it is unsafe to do so  [boolean] [default: false]|
 

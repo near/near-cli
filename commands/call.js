@@ -1,3 +1,4 @@
+const { readFileSync } = require('fs');
 const { DEFAULT_FUNCTION_CALL_GAS, providers, utils } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
@@ -39,6 +40,11 @@ module.exports = {
             required: true,
             desc: 'Unique identifier for the account that will be used to sign this call',
             type: 'string'
+        })
+        .option('base64file', {
+            desc: 'Load a base64-encoded BLOB file into the args sent to a function call.',
+            type: 'string',
+            default: false
         }),
     handler: exitOnError(scheduleFunctionCall)
 };
@@ -51,7 +57,19 @@ async function scheduleFunctionCall(options) {
 
     const near = await connect(options);
     const account = await near.account(options.accountId);
-    const parsedArgs = options.base64 ? Buffer.from(options.args, 'base64') : JSON.parse(options.args || '{}');
+    let parsedArgs;
+    // load args rare order first
+    if (options.base64file) {
+        try {
+            let fileargs = await readFileSync(options.base64file);
+            parsedArgs = Buffer.from(fileargs, 'base64');
+            console.log(`Loaded base64 args file, size ${parsedArgs.length}`);
+        } catch (e) {
+            console.log('Could not load base64 file!');
+        }
+    }
+    if (!parsedArgs && options.base64) parsedArgs = Buffer.from(readFileSync(options.args), 'base64');
+    if (!parsedArgs) parsedArgs = JSON.parse(options.args || '{}');
     console.log('Doing account.functionCall()');
     try {
         const functionCallResponse = await account.functionCall({
