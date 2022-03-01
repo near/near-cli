@@ -1235,16 +1235,34 @@ near repl --accountId example-acct.testnet
 -   Then try console logging `account` after the `>` prompt.
 
 ```bash
-console.log(account)
+> console.log(account)
 ```
 
 Or in a JS files
+```bash
+near repl --accountId example-acct.testnet --script print_account.js
+```
 
 ```js
 module.exports.main = async function main({account, near, nearAPI, argv}) {
     console.log(account);
 }
 ```
+
+or TS
+
+```bash
+near repl --accountId example-acct.testnet --script print_account.ts
+```
+
+```js
+import { Context } from "near-cli/context"
+
+export async function main({account, near, nearAPI, argv}: Context) {
+    console.log(account);
+}
+```
+
 
 <details>
 <summary><strong>Example Response</strong></summary>
