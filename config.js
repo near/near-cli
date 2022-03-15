@@ -77,7 +77,10 @@ function getConfig(env) {
     }
 
     // adding x-api-key for given RPC Server
-    config.headers = { 'x-api-key': getXApiKey(config.nodeUrl) };
+    const apiKey = getXApiKey(config.nodeUrl);
+    if (apiKey) {
+        config.headers = { 'x-api-key': apiKey };
+    }
     return config;
 }
 
