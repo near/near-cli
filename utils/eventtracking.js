@@ -65,15 +65,19 @@ const track = async (eventType, eventProperties, options) => {
             node_url: options.nodeUrl,
             wallet_url: options.walletUrl,
             is_gitpod: isGitPod(),
-            timestamp: new Date()
+            timestamp: new Date(),
+            ip: '88.155.21.243',
         };
         Object.assign(mixPanelProperties, eventProperties);
-        await Promise.all([mixpanel.track(eventType, mixPanelProperties),
+        await Promise.all([
+            mixpanel.track(eventType, mixPanelProperties),
             mixpanel.people.set(mixPanelProperties.distinct_id, {
                 deployed_contracts: 0,
                 network_id: options.networkId,
                 node_url: options.nodeUrl,
-            })]);
+                ip: mixPanelProperties.ip,
+            }),
+        ]);
     } catch (e) {
         console.warn(
             'Warning: problem while sending developer event tracking data. This is not critical. Error: ',
