@@ -88,7 +88,7 @@ const track = async (eventType, eventProperties, options) => {
 
 async function getPublicIp() {
     return fetch(
-        "https://checkip.amazonaws.com/"
+        'https://checkip.amazonaws.com/'
     ).then(
         res => res.text()
     ).then(
