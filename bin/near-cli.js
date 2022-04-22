@@ -223,6 +223,11 @@ yargs // eslint-disable-line
         desc: 'Base url for explorer',
         type: 'string',
     })
+    .option('output', {
+        desc: 'File to store the result',
+        type: 'string',
+        alias: 'o',
+    })
     .option('verbose', {
         desc: 'Prints out verbose output',
         type: 'boolean',

@@ -1,3 +1,4 @@
+const fs = require('fs/promises');
 const { DEFAULT_FUNCTION_CALL_GAS, providers, utils } = require('near-api-js');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
@@ -9,6 +10,11 @@ module.exports = {
     command: 'call <contractName> <methodName> [args]',
     desc: 'schedule smart contract call which can modify state',
     builder: (yargs) => yargs
+        .option('output', {
+            desc: 'File to store the result',
+            type: 'string',
+            alias: 'o',
+        })
         .option('gas', {
             desc: 'Max amount of gas this call can use (in gas units)',
             type: 'string',
@@ -64,6 +70,9 @@ async function scheduleFunctionCall(options) {
         const result = providers.getTransactionLastResult(functionCallResponse);
         inspectResponse.prettyPrintResponse(functionCallResponse, options);
         console.log(inspectResponse.formatResponse(result));
+        if (options.output) {
+            await fs.writeFile(options.output, JSON.stringify(result, null, 4));
+        }
     } catch (error) {
         switch (JSON.stringify(error.kind)) {
         case '{"ExecutionError":"Exceeded the prepaid gas."}': {
