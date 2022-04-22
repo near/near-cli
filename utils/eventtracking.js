@@ -53,7 +53,7 @@ const track = async (eventType, eventProperties, options) => {
             const id = getMixpanelID(shellSettings);
             await Promise.all([
                 mixpanel.alias(accountID, id),
-                mixpanel.people.set(id, {account_id: accountID})
+                mixpanel.people.set(id, { account_id: accountID })
             ]);
         }
 
@@ -61,19 +61,23 @@ const track = async (eventType, eventProperties, options) => {
             distinct_id: getMixpanelID(shellSettings),
             near_cli_version,
             os: process.platform,
-            network_id: options.networkId === 'default' ? 'testnet': options.networkId,
+            network_id: options.networkId === 'default' ? 'testnet' : options.networkId,
             node_url: options.nodeUrl,
             wallet_url: options.walletUrl,
             is_gitpod: isGitPod(),
-            timestamp: new Date()
+            timestamp: new Date(),
+            ip: await getPublicIp(),
         };
         Object.assign(mixPanelProperties, eventProperties);
-        await Promise.all([mixpanel.track(eventType, mixPanelProperties),
+        await Promise.all([
+            mixpanel.track(eventType, mixPanelProperties),
             mixpanel.people.set(mixPanelProperties.distinct_id, {
                 deployed_contracts: 0,
                 network_id: options.networkId,
                 node_url: options.nodeUrl,
-            })]);
+                ip: mixPanelProperties.ip,
+            }),
+        ]);
     } catch (e) {
         console.warn(
             'Warning: problem while sending developer event tracking data. This is not critical. Error: ',
@@ -81,6 +85,16 @@ const track = async (eventType, eventProperties, options) => {
         );
     }
 };
+
+async function getPublicIp() {
+    return fetch(
+        'https://checkip.amazonaws.com/'
+    ).then(
+        res => res.text()
+    ).then(
+        ip => ip.trim()
+    );
+}
 
 const getEventTrackingConsent = async () => {
     return askYesNoQuestion(
