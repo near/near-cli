@@ -8,6 +8,7 @@ const settings = require('./settings');
 const { askYesNoQuestion } = require('./readline');
 const uuid = require('uuid');
 
+//TEST CHANGE
 const isGitPod = () => {
     return !!process.env.GITPOD_WORKSPACE_URL;
 };
