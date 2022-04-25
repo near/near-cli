@@ -15,5 +15,5 @@ jobs:
         run: yarn
       - name: Run tests
         env:
-          NODE_ENV: ci
+          NODE_ENV: "ci"
         run: yarn test
