@@ -1,6 +1,6 @@
 
 module.exports = function getConfig() {
-    const configPath = process.cwd() + '/src/config';
+    const configPath = process.cwd() + '/config.js';
     const nearEnv = process.env.NEAR_ENV || process.env.NODE_ENV || 'development';
     try {
         const config = require(configPath)(nearEnv);
