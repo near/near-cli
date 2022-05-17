@@ -142,7 +142,7 @@ function jsvm_contract_id(options) {
     throw Error(`Cannot find a default JSVM contract for network id ${option.networkId}`);
 }
 
-async function jsvm_transact(options, {methodName, args, gas, deposit}) {
+async function jsvm_transact(options, { methodName, args, gas, deposit }) {
     const { accountId } = options;
     const near = await connect(options);
     const account = await near.account(accountId);
