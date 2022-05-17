@@ -1,15 +1,17 @@
 const { DEFAULT_FUNCTION_CALL_GAS, providers, utils } = require('near-api-js');
+const { readFileSync } = require('fs');
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
 const inspectResponse = require('../utils/inspect-response');
 const checkCredentials = require('../utils/check-credentials');
+
 
 module.exports = {
     command: 'js <command> <command-options>',
     desc: 'Add an access key to given account',
     builder: (yargs) => yargs
         .command({
-            command: 'deploy [jsFile] [initFunction] [initArgs] [initGas] [initDeposit] [initialBalance] [force]',
+            command: 'deploy [base64File] [initFunction] [initArgs] [initGas] [initDeposit]',
             desc: 'Deploy our smart contract to the network',
             builder: (yargs) => yargs
                 .option('base64File', {
@@ -25,10 +27,12 @@ module.exports = {
                 .option('deposit', {
                     desc: 'Deposit to maintain the contract storage on the enclave',
                     type: 'string',
+                    default: '0',
                 })
                 .option('depositYocto', {
                     desc: 'Deposit (in Yocto Near) to maintain the contract storage on the enclave',
                     type: 'string',
+                    default: null,
                 })
                 .option('accountId', {
                     desc: 'Unique identifier for the account that will be used to sign this call',
@@ -47,17 +51,8 @@ module.exports = {
             handler: exitOnError(deploy),
         })
         .command({
-            command: 'call [accountId] [contractId] [methodName] [args] [gas] [deposit]',
-            desc: 'Call a method on a contract',
-            builder: (yargs) => yargs
-                .option('accountId', {
-
-                })
-            ,
-            // handler: exitOnError(call),
-        })
-        .command({
             command: 'remove [accountId]',
+            desc: 'Remove a JSVM contract from the network',
             builder: (yargs) => yargs
                 .option('accountId', {
                     desc: 'The id of the account that will be removed from the enclave',
@@ -69,7 +64,11 @@ module.exports = {
                     type: 'number',
                     default: DEFAULT_FUNCTION_CALL_GAS,
                 })
-            ,
+                .option('jsvm', {
+                    desc: 'JSVM enclave contract id',
+                    type: 'string',
+                    default: null,
+                }),
             handler: exitOnError(remove),
         })
     ,
@@ -109,10 +108,10 @@ async function deploy(options) {
     const account = await near.account(accountId);
     const jsvmId = jsvm_contract_id(options);
     const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
-    const base64Contract = readFileSync(base64File);
+    const base64Contract = Buffer.from(readFileSync(base64File), 'base64');
 
     console.log(
-        `Starting deployment. Account id: ${accountId}, JSVM: ${jsvmId}, file: ${base64file}`);
+        `Starting deployment. Account id: ${accountId}, JSVM: ${jsvmId}, file: ${base64File}`);
 
     try {
         const functionCallResponse = await account.functionCall({
@@ -122,10 +121,7 @@ async function deploy(options) {
             gas: options.gas.toNumber(),
             attachedDeposit: deposit,
         });
-        const result = providers.getTransactionLastResult(functionCallResponse);
-
         inspectResponse.prettyPrintResponse(functionCallResponse, options);
-        console.log(inspectResponse.formatResponse(result));
     } catch (error) {
         switch (JSON.stringify(error.kind)) {
             case '{"ExecutionError":"Exceeded the prepaid gas."}': {
@@ -147,18 +143,17 @@ async function remove(options) {
     const account = await near.account(accountId);
     const jsvmId = jsvm_contract_id(options);
 
+    console.log(
+        `Removing contract from enclave. Account id: ${accountId}, JSVM: ${jsvmId}`);
+
     try {
         const functionCallResponse = await account.functionCall({
             contractId: jsvmId,
             methodName: 'remove_js_contract',
-            args: null,
+            args: JSON.parse('{}'),
             gas: options.gas.toNumber(),
-            attachedDeposit: '0',
         });
-        const result = providers.getTransactionLastResult(functionCallResponse);
-
         inspectResponse.prettyPrintResponse(functionCallResponse, options);
-        console.log(inspectResponse.formatResponse(result));
     } catch (error) {
         switch (JSON.stringify(error.kind)) {
             case '{"ExecutionError":"Exceeded the prepaid gas."}': {
