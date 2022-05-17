@@ -30,6 +30,11 @@ module.exports = {
                     desc: 'Deposit (in Yocto Near) to maintain the contract storage on the enclave',
                     type: 'string',
                 })
+                .option('accountId', {
+                    desc: 'Unique identifier for the account that will be used to sign this call',
+                    type: 'string',
+                    required: true,
+                })
                 .option('initFunction', {
                     desc: 'Initialization method',
                     type: 'string',
@@ -71,10 +76,21 @@ function jsvm_contract_id(options) {
     throw Error(`Cannot find a default JSVM contract for network id ${option.networkId}`);
 }
 
+function base64_encode(contractId, functionName, args) {
+    return Buffer.concat([
+        Buffer.from(contractId),
+        Buffer.from([0]),
+        Buffer.from(functionName),
+        Buffer.from([0]),
+        Buffer.from(args)]
+    ).toString('base64');
+}
+
 async function deploy(options) {
-    const { base64File } = options;
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
+
+    const { accountId, base64File } = options;
     const near = await connect(options);
-    const accountId = await createDevAccountIfNeeded({ ...options, near });
     const account = await near.account(accountId);
     const jsvmId = jsvm_contract_id(options);
     const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
