@@ -71,6 +71,42 @@ module.exports = {
                 }),
             handler: exitOnError(remove),
         })
+        .command({
+            command: 'call [contractId] [methodName] [args] [gas] [deposit]',
+            desc: 'Call a method on a contract',
+            builder: (yargs) => yargs
+                .option('accountId', {
+                    desc: 'Unique identifier for the account that will be used to sign this call',
+                    type: 'string',
+                    required: true,
+                })
+                .option('args', {
+                    desc: 'Arguments to the contract call, in JSON format by default (e.g. \'{"param_a": "value"}\')',
+                    type: 'string',
+                    default: '',
+                })
+                .option('gas', {
+                    desc: 'Gas used to make a call into the contract from the enclave',
+                    type: 'number',
+                    default: DEFAULT_FUNCTION_CALL_GAS,
+                })
+                .option('deposit', {
+                    desc: 'Deposit to maintain the contract storage on the enclave',
+                    type: 'string',
+                    default: '0',
+                })
+                .option('depositYocto', {
+                    desc: 'Deposit (in Yocto Near) to maintain the contract storage on the enclave',
+                    type: 'string',
+                    default: null,
+                })
+                .option('jsvm', {
+                    desc: 'JSVM enclave contract id',
+                    type: 'string',
+                    default: null,
+                }),
+            handler: exitOnError(call),
+        })
     ,
 };
 
@@ -90,14 +126,15 @@ function jsvm_contract_id(options) {
     throw Error(`Cannot find a default JSVM contract for network id ${option.networkId}`);
 }
 
-function base64_encode(contractId, functionName, args) {
-    return Buffer.concat([
+function base64_encode_args(contractId, functionName, args) {
+    let buf = Buffer.concat([
         Buffer.from(contractId),
         Buffer.from([0]),
         Buffer.from(functionName),
         Buffer.from([0]),
         Buffer.from(args)]
-    ).toString('base64');
+    );
+    return Buffer.from(buf.toString('base64'), 'base64');
 }
 
 async function deploy(options) {
@@ -152,6 +189,42 @@ async function remove(options) {
             methodName: 'remove_js_contract',
             args: JSON.parse('{}'),
             gas: options.gas.toNumber(),
+        });
+        inspectResponse.prettyPrintResponse(functionCallResponse, options);
+    } catch (error) {
+        switch (JSON.stringify(error.kind)) {
+            case '{"ExecutionError":"Exceeded the prepaid gas."}': {
+                handleExceededThePrepaidGasError(error, options);
+                break;
+            }
+            default: {
+                console.log(error);
+            }
+        }
+    }
+}
+
+async function call(options) {
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
+
+    const { accountId } = options;
+    const near = await connect(options);
+    const account = await near.account(accountId);
+    const jsvmId = jsvm_contract_id(options);
+    const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
+    const args = base64_encode_args(options.contractId, options.methodName, options.args);
+    // console.log(`args: ${args}`);
+
+    console.log(`Scheduling a call in JSVM[${jsvmId}]: ${options.contractId}.${options.methodName}(${options.args || ''})` +
+        (deposit && deposit != '0' ? ` with attached ${utils.format.formatNearAmount(deposit)} NEAR` : ''));
+
+    try {
+        const functionCallResponse = await account.functionCall({
+            contractId: jsvmId,
+            methodName: 'call_js_contract',
+            args: args,
+            gas: options.gas.toNumber(),
+            attachedDeposit: deposit,
         });
         inspectResponse.prettyPrintResponse(functionCallResponse, options);
     } catch (error) {
