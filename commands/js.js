@@ -15,7 +15,7 @@ module.exports = {
                 .option('base64File', {
                     desc: 'Path to base64 encoded contract file to deploy',
                     type: 'string',
-                    // required: true,
+                    required: true,
                 })
                 .option('gas', {
                     desc: 'Gas for deployment call',
@@ -43,8 +43,7 @@ module.exports = {
                     desc: 'JSVM enclave contract id',
                     type: 'string',
                     default: null,
-                })
-                ,
+                }),
             handler: exitOnError(deploy),
         })
         .command({
@@ -54,10 +53,26 @@ module.exports = {
                 .option('accountId', {
 
                 })
-                ,
-            // handler: exitOnError(deploy),
+            ,
+            // handler: exitOnError(call),
         })
-        ,
+        .command({
+            command: 'remove [accountId]',
+            builder: (yargs) => yargs
+                .option('accountId', {
+                    desc: 'The id of the account that will be removed from the enclave',
+                    type: 'string',
+                    required: true,
+                })
+                .option('gas', {
+                    desc: 'Gas used to remove the contract from the enclave',
+                    type: 'number',
+                    default: DEFAULT_FUNCTION_CALL_GAS,
+                })
+            ,
+            handler: exitOnError(remove),
+        })
+    ,
 };
 
 function jsvm_contract_id(options) {
@@ -113,13 +128,46 @@ async function deploy(options) {
         console.log(inspectResponse.formatResponse(result));
     } catch (error) {
         switch (JSON.stringify(error.kind)) {
-        case '{"ExecutionError":"Exceeded the prepaid gas."}': {
-            handleExceededThePrepaidGasError(error, options);
-            break;
+            case '{"ExecutionError":"Exceeded the prepaid gas."}': {
+                handleExceededThePrepaidGasError(error, options);
+                break;
+            }
+            default: {
+                console.log(error);
+            }
         }
-        default: {
-            console.log(error);
-        }
+    }
+}
+
+async function remove(options) {
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
+
+    const { accountId } = options;
+    const near = await connect(options);
+    const account = await near.account(accountId);
+    const jsvmId = jsvm_contract_id(options);
+
+    try {
+        const functionCallResponse = await account.functionCall({
+            contractId: jsvmId,
+            methodName: 'remove_js_contract',
+            args: null,
+            gas: options.gas.toNumber(),
+            attachedDeposit: '0',
+        });
+        const result = providers.getTransactionLastResult(functionCallResponse);
+
+        inspectResponse.prettyPrintResponse(functionCallResponse, options);
+        console.log(inspectResponse.formatResponse(result));
+    } catch (error) {
+        switch (JSON.stringify(error.kind)) {
+            case '{"ExecutionError":"Exceeded the prepaid gas."}': {
+                handleExceededThePrepaidGasError(error, options);
+                break;
+            }
+            default: {
+                console.log(error);
+            }
         }
     }
 }
