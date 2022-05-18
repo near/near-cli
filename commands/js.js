@@ -123,7 +123,7 @@ function base64_encode_args(contractId, functionName, args) {
         Buffer.from([0]),
         Buffer.from(args)]
     );
-    return Buffer.from(buf.toString('base64'), 'base64');
+    return buf;
 }
 
 function jsvm_contract_id(options) {
@@ -178,7 +178,8 @@ async function deploy(options) {
     const { accountId, base64File } = options;
     const jsvmId = jsvm_contract_id(options);
     const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
-    const base64Contract = Buffer.from(readFileSync(base64File), 'base64');
+    const bytes = readFileSync(base64File).toString();
+    const base64Contract = Buffer.from(bytes, 'base64');
 
     console.log(
         `Starting deployment. Account id: ${accountId}, JSVM: ${jsvmId}, file: ${base64File}`);
