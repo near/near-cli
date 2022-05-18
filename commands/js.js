@@ -6,7 +6,7 @@ const inspectResponse = require('../utils/inspect-response');
 const checkCredentials = require('../utils/check-credentials');
 
 const js_deploy = {
-    command: 'deploy [base64File] [initFunction] [initArgs] [initGas] [initDeposit]',
+    command: 'deploy [base64File]',
     desc: 'Deploy our smart contract to the network',
     builder: (yargs) => yargs
         .option('base64File', {
@@ -33,10 +33,6 @@ const js_deploy = {
             desc: 'Unique identifier for the account that will be used to sign this call',
             type: 'string',
             required: true,
-        })
-        .option('initFunction', {
-            desc: 'Initialization method',
-            type: 'string',
         })
         .option('jsvm', {
             desc: 'JSVM enclave contract id',
