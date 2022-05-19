@@ -270,29 +270,6 @@ async function dev_deploy(options) {
     const accountId = await createDevAccountIfNeeded({ ...options, near });
     options.accountId = accountId;
     await deploy(options);
-
-    // const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
-    // const jsvmId = jsvm_contract_id(options);
-    // const bytes = readFileSync(base64File).toString();
-    // const base64Contract = Buffer.from(bytes, 'base64');
-
-
-
-    // // const { accountId, base64File } = options;
-    // // const jsvmId = jsvm_contract_id(options);
-    // // const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
-    // // const bytes = readFileSync(base64File).toString();
-    // // const base64Contract = Buffer.from(bytes, 'base64');
-
-    // // console.log(
-    // //     `Starting deployment. Account id: ${accountId}, JSVM: ${jsvmId}, file: ${base64File}`);
-
-    // await jsvm_transact(options, {
-    //     methodName: 'deploy_js_contract',
-    //     args: base64Contract,
-    //     gas: options.gas.toNumber(),
-    //     deposit,
-    // });
 }
 
 async function remove(options) {

@@ -11,31 +11,24 @@ module.exports = async function createDevAccountIfNeeded({ near, keyStore, netwo
     const accountFilePathEnv = `${projectKeyDirectory}/dev-account.env`;
     if (!init) {
         try {
-            console.log("welp");
             // throws if either file is missing
             const existingAccountId = (await readFile(accountFilePath)).toString('utf8').trim();
             await readFile(accountFilePathEnv);
-            console.log("welp2");
 
             if (existingAccountId && await keyStore.getKey(networkId, existingAccountId)) {
                 return existingAccountId;
             }
         } catch (e) {
-            console.log("welp3");
             if (e.code === 'ENOENT') {
-                console.log("welp~");
-
                 // Create neardev directory, new account will be created below
                 if (!existsSync(PROJECT_KEY_DIR)) {
                     await mkdir(PROJECT_KEY_DIR);
                 }
             } else {
-                console.log("welp-throw");
                 throw e;
             }
         }
     }
-    console.log("welp```");
 
     let accountId;
     // create random number with at least 14 digits
