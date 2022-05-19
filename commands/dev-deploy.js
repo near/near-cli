@@ -1,5 +1,4 @@
 const {
-    KeyPair,
     transactions,
     DEFAULT_FUNCTION_CALL_GAS,
     utils,

@@ -8,7 +8,7 @@ const eventtracking = require('../utils/eventtracking');
 const inspectResponse = require('../utils/inspect-response');
 const checkCredentials = require('../utils/check-credentials');
 const createDevAccountIfNeeded = require('../utils/create-dev-account');
-
+const handleExceededThePrepaidGasError = require('../utils/error-handlers');
 
 const js_deploy = {
     command: 'deploy [base64File]',
@@ -202,7 +202,7 @@ function jsvm_contract_id(options) {
         return 'jsvm.testnet';
     }
 
-    throw Error(`Cannot find a default JSVM contract for network id ${option.networkId}`);
+    throw Error(`Cannot find a default JSVM contract for network id ${options.networkId}`);
 }
 
 async function jsvm_transact(options, { methodName, args, gas, deposit }) {
@@ -224,13 +224,13 @@ async function jsvm_transact(options, { methodName, args, gas, deposit }) {
         return providers.getTransactionLastResult(functionCallResponse);
     } catch (error) {
         switch (JSON.stringify(error.kind)) {
-            case '{"ExecutionError":"Exceeded the prepaid gas."}': {
-                handleExceededThePrepaidGasError(error, options);
-                break;
-            }
-            default: {
-                console.log(error);
-            }
+        case '{"ExecutionError":"Exceeded the prepaid gas."}': {
+            handleExceededThePrepaidGasError(error, options);
+            break;
+        }
+        default: {
+            console.log(error);
+        }
         }
     }
 }
