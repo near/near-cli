@@ -1,9 +1,14 @@
 const { DEFAULT_FUNCTION_CALL_GAS, providers, utils } = require('near-api-js');
 const { readFileSync } = require('fs');
+const { PROJECT_KEY_DIR } = require('../middleware/key-store');
+
 const exitOnError = require('../utils/exit-on-error');
 const connect = require('../utils/connect');
+const eventtracking = require('../utils/eventtracking');
 const inspectResponse = require('../utils/inspect-response');
 const checkCredentials = require('../utils/check-credentials');
+const createDevAccountIfNeeded = require('../utils/create-dev-account');
+
 
 const js_deploy = {
     command: 'deploy [base64File]',
@@ -40,6 +45,43 @@ const js_deploy = {
             default: null,
         }),
     handler: exitOnError(deploy),
+};
+
+const js_dev_deploy = {
+    command: 'dev-deploy [base64File]',
+    desc: 'Deploy our smart contract to the network using a dev account created on the fly',
+    builder: (yargs) => yargs
+        .option('base64File', {
+            desc: 'Path to base64 encoded contract file to deploy',
+            type: 'string',
+            required: true,
+        })
+        .option('gas', {
+            desc: 'Gas for deployment call',
+            type: 'number',
+            default: DEFAULT_FUNCTION_CALL_GAS,
+        })
+        .option('deposit', {
+            desc: 'Deposit to maintain the contract storage on the enclave',
+            type: 'string',
+            default: '0',
+        })
+        .option('depositYocto', {
+            desc: 'Deposit (in Yocto Near) to maintain the contract storage on the enclave',
+            type: 'string',
+            default: null,
+        })
+        .option('projectKeyDirectory', {
+            desc: 'Specify a directory which will be used for generating the keys other than the default one',
+            type: 'string',
+            default: PROJECT_KEY_DIR
+        })
+        .option('jsvm', {
+            desc: 'JSVM enclave contract id',
+            type: 'string',
+            default: null,
+        }),
+    handler: exitOnError(dev_deploy),
 };
 
 const js_remove = {
@@ -103,7 +145,7 @@ const js_call = {
 
 const js_view = {
     command: 'view [contractId] [methodName] [args]',
-    desc: 'Call a method on a contract',
+    desc: 'Call into a view method on a contract',
     builder: (yargs) => yargs
         .option('accountId', {
             desc: 'Unique identifier for the account that will be used to sign this call',
@@ -123,60 +165,15 @@ const js_view = {
     handler: exitOnError(view),
 };
 
-const js_view_state = {
-    command: 'view-state <account-id> [prefix]',
-    desc: 'Call a method on a contract',
-    builder: (yargs) => yargs
-        .option('prefix', {
-            desc: 'Return keys only with given prefix.',
-            type: 'string',
-            default: ''
-        })
-        .option('block-id', {
-            desc: 'The block number OR the block hash (base58-encoded).',
-            type: 'string',
-            coerce: (blockId) => {
-                if (blockId && !isNaN(blockId)) {
-                    return Number(blockId);
-                }
-                return blockId;
-            }
-        })
-        .option('finality', {
-            desc: '`optimistic` uses the latest block recorded on the node that responded to your query,\n' +
-                '`final` is for a block that has been validated on at least 66% of the nodes in the network',
-            type: 'string',
-            choices: ['optimistic', 'final'],
-        })
-        .option('utf8', {
-            desc: 'Decode keys and values as UTF-8 strings',
-            type: 'boolean',
-            default: false
-        })
-        .option('jsvm', {
-            desc: 'JSVM enclave contract id',
-            type: 'string',
-            default: null,
-        })
-        .conflicts('block-id', 'finality')
-        .check((argv) => {
-            if (!argv.finality && !argv.blockId) {
-                throw new Error('Must provide either --finality or --blockId');
-            }
-            return true;
-        }),
-    handler: exitOnError(view_state),
-};
-
 module.exports = {
     command: 'js <command> <command-options>',
     desc: 'Add an access key to given account',
     builder: (yargs) => yargs
         .command(js_deploy)
+        .command(js_dev_deploy)
         .command(js_remove)
         .command(js_call)
         .command(js_view)
-        .command(js_view_state)
     ,
 };
 
@@ -241,14 +238,14 @@ async function jsvm_transact(options, { methodName, args, gas, deposit }) {
 async function deploy(options) {
     await checkCredentials(options.accountId, options.networkId, options.keyStore);
 
-    const { accountId, base64File } = options;
+    const { accountId, base64File, helperUrl, nodeUrl } = options;
     const jsvmId = jsvm_contract_id(options);
     const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
     const bytes = readFileSync(base64File).toString();
     const base64Contract = Buffer.from(bytes, 'base64');
 
     console.log(
-        `Starting deployment. Account id: ${accountId}, JSVM: ${jsvmId}, file: ${base64File}`);
+        `Starting deployment. Account id: ${accountId}, node: ${nodeUrl}, helper: ${helperUrl}, file: ${base64File}, JSVM: ${jsvmId}`);
 
     await jsvm_transact(options, {
         methodName: 'deploy_js_contract',
@@ -256,6 +253,46 @@ async function deploy(options) {
         gas: options.gas.toNumber(),
         deposit,
     });
+}
+
+async function dev_deploy(options) {
+    if (options.networkId === 'mainnet') {
+        throw Error('MainNet doesn\'t support dev-deploy. Use export NEAR_ENV=testnet to switch to TestNet');
+    }
+
+    await eventtracking.askForConsentIfNeeded(options);
+    const { helperUrl, masterAccount } = options;
+    if (!helperUrl && !masterAccount) {
+        throw new Error('Cannot create account as neither helperUrl nor masterAccount is specified in config for current NODE_ENV (see src/config.js)');
+    }
+
+    const near = await connect(options);
+    const accountId = await createDevAccountIfNeeded({ ...options, near });
+    options.accountId = accountId;
+    await deploy(options);
+
+    // const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
+    // const jsvmId = jsvm_contract_id(options);
+    // const bytes = readFileSync(base64File).toString();
+    // const base64Contract = Buffer.from(bytes, 'base64');
+
+
+
+    // // const { accountId, base64File } = options;
+    // // const jsvmId = jsvm_contract_id(options);
+    // // const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
+    // // const bytes = readFileSync(base64File).toString();
+    // // const base64Contract = Buffer.from(bytes, 'base64');
+
+    // // console.log(
+    // //     `Starting deployment. Account id: ${accountId}, JSVM: ${jsvmId}, file: ${base64File}`);
+
+    // await jsvm_transact(options, {
+    //     methodName: 'deploy_js_contract',
+    //     args: base64Contract,
+    //     gas: options.gas.toNumber(),
+    //     deposit,
+    // });
 }
 
 async function remove(options) {
