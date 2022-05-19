@@ -167,7 +167,7 @@ const js_view = {
 
 module.exports = {
     command: 'js <command> <command-options>',
-    desc: 'Add an access key to given account',
+    desc: 'Work with JS contract enclave',
     builder: (yargs) => yargs
         .command(js_deploy)
         .command(js_dev_deploy)
