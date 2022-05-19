@@ -39,9 +39,11 @@ _Click on a command for more information and examples._
 | [`near validators current`](#near-validators-current) | displays current [epoch](http://docs.near.org/docs/concepts/epoch) validator pool details                                              |
 | [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](http://docs.near.org/docs/concepts/epoch)                                              |
 | [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](http://docs.near.org/docs/concepts/epoch) _after_ next                                    |
+| **JS-SDK**                                            |                                                                                                                                        |
+| [`near js`](#JS-Contracts-Enclave)                                 | Work with JS contract enclave                                                                                                          |
 | **REPL**                                              |                                                                                                                                        |
 | [`near repl`](#near-repl)                             | launches an interactive connection to the NEAR blockchain ([REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) |
-|                                                       | can also run a JS/TS file which exports an async main function that takes a [context](./context/index.d.ts) object                  |
+|                                                       | can also run a JS/TS file which exports an async main function that takes a [context](./context/index.d.ts) object                     |
 
 [ [**OPTIONS**](#options) ]
 
@@ -1109,6 +1111,9 @@ Next validators (total: 49, seat price: 1,983,932):
 
 -   arguments: `none`
 -   options: `default`
+
+### `JS Contracts Enclave`
+You can use `near js <command> <args>` to be able to interact with JS enclaved contracts. Run `near js --help` for instractions.
 
 **Example:**
 

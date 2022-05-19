@@ -265,6 +265,7 @@ yargs // eslint-disable-line
     .command(require('../commands/evm-dev-init'))
     .command(require('../commands/evm-view'))
     .command(require('../commands/set-x-api-key'))
+    .command(require('../commands/js'))
     .config(config)
     .alias({
         'accountId': ['account_id'],
