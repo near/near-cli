@@ -1,0 +1,11 @@
+name: Danger
+on: push
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn
+      - name: Run Danger
+        run: yarn danger ci

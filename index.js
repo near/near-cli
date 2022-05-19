@@ -60,6 +60,10 @@ exports.deploy = async function (options) {
         // Deploy with init function and args
         const txs = [transactions.deployContract(fs.readFileSync(options.wasmFile))];
 
+        if (options.initArgs && !options.initFunction) {
+            options.initFunction = 'new';
+        }
+
         if (options.initFunction) {
             if (!options.initArgs) {
                 console.error('Must add initialization arguments.\nExample: near deploy --accountId near.testnet --initFunction "new" --initArgs \'{"key": "value"}\'');

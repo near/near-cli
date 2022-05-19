@@ -27,7 +27,6 @@ module.exports = {
         .option('initFunction', {
             desc: 'Initialization method',
             type: 'string',
-            default: 'new'
         })
         .option('initArgs', {
             desc: 'Initialization arguments',
@@ -83,6 +82,10 @@ async function devDeploy(options) {
 
     // Deploy with init function and args
     const actions = [transactions.deployContract(readFileSync(options.wasmFile))];
+
+    if (options.initArgs && !options.initFunction) {
+        options.initFunction = 'new';
+    }
 
     if (options.initFunction) {
         if (!options.initArgs) {
