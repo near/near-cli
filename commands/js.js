@@ -101,13 +101,83 @@ const js_call = {
     handler: exitOnError(call),
 };
 
+const js_view = {
+    command: 'view [contractId] [methodName] [args]',
+    desc: 'Call a method on a contract',
+    builder: (yargs) => yargs
+        .option('accountId', {
+            desc: 'Unique identifier for the account that will be used to sign this call',
+            type: 'string',
+            required: true,
+        })
+        .option('args', {
+            desc: 'Arguments to the contract call, in JSON format by default (e.g. \'{"param_a": "value"}\')',
+            type: 'string',
+            default: '',
+        })
+        .option('jsvm', {
+            desc: 'JSVM enclave contract id',
+            type: 'string',
+            default: null,
+        }),
+    handler: exitOnError(view),
+};
+
+const js_view_state = {
+    command: 'view-state <account-id> [prefix]',
+    desc: 'Call a method on a contract',
+    builder: (yargs) => yargs
+        .option('prefix', {
+            desc: 'Return keys only with given prefix.',
+            type: 'string',
+            default: ''
+        })
+        .option('block-id', {
+            desc: 'The block number OR the block hash (base58-encoded).',
+            type: 'string',
+            coerce: (blockId) => {
+                if (blockId && !isNaN(blockId)) {
+                    return Number(blockId);
+                }
+                return blockId;
+            }
+        })
+        .option('finality', {
+            desc: '`optimistic` uses the latest block recorded on the node that responded to your query,\n' +
+                '`final` is for a block that has been validated on at least 66% of the nodes in the network',
+            type: 'string',
+            choices: ['optimistic', 'final'],
+        })
+        .option('utf8', {
+            desc: 'Decode keys and values as UTF-8 strings',
+            type: 'boolean',
+            default: false
+        })
+        .option('jsvm', {
+            desc: 'JSVM enclave contract id',
+            type: 'string',
+            default: null,
+        })
+        .conflicts('block-id', 'finality')
+        .check((argv) => {
+            if (!argv.finality && !argv.blockId) {
+                throw new Error('Must provide either --finality or --blockId');
+            }
+            return true;
+        }),
+    handler: exitOnError(view_state),
+};
+
 module.exports = {
     command: 'js <command> <command-options>',
     desc: 'Add an access key to given account',
     builder: (yargs) => yargs
         .command(js_deploy)
         .command(js_remove)
-        .command(js_call),
+        .command(js_call)
+        .command(js_view)
+        .command(js_view_state)
+    ,
 };
 
 // Encode JSVM related arguments into base64 for use in the enclave
@@ -222,5 +292,19 @@ async function call(options) {
         deposit,
     });
 
+    console.log(inspectResponse.formatResponse(result));
+}
+
+async function view(options) {
+    const jsvmId = jsvm_contract_id(options);
+    const near = await connect(options);
+    const account = await near.account(options.accountId || options.masterAccount || options.contractId);
+    console.log(`View call in JSVM[${jsvmId}]: ${options.contractId}.${options.methodName}(${options.args || ''})`);
+
+    const args = base64_encode_args(options.contractId, options.methodName, options.args);
+    const result = await account.viewFunction(jsvmId, 'view_js_contract', args, {
+        // do not stringify when making a view function, since we're sending a Buffer already
+        stringify: (value) => value,
+    });
     console.log(inspectResponse.formatResponse(result));
 }
