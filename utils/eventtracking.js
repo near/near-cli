@@ -72,11 +72,11 @@ const track = async (eventType, eventProperties, options) => {
         };
         Object.assign(mixPanelProperties, eventProperties);
         await Promise.all([mixpanel.track(eventType, mixPanelProperties),
-        mixpanel.people.set(mixPanelProperties.distinct_id, {
-            deployed_contracts: 0,
-            network_id: options.networkId,
-            node_url: options.nodeUrl,
-        })]);
+            mixpanel.people.set(mixPanelProperties.distinct_id, {
+                deployed_contracts: 0,
+                network_id: options.networkId,
+                node_url: options.nodeUrl,
+            })]);
     } catch (e) {
         console.warn(
             'Warning: problem while sending developer event tracking data. This is not critical. Error: ',
@@ -86,7 +86,7 @@ const track = async (eventType, eventProperties, options) => {
 };
 
 async function getUserCountry() {
-    return fetch("https://ipinfo.io/json").then(
+    return fetch('https://ipinfo.io/json').then(
         (response) => response.json()
     ).then(
         (jsonResponse) => jsonResponse.country
