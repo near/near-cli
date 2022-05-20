@@ -26,8 +26,8 @@
     "near": "bin/near"
   },
   "devDependencies": {
-    "danger": "^10.6.6",
-    "danger-plugin-yarn": "^1.3.2",
+    "danger": "^11.0.7",
+    "danger-plugin-yarn": "^1.5.1",
     "eslint": "^7.0.0",
     "jest": "^26.1.0",
     "strip-ansi": "^7.0.0",
