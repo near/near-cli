@@ -1,15 +1,8 @@
-const { schedule, danger } = require('danger');
-const {
-    checkForRelease,
-    checkForNewDependencies,
-    checkForLockfileDiff,
-    checkForTypesInDeps
-} = require('danger-plugin-yarn');
+const { danger, fail, warn } = require('danger');
+const { includes } = require('lodash');
 
-schedule(async () => {
-    const packageDiff = await danger.git.JSONDiffForFile('package.json');
-    checkForRelease(packageDiff);
-    checkForNewDependencies(packageDiff);
-    checkForLockfileDiff(packageDiff);
-    checkForTypesInDeps(packageDiff);
-});
+const hasPackageChanges = includes(danger.git.modified_files, "package.json")
+const hasLockfileChanges = includes(danger.git.modified_files, "yarn.lock")
+if (hasPackageChanges && !hasLockfileChanges) {
+    warn("There are package.json changes with no corresponding lockfile changes")
+}

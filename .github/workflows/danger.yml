@@ -1,11 +1,14 @@
 name: Danger
 on: push
 jobs:
-  eslint:
+  danger:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
       - name: Install modules
         run: yarn
-      - name: Run Danger
-        run: yarn danger ci
+      - name: Check with Danger
+        run: yarn danger ci --failOnErrors
