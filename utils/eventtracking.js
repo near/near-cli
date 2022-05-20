@@ -90,7 +90,7 @@ async function getUserCountry() {
         (response) => response.json()
     ).then(
         (jsonResponse) => jsonResponse.country
-    ).catch(error => console.log(error));
+    ).catch(() => console.log('Failed to get the country'));
 }
 
 const getEventTrackingConsent = async () => {
