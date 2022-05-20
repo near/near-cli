@@ -1,4 +1,4 @@
-const { danger, fail, warn } = require('danger');
+const { danger, warn } = require('danger');
 const { includes } = require('lodash');
 
 const hasPackageChanges = includes(danger.git.modified_files, 'package.json');
