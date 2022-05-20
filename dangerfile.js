@@ -1,5 +1,3 @@
-const {
-    yarn
-} = require('danger-plugin-yarn');
+const { yarn } = require("danger-plugin-yarn");
 
-yarn()
+yarn();
