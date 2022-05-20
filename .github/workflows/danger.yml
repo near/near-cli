@@ -5,9 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "12"
       - name: Install modules
         run: yarn
-      - name: Danger
-        run: yarn danger ci
+      - name: Check with Danger
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn danger ci --fail-on-error
