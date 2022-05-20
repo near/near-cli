@@ -11,6 +11,4 @@ jobs:
       - name: Install modules
         run: yarn
       - name: Check with Danger
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: yarn danger ci --failOnErrors
