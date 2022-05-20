@@ -1,3 +1,8 @@
-const { yarn } = require("danger-plugin-yarn");
+import { danger, fail, warn } from "danger"
+import includes from "lodash.includes"
 
-yarn();
+const hasPackageChanges = includes(danger.git.modified_files, "package.json")
+const hasLockfileChanges = includes(danger.git.modified_files, "yarn.lock")
+if (hasPackageChanges && !hasLockfileChanges) {
+    warn("There are package.json changes with no corresponding lockfile changes")
+}
