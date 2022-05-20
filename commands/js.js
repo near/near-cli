@@ -111,9 +111,9 @@ const js_call = {
     desc: 'Call a method on a contract',
     builder: (yargs) => yargs
         .option('accountId', {
-            desc: 'Unique identifier for the account that will be used to sign this call',
+            desc: 'Unique identifier for the account that will be used to sign this call. Will use the contract-id if not specified',
             type: 'string',
-            required: true,
+            default: null,
         })
         .option('args', {
             desc: 'Arguments to the contract call, in JSON format by default (e.g. \'{"param_a": "value"}\')',
@@ -290,6 +290,10 @@ async function remove(options) {
 }
 
 async function call(options) {
+    if (options.accountId === null) {
+        options.accountId = options.contractId;
+    }
+
     await checkCredentials(options.accountId, options.networkId, options.keyStore);
 
     const jsvmId = jsvm_contract_id(options);
