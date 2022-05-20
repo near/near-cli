@@ -7,5 +7,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install modules
         run: yarn
-      - name: Run Danger
+      - name: Danger
         run: yarn danger ci
+        env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
