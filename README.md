@@ -117,7 +117,7 @@ Clear them in case you want to get back to the default RPC server.
 Example:
 ```bash
 export NEAR_CLI_TESTNET_RPC_SERVER_URL=<put_your_rpc_server_url_here>
-``` 
+```
 ---
 ### RPC server API Keys
 Some RPC servers may require that you provide a valid API key to use them.
@@ -1196,7 +1196,140 @@ Proposals for the epoch after next (new: 51, passing: 49, expected seat price = 
 ## JS Contracts Enclave
 
 ### `near js`
-You can use `near js <command> <args>` to be able to interact with JS enclaved contracts. Run `near js --help` for instractions.
+You can use `near js <command> <args>` to be able to interact with JS enclaved contracts. Run `near js --help` for instructions. An optional `--jsvm <accountId>` argument can be supplied to the following `js` subcommands to point to a different JSVM enclave contract. The default is set to `jsvm.testnet` and `jsvm.near` respectively for testnet and mainnet. Note that anything changing state in the enclave will require a deposit to maintain storage of either the contract bytes or the state of the contract itself.
+
+### `near js deploy`
+
+> Deploys a smart contract to a given accountId on the JSVM enclave.
+
+-   arguments: `accountId`, `base64File`, `deposit`
+-   options: `jsvm`
+
+**Note:** You will need a full access key for the account you are deploying the contract to. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
+
+
+**Example:**
+
+```bash
+near deploy --accountId example-contract.testnet --base64File out/example.base64 --deposit 0.1
+```
+
+<details>
+<summary><strong>Example Response</strong></summary>
+<p>
+
+    Starting deployment. Account id: example-contract.testnet, node: https://rpc.testnet.near.org, helper: https://helper.testnet.near.org, file: out/example.base64, JSVM: jsvm.testnet
+    Transaction Id 4Nxsszgh2LaXPZph37peZKDqPZeJEErPih6n4jWcGDEB
+    To see the transaction in the transaction explorer, please open this url in your browser
+    https://explorer.testnet.near.org/transactions/4Nxsszgh2LaXPZph37peZKDqPZeJEErPih6n4jWcGDEB
+    Done deploying to example-contract.testnet
+
+</p>
+</details>
+
+
+### `near js dev-deploy`
+
+> Creates a development account and deploys a smart contract to the enclave associated to the dev-account. No access keys needed. **_(`testnet` only)_**
+
+-   arguments: `base64File` `deposit`
+-   options:  `jsvm`
+
+**Example:**
+
+```bash
+near js dev-deploy --base64File out/example.base64 --deposit 0.1
+```
+
+<details>
+<summary><strong>Example Response</strong></summary>
+<p>
+
+    Starting deployment. Account id: dev-1653005231830-15694723179173, node: https://rpc.testnet.near.org, helper: https://helper.testnet.near.org, file: out/example.base64, JSVM: jsvm.testnet
+    Transaction Id FTVd4TKzy9mrmWvok6qHaoX68cVZnUJp2VqUgH6Y446n
+    To see the transaction in the transaction explorer, please open this url in your browser
+    https://explorer.testnet.near.org/transactions/FTVd4TKzy9mrmWvok6qHaoX68cVZnUJp2VqUgH6Y446n
+    Done deploying to dev-1653005231830-15694723179173
+
+</p>
+</details>
+
+### `near js call`
+
+> makes a contract call which can modify _or_ view state into the JSVM enclase
+
+**Note:** Contract calls require a transaction fee (gas) so you will need an access key for the `--accountId` that will be charged. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
+
+-   arguments: `contractName` `methodName` `{ args }` `--accountId` `--deposit`
+-   options: `--gas` `--jsvm`
+
+**Example:**
+
+```bash
+near js call dev-1653005231830-15694723179173 set_status '["hello world"]' --deposit 0.1 --account-id dev-1653005231830-15694723179173
+```
+
+<details>
+<summary><strong>Example Response</strong></summary>
+<p>
+
+    Scheduling a call in JSVM[jsvm.testnet]: dev-1653005231830-15694723179173.set_status(["hello world"]) with attached 0.1 NEAR
+    Receipts: 5QUuNwSYrDcEPKuSnU7fKN7YCGfXmdmZR9m3zUSTek7P, 3YU4eFhqBruc4z8KKLZr1U1oY31A6Bfks45GLA2rq5GS
+      Log [jsvm.testnet]: dev-1653005231830-15694723179173 set_status with message hello world
+    Transaction Id sP8s9REgK9YcZzkudyccg8R968zYWDVGCNv4wxeZsUe
+    To see the transaction in the transaction explorer, please open this url in your browser
+    https://explorer.testnet.near.org/transactions/sP8s9REgK9YcZzkudyccg8R968zYWDVGCNv4wxeZsUe
+    ''
+
+</p>
+</details>
+
+### `near js view`
+
+> Makes a contract call which can **only** view state. _(Call is free of charge and does not require deposit)_
+
+-   arguments: `contractName` `method_name` `{ args }`
+-   options: `jsvm`
+
+**Example:**
+
+```bash
+near js view dev-1653005231830-15694723179173 get_status '["dev-1653005231830-15694723179173"]' --accountId dev-1653005231830-15694723179173
+```
+
+<details>
+<summary><strong>Example Response</strong></summary>
+<p>
+
+    View call in JSVM[jsvm.testnet]: dev-1653005231830-15694723179173.get_status(["dev-1653005231830-15694723179173"])
+    Log [jsvm.testnet]: get_status for account_id dev-1653005231830-15694723179173
+    'hello world'
+
+</p>
+</details>
+
+### `near js remove`
+
+> Removes the contract on the JS enclase and refunds all the deposit to the actual account.
+
+-   arguments: `accountId`
+-   options: `jsvm`
+
+```bash
+near js remove --accountId dev-1653005231830-15694723179173
+```
+
+<details>
+<summary><strong>Example Response</strong></summary>
+<p>
+
+    Removing contract from enclave. Account id: dev-1653005231830-15694723179173, JSVM: jsvm.testnet
+    Transaction Id FGSfvoWmhS1fWb6ckpPMYvc7seNaGQ5MU7iSrY43ZWiG
+    To see the transaction in the transaction explorer, please open this url in your browser
+    https://explorer.testnet.near.org/transactions/FGSfvoWmhS1fWb6ckpPMYvc7seNaGQ5MU7iSrY43ZWiG
+
+</p>
+</details>
 
 ## REPL
 
@@ -1222,7 +1355,7 @@ nearAPI.utils.format.parseNearAmount('1000')
 
 > You can also use an `--accountId` with `near repl`.
 
-The `script` argument allows you to pass the path to a javascript/typescript file that exports a `main` function taking a [`Context`](./context/index.d.ts) as an argument. Anything passed after `--` is passed to the script as the `argv` argument. 
+The `script` argument allows you to pass the path to a javascript/typescript file that exports a `main` function taking a [`Context`](./context/index.d.ts) as an argument. Anything passed after `--` is passed to the script as the `argv` argument.
 
 Note: you will need to add `near-cli` as a dependency in order to import the types.
 
@@ -1305,7 +1438,7 @@ With NEAR REPL you have complete access to [`near-api-js`](https://github.com/ne
 | Option                     | Description                                                                                                                            |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `--help`                   |  Show help  [boolean]                                                                                                                  |
-| `--version`                |  Show version number  [boolean]                                                                                                        | 
+| `--version`                |  Show version number  [boolean]                                                                                                        |
 | `--nodeUrl, --node_url`    |  NEAR node URL  [string] [default: "https://rpc.testnet.near.org"]                                                                     |
 | `--networkId, --network_id`|  NEAR network ID, allows using different keys based on network  [string] [default: "testnet"]                                          |
 | `--helperUrl`              |  NEAR contract helper URL  [string]                                                                                                    |
