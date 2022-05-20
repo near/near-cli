@@ -53,15 +53,18 @@ const track = async (eventType, eventProperties, options) => {
             const id = getMixpanelID(shellSettings);
             await Promise.all([
                 mixpanel.alias(accountID, id),
-                mixpanel.people.set(id, {account_id: accountID})
+                mixpanel.people.set(id, { account_id: accountID })
             ]);
         }
+
+        const user_country = await getUserCountry();
 
         const mixPanelProperties = {
             distinct_id: getMixpanelID(shellSettings),
             near_cli_version,
+            user_country,
             os: process.platform,
-            network_id: options.networkId === 'default' ? 'testnet': options.networkId,
+            network_id: options.networkId === 'default' ? 'testnet' : options.networkId,
             node_url: options.nodeUrl,
             wallet_url: options.walletUrl,
             is_gitpod: isGitPod(),
@@ -69,11 +72,11 @@ const track = async (eventType, eventProperties, options) => {
         };
         Object.assign(mixPanelProperties, eventProperties);
         await Promise.all([mixpanel.track(eventType, mixPanelProperties),
-            mixpanel.people.set(mixPanelProperties.distinct_id, {
-                deployed_contracts: 0,
-                network_id: options.networkId,
-                node_url: options.nodeUrl,
-            })]);
+        mixpanel.people.set(mixPanelProperties.distinct_id, {
+            deployed_contracts: 0,
+            network_id: options.networkId,
+            node_url: options.nodeUrl,
+        })]);
     } catch (e) {
         console.warn(
             'Warning: problem while sending developer event tracking data. This is not critical. Error: ',
@@ -82,10 +85,18 @@ const track = async (eventType, eventProperties, options) => {
     }
 };
 
+async function getUserCountry() {
+    return fetch("https://ipinfo.io/json").then(
+        (response) => response.json()
+    ).then(
+        (jsonResponse) => jsonResponse.country
+    ).catch(error => console.log(error));
+}
+
 const getEventTrackingConsent = async () => {
     return askYesNoQuestion(
         chalk`Please help us to collect data on near-cli usage to improve developer experience. ` +
-        chalk`\nWe will never send private information. We collect which commands are run with attributes and your account ID.` +
+        chalk`\nWe will never send private information. We collect which commands are run with attributes, your account ID, and your country` +
         chalk`\nNote that your account ID and all associated on-chain transactions are already being recorded on public blockchain. ` +
         chalk`\n\n{bold.yellow Would you like to opt in (y/n)? }`);
 };
