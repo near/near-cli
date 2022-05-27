@@ -150,7 +150,6 @@ const js_view = {
         .option('accountId', {
             desc: 'Unique identifier for the account that will be used to sign this call',
             type: 'string',
-            required: true,
         })
         .option('args', {
             desc: 'Arguments to the contract call, in JSON format by default (e.g. \'{"param_a": "value"}\')',
