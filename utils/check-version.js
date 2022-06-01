@@ -37,7 +37,7 @@ Run {cyan ${updateCommand}} to avoid unexpected behavior`;
             borderStyle: 'round'
         };
 
-        notifier.notify({ message, boxenOpts });
+        notifier.notify({ message, boxenOpts, isGlobal: true });
     }
 };
 
