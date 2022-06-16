@@ -488,7 +488,7 @@ near create-account sub-acct.example-acct.testnet --masterAccount example-acct.t
 **Example using `--initialBalance`:**
 
 ```bash
-near create-account sub-acct2.example-acct.testnet --masterAccount example-acct.testnet --initialBalance 10
+near create-account sub-acct2.example-acct.testnet --masterAccount example-acct.testnet --initialBalance 1
 ```
 
 <details>

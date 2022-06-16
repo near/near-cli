@@ -34,7 +34,7 @@ const createAccountCommand = {
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
-            default: '100'
+            default: '10'
         }),
     handler: exitOnError(createAccount)
 };
@@ -65,7 +65,7 @@ const createAccountCommandDeprecated = {
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
-            default: '100'
+            default: '10'
         }),
     handler: exitOnError(async (options) => {
         console.log('near create_account is deprecated and will be removed in version 0.26.0. Please use near create-account.');

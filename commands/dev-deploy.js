@@ -43,7 +43,7 @@ module.exports = {
         .option('initialBalance', {
             desc: 'Number of tokens to transfer to newly created account',
             type: 'string',
-            default: '100'
+            default: '10'
         })
         .option('init', {
             desc: 'Create new account for deploy (even if there is one already available)',
