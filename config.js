@@ -50,6 +50,17 @@ function getConfig(env) {
             helperAccount: 'guildnet',
         };
         break;
+    case 'shardnet':
+        config = {
+            networkId: 'shardnet',
+            nodeUrl: process.env.NEAR_CLI_SHARDNET_RPC_SERVER_URL || 'https://rpc.shardnet.near.org',
+            contractName: CONTRACT_NAME,
+            walletUrl: 'https://wallet.shardnet.near.org',
+            helperUrl: 'https://helper.shardnet.near.org',
+            helperAccount: 'shardnet',
+            explorerUrl: 'https://explorer.shardnet.near.org',
+        };
+        break;
     case 'local':
     case 'localnet':
         config = {
