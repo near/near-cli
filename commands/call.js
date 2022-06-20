@@ -70,9 +70,7 @@ async function scheduleFunctionCall(options) {
             handleExceededThePrepaidGasError(error, options);
             break;
         }
-        default: {
-            console.log(error);
         }
-        }
+        throw error; 
     }
 }
