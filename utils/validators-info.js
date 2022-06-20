@@ -25,16 +25,18 @@ async function showValidatorsTable(near, blockNumberOrHash) {
         result.protocolConfig.protocol_version);
     result.current_validators = result.current_validators.sort((a, b) => -new BN(a.stake).cmp(new BN(b.stake)));
     var validatorsTable = new AsciiTable();
-    validatorsTable.setHeading('Validator Id', 'Stake', '# Seats', '% Online', 'Blocks produced', 'Blocks expected');
+    validatorsTable.setHeading('Validator Id', 'Stake', '# Seats', '% Online', 'Blocks produced', 'Blocks expected', 'Chunks produced', 'Chunks expected');
     console.log(`Validators (total: ${result.current_validators.length}, seat price: ${utils.format.formatNearAmount(seatPrice, 0)}):`);
     result.current_validators.forEach((validator) => {
         validatorsTable.addRow(
             validator.account_id,
             utils.format.formatNearAmount(validator.stake, 0),
             getNumberOfSeats(result.protocolConfig.protocol_version, validator.stake, seatPrice),
-            `${Math.floor(validator.num_produced_blocks / validator.num_expected_blocks * 10000) / 100}%`,
+            `${Math.floor((validator.num_produced_blocks + validator.num_produced_chunks) / (validator.num_expected_blocks + validator.num_expected_chunks) * 10000) / 100}%`,
             validator.num_produced_blocks,
-            validator.num_expected_blocks);
+            validator.num_expected_blocks,
+            validator.num_produced_chunks,
+            validator.num_expected_chunks);
     });
     console.log(validatorsTable.toString());
 }
