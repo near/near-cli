@@ -18,8 +18,8 @@ module.exports = async function useSeedPhrase({ seedPhrase, seedPath, keyStore, 
     const seedPhraseKeystore = new InMemoryKeyStore();
     const seedPhraseAccountId = masterAccount ? masterAccount : accountId || implicitAccountId(publicKey);
 
-    await keyStore.setKey(networkId, seedPhraseAccountId, KeyPair.fromString(secretKey));
+    await seedPhraseKeystore.setKey(networkId, seedPhraseAccountId, KeyPair.fromString(secretKey));
     if(keyStore instanceof MergeKeyStore) keyStore.keyStores.push(seedPhraseKeystore);
 
-    return { keyStore, accountId };
+    return { keyStore, accountId, seedPhrasePublicKey: publicKey };
 };
