@@ -46,7 +46,7 @@ const checkExistingContract = async function(prevCodeHash) {
 };
 
 exports.deploy = async function (options) {
-    await checkCredentials(options.accountId, options.networkId, options.);
+    await checkCredentials(options.accountId, options.networkId, options.keyStore);
 
     const near = await connect(options);
     const account = await near.account(options.accountId);
