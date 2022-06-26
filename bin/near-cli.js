@@ -255,6 +255,7 @@ yargs // eslint-disable-line
     .command(clean)
     .command(stake)
     .command(login)
+    .command(require('../commands/near-list'))
     .command(require('../commands/repl'))
     .command(require('../commands/generate-key'))
     .command(require('../commands/add-key'))

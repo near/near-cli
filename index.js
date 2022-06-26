@@ -46,7 +46,7 @@ const checkExistingContract = async function(prevCodeHash) {
 };
 
 exports.deploy = async function (options) {
-    await checkCredentials(options.accountId, options.networkId, options.keyStore);
+    await checkCredentials(options.accountId, options.networkId, options.);
 
     const near = await connect(options);
     const account = await near.account(options.accountId);
@@ -214,7 +214,7 @@ exports.viewAccount = async function (options) {
 };
 
 exports.deleteAccount = async function (options) {
-    await checkCredentials(options.accountId, options.networkId, options.keyStore);
+    await checkCredentials(options.accountId, options.networkId, options.);
     console.log(
         `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
     const near = await connect(options);
@@ -228,7 +228,7 @@ exports.keys = async function (options) {
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let accessKeys = await account.getAccessKeys();
-    console.log(`Keys for account ${options.accountId}`);
+    console.log(`Inquirying keys for account ${options.accountId}`);
     console.log(inspectResponse.formatResponse(accessKeys));
 };
 
