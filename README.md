@@ -469,12 +469,14 @@ near delete-key example-acct.testnet Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1
 > lists keypairs stored in local folder.
 
 -   arguments: `none`
--   options: `--networkId`
+-   options: `--networkId` `--check`
+
+> `--check` is optional and if used, only valid keypairs are listed.
 
 **Example:**
 
 ```bash
-near list --networkId testnet
+near list --networkId testnet 
 ```
 
 <details>
