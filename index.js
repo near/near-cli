@@ -228,7 +228,7 @@ exports.keys = async function (options) {
     let near = await connect(options);
     let account = await near.account(options.accountId);
     let accessKeys = await account.getAccessKeys();
-    console.log(`Inquirying keys for account ${options.accountId}`);
+    console.log(`Keys for account ${options.accountId}`);
     console.log(inspectResponse.formatResponse(accessKeys));
 };
 
