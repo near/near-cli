@@ -49,7 +49,7 @@ const confirmDelete = function () {
     return askYesNoQuestion(
         chalk`{bold.white This method will delete your account. Beneficiary account must exist in order to transfer all Near tokens. Make sure to send all fungible tokens or NFTs that you own to the beneficiary account prior to deleting, as this method will only transfer NEAR tokens. Do you want to proceed? {bold.green (y/n) }}`,
         false);
-}
+};
 
 exports.deploy = async function (options) {
     await checkCredentials(options.accountId, options.networkId, options.keyStore);
@@ -225,7 +225,7 @@ exports.deleteAccount = async function (options) {
     const beneficiaryAccount = await near.account(options.beneficiaryId);
     // beneficiary account does not exist if there are no access keys
     if (!(await beneficiaryAccount.getAccessKeys()).length) {
-        console.log("Beneficiary account does not exist, please create the account to transfer Near tokens.");
+        console.log('Beneficiary account does not exist, please create the account to transfer Near tokens.');
         return;
     }
     
