@@ -45,6 +45,12 @@ const checkExistingContract = async function(prevCodeHash) {
     return true;
 };
 
+const confirmDelete = function () {
+    return askYesNoQuestion(
+        chalk`{bold.white This method will delete your account. Beneficiary account must already be initialized in order to transfer all Near tokens or these will be lost. Make sure to send all fungible tokens or NFTs that you own to the beneficiary account prior to deleting, as this method will only transfer NEAR tokens. Do you want to proceed? {bold.green (y/n) }}`,
+        false);
+};
+
 exports.deploy = async function (options) {
     await checkCredentials(options.accountId, options.networkId, options.keyStore);
 
@@ -215,13 +221,25 @@ exports.viewAccount = async function (options) {
 
 exports.deleteAccount = async function (options) {
     await checkCredentials(options.accountId, options.networkId, options.keyStore);
-    console.log(
-        `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
     const near = await connect(options);
-    const account = await near.account(options.accountId);
-    const result = await account.deleteAccount(options.beneficiaryId);
-    inspectResponse.prettyPrintResponse(result, options);
-    console.log(`Account ${options.accountId} for network "${options.networkId}" was deleted.`);
+    const beneficiaryAccount = await near.account(options.beneficiaryId);
+    // beneficiary account does not exist if there are no access keys
+    if (!(await beneficiaryAccount.getAccessKeys()).length) {
+        console.log('Beneficiary account does not exist, please create the account to transfer Near tokens.');
+        return;
+    }
+    
+    if (await confirmDelete()) {
+        const account = await near.account(options.accountId);
+        console.log(
+            `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
+        const result = await account.deleteAccount(options.beneficiaryId);
+        inspectResponse.prettyPrintResponse(result, options);
+        console.log(`Account ${options.accountId} for network "${options.networkId}" was deleted.`);
+    }
+    else {
+        console.log(chalk`{bold.white Deletion of account with account id: {bold.blue  ${options.accountId} } was {bold.red canceled}}`);
+    }
 };
 
 exports.keys = async function (options) {

@@ -32,7 +32,7 @@ const viewAccount = {
 
 const deleteAccount = {
     command: 'delete <accountId> <beneficiaryId>',
-    desc: 'delete an account and transfer funds to beneficiary account.',
+    desc: 'delete an account and transfer Near tokens to beneficiary account.',
     builder: (yargs) => yargs
         .option('accountId', {
             desc: 'Account to delete',
