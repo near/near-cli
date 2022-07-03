@@ -12,7 +12,7 @@ module.exports = {
             required: false,
         })
         .option('check', {
-            desc: 'shows only valid keys',
+            desc: 'lists only valid keys',
             type: 'boolean',
             default: false,
         }),
