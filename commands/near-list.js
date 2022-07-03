@@ -27,8 +27,8 @@ async function listKey(options) {
             let account = await near.account(accountId);
             let accessKeys = await account.getAccessKeys();
             accessKeys.forEach(async function(accessKey){
-                keyPair = await options.keyStore.getKey(options.networkId, accountId);
-                publicKey= keyPair.getPublicKey();
+                let keyPair = await options.keyStore.getKey(options.networkId, accountId);
+                let publicKey= keyPair.getPublicKey();
                 if (accessKey.public_key==publicKey) {
                     console.log(chalk`Account ID: {yellow ${accountId}}, Public Key: {green ${publicKey}}, Private Key: {red ${keyPair}}`);
                     return false;
@@ -38,8 +38,8 @@ async function listKey(options) {
     } else {
         const accountsId = await options.keyStore.getAccounts(options.networkId);
         accountsId.forEach(async function(accountId) {
-            keyPair = await options.keyStore.getKey(options.networkId, accountId);
-            publicKey= keyPair.getPublicKey();
+            let keyPair = await options.keyStore.getKey(options.networkId, accountId);
+            let publicKey= keyPair.getPublicKey();
             console.log(chalk`Account ID: {yellow ${accountId}}, Public Key: {green ${publicKey}}, Private Key: {red ${keyPair}}`);
         });
     }
