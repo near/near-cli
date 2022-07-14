@@ -49,6 +49,11 @@ async function addAccessKey(options) {
         return;
     }
 
+    if(!options.accessKey){
+        console.log("access-key to be added must be specified");
+        return;
+    }
+
     console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key = ${options.accessKey} to ${options.accountId}.`);
     
     const allowance = utils.format.parseNearAmount(options.allowance);
