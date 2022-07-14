@@ -41,7 +41,7 @@ async function addAccessKey(options) {
             console.log("Seed phrase key must be a full access key");
             return;
         }
-        console.log(`Adding seed phrase as full access key = "${options.seedPhrase}" to ${options.accountId}`);
+        console.log(`Adding seed phrase as full access key to ${options.accountId}`);
 
         const result = await account.addKey(options.seedPhrasePublicKey);
         inspectResponse.prettyPrintResponse(result, options);
