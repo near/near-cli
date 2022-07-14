@@ -380,7 +380,7 @@ near generate-key example.testnet --seedPhrase="cow moon right send now cool den
 
 #### 1) add a `full access` key
 
--   arguments: `accountId` `publicKey`
+-   arguments: `accountId` `--access-key`
 
 **Example:**
 
@@ -402,7 +402,7 @@ near add-key example-acct.testnet Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1S
 
 #### 2) add a `function access` key
 
--   arguments: `accountId` `publicKey` `--contract-id`
+-   arguments: `accountId` `--access-key` `--contract-id`
 -   options: `--method-names` `--allowance`
 
 > `accountId` is the account you are adding the key to
@@ -418,7 +418,7 @@ near add-key example-acct.testnet Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1S
 **Example:**
 
 ```bash
-near add-key example-acct.testnet GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi --contract-id example-contract.testnet --method-names example_method --allowance 30000000000
+near add-key example-acct.testnet --access-key GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi --contract-id example-contract.testnet --method-names example_method --allowance 30000000000
 ```
 
 <details>
