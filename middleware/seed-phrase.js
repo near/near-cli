@@ -18,8 +18,11 @@ module.exports = async function useSeedPhrase({ seedPhrase, seedPath, keyStore, 
     const seedPhraseKeystore = new InMemoryKeyStore();
     const seedPhraseAccountId = masterAccount ? masterAccount : accountId || implicitAccountId(publicKey);
 
+    console.log(`Adding a seed-based key ${publicKey} to account ${seedPhraseAccountId}`);
+    // FIXME: something is wrong here - as we create the "seedPhraseKeystore", but it stays "empty"
+    // and we add the seed-based key directly into "main" keystore.
     await keyStore.setKey(networkId, seedPhraseAccountId, KeyPair.fromString(secretKey));
-    if(keyStore instanceof MergeKeyStore) keyStore.keyStores.push(seedPhraseKeystore);
+    if (keyStore instanceof MergeKeyStore) keyStore.keyStores.push(seedPhraseKeystore);
 
-    return { keyStore, accountId };
+    return { keyStore, accountId, seedPhraseAccountId };
 };
