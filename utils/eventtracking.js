@@ -1,4 +1,4 @@
-const SEGMENT_WRITE_KEY = 'vErt52x0024wPxUfLDZIKcYRPQgh6NyT';
+const SEGMENT_WRITE_KEY = 'ePJM5UVxZGUxLP9dH2wGDvUE7hC2MbTX';
 
 const Analytics = require('analytics-node');
 const chalk = require('chalk'); // colorize output
