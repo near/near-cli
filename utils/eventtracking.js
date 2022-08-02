@@ -125,16 +125,9 @@ const askForConsentIfNeeded = async (options) => {
     }
 };
 
-const trackDeployedContract = async () => {
-    const shellSettings = settings.getShellSettings();
-    const id = getSegmentID(shellSettings);
-    // TODO: find a way to increment a Segment analytic property
-};
-
 module.exports = {
     track,
     askForConsentIfNeeded,
-    trackDeployedContract,
     // Some of the event ids are auto-generated runtime with the naming convention event_id_shell_{command}_start
 
     EVENT_ID_CREATE_ACCOUNT_END: 'event_id_shell_create-account_end',
