@@ -244,7 +244,7 @@ exports.deleteAccount = async function (options) {
         console.log(`Account ${options.accountId} for network "${options.networkId}" was deleted.`);
     }
     else {
-        console.log(chalk`{bold.white Deletion of account with account id: {bold.blue  ${options.accountId} } was {bold.red canceled}}`);
+        console.log(chalk`{bold.white Deletion of account with account id: {bold.blue  ${options.accountId} } was {bold.red cancelled}}`);
     }
 };
 
