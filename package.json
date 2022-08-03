@@ -10,7 +10,7 @@
     "pretest": "rm -rf tmp-project",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest",
-    "test:integration": "./test/index.sh",
+    "test:integration": "bash ./test/index.sh",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
