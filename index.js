@@ -224,9 +224,15 @@ exports.deleteAccount = async function (options) {
     const near = await connect(options);
     const beneficiaryAccount = await near.account(options.beneficiaryId);
     // beneficiary account does not exist if there are no access keys
-    if (!(await beneficiaryAccount.getAccessKeys()).length) {
-        console.log('Beneficiary account does not exist, please create the account to transfer Near tokens.');
-        return;
+    try {
+        await beneficiaryAccount.state();
+    } catch (e) {
+        if (e.type === 'AccountDoesNotExist') {
+            console.error(`Beneficiary account ${options.beneficiaryId} does not exist. Please create the account to transfer Near tokens.`);
+            return;
+        } else {
+            throw e;
+        }
     }
     
     if (await confirmDelete()) {
