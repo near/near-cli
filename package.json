@@ -8,7 +8,9 @@
   "main": "index.js",
   "scripts": {
     "pretest": "rm -rf tmp-project",
-    "test": "jest && ./test/index.sh",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "jest",
+    "test:integration": "bash ./test/index.sh",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
