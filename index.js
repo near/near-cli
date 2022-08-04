@@ -92,7 +92,6 @@ exports.deploy = async function (options) {
         let state = await account.state();
         let codeHash = state.code_hash;
         await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: true, code_hash: codeHash, is_same_contract: prevCodeHash === codeHash, contract_id: options.accountId }, options);
-        eventtracking.trackDeployedContract();
         console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${options.accountId}`);
     }
 };

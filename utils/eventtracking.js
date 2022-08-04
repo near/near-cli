@@ -1,12 +1,14 @@
-const MIXPANEL_TOKEN = 'e98aa9d6d259d9d78f20cb05cb54f5cb';
+const SEGMENT_WRITE_KEY = 'ePJM5UVxZGUxLP9dH2wGDvUE7hC2MbTX';
 
+const Analytics = require('analytics-node');
 const chalk = require('chalk'); // colorize output
 const crypto = require('crypto');
-const mixpanel = require('mixpanel').init(MIXPANEL_TOKEN);
 const near_cli_version = require('../package.json').version;
 const settings = require('./settings');
 const { askYesNoQuestion } = require('./readline');
 const uuid = require('uuid');
+
+const analytics = new Analytics(SEGMENT_WRITE_KEY);
 
 const isGitPod = () => {
     return !!process.env.GITPOD_WORKSPACE_URL;
@@ -39,7 +41,7 @@ const shouldTrackID = (shellSettings) => {
     return !!shellSettings.trackingAccountID;
 };
 
-const getMixpanelID = (shellSettings) => isGitPod() ? getGitPodUserHash() : shellSettings.trackingSessionId;
+const getSegmentID = (shellSettings) => isGitPod() ? getGitPodUserHash() : shellSettings.trackingSessionId;
 
 const track = async (eventType, eventProperties, options) => {
     try {
@@ -48,19 +50,20 @@ const track = async (eventType, eventProperties, options) => {
             return;
         }
 
-        if (shouldTrackID(shellSettings)) {
+        if (options.accountId && shouldTrackID(shellSettings)) {
             const accountID = options.accountId;
-            const id = getMixpanelID(shellSettings);
-            await Promise.all([
-                mixpanel.alias(accountID, id),
-                mixpanel.people.set(id, { account_id: accountID })
-            ]);
+            const id = getSegmentID(shellSettings);
+            analytics.alias({ previousId: accountID, userId: id });
+            analytics.identify({
+                userId: id,
+                traits: { account_id: accountID }
+            });
         }
 
         const user_country = await getUserCountry();
 
-        const mixPanelProperties = {
-            distinct_id: getMixpanelID(shellSettings),
+        const segmentProperties = {
+            distinct_id: getSegmentID(shellSettings),
             near_cli_version,
             user_country,
             os: process.platform,
@@ -70,13 +73,20 @@ const track = async (eventType, eventProperties, options) => {
             is_gitpod: isGitPod(),
             timestamp: new Date()
         };
-        Object.assign(mixPanelProperties, eventProperties);
-        await Promise.all([mixpanel.track(eventType, mixPanelProperties),
-            mixpanel.people.set(mixPanelProperties.distinct_id, {
+        Object.assign(segmentProperties, eventProperties);
+        analytics.track({
+            userId: segmentProperties.distinct_id,
+            event: eventType,
+            properties: segmentProperties
+        });
+        analytics.identify({
+            userId: segmentProperties.distinct_id,
+            traits: {
                 deployed_contracts: 0,
                 network_id: options.networkId,
-                node_url: options.nodeUrl,
-            })]);
+                node_url: options.nodeUrl
+            }
+        });
     } catch (e) {
         console.warn(
             'Warning: problem while sending developer event tracking data. This is not critical. Error: ',
@@ -115,16 +125,9 @@ const askForConsentIfNeeded = async (options) => {
     }
 };
 
-const trackDeployedContract = async () => {
-    const shellSettings = settings.getShellSettings();
-    const id = getMixpanelID(shellSettings);
-    await mixpanel.people.increment(id, 'deployed_contracts');
-};
-
 module.exports = {
     track,
     askForConsentIfNeeded,
-    trackDeployedContract,
     // Some of the event ids are auto-generated runtime with the naming convention event_id_shell_{command}_start
 
     EVENT_ID_CREATE_ACCOUNT_END: 'event_id_shell_create-account_end',
