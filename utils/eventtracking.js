@@ -5,7 +5,6 @@ const chalk = require('chalk'); // colorize output
 const crypto = require('crypto');
 const near_cli_version = require('../package.json').version;
 const settings = require('./settings');
-const { askYesNoQuestion } = require('./readline');
 const uuid = require('uuid');
 
 const analytics = new Analytics(SEGMENT_WRITE_KEY);
@@ -110,7 +109,7 @@ function notifyEventTrackingConsent() {
         chalk`\nNote that your account ID and all associated on-chain transactions are already being recorded on public blockchain. ` +
         chalk`\n\n{bold.yellow You may chose to opt in by running {bold.green near-cli --track yes} }`;
     console.log(message);
-};
+}
 
 const notifyForConsentIfNeeded = async (options) => {
     const shellSettings = settings.getShellSettings();

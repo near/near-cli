@@ -1,6 +1,4 @@
 const exitOnError = require('../utils/exit-on-error');
-const connect = require('../utils/connect');
-const { formatResponse } = require('../utils/inspect-response');
 const { getShellSettings, saveShellSettings } = require('../utils/settings');
 
 module.exports = {
@@ -17,7 +15,7 @@ module.exports = {
 };
 
 async function optInDataSharing(options) {
-    const { choice } = options;
+    let { choice } = options;
     choice = choice.toLowerCase();
     const choiceBool = choice === 'yes' || choice === 'y';
     settings = getShellSettings();
