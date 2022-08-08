@@ -18,7 +18,7 @@ async function optInDataSharing(options) {
     let { choice } = options;
     choice = choice.toLowerCase();
     const choiceBool = choice === 'yes' || choice === 'y';
-    settings = getShellSettings();
+    const settings = getShellSettings();
     settings.trackingEnabled = choiceBool;
     settings.trackingAccountID = settings.trackingEnabled; // mimic the behavior of the old cli
     saveShellSettings(settings);
