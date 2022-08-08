@@ -1,5 +1,6 @@
 const exitOnError = require('../utils/exit-on-error');
 const { getShellSettings, saveShellSettings } = require('../utils/settings');
+const chalk = require('chalk');
 
 module.exports = {
     command: 'track [choice]',
@@ -22,4 +23,6 @@ async function optInDataSharing(options) {
     settings.trackingEnabled = choiceBool;
     settings.trackingAccountID = settings.trackingEnabled; // mimic the behavior of the old cli
     saveShellSettings(settings);
+    const message = choiceBool ? 'Data tracking enabled' : 'Data tracking disabled';
+    console.log(chalk[choiceBool ? 'green' : 'red'](message), '\n');
 }

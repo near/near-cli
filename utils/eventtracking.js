@@ -107,7 +107,7 @@ function notifyEventTrackingConsent() {
         chalk`Please help us to collect data on near-cli usage to improve developer experience. ` +
         chalk`\nWe will never send private information. We collect which commands are run with attributes, your account ID, and your country` +
         chalk`\nNote that your account ID and all associated on-chain transactions are already being recorded on public blockchain. ` +
-        chalk`\n\n{bold.yellow You may chose to opt in by running {bold.green near-cli --track yes} }`;
+        chalk`\n\n{bold.yellow You may chose to opt in by running {bold.green near-cli --track yes} }\n`;
     console.log(message);
 }
 
