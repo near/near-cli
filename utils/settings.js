@@ -6,6 +6,9 @@ const path = require('path');
 // Persistent shell settings
 const SETTINGS_FILE_NAME = 'settings.json';
 const SETTINGS_DIR = '.near-config';
+const DEFAULT_SETTINGS = {
+    trackingEnabled: false,
+};
 
 const getShellSettings = () => {
     const nearPath = path.join(homedir, SETTINGS_DIR);
@@ -15,14 +18,14 @@ const getShellSettings = () => {
         }
         const shellSettingsPath = path.join(nearPath, SETTINGS_FILE_NAME);
         if (!fs.existsSync(shellSettingsPath)) {
-            return {};
+            return DEFAULT_SETTINGS;
         } else {
             return JSON.parse(fs.readFileSync(shellSettingsPath, 'utf8'));
         }
     } catch (e) {
         console.log(e);
     }
-    return {};
+    return DEFAULT_SETTINGS;
 };
 
 const saveShellSettings = (settings) => {

@@ -103,21 +103,29 @@ async function getUserCountry() {
     ).catch(error => console.log(`Failed to get the country due to: ${error}`));
 }
 
-const getEventTrackingConsent = async () => {
-    return askYesNoQuestion(
+function notifyEventTrackingConsent() {
+    const message =
         chalk`Please help us to collect data on near-cli usage to improve developer experience. ` +
         chalk`\nWe will never send private information. We collect which commands are run with attributes, your account ID, and your country` +
         chalk`\nNote that your account ID and all associated on-chain transactions are already being recorded on public blockchain. ` +
-        chalk`\n\n{bold.yellow Would you like to opt in (y/n)? }`);
+        chalk`\n\n{bold.yellow You may chose to opt in by running {bold.green near-cli --track yes} }`;
+    console.log(message);
 };
 
-const askForConsentIfNeeded = async (options) => {
+const notifyForConsentIfNeeded = async (options) => {
     const shellSettings = settings.getShellSettings();
     // if the appropriate option is not in settings, ask now and save settings.
-    if (shellSettings.trackingEnabled === undefined || shellSettings.trackingAccountID === undefined) {
-        shellSettings.trackingEnabled = shouldOptInByDefault() || (await getEventTrackingConsent());
-        shellSettings.trackingAccountID = shellSettings.trackingEnabled;
-        shellSettings.trackingSessionId = shellSettings.trackingEnabled ? uuid.v4() : undefined;
+    if (
+        shellSettings.trackingEnabled === undefined ||
+        shellSettings.trackingAccountID === undefined
+    ) {
+        shellSettings.trackingEnabled = shouldOptInByDefault();
+        if (!shellSettings.trackingEnabled) {
+            notifyEventTrackingConsent();
+        }
+        shellSettings.trackingSessionId = shellSettings.trackingEnabled
+            ? uuid.v4()
+            : undefined;
         settings.saveShellSettings(shellSettings);
         if (shellSettings.trackingEnabled) {
             await track(module.exports.EVENT_ID_TRACKING_OPT_IN, {}, options);
@@ -127,7 +135,7 @@ const askForConsentIfNeeded = async (options) => {
 
 module.exports = {
     track,
-    askForConsentIfNeeded,
+    askForConsentIfNeeded: notifyForConsentIfNeeded,
     // Some of the event ids are auto-generated runtime with the naming convention event_id_shell_{command}_start
 
     EVENT_ID_CREATE_ACCOUNT_END: 'event_id_shell_create-account_end',
