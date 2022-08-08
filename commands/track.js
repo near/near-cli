@@ -17,19 +17,7 @@ module.exports = {
 };
 
 async function optInDataSharing(options) {
-    const { accountId, choice } = options;
-    const near = await connect(options);
-    const account = await near.account(accountId);
-
-    // near-api-js takes block_id instead of blockId
-    let state = await account.viewState(prefix, { block_id: blockId, finality });
-    if (utf8) {
-        state = state.map(({ key, value}) => ({ key: key.toString('utf-8'), value: value.toString('utf-8') }));
-    } else {
-        state = state.map(({ key, value}) => ({ key: key.toString('base64'), value: value.toString('base64') }));
-    }
-    console.log(formatResponse(state, options));
-
+    const { choice } = options;
     choice = choice.toLowerCase();
     const choiceBool = choice === 'yes' || choice === 'y';
     settings = getShellSettings();
