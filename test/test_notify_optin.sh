@@ -13,7 +13,7 @@ STDOUT=$(./bin/near dev-deploy ./test/res/guest_book.wasm > /dev/null)
 TEXT=$STDOUT
 EXPECTED='You may chose to opt in by running'
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
-    echo FAILURE Unexpected output from near call: $RESULT
+    echo FAILURE Unexpected output from near call: $TEXT
     exit 1
 fi
 
@@ -23,7 +23,7 @@ STDOUT=$(./bin/near track bleh > /dev/null)
 TEXT=$STDOUT
 EXPECTED='Invalid choice of'
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
-    echo FAILURE Unexpected output from near call: $RESULT
+    echo FAILURE Unexpected output from near call: $TEXT
     exit 1
 fi
 
@@ -33,7 +33,7 @@ STDOUT=$(./bin/near track yes > /dev/null)
 TEXT=$STDOUT
 EXPECTED='Data tracking enabled'
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
-    echo FAILURE Unexpected output from near call: $RESULT
+    echo FAILURE Unexpected output from near call: $TEXT
     exit 1
 fi
 
@@ -43,6 +43,6 @@ STDOUT=$(./bin/near track no > /dev/null)
 TEXT=$STDOUT
 EXPECTED='Data tracking disabled'
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
-    echo FAILURE Unexpected output from near call: $RESULT
+    echo FAILURE Unexpected output from near call: $TEXT
     exit 1
 fi
