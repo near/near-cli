@@ -7,10 +7,9 @@ module.exports = {
     desc: 'Activate data tracking for this cli client',
     builder: (yargs) => yargs
         .option('choice', {
-            desc: 'Return keys only with given prefix.',
+            desc: 'Choice of either yes or no',
             type: 'string',
             required: true,
-            default: ''
         }),
     handler: exitOnError(optInDataSharing)
 };
@@ -18,6 +17,10 @@ module.exports = {
 async function optInDataSharing(options) {
     let { choice } = options;
     choice = choice.toLowerCase();
+    if (choice !== 'yes' && choice !== 'y' && choice !== 'no' && choice !== 'n') {
+        console.log(chalk`{red Invalid choice of {bold ${choice}}. Please choose either {bold yes} or {bold no}}\n`);
+        return;
+    }
     const choiceBool = choice === 'yes' || choice === 'y';
     const settings = getShellSettings();
     settings.trackingEnabled = choiceBool;
