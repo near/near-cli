@@ -20,7 +20,7 @@ fi
 
 # Delete account, remake, redeploy
 echo Deleting account: $testaccount
-./bin/near delete $testaccount test.near > /dev/null
+printf 'y\n' | ./bin/near delete $testaccount test.near > /dev/null
 echo Recreating account: $testaccount
 ./bin/near create-account $testaccount > /dev/null
 ./bin/near deploy --accountId $testaccount --wasmFile ./test/res/fungible_token.wasm --initFunction new --initArgs '{"owner_id": "test.near", "total_supply": "1000000"}' > /dev/null
