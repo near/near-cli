@@ -10,7 +10,7 @@ echo Deploying contract
 
 echo Deploying contract to temporary accountId
 # TODO: Specify helperUrl in project template
-yes | ./bin/near dev-deploy ./test/res/guest_book.wasm > /dev/null
+./bin/near dev-deploy ./test/res/guest_book.wasm > /dev/null
 
 echo Calling functions
 ./bin/near call $testaccount addMessage '{"text":"TEST"}' --accountId=test.near > /dev/null
