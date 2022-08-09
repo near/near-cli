@@ -8,7 +8,7 @@ echo Creating account
 ./bin/near create-account $testaccount > /dev/null
 
 echo Deploying contract to temporary accountId
-STDOUT=$(./bin/near dev-deploy ./test/res/guest_book.wasm > /dev/null)
+STDOUT=$(./bin/near dev-deploy ./test/res/guest_book.wasm -v 2>&1 >/dev/null | ./node_modules/.bin/strip-ansi)
 
 TEXT=$STDOUT
 EXPECTED='You may chose to opt in by running'
