@@ -9,7 +9,7 @@ echo Creating account
 
 echo Deploying contract to temporary accountId
 TEXT=$(./bin/near dev-deploy ./test/res/guest_book.wasm)
-EXPECTED='You may chose to opt in by running near track'
+EXPECTED='You may chose to opt in by running near track yes'
 if [[ ! "$TEXT" =~ .*"$EXPECTED".* ]]; then
     echo FAILURE Unexpected output from near call: "$TEXT"
     exit 1
@@ -17,7 +17,7 @@ fi
 
 echo Invalid tracking parameter
 TEXT=$(./bin/near track bleh)
-EXPECTED='Invalid choice of'
+EXPECTED='Invalid choice of bleh. Please choose either yes or no'
 if [[ ! "$TEXT" =~ .*"$EXPECTED".* ]]; then
     echo FAILURE Unexpected output from near call: "$TEXT"
     exit 1
