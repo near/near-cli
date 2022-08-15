@@ -54,10 +54,6 @@ const track = async (eventType, eventProperties, options) => {
             const accountID = options.accountId;
             const id = getSegmentID(shellSettings);
             analytics.alias({ previousId: accountID, userId: id });
-            analytics.identify({
-                userId: id,
-                traits: { account_id: accountID }
-            });
         }
 
         const user_country = await getUserCountry();
