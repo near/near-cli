@@ -37,7 +37,7 @@
     "ascii-table": "0.0.9",
     "bn.js": "^5.1.1",
     "bs58": "^4.0.1",
-    "chalk": "^4.0.0",
+    "chalk": "^5.1.0",
     "flagged-respawn": "^1.0.1",
     "is-ci": "^2.0.0",
     "jest-environment-node": "^27.0.6",
