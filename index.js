@@ -16,7 +16,7 @@ const capture = require('./utils/capture-login-success');
 const inspectResponse = require('./utils/inspect-response');
 const eventtracking = require('./utils/eventtracking');
 const checkCredentials = require('./utils/check-credentials');
-const { askYesNoQuestion } = require('./utils/readline');
+const {askYesNoQuestion} = require('./utils/readline');
 
 // TODO: Fix promisified wrappers to handle error properly
 
@@ -35,7 +35,7 @@ exports.clean = async function () {
 // (code hash consisting of 32 ones means that the contract code is missing).
 // Returns `true` if the contract is either missing or if the user agreed to replace it.
 // Returns `false` otherwise.
-const checkExistingContract = async function (prevCodeHash) {
+const checkExistingContract = async function(prevCodeHash) {
     if (prevCodeHash !== '11111111111111111111111111111111') {
         return await askYesNoQuestion(
             chalk`{bold.white This account already has a deployed contract [ {bold.blue ${prevCodeHash}} ]. Do you want to proceed? {bold.green (y/n) }}`,
@@ -104,7 +104,7 @@ exports.callViewFunction = async function (options) {
 };
 
 // open a given URL in browser in a safe way.
-const openUrl = async function (url) {
+const openUrl = async function(url) {
     try {
         await open(url.toString());
     } catch (error) {
@@ -233,7 +233,7 @@ exports.deleteAccount = async function (options) {
             throw e;
         }
     }
-
+    
     if (options.force || await confirmDelete()) {
         const account = await near.account(options.accountId);
         console.log(
