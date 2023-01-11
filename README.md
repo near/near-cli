@@ -440,7 +440,7 @@ near add-key example-acct.testnet GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi -
 > Deletes an existing key for a given account.
 
 -   arguments: `accountId` `publicKey`
--   options: `default`
+-   options: `default`, `force`
 
 **Note:** You will need separate full access key for the account you would like to delete a key from. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
@@ -573,7 +573,7 @@ near send sender.testnet receiver.testnet 10
 > Deletes an account and transfers remaining balance to a beneficiary account.
 
 -   arguments: `accountId` `beneficiaryId`
--   options: `default`
+-   options: `default`, `force`
 
 **Example:**
 

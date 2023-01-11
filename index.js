@@ -234,7 +234,7 @@ exports.deleteAccount = async function (options) {
         }
     }
     
-    if (await confirmDelete()) {
+    if (options.force || await confirmDelete()) {
         const account = await near.account(options.accountId);
         console.log(
             `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
