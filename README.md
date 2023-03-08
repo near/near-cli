@@ -2,7 +2,7 @@
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/near/near-cli)
 
-NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.com/near/near-api-js) to connect to and interact with the NEAR blockchain. Create accounts, access keys, sign & send transactions with this versatile command line interface tool.
+NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.com/near/near-api-js) to connect to and interact with the NEAR blockchain. You can create accounts, access keys, sign & send transactions with this versatile command line interface tool.
 
 **Note:** Node.js version 10+ is required to run NEAR CLI.
 
