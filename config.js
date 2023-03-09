@@ -1,5 +1,3 @@
-const { getXApiKey } = require('./utils/x-api-key-settings.js');
-
 const CONTRACT_NAME = process.env.CONTRACT_NAME;
 
 function getConfig(env) {
@@ -85,12 +83,6 @@ function getConfig(env) {
         break;
     default:
         throw Error(`Unconfigured environment '${env}'. Can be configured in src/config.js.`);
-    }
-
-    // adding x-api-key for given RPC Server
-    const apiKey = getXApiKey(config.nodeUrl);
-    if (apiKey) {
-        config.headers = { 'x-api-key': apiKey };
     }
     return config;
 }
