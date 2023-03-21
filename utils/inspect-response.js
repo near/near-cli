@@ -13,13 +13,7 @@ const checkForAccDoesNotExist = (error, options) => {
     // below is optional approach, but "alias" in command options is better
     // const accountId = (options.accountId)? options.accountId : options.contractName;
     const currentNetwork = config.helperAccount;
-    if (currentNetwork in suffixesToNetworks)  {
-        console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${suffixesToNetworks[currentNetwork]}}\n}`);
-    }
-    else {
-        console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in an undefined network: {bold.white ${currentNetwork}}\n}`);
-    }
-    
+    console.log(chalk`\n{bold.red Account {bold.white ${options.accountId}} is not found in {bold.white ${config.networkId}}\n}`);
     const accSuffix = String(options.accountId).match('[^.]*$')[0];
     const accNetwork = suffixesToNetworks[accSuffix];
     if (currentNetwork != accSuffix && accNetwork) {
