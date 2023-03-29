@@ -65,7 +65,7 @@ function getConfig(env) {
             networkId: process.env.NEAR_CLI_LOCALNET_NETWORK_ID || 'localnet',
             nodeUrl: process.env.NEAR_CLI_LOCALNET_RPC_SERVER_URL || process.env.NEAR_NODE_URL || 'http://127.0.0.1:3030',
             keyPath: process.env.NEAR_CLI_LOCALNET_KEY_PATH || `${process.env.HOME}/.near/validator_key.json`,
-            walletUrl: process.env.NEAR_WALLET_URL || 'http://localhost:4000/wallet',
+            walletUrl: process.env.NEAR_WALLET_URL || 'https://localhost:1234',
             contractName: CONTRACT_NAME,
             helperUrl: process.env.NEAR_HELPER_URL || 'http://localhost:3000',
             helperAccount: process.env.NEAR_HELPER_ACCOUNT || 'node0',
