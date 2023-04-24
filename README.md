@@ -22,6 +22,7 @@ _Click on a command for more information and examples._
 | [`near generate-key`](#near-generate-key)             | generates a local key pair **or** shows public key & [implicit account](http://docs.near.org/docs/roles/integrator/implicit-accounts)  |
 | [`near add-key`](#near-add-key)                       | adds a new access key to an account                                                                                                    |
 | [`near delete-key`](#near-delete-key)                 | deletes an access key from an account                                                                                                  |
+| [`near list`](#near-list)                             | lists keypairs stored in local folder                                                                                                  |
 | **ACCOUNTS**                                          |                                                                                                                                        |
 | [`near create-account`](#near-create-account)         | creates an account                                                                                                                     |
 | [`near state`](#near-state)                           | shows general details of an account                                                                                                    |
@@ -457,6 +458,32 @@ near delete-key example-acct.testnet Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1
     Transaction Id 4PwW7vjzTCno7W433nu4ieA6FvsAjp7zNFwicNLKjQFT
     To see the transaction in the transaction explorer, please open this url in your browser
     https://explorer.testnet.near.org/transactions/4PwW7vjzTCno7W433nu4ieA6FvsAjp7zNFwicNLKjQFT
+
+</p>
+</details>
+
+---
+
+### `near list`
+
+> lists keypairs stored in local folder.
+
+-   arguments: `none`
+-   options: `--networkId` `--check`
+
+> `--check` is optional and if used, only valid keypairs are listed.
+
+**Example:**
+
+```bash
+near list --networkId testnet 
+```
+
+<details>
+<summary><strong>Example Response</strong></summary>
+<p>
+
+    Account ID: example-acct.testnet, Public Key: ed25519:4pUt5sXe7Kht9qArfySqp37J7bMAikiP5QrDQ5DNH9PG, Private Key: ed25519:4XBKZNG17UeVbkSLowyX6iYdqsWnXZ2ecY9oR2zq8xZaJKbm2NkiLooTuUGnJgaf1NJT8Dk8RJfrqu2UcqwZT1fG
 
 </p>
 </details>
