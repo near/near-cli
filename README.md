@@ -146,6 +146,13 @@ This API Key will be saved in a config and used for each command you execute wit
 near login
 ```
 
+**Custom wallet url:**
+
+Default wallet url is `https://wallet.testnet.near.org/`. But if you want to change to a different wallet url, you can use `--walletUrl` option.
+```
+near login --walletUrl https://testnet.mynearwallet.com/
+```
+
 #### Access Key Location:
 
 -   Once complete you will now have your Access Key stored locally in a hidden directory called `.near-credentials`
