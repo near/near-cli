@@ -19,7 +19,9 @@ else
 fi
 
 # Delete account, remake, redeploy
-./bin/near delete $testaccount test.near > /dev/null
+echo Deleting account: $testaccount
+printf 'y\n' | ./bin/near delete $testaccount test.near > /dev/null
+echo Recreating account: $testaccount
 ./bin/near create-account $testaccount > /dev/null
 ./bin/near deploy --accountId $testaccount --wasmFile ./test/res/fungible_token.wasm --initFunction new --initArgs '{"owner_id": "test.near", "total_supply": "1000000"}' > /dev/null
 RESULT=$(./bin/near view $testaccount get_balance '{"owner_id": "test.near"}' -v | ./node_modules/.bin/strip-ansi)

@@ -92,7 +92,6 @@ exports.deploy = async function (options) {
         let state = await account.state();
         let codeHash = state.code_hash;
         await eventtracking.track(eventtracking.EVENT_ID_DEPLOY_END, { success: true, code_hash: codeHash, is_same_contract: prevCodeHash === codeHash, contract_id: options.accountId }, options);
-        eventtracking.trackDeployedContract();
         console.log(`Done deploying ${options.initFunction ? 'and initializing' : 'to'} ${options.accountId}`);
     }
 };
@@ -224,12 +223,18 @@ exports.deleteAccount = async function (options) {
     const near = await connect(options);
     const beneficiaryAccount = await near.account(options.beneficiaryId);
     // beneficiary account does not exist if there are no access keys
-    if (!(await beneficiaryAccount.getAccessKeys()).length) {
-        console.log('Beneficiary account does not exist, please create the account to transfer Near tokens.');
-        return;
+    try {
+        await beneficiaryAccount.state();
+    } catch (e) {
+        if (e.type === 'AccountDoesNotExist') {
+            console.error(`Beneficiary account ${options.beneficiaryId} does not exist. Please create the account to transfer Near tokens.`);
+            return;
+        } else {
+            throw e;
+        }
     }
     
-    if (await confirmDelete()) {
+    if (options.force || await confirmDelete()) {
         const account = await near.account(options.accountId);
         console.log(
             `Deleting account. Account id: ${options.accountId}, node: ${options.nodeUrl}, helper: ${options.helperUrl}, beneficiary: ${options.beneficiaryId}`);
@@ -238,7 +243,7 @@ exports.deleteAccount = async function (options) {
         console.log(`Account ${options.accountId} for network "${options.networkId}" was deleted.`);
     }
     else {
-        console.log(chalk`{bold.white Deletion of account with account id: {bold.blue  ${options.accountId} } was {bold.red canceled}}`);
+        console.log(chalk`{bold.white Deletion of account with account id: {bold.blue  ${options.accountId} } was {bold.red cancelled}}`);
     }
 };
 
