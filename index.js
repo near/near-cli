@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs/promises');
 const yargs = require('yargs');
 const ncp = require('ncp').ncp;
 ncp.limit = 16;
@@ -100,7 +100,11 @@ exports.callViewFunction = async function (options) {
     console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
     const near = await connect(options);
     const account = await near.account(options.accountId || options.masterAccount || options.contractName);
-    console.log(inspectResponse.formatResponse(await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'))));
+    const respone = await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'));
+    console.log(inspectResponse.formatResponse(respone));
+    if (options.output) {
+        await fs.writeFile(options.output, JSON.stringify(respone, null, 4));
+    }
 };
 
 // open a given URL in browser in a safe way.
