@@ -36,8 +36,8 @@ _Click on a command for more information and examples._
 | **TRANSACTIONS**                                      |                                                                                                                                        |
 | [`near tx-status`](#near-tx-status)                   | queries a transaction's status by `txHash`                                                                                             |
 | **VALIDATORS**                                        |                                                                                                                                        |
-| [`near validators current`](#near-validators-current) | displays current [epoch](http://docs.near.org/docs/concepts/epoch) validator pool details                                              |
-| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](http://docs.near.org/docs/concepts/epoch)                                              |
+| [`near validators current`](#near-validators-current) | displays current [epoch](https://docs.near.org/concepts/basics/epoch) validator pool details                                              |
+| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](https://docs.near.org/concepts/basics/epoch)                                              |
 | [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](http://docs.near.org/docs/concepts/epoch) _after_ next                                    |
 | **JS-SDK**                                            |                                                                                                                                        |
 | [`near js`](#near-js)                                 | Work with JS contract enclave                                                                                                          |
