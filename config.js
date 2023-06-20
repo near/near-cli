@@ -10,7 +10,7 @@ function getConfig(env) {
             nodeUrl: process.env.NEAR_CLI_MAINNET_RPC_SERVER_URL || 'https://rpc.mainnet.near.org',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.near.org',
-            helperUrl: 'https://helper.mainnet.near.org',
+            helperUrl: process.env.NEAR_CLI_MAINNET_HELPER_URL || 'https://helper.mainnet.near.org',
             helperAccount: 'near',
             explorerUrl: 'https://explorer.mainnet.near.org',
         };
@@ -22,7 +22,7 @@ function getConfig(env) {
             nodeUrl: process.env.NEAR_CLI_TESTNET_RPC_SERVER_URL || 'https://rpc.testnet.near.org',
             contractName: CONTRACT_NAME,
             walletUrl: 'https://wallet.testnet.near.org',
-            helperUrl: 'https://helper.testnet.near.org',
+            helperUrl: process.env.NEAR_CLI_TESTNET_HELPER_URL || 'https://helper.testnet.near.org',
             helperAccount: 'testnet',
             explorerUrl: 'https://explorer.testnet.near.org',
         };
