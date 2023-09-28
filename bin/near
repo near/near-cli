@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require("global-agent/bootstrap");
 const flaggedRespawn = require('flagged-respawn');
 require('v8flags')((e, flags) => {
     if (e) {
