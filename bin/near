@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+if (!process.env.GLOBAL_AGENT_ENVIRONMENT_VARIABLE_NAMESPACE) {
+    process.env.GLOBAL_AGENT_ENVIRONMENT_VARIABLE_NAMESPACE = "";
+}
 require("global-agent/bootstrap");
 const flaggedRespawn = require('flagged-respawn');
 require('v8flags')((e, flags) => {
