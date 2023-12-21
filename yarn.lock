@@ -1055,10 +1055,10 @@ ajv@^8.0.1:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-analytics-node@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.npmjs.org/analytics-node/-/analytics-node-6.1.0.tgz"
-  integrity sha512-17B+EPf4GN4gjRsOyXgY/heBh27nb0KWtuDS+wDe11r5T3RDBejkTrWDxAvUyByGFhidsvK4onJlhWhIFy+r3A==
+analytics-node@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/analytics-node/-/analytics-node-6.2.0.tgz#8ae2ebc73d85e5b2aac8d366b974ad36996f629d"
+  integrity sha512-NLU4tCHlWt0tzEaFQL7NIoWhq2KmQSmz0JvyS2lYn6fc4fEjTMSabhJUx8H1r5995FX8fE3rZ15uIHU6u+ovlQ==
   dependencies:
     "@segment/loosely-validate-event" "^2.0.0"
     axios "^0.27.2"
