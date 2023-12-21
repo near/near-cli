@@ -47,7 +47,7 @@
     "is-ci": "^2.0.0",
     "jest-environment-node": "^27.0.6",
     "ncp": "^2.0.0",
-    "near-api-js": "^0.44.2",
+    "near-api-js": "^0.45.1",
     "near-seed-phrase": "^0.2.0",
     "open": "^8.0.7",
     "rimraf": "^3.0.0",
