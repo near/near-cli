@@ -240,6 +240,7 @@ yargs // eslint-disable-line
     .middleware(require('../middleware/ledger'))
     .middleware(require('../middleware/abi'))
     .middleware(require('../middleware/seed-phrase'))
+    .middleware(require('../middleware/x-api-key'))
     .command(require('../commands/create-account').createAccountCommand)
     .command(require('../commands/create-account').createAccountCommandDeprecated)
     .command(viewAccount)

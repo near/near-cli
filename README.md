@@ -36,8 +36,8 @@ _Click on a command for more information and examples._
 | **TRANSACTIONS**                                      |                                                                                                                                        |
 | [`near tx-status`](#near-tx-status)                   | queries a transaction's status by `txHash`                                                                                             |
 | **VALIDATORS**                                        |                                                                                                                                        |
-| [`near validators current`](#near-validators-current) | displays current [epoch](http://docs.near.org/docs/concepts/epoch) validator pool details                                              |
-| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](http://docs.near.org/docs/concepts/epoch)                                              |
+| [`near validators current`](#near-validators-current) | displays current [epoch](https://docs.near.org/concepts/basics/epoch) validator pool details                                              |
+| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](https://docs.near.org/concepts/basics/epoch)                                              |
 | [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](http://docs.near.org/docs/concepts/epoch) _after_ next                                    |
 | **JS-SDK**                                            |                                                                                                                                        |
 | [`near js`](#near-js)                                 | Work with JS contract enclave                                                                                                          |
@@ -144,6 +144,13 @@ This API Key will be saved in a config and used for each command you execute wit
 
 ```bash
 near login
+```
+
+**Custom wallet url:**
+
+Default wallet url is `https://wallet.testnet.near.org/`. But if you want to change to a different wallet url, you can use `--walletUrl` option.
+```
+near login --walletUrl https://testnet.mynearwallet.com/
 ```
 
 #### Access Key Location:
@@ -440,7 +447,7 @@ near add-key example-acct.testnet GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi -
 > Deletes an existing key for a given account.
 
 -   arguments: `accountId` `publicKey`
--   options: `default`
+-   options: `default`, `force`
 
 **Note:** You will need separate full access key for the account you would like to delete a key from. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
@@ -573,7 +580,7 @@ near send sender.testnet receiver.testnet 10
 > Deletes an account and transfers remaining balance to a beneficiary account.
 
 -   arguments: `accountId` `beneficiaryId`
--   options: `default`
+-   options: `default`, `force`
 
 **Example:**
 
@@ -1375,16 +1382,34 @@ near repl --accountId example-acct.testnet
 -   Then try console logging `account` after the `>` prompt.
 
 ```bash
-console.log(account)
+> console.log(account)
 ```
 
 Or in a JS files
+```bash
+near repl --accountId example-acct.testnet --script print_account.js
+```
 
 ```js
 module.exports.main = async function main({account, near, nearAPI, argv}) {
     console.log(account);
 }
 ```
+
+or TS
+
+```bash
+near repl --accountId example-acct.testnet --script print_account.ts
+```
+
+```js
+import { Context } from "near-cli/context"
+
+export async function main({account, near, nearAPI, argv}: Context) {
+    console.log(account);
+}
+```
+
 
 <details>
 <summary><strong>Example Response</strong></summary>

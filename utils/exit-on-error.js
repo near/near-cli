@@ -14,7 +14,7 @@ function getNonPrivateDataFromCmdlineOpts(options) {
     };
 }
 
-// This is a workaround to get Mixpanel to log a crash
+// This is a workaround to get Segment to log a crash
 process.on('exit', () => {
     const crashEventProperties = {
         near_cli_command: process.env.NEAR_CLI_ERROR_LAST_COMMAND,

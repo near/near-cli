@@ -1,6 +1,6 @@
 {
   "name": "near-cli",
-  "version": "3.4.0",
+  "version": "3.4.2",
   "description": "General purpose command line tools for interacting with NEAR Protocol",
   "engines": {
     "node": ">= 12"
@@ -8,7 +8,9 @@
   "main": "index.js",
   "scripts": {
     "pretest": "rm -rf tmp-project",
-    "test": "jest && ./test/index.sh",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "jest",
+    "test:integration": "bash ./test/index.sh",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
@@ -36,6 +38,7 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
+    "analytics-node": "^6.1.0",
     "ascii-table": "0.0.9",
     "bn.js": "^5.1.1",
     "bs58": "^4.0.1",
@@ -43,7 +46,6 @@
     "flagged-respawn": "^1.0.1",
     "is-ci": "^2.0.0",
     "jest-environment-node": "^27.0.6",
-    "mixpanel": "^0.13.0",
     "ncp": "^2.0.0",
     "near-api-js": "^0.44.2",
     "near-seed-phrase": "^0.2.0",

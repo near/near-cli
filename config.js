@@ -1,5 +1,3 @@
-const { getXApiKey } = require('./utils/x-api-key-settings.js');
-
 const CONTRACT_NAME = process.env.CONTRACT_NAME;
 
 function getConfig(env) {
@@ -64,10 +62,10 @@ function getConfig(env) {
     case 'local':
     case 'localnet':
         config = {
-            networkId: process.env.NEAR_CLI_LOCALNET_NETWORK_ID || 'local',
+            networkId: process.env.NEAR_CLI_LOCALNET_NETWORK_ID || 'localnet',
             nodeUrl: process.env.NEAR_CLI_LOCALNET_RPC_SERVER_URL || process.env.NEAR_NODE_URL || 'http://127.0.0.1:3030',
             keyPath: process.env.NEAR_CLI_LOCALNET_KEY_PATH || `${process.env.HOME}/.near/validator_key.json`,
-            walletUrl: process.env.NEAR_WALLET_URL || 'http://localhost:4000/wallet',
+            walletUrl: process.env.NEAR_WALLET_URL || 'https://localhost:1234',
             contractName: CONTRACT_NAME,
             helperUrl: process.env.NEAR_HELPER_URL || 'http://localhost:3000',
             helperAccount: process.env.NEAR_HELPER_ACCOUNT || 'node0',
@@ -85,12 +83,6 @@ function getConfig(env) {
         break;
     default:
         throw Error(`Unconfigured environment '${env}'. Can be configured in src/config.js.`);
-    }
-
-    // adding x-api-key for given RPC Server
-    const apiKey = getXApiKey(config.nodeUrl);
-    if (apiKey) {
-        config.headers = { 'x-api-key': apiKey };
     }
     return config;
 }
