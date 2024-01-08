@@ -15,9 +15,9 @@ NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.
 _Click on a command for more information and examples._
 
 | Command                                               | Description                                                                                                                            |
-| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| ----------------------------------------------------- |----------------------------------------------------------------------------------------------------------------------------------------|
 | **ACCESS KEYS**                                       |                                                                                                                                        |
-| [`near login`](#near-login)                           | stores a full access key locally using [NEAR Wallet](https://wallet.testnet.near.org/)                                                 |
+| [`near login`](#near-login)                           | stores a full access key locally using [MyNEARWallet](https://testnet.mynearwallet.com/)                                              |
 | [`near keys`](#near-keys)                             | displays all access keys and their details for a given account                                                                         |
 | [`near generate-key`](#near-generate-key)             | generates a local key pair **or** shows public key & [implicit account](http://docs.near.org/docs/roles/integrator/implicit-accounts)  |
 | [`near add-key`](#near-add-key)                       | adds a new access key to an account                                                                                                    |
@@ -36,8 +36,8 @@ _Click on a command for more information and examples._
 | **TRANSACTIONS**                                      |                                                                                                                                        |
 | [`near tx-status`](#near-tx-status)                   | queries a transaction's status by `txHash`                                                                                             |
 | **VALIDATORS**                                        |                                                                                                                                        |
-| [`near validators current`](#near-validators-current) | displays current [epoch](https://docs.near.org/concepts/basics/epoch) validator pool details                                              |
-| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](https://docs.near.org/concepts/basics/epoch)                                              |
+| [`near validators current`](#near-validators-current) | displays current [epoch](https://docs.near.org/concepts/basics/epoch) validator pool details                                           |
+| [`near validators next`](#near-validators-next)       | displays validator details for the next [epoch](https://docs.near.org/concepts/basics/epoch)                                           |
 | [`near proposals`](#near-proposals)                   | displays validator proposals for the [epoch](http://docs.near.org/docs/concepts/epoch) _after_ next                                    |
 | **JS-SDK**                                            |                                                                                                                                        |
 | [`near js`](#near-js)                                 | Work with JS contract enclave                                                                                                          |
@@ -135,7 +135,7 @@ This API Key will be saved in a config and used for each command you execute wit
 
 ### `near login`
 
-> locally stores a full access key of an account you created with [NEAR Wallet](https://wallet.testnet.near.org/).
+> locally stores a full access key of an account you created with [MyNEARWallet](https://testnet.mynearwallet.com/).
 
 -   arguments: `none`
 -   options: `default`
