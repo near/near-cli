@@ -148,9 +148,9 @@ near login
 
 **Custom wallet url:**
 
-Default wallet url is `https://wallet.testnet.near.org/`. But if you want to change to a different wallet url, you can use `--walletUrl` option.
+Default wallet url is `https://testnet.mynearwallet.com/`. But if you want to change to a different wallet url, you can use `--walletUrl` option.
 ```
-near login --walletUrl https://testnet.mynearwallet.com/
+near login --walletUrl https://localhost:12345/
 ```
 
 #### Access Key Location:
