@@ -1,18 +1,19 @@
 {
   "name": "near-cli",
   "version": "3.4.2",
-  "description": "General purpose command line tools for interacting with NEAR Protocol",
+  "description": "Simple CLI for interacting with NEAR Protocol",
   "engines": {
-    "node": ">= 12"
+    "node": ">= 16"
   },
-  "main": "index.js",
+  "main": "bin/near-cli.js",
   "scripts": {
     "pretest": "rm -rf tmp-project",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest",
     "test:integration": "bash ./test/index.sh",
     "lint": "eslint .",
-    "fix": "eslint . --fix"
+    "fix": "eslint . --fix",
+    "start": "node bin/near-cli.js"
   },
   "repository": {
     "type": "git",
@@ -29,9 +30,9 @@
   },
   "devDependencies": {
     "danger": "^10.6.6",
-    "lodash": "^4.17.21",
     "eslint": "^7.0.0",
     "jest": "^26.1.0",
+    "lodash": "^4.17.21",
     "strip-ansi": "^7.0.0",
     "strip-ansi-cli": "^3.0.0",
     "ts-node": "^10.4.0",
@@ -46,10 +47,10 @@
     "flagged-respawn": "^1.0.1",
     "is-ci": "^2.0.0",
     "jest-environment-node": "^27.0.6",
-    "ncp": "^2.0.0",
     "near-api-js": "^0.44.2",
     "near-seed-phrase": "^0.2.0",
     "open": "^8.0.7",
+    "random-words": "^2.0.0",
     "rimraf": "^3.0.0",
     "stoppable": "^1.1.0",
     "tcp-port-used": "^1.0.1",

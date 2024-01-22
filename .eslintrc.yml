@@ -4,7 +4,7 @@ env:
   jest: true
 extends: 'eslint:recommended'
 parserOptions:
-  ecmaVersion: 2018
+  ecmaVersion: latest
 rules:
   indent:
     - error
