@@ -20,7 +20,7 @@ module.exports = {
         })
         .option('useAccount', {
             desc: 'Account that will request and fund creating the new account',
-            alias: ['accountId'],
+            alias: ['accountId', 'masterAccount'],
             type: 'string',
             required: false
         })
