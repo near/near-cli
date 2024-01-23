@@ -26,7 +26,11 @@ async function callViewFunction(options) {
 
     try {
         console.log(`View call: ${options.contractName}.${options.methodName}(${options.args || ''})`);
-        const response = await account.viewFunction(options.contractName, options.methodName, JSON.parse(options.args || '{}'));
+        const response = await account.viewFunction({
+            contractId: options.contractName,
+            methodName: options.methodName,
+            args: JSON.parse(options.args || '{}')
+        });
         console.log(inspectResponse.formatResponse(response, options));
     } catch (error) {
         switch(error.type){
