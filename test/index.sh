@@ -1,8 +1,6 @@
 #!/bin/bash
 export NODE_ENV=${NODE_ENV:-test}
 OVERALL_RESULT=0
-mkdir ~/.near-config
-echo '{"trackingEnabled":false}' >  ~/.near-config/settings.json
 
 SUCCESS=""
 FAIL=""
