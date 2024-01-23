@@ -1,3 +1,4 @@
+const keyCurveTypes = require('near-api-js').keyCurveTypes;
 const KeyPair = require('near-api-js').KeyPair;
 const exitOnError = require('../utils/exit-on-error');
 const implicitAccountId = require('../utils/implicit-accountid');
@@ -9,6 +10,10 @@ module.exports = {
         .option('yolo', {
             description: 'Do not ask for extra confirmation when using Ledger',
             type: 'boolean',
+        })
+        .option('curveType', {
+            description: 'Use curve type ed25519 or secp256k1 for key pair generate',
+            type: 'string',
         }),
     handler: exitOnError(async (argv) => {
         let near = await require('../utils/connect')(argv);
@@ -44,7 +49,10 @@ module.exports = {
         // If key doesn't exist, create one and store in the keyStore.
         // Otherwise, it's expected that both key and accountId are already provided in arguments.
         if (!argv.publicKey) {
-            const keyPair = KeyPair.fromRandom('ed25519');
+            const curveType = (!argv.curveType) ? 'ed25519' : keyCurveTypes.validate(argv.curveType);
+            console.log('Generate key pair from random on curve type: ' + curveType);
+
+            const keyPair = KeyPair.fromRandom(curveType);
             argv.publicKey = keyPair.publicKey.toString();
             argv.accountId = argv.accountId || implicitAccountId(argv.publicKey);
             await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
