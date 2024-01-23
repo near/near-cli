@@ -10,7 +10,7 @@ module.exports = {
     command: 'call <contractName> <methodName> [args]',
     desc: 'Call method in smart contract',
     builder: (yargs) => yargs
-        .option('signAs', {
+        .option('useAccount', {
             required: true,
             alias: ['accountId'],
             desc: 'accountId that will execute the actions',
