@@ -9,6 +9,7 @@ module.exports = {
     desc: 'Create and display a key-pair (optionally, save it as credentials for an account)',
     builder: (yargs) => yargs
         .option('fromSeedPhrase', {
+            alias: 'seedPhrase',
             desc: 'generate key-pair from a seed phrase (e.g. "word-1 word-2 ... word-11 word-12")',
             type: 'string',
             required: false,
