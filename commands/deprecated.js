@@ -2,7 +2,7 @@ const chalk = require('chalk');
 
 module.exports = [
     {
-        command: ['clean', 'repl', 'stake', 'evm-call', 'evm-view', 'set-api-key', 'js'],
+        command: ['clean', 'repl', 'stake', 'evm-call', 'evm-view', 'set-api-key', 'js', 'validators', 'proposals'],
         desc: false,
         handler: deprecated
     },
@@ -14,11 +14,10 @@ module.exports = [
 ];
 
 async function deprecated() {
-    console.log(chalk`This command has been {bold.red deprecated}`);
-    console.log(chalk`Consider using {bold.blue near-cli-rs} instead`);
+    console.log(chalk`\nThis command has been {bold.red deprecated}. Consider using {bold.blue near-cli-rs} instead\n`);
 }
 
 async function deprecatedDevDeploy() {
-    console.log(chalk`This command has been {bold.red deprecated}`);
-    console.log(chalk`Please use: {bold.white near create-random-account} and {bold.white near deploy} instead`);
+    console.log(chalk`\nThis command has been {bold.red deprecated}`);
+    console.log(chalk`Please use: {bold.white near create-account <accId> --useFaucet} to create a pre-funded account, and then {bold.white near deploy} to deploy the contract\n`);
 }
