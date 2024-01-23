@@ -1,9 +1,10 @@
 const KeyPair = require('near-api-js').KeyPair;
 const exitOnError = require('../utils/exit-on-error');
 const implicitAccountId = require('../utils/implicit-accountid');
+const AVAILABLE_ALGORITHMS = ['ed25519', 'secp256k1'];
 
 module.exports = {
-    command: 'generate-key [account-id]',
+    command: 'generate-key [account-id] [algorithm]',
     desc: 'generate key or show key from Ledger',
     builder: (yargs) => yargs
         .option('yolo', {
@@ -12,7 +13,14 @@ module.exports = {
         }),
     handler: exitOnError(async (argv) => {
         let near = await require('../utils/connect')(argv);
-
+        if (argv.algorithm) {
+            if (!AVAILABLE_ALGORITHMS.includes(argv.algorithm)) {
+                console.log(`Algorithm ${argv.algorithm} is not available. You can use one of the above: 
+                ${AVAILABLE_ALGORITHMS.toString().replace(',', ', ')}`
+                );
+                return;
+            }
+        }
         if (argv.usingLedger) {
             if (argv.accountId) {
                 console.log('WARN: Account id is provided but ignored in case of using Ledger.');
@@ -35,7 +43,7 @@ module.exports = {
         }
 
         const { deps: { keyStore } } = near.config;
-        const existingKey = await keyStore.getKey(argv.networkId, argv.accountId);
+        const existingKey = await keyStore.getKey(argv.networkId, argv.accountId, argv.algorithm);
         if (existingKey) {
             console.log(`Account has existing key pair with ${existingKey.publicKey} public key`);
             return;
@@ -44,7 +52,8 @@ module.exports = {
         // If key doesn't exist, create one and store in the keyStore.
         // Otherwise, it's expected that both key and accountId are already provided in arguments.
         if (!argv.publicKey) {
-            const keyPair = KeyPair.fromRandom('ed25519');
+            const algorithm = argv.algorithm || 'ed25519';
+            const keyPair = KeyPair.fromRandom(algorithm);
             argv.publicKey = keyPair.publicKey.toString();
             argv.accountId = argv.accountId || implicitAccountId(argv.publicKey);
             await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
