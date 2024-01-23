@@ -7,8 +7,8 @@ function getConfig(env) {
     case 'mainnet':
         config = {
             networkId: 'mainnet',
-            nodeUrl: process.env.NEAR_RPC || 'https://rpc.mainnet.near.org',
-            walletUrl: process.env.NEAR_WALLET || 'https://app.mynearwallet.com',
+            nodeUrl: process.env.NEAR_MAINNET_RPC || 'https://rpc.mainnet.near.org',
+            walletUrl: process.env.NEAR_MAINNET_WALLET || 'https://app.mynearwallet.com',
             helperUrl: 'https://helper.mainnet.near.org',
             helperAccount: 'near',
         };
@@ -17,8 +17,8 @@ function getConfig(env) {
     case 'testnet':
         config = {
             networkId: 'testnet',
-            nodeUrl: process.env.TESTNET_RPC || 'https://rpc.testnet.near.org',
-            walletUrl: process.env.TESTNET_WALLET || 'https://testnet.mynearwallet.com',
+            nodeUrl: process.env.NEAR_TESTNET_RPC || 'https://rpc.testnet.near.org',
+            walletUrl: process.env.NEAR_TESTNET_WALLET || 'https://testnet.mynearwallet.com',
             helperUrl: 'https://helper.testnet.near.org',
             helperAccount: 'testnet',
         };

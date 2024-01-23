@@ -6,12 +6,17 @@ const { KeyPair } = require('near-api-js');
 
 module.exports = {
     command: 'generate-key [account-id]',
-    desc: 'Create a key-pair (optionally, save it as credentials for an account)',
+    desc: 'Create and display a key-pair (optionally, save it as credentials for an account)',
     builder: (yargs) => yargs
         .option('fromSeedPhrase', {
             desc: 'generate key-pair from a seed phrase (e.g. "word-1 word-2 ... word-11 word-12")',
             type: 'string',
             required: false,
+        })
+        .option('saveImplicit', {
+            desc: 'Save the key as credentials for the implicit account',
+            type: 'boolean',
+            default: false
         })
         .option('networkId', {
             desc: 'Which network to use. Supports: mainnet, testnet',
@@ -47,8 +52,13 @@ async function generateKey(options) {
         secret = secretKey;
     }
 
+    const keyPair = KeyPair.fromString(secret);
     if (options.accountId) {
-        const keyPair = KeyPair.fromString(secret);
         storeCredentials(options.accountId, options.networkId, options.keyStore, keyPair, options.force);
+    }
+
+    if (options.saveImplicit) {
+        const implicit = pKtoAccountId(keyPair.getPublicKey().toString());
+        storeCredentials(implicit, options.networkId, options.keyStore, keyPair, options.force);
     }
 }
