@@ -25,7 +25,7 @@ module.exports = {
 
 const confirmDelete = function () {
     return askYesNoQuestion(
-        chalk`This will {bold.white delete your account}. Make sure the beneficiary account {bold.white already exists} or your $NEAR tokens {bold.red will be lost}. This deleting action will {bold.red NOT} transfer the {bold.white FTs, NFTs} or other assets the account holds. You need to {bold.white manually transfer all assets} prior to deleting the account. Again, this deleting action will {bold.white only transfer the available NEAR tokens}. Do you want to proceed? {bold.green (y/n)} `,
+        chalk`This will {bold.white delete your account}. The beneficiary account must {bold.white already exists}. This deleting action will {bold.red NOT} transfer {bold.white FTs, NFTs} or other assets the account holds. You need to {bold.white manually transfer all assets} prior to deleting the account since this action will {bold.white only transfer the available NEAR tokens}. Do you want to proceed? {bold.green (y/n)} `,
         false);
 };
 
