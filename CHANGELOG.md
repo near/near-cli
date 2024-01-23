@@ -15,6 +15,7 @@
 - Breaking: removed all `evm` commands.
 - Breaking: Removed all `Ledger` support.
 - Breaking: removed all `validator` commands.
+- Breaking: removed `dev-deploy` command. Users must now create an account (can fund it with a faucet) and deploy to it.
 - Breaking: changed `generate-key` command. Now it needs the `--saveImplicit` flag to save the key.
 - Breaking: removed `walletUrl`, `nodeUrl` and `helperUrl` options.
 
