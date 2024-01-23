@@ -3,7 +3,7 @@
   "version": "3.4.2",
   "description": "Simple CLI for interacting with NEAR Protocol",
   "engines": {
-    "node": ">= 16"
+    "node": ">= 12"
   },
   "main": "bin/near-cli.js",
   "scripts": {
