@@ -23,7 +23,7 @@ yargs // eslint-disable-line
     .command(require('../commands/transactions/status'))
     .command(require('../commands/contract/view'))
     .command(require('../commands/deprecated'))
-    .option('verbose', { desc: 'Prints out verbose output', type: 'boolean', default: false })
+    .option('verbose', { alias: ['v'], desc: 'Prints out verbose output', type: 'boolean', default: false })
     .showHelpOnFail(true)
     .recommendCommands()
     .demandCommand(1, chalk`Pass {bold --help} to see all available commands and options.`)

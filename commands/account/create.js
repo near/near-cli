@@ -5,7 +5,6 @@ const inspectResponse = require('../../utils/inspect-response');
 const { assertCredentials, storeCredentials } = require('../../utils/credentials');
 const { DEFAULT_NETWORK } = require('../../config');
 const chalk = require('chalk');
-const { BN } = require('bn.js');
 
 module.exports = {
     command: 'create-account <new-account-id>',
@@ -97,7 +96,7 @@ async function create(options) {
             throw new Error(`Account ${options.useAccount} does not exist in ${options.networkId}. Are you using the right network?`); 
         }
 
-        const initialBalance = new BN(utils.format.parseNearAmount(options.initialBalance));
+        const initialBalance = utils.format.parseNearAmount(options.initialBalance);
 
         const split = newAccountId.split('.');
         const isSubAccount = newAccountId.endsWith(options.useAccount);

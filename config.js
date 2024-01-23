@@ -26,6 +26,7 @@ function getConfig(env) {
     default:
         throw Error(`Unconfigured environment '${env}'. Can be configured in src/config.js.`);
     }
+    config['initialBalance'] = '1' + '0'.repeat(24);
     return config;
 }
 
