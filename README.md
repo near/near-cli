@@ -37,6 +37,7 @@ _Click on a command for more information and examples._
 | **TRANSACTIONS**                                |                                                                                           |
 | [`near tx-status`](#near-tx-status)             | queries a transaction's status by `txHash`                                                |
 
+
 [ [**OPTIONS**](#options) ]
 
 > For EVM support see [Project Aurora's](https://aurora.dev) [`aurora-cli`](https://github.com/aurora-is-near/aurora-cli).
@@ -127,8 +128,6 @@ These network subdirectories contain `.JSON` objects with an:
   -   `private_key`
   -   `public_key`
 
----
-
 ### `near add-credentials <accountId>`
 > Stores credentials (full-access-key) locally for an already existing account.
 
@@ -139,10 +138,6 @@ These network subdirectories contain `.JSON` objects with an:
 
 ```bash
 near add-credentials example-acct.testnet --seedPhrase "antique attitude say evolve ring arrive hollow auto wide bronze usual unfold"
-```
-
-```bash
-near add-credentials example-acct.testnet --secretKey "ed25519:4Ijd3vNUmdWJ4L922BxcsGN1aDrdpvUHEgqLQAUSLmL7S2qE9tYR9fqL6DqabGGDxCSHkKwdaAGNcHJ2Sfd"
 ```
 
 ---
@@ -399,7 +394,7 @@ Keys for account client.chainlink.testnet
 
 ### `near login`
 
-> locally stores a full access key of an account you created with [NEAR Wallet](https://wallet.testnet.near.org/).
+> locally stores a full access key of an account you created with [MyNEARWallet](https://testnet.mynearwallet.com/).
 
 -   arguments: `none`
 -   options: `--networkId`
