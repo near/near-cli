@@ -8,7 +8,7 @@ const { DEFAULT_NETWORK } = require('../../config');
 module.exports = {
     command: 'send-near <sender> <receiver> <amount>',
     aliases: ['send'],
-    desc: 'send tokens to given receiver',
+    desc: 'Send tokens to given receiver',
     builder: (yargs) => yargs
         .option('amount', {
             desc: 'Amount of NEAR tokens to send',

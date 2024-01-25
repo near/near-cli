@@ -5,7 +5,7 @@ const inspectResponse = require('../../utils/inspect-response');
 module.exports = {
     command: 'list-keys <accountId>',
     aliases: ['keys'],
-    desc: 'query public keys of account',
+    desc: 'Query public keys of an account',
     builder: (yargs) => yargs
         .option('networkId', {
             desc: 'Which network to use. Supports: mainnet, testnet',

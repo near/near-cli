@@ -13,7 +13,7 @@ module.exports = {
         .option('useAccount', {
             required: true,
             alias: ['accountId'],
-            desc: 'accountId that will execute the actions',
+            desc: 'Account that will execute the actions',
             type: 'string'
         })
         .option('networkId', {

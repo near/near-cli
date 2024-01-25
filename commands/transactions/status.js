@@ -5,7 +5,7 @@ const bs58 = require('bs58');
 
 module.exports = {
     command: 'tx-status <hash> <accountId>',
-    desc: 'lookup transaction status by hash',
+    desc: 'Lookup transaction status by hash',
     builder: (yargs) => yargs
         .option('hash', {
             desc: 'base58-encoded hash',
@@ -13,7 +13,7 @@ module.exports = {
             required: true
         })
         .option('accountId', {
-            desc: 'accountId that signed the tx (used to determine which shard to query)',
+            desc: 'Account that signed the tx (used to determine which shard to query)',
             type: 'string',
         })
         .option('networkId', {
