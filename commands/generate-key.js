@@ -4,7 +4,7 @@ const implicitAccountId = require('../utils/implicit-accountid');
 
 module.exports = {
     command: 'generate-key [account-id]',
-    desc: 'generate key or show key from Ledger',
+    desc: 'generate key (or extract it from seed phrase) or show key from Ledger',
     builder: (yargs) => yargs
         .option('yolo', {
             description: 'Do not ask for extra confirmation when using Ledger',
@@ -13,6 +13,7 @@ module.exports = {
     handler: exitOnError(async (argv) => {
         let near = await require('../utils/connect')(argv);
 
+        // TODO: this ledger part should be moved to separate command.
         if (argv.usingLedger) {
             if (argv.accountId) {
                 console.log('WARN: Account id is provided but ignored in case of using Ledger.');
@@ -34,6 +35,10 @@ module.exports = {
             return;
         }
 
+        if (argv.seedPhraseAccountId) {
+            // Nothing to do -- the seed key was already added to keyStore in seed-phrase.js.
+            return;
+        }
         const { deps: { keyStore } } = near.config;
         const existingKey = await keyStore.getKey(argv.networkId, argv.accountId);
         if (existingKey) {
@@ -42,17 +47,10 @@ module.exports = {
         }
 
         // If key doesn't exist, create one and store in the keyStore.
-        // Otherwise, it's expected that both key and accountId are already provided in arguments.
-        if (!argv.publicKey) {
-            const keyPair = KeyPair.fromRandom('ed25519');
-            argv.publicKey = keyPair.publicKey.toString();
-            argv.accountId = argv.accountId || implicitAccountId(argv.publicKey);
-            await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
-        } else if (argv.seedPhrase) {
-            const seededKeyPair = await argv.signer.keyStore.getKey(argv.networkId, argv.accountId);
-            await keyStore.setKey(argv.networkId, argv.accountId, seededKeyPair);
-        }
-
+        const keyPair = KeyPair.fromRandom('ed25519');
+        argv.publicKey = keyPair.publicKey.toString();
+        argv.accountId = argv.accountId || implicitAccountId(argv.publicKey);
+        await keyStore.setKey(argv.networkId, argv.accountId, keyPair);
         console.log(`Key pair with ${argv.publicKey} public key for an account "${argv.accountId}"`);
     })
 };
