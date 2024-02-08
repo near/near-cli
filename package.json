@@ -1,6 +1,6 @@
 {
   "name": "near-cli",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "description": "Simple CLI for interacting with NEAR Protocol",
   "engines": {
     "node": ">= 16"
