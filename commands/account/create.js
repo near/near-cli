@@ -66,8 +66,8 @@ async function create(options) {
 
     if (options.useFaucet) {
         if (options.networkId !== 'testnet') throw new Error('Pre-funding accounts is only possible on testnet');
-    }else{
-        if(!options.useAccount) throw new Error('Please specify an account to sign the transaction (--useAccount)');
+    } else {
+        if (!options.useAccount) throw new Error('Please specify an account to sign the transaction (--useAccount)');
         await assertCredentials(options.useAccount, options.networkId, options.keyStore);
     }
 
@@ -93,7 +93,7 @@ async function create(options) {
         // Use an existing account
         const account = await near.account(options.useAccount);
         try { await account.state(); } catch (e) {
-            throw new Error(`Account ${options.useAccount} does not exist in ${options.networkId}. Are you using the right network?`); 
+            throw new Error(`Account ${options.useAccount} does not exist in ${options.networkId}. Are you using the right network?`);
         }
 
         const initialBalance = utils.format.parseNearAmount(options.initialBalance);
@@ -117,7 +117,7 @@ async function create(options) {
     try {
         // Handle response
         const response = await promise;
-        if (keyPair){
+        if (keyPair) {
             storeCredentials(newAccountId, options.networkId, options.keyStore, keyPair, true);
         } else {
             console.log(chalk`{bold.white ${newAccountId}} created successfully, please add its credentials manually.`);
@@ -127,13 +127,13 @@ async function create(options) {
         // Handle errors
         switch (error.type) {
         case 'CreateAccountNotAllowed':
-            console.error(chalk`\n{red.bold Error:} ${options.useFaucet? 'the faucet service' : options.useAccount} cannot create ${newAccountId} (networkId: ${options.networkId}).`);
+            console.error(chalk`\n{red.bold Error:} ${options.useFaucet ? 'the faucet service' : options.useAccount} cannot create ${newAccountId} (networkId: ${options.networkId}).`);
             options.useAccount && console.error(chalk`${options.useAccount} can only create sub-accounts of itself, or .${network2TLA[options.networkId]} accounts.\n`);
             options.useFaucet && console.error(chalk`Try using an account to fund it (--useAccount).`);
             process.exit(1);
             break;
         case 'NotEnoughBalance':
-            console.error(chalk`\n{red.bold Error:} ${options.useFaucet? 'The faucet service' : options.useAccount} does not have enough balance.`);
+            console.error(chalk`\n{red.bold Error:} ${options.useFaucet ? 'The faucet service' : options.useAccount} does not have enough balance.`);
             console.error(`Transaction hash: ${error.context.transactionHash}\n`);
             console.error(`Signer: ${error.kind.signer_id}`);
             console.error(`Balance: ${utils.format.formatNearAmount(error.kind.balance)}`);
@@ -141,7 +141,7 @@ async function create(options) {
             process.exit(1);
             break;
         case 'CreateAccountOnlyByRegistrar':
-            console.error(chalk`\nYou cannot create Top Level Accounts with less than 32 chars (${newAccountId} has ${newAccountId.length} chars).`);
+            console.error(chalk`\nYou cannot create Top Level Accounts.`);
             process.exit(1);
             break;
         default:

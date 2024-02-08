@@ -41,9 +41,6 @@ fi
 # An account can create zero-balance accounts
 ./bin/near create-account $zerobalance --accountId $testaccount1 --initialBalance 0
 
-# An account can create a TLA
-./bin/near create-account $tla --accountId $testaccount1
-
 set +e
 
 # Cannot create sub-accounts of other accounts
@@ -68,9 +65,19 @@ fi
 
 # Cannot create a TLA with a short name
 ERROR=$(./bin/near create-account tooshortfortla --accountId $testaccount1 2>&1)
-EXPECTED_ERROR=".+cannot create Top Level Accounts with less than 32 chars.+"
+EXPECTED_ERROR=".+cannot create Top Level Accounts.+"
 if [[ ! "$ERROR" =~ $EXPECTED_ERROR ]]; then
     echo FAILURE Unexpected output when creating a short top-level account
+    echo Got: $ERROR
+    echo Expected: $EXPECTED_ERROR
+    exit 1
+fi
+
+# Cannot create a TLA with a long name
+ERROR=$(./bin/near create-account $tla --accountId $testaccount1 2>&1)
+EXPECTED_ERROR=".+cannot create Top Level Accounts.+"
+if [[ ! "$ERROR" =~ $EXPECTED_ERROR ]]; then
+    echo FAILURE Unexpected output when creating a long top-level account
     echo Got: $ERROR
     echo Expected: $EXPECTED_ERROR
     exit 1

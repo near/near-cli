@@ -1,7 +1,6 @@
 const chalk = require('chalk');
 
 async function assertCredentials(accountId, networkId, keyStore) {
-    
     const key = await keyStore.getKey(networkId, accountId);
     if(key) return;
 

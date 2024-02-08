@@ -27,7 +27,6 @@ async function sendMoney(options) {
 
     const near = await connect(options);
     const account = await near.account(options.sender);
-
     try {
         console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
         const result = await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount));
