@@ -2,20 +2,20 @@
 set -e
 
 timestamp=$(date +%s)
-testaccount=testaccount$timestamp$RANDOM.test.near
-./bin/near create-account $testaccount
+contract=testaccount$timestamp-c.testnet
+testaccount=testaccount$timestamp-t.testnet
+
+echo Creating account
+./bin/near create $contract --useFaucet
+./bin/near create $testaccount --useFaucet
 
 echo Deploying contract
-./bin/near deploy --accountId=$testaccount --wasmFile=./test/res/guest_book.wasm
-
-echo Deploying contract to temporary accountId
-# TODO: Specify helperUrl in project template
-yes | ./bin/near dev-deploy ./test/res/guest_book.wasm > /dev/null
+./bin/near deploy $contract ./test/res/guest_book.wasm
 
 echo Calling functions
-./bin/near call $testaccount addMessage '{"text":"TEST"}' --accountId=test.near > /dev/null
+./bin/near call $contract addMessage '{"text":"TEST"}' --accountId $testaccount > /dev/null
 
-RESULT=$(./bin/near view $testaccount getMessages '{}' --accountId=test.near -v)
+RESULT=$(./bin/near view $contract getMessages '{}')
 TEXT=$RESULT
 EXPECTED='TEST'
 if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
@@ -24,9 +24,9 @@ if [[ ! $TEXT =~ .*$EXPECTED.* ]]; then
 fi
 
 # base64-encoded '{"message":"BASE64ROCKS"}'
-./bin/near call $testaccount addMessage --base64 'eyJ0ZXh0IjoiVEVTVCJ9' --accountId=test.near > /dev/null
+./bin/near call $contract addMessage --base64 'eyJ0ZXh0IjoiVEVTVCJ9' --accountId $testaccount > /dev/null
 
-RESULT=$(./bin/near view $testaccount getMessages '{}' --accountId=test.near -v)
+RESULT=$(./bin/near view $contract getMessages '{}')
 # TODO: Refactor asserts
 TEXT=$RESULT
 echo $RESULT
