@@ -4,7 +4,7 @@
 
 NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.com/near/near-api-js) to connect to and interact with the NEAR blockchain. Create accounts, access keys, sign & send transactions with this versatile command line interface tool.
 
-**Note:** Node.js version 10+ is required to run NEAR CLI.
+**Note:** Node.js version 16+ is required to run NEAR CLI.
 
 ## Release notes
 
