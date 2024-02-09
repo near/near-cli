@@ -85,10 +85,11 @@ async function scheduleFunctionCall(options) {
         case '{"ExecutionError":"Exceeded the prepaid gas."}': {
             console.log(chalk(`\nTransaction ${error.transaction_outcome.id} had ${options.gas} of attached gas but used ${error.transaction_outcome.outcome.gas_burnt} of gas`));
             console.log('View this transaction in explorer:', chalk.blue(`https://explorer.${options.networkId}.near.org/transactions/${error.transaction_outcome.id}`));
+            process.exit(1);
             break;
         }
         default: {
-            console.log(error);
+            throw error;
         }
         }
     }
