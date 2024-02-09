@@ -8,7 +8,7 @@ testaccount=testaccount$timestamp$RANDOM.testnet
 
 echo Get account state
 RESULT=$(./bin/near state $testaccount)
-EXPECTED="Account $testaccount.+amount:.+'5000001000000000000000000'.+ "
+EXPECTED="Account $testaccount.+amount:.+'10000001000000000000000000'.+ "
 if [[ ! "$RESULT" =~ $EXPECTED ]]; then
     echo FAILURE Unexpected output from near view
     echo Got: $RESULT
