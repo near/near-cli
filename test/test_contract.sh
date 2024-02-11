@@ -2,8 +2,8 @@
 set -e
 
 timestamp=$(date +%s)
-contract=testaccount$timestamp-c.testnet
-testaccount=testaccount$timestamp-t.testnet
+contract=test-contract-$timestamp-c.testnet
+testaccount=test-contract-$timestamp-t.testnet
 
 echo Creating account
 ./bin/near create $contract --useFaucet

@@ -21,6 +21,8 @@ yargs // eslint-disable-line
     .command(require('../commands/account/state'))
     .command(require('../commands/contract/storage'))
     .command(require('../commands/transactions/status'))
+    .command(require('../commands/transactions/stake'))
+    .command(require('../commands/validators'))
     .command(require('../commands/contract/view'))
     .command(require('../commands/deprecated'))
     .option('verbose', { alias: ['v'], desc: 'Prints out verbose output', type: 'boolean', default: false })

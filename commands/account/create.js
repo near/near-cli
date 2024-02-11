@@ -34,7 +34,7 @@ module.exports = {
             required: false
         })
         .option('networkId', {
-            desc: 'Which network to use. Supports: mainnet, testnet',
+            desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
             default: DEFAULT_NETWORK
         }),
@@ -65,7 +65,7 @@ async function create(options) {
     }
 
     if (options.useFaucet) {
-        if (options.networkId !== 'testnet') throw new Error('Pre-funding accounts is only possible on testnet');
+        if (options.networkId === 'mainnet') throw new Error('Pre-funding accounts is not possible on mainnet');
     } else {
         if (!options.useAccount) throw new Error('Please specify an account to sign the transaction (--useAccount)');
         await assertCredentials(options.useAccount, options.networkId, options.keyStore);

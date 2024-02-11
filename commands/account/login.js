@@ -12,7 +12,7 @@ module.exports = {
     desc: 'Login through a web wallet (default: MyNearWallet)',
     builder: (yargs) => yargs
         .option('networkId', {
-            desc: 'Which network to use. Supports: mainnet, testnet',
+            desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
             default: DEFAULT_NETWORK
         }),

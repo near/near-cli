@@ -23,6 +23,15 @@ function getConfig(env) {
             helperAccount: 'testnet',
         };
         break;
+    case 'custom':
+        config = {
+            networkId: 'custom',
+            nodeUrl: process.env.NEAR_CUSTOM_RPC,
+            walletUrl: process.env.NEAR_CUSTOM_WALLET,
+            helperUrl: process.env.NEAR_CUSTOM_HELPER,
+            helperAccount: process.env.NEAR_CUSTOM_TLA,
+        };
+        break;
     default:
         throw Error(`Unconfigured environment '${env}'. Can be configured in src/config.js.`);
     }

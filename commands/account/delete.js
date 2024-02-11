@@ -11,7 +11,7 @@ module.exports = {
     desc: 'Delete account, sending remaining NEAR to a beneficiary',
     builder: (yargs) => yargs
         .option('networkId', {
-            desc: 'Which network to use. Supports: mainnet, testnet',
+            desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
             default: DEFAULT_NETWORK
         })
@@ -25,7 +25,7 @@ module.exports = {
 
 const confirmDelete = function (accountId, beneficiaryId) {
     return askYesNoQuestion(
-        chalk`This will {bold.red delete ${accountId}}, transferring {bold.white the remaining NEAR tokens} to the {bold.green beneficiary ${beneficiaryId}}. This action will {bold.red NOT transfer} {bold.white FTs, NFTs} or other assets the account holds, make sure you to {bold.white manually transfer} them before deleting or they will be {bold.red lost}. Do you want to proceed? {bold.green (y/n)}`,
+        chalk`This will {bold.red delete ${accountId}}, transferring {bold.white the remaining NEAR tokens} to the {bold.green beneficiary ${beneficiaryId}}. This action will {bold.red NOT transfer} {bold.white FTs, NFTs} or other assets the account holds, make sure you to {bold.white manually transfer} them before deleting or they will be {bold.red lost}. Do you want to proceed? {bold.green (y/n)} `,
         false);
 };
 
