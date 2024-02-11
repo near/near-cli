@@ -3,13 +3,13 @@ const connect = require('../../utils/connect');
 const validatorsInfo = require('../../utils/validators-info');
 
 module.exports = {
-    command: 'validators <search>',
+    command: 'validators <query>',
     desc: 'Info on validators',
     handler: validators,
     builder: (yargs) => yargs
-        .option('search',
+        .option('query',
             {
-                desc: '(I) "proposals": to see the current proposals or (II) "current" | "next" | block number | block hash: lookup validators at a specific epoch',
+                desc: 'current | next | <block number> | <block hash> to lookup validators at a specific epoch, or "proposals" to see the current proposals',
                 type: 'string',
                 default: 'current'
             }
@@ -24,7 +24,7 @@ module.exports = {
 async function validators(options) {
     const near = await connect(options);
 
-    switch (options.search) {
+    switch (options.query) {
     case 'proposals':
         await validatorsInfo.showProposalsTable(near);
         break;
@@ -35,7 +35,7 @@ async function validators(options) {
         await validatorsInfo.showNextValidatorsTable(near);
         break;
     default:
-        await validatorsInfo.showValidatorsTable(near, options.search);
+        await validatorsInfo.showValidatorsTable(near, options.query);
         break;
     }
 }
