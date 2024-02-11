@@ -8,6 +8,7 @@ const { DEFAULT_NETWORK } = require('../../config');
 
 module.exports = {
     command: 'validator-stake accountId stakingKey amount',
+    aliases: ['stake'],
     desc: 'Create a staking transaction (for **validators** only)',
     builder: (yargs) => yargs
         .option('accountId', {

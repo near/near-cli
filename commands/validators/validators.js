@@ -1,6 +1,6 @@
-const { DEFAULT_NETWORK } = require('../config');
-const connect = require('../utils/connect');
-const validatorsInfo = require('../utils/validators-info');
+const { DEFAULT_NETWORK } = require('../../config');
+const connect = require('../../utils/connect');
+const validatorsInfo = require('../../utils/validators-info');
 
 module.exports = {
     command: 'validators <search>',
