@@ -23,9 +23,9 @@ module.exports = {
     handler: deleteAccount
 };
 
-const confirmDelete = function () {
+const confirmDelete = function (accountId, beneficiaryId) {
     return askYesNoQuestion(
-        chalk`This will {bold.white delete your account}. The beneficiary account must {bold.white already exists}. This deleting action will {bold.red NOT} transfer {bold.white FTs, NFTs} or other assets the account holds. You need to {bold.white manually transfer all assets} prior to deleting the account since this action will {bold.white only transfer the available NEAR tokens}. Do you want to proceed? {bold.green (y/n)} `,
+        chalk`This will {bold.red delete ${accountId}}, transferring {bold.white the remaining NEAR tokens} to the {bold.green beneficiary ${beneficiaryId}}. This action will {bold.red NOT transfer} {bold.white FTs, NFTs} or other assets the account holds, make sure you to {bold.white manually transfer} them before deleting or they will be {bold.red lost}. Do you want to proceed? {bold.green (y/n)}`,
         false);
 };
 
@@ -39,14 +39,14 @@ async function deleteAccount(options) {
     } catch (e) {
         // beneficiary account does not exist if there is no state
         if (e.type === 'AccountDoesNotExist') {
-            console.error(`Beneficiary account ${options.beneficiaryId} does not exist. Please create the account to transfer Near tokens.`);
+            console.error(`Beneficiary account ${options.beneficiaryId} does not exist. Please create it before proceeding.`);
             return;
         } else {
             throw e;
         }
     }
 
-    if (options.force || await confirmDelete()) {
+    if (options.force || await confirmDelete(options.accountId, options.beneficiaryId)) {
         const account = await near.account(options.accountId);
         console.log(`Deleting account ${options.accountId}, beneficiary: ${options.beneficiaryId}`);
         const result = await account.deleteAccount(options.beneficiaryId);
