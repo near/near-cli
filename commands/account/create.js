@@ -117,11 +117,14 @@ async function create(options) {
     try {
         // Handle response
         const response = await promise;
+
         if (keyPair) {
             storeCredentials(newAccountId, options.networkId, options.keyStore, keyPair, true);
-        } else {
-            console.log(chalk`{bold.white ${newAccountId}} created successfully, please add its credentials manually.`);
         }
+
+        // The faucet does not throw on error, so we force it here
+        if (options.useFaucet) { await response.state(); }
+
         inspectResponse.prettyPrintResponse(response, options);
     } catch (error) {
         // Handle errors
@@ -142,6 +145,11 @@ async function create(options) {
             break;
         case 'CreateAccountOnlyByRegistrar':
             console.error(chalk`\nYou cannot create Top Level Accounts.`);
+            process.exit(1);
+            break;
+        case 'AccountDoesNotExist':
+            if (!options.useFaucet) throw error;
+            console.error(chalk`\nThe faucet reported {bold.white no errors}, but we {bold.red cannot} find ${options.newAccountId}. Check if it exists with "near state ${options.newAccountId} --networkId ${options.networkId}".\n`);
             process.exit(1);
             break;
         default:
