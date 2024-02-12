@@ -2,7 +2,7 @@
 set -e
 
 timestamp=$(date +%s)
-testaccount=testaccount${timestamp}.testnet
+testaccount=test-keys-${timestamp}.testnet
 
 # Can create a pre-funded account
 ./bin/near create-account $testaccount --useFaucet

@@ -1,6 +1,6 @@
 {
   "name": "near-cli",
-  "version": "4.0.2",
+  "version": "4.0.4",
   "description": "Simple CLI for interacting with NEAR Protocol",
   "engines": {
     "node": ">= 16"
@@ -36,6 +36,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "ascii-table": "^0.0.9",
     "bs58": "^5.0.0",
     "chalk": "^4.1.2",
     "flagged-respawn": "^2.0.0",

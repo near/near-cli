@@ -8,7 +8,7 @@ module.exports = {
     desc: 'Query public keys of an account',
     builder: (yargs) => yargs
         .option('networkId', {
-            desc: 'Which network to use. Supports: mainnet, testnet',
+            desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
             default: DEFAULT_NETWORK
         }),

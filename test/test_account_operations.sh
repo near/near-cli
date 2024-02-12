@@ -2,7 +2,7 @@
 set -e
 
 timestamp=$(date +%s)
-testaccount=testaccount$timestamp$RANDOM.testnet
+testaccount=test-ao-$timestamp.testnet
 
 ./bin/near create-account $testaccount --useFaucet
 

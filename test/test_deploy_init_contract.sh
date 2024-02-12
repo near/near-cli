@@ -1,7 +1,7 @@
 #!/bin/bash
 
 timestamp=$(date +%s)
-contract=testaccount$timestamp.testnet
+contract=test-deploy-$timestamp.testnet
 
 echo Creating account
 ./bin/near create $contract --useFaucet

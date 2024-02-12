@@ -1243,6 +1243,11 @@ argparse@^2.0.1:
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
+ascii-table@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/ascii-table/-/ascii-table-0.0.9.tgz#06a6604d6a55d4bf41a9a47d9872d7a78da31e73"
+  integrity sha512-xpkr6sCDIYTPqzvjG8M3ncw1YOTaloWZOyrUmicoEifBEKzQzt+ooUpRpQ/AbOoJfO/p2ZKiyp79qHThzJDulQ==
+
 async-retry@1.2.3:
   version "1.2.3"
   resolved "https://registry.npmjs.org/async-retry/-/async-retry-1.2.3.tgz"

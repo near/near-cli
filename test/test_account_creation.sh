@@ -2,12 +2,12 @@
 set -e
 
 timestamp=$(date +%s)
-testaccount1=testaccount${timestamp}-1.testnet
-testaccount2=testaccount${timestamp}-2.testnet
-testaccount3=testaccount${timestamp}-3.testnet
-testaccount4=testaccount${timestamp}-4.testnet
-zerobalance=testaccount${timestamp}-z.testnet
-withbalance=testaccount${timestamp}-y.testnet
+testaccount1=test-ac-${timestamp}-1.testnet
+testaccount2=test-ac-${timestamp}-2.testnet
+testaccount3=test-ac-${timestamp}-3.testnet
+testaccount4=test-ac-${timestamp}-4.testnet
+zerobalance=test-ac-${timestamp}-z.testnet
+withbalance=test-ac-${timestamp}-y.testnet
 
 tla=${timestamp}${timestamp}${timestamp}12
 
@@ -85,7 +85,7 @@ fi
 
 # Cannot create a useFaucet account in mainnet
 ERROR=$(./bin/near create-account $testaccount4 --useFaucet --networkId mainnet 2>&1)
-EXPECTED_ERROR=".+Pre-funding accounts is only possible on testnet.+"
+EXPECTED_ERROR=".+Pre-funding accounts is not possible on mainnet.+"
 if [[ ! "$ERROR" =~ $EXPECTED_ERROR ]]; then
     echo FAILURE Unexpected output when funding pre-funded account in mainnet
     echo Got: $ERROR

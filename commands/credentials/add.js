@@ -18,7 +18,7 @@ module.exports = {
             required: false,
         })
         .option('networkId', {
-            desc: 'Which network to use. Supports: mainnet, testnet',
+            desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
             default: DEFAULT_NETWORK
         })
