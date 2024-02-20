@@ -33,7 +33,7 @@ module.exports = {
 };
 
 function pKtoAccountId(publicKey) {
-    return decode(publicKey.replace('ed25519:', '')).toString('hex');
+    return Buffer.from(decode(publicKey.replace('ed25519:', ''))).toString('hex');
 }
 
 async function generateKey(options) {
