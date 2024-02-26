@@ -9,7 +9,7 @@ const inspectResponse = require('../../utils/inspect-response');
 const { DEFAULT_NETWORK } = require('../../config');
 
 module.exports = {
-    command: 'deploy <account-id> <wasm-file> [...]',
+    command: 'deploy <account-id> <wasm-file>',
     desc: 'Deploy a contract to an existing account (optionally initializing it)',
     builder: (yargs) => yargs
         .option('wasmFile', {
