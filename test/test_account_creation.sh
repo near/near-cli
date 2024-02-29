@@ -6,6 +6,7 @@ testaccount1=test-ac-${timestamp}-1.testnet
 testaccount2=test-ac-${timestamp}-2.testnet
 testaccount3=test-ac-${timestamp}-3.testnet
 testaccount4=test-ac-${timestamp}-4.testnet
+testaccount5=test-ac-${timestamp}-5.testnet
 zerobalance=test-ac-${timestamp}-z.testnet
 withbalance=test-ac-${timestamp}-y.testnet
 
@@ -13,6 +14,19 @@ tla=${timestamp}${timestamp}${timestamp}12
 
 # Can create a pre-funded account
 ./bin/near create-account $testaccount1 --useFaucet
+
+# Can create a pre-funded account with a seedPhrase
+./bin/near create-account $testaccount5 --useFaucet --seedPhrase "crisp clump stay mean dynamic become fashion mail bike disorder chronic sight"
+
+RESULT=$(./bin/near list-keys $testaccount5)
+EXPECTED=".*GPnL8k4MV1hLccB5rkNiihVAEEmQX3BTDJnmW1T7ZDXG.*"
+if [[ ! "$RESULT" =~ $EXPECTED ]]; then
+    echo FAILURE Unexpected output from near list-keys
+    echo Got: $RESULT
+    echo Expected: $EXPECTED
+    exit 1
+fi
+
 
 # Can create an account with a given public key & balance
 ./bin/near create-account sub.$testaccount1 --accountId $testaccount1 --publicKey "78MziB9aTNsu19MHHVrfWy762S5mAqXgCB6Vgvrv9uGV"  --initialBalance 0.01

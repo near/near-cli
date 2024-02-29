@@ -510,7 +510,7 @@ near login
 > Creates an account using an existing account or a faucet service to pay for the account's creation and initial balance.
 
 -   arguments: `accountId`
--   options: `--initialBalance`, `--useFaucet`, `--useAccount`, `--signWithLedger`, `--ledgerPath`, `--useLedgerPK`, `--PkLedgerPath`
+-   options: `--initialBalance`, `--useFaucet`, `--useAccount`, `--seedPhrase`, `--publicKey`, `--signWithLedger`, `--ledgerPath`, `--useLedgerPK`, `--PkLedgerPath`
 
 **Examples:**:
 

@@ -6,6 +6,7 @@ const { assertCredentials, storeCredentials } = require('../../utils/credentials
 const { DEFAULT_NETWORK } = require('../../config');
 const chalk = require('chalk');
 const { getPublicKeyForPath } = require('../../utils/ledger');
+const { parseSeedPhrase } = require('near-seed-phrase');
 
 module.exports = {
     command: 'create-account <new-account-id>',
@@ -31,6 +32,11 @@ module.exports = {
         })
         .option('publicKey', {
             desc: 'Public key to initialize the account with',
+            type: 'string',
+            required: false
+        })
+        .option('seedPhrase', {
+            desc: 'seedPhrase from which to derive the account\'s publicKey',
             type: 'string',
             required: false
         })
@@ -104,6 +110,12 @@ async function create(options) {
 
     let keyPair;
     let publicKey = options.useLedgerPK ? await getPublicKeyForPath(options.PkLedgerPath) : options.publicKey;
+
+    if (options.seedPhrase) {
+        const parsed = parseSeedPhrase(options.seedPhrase);
+        keyPair = KeyPair.fromString(parsed.secretKey);
+        publicKey = keyPair.getPublicKey();
+    }
 
     if (!publicKey) {
         // If no public key is specified, create a random one
