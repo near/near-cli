@@ -60,6 +60,22 @@ _Click on a command for more information and examples._
 npm install -g near-cli
 ```
 
+For example, on Ubuntu 20.04 `near-cli` can be installed by running:
+```bash
+# Install nvm (https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc
+
+# Install node
+nvm install node
+
+# Install near-cli
+npm install -g near-cli
+
+# near-cli works!
+near --help
+```
+
 #### Windows
 
 > For Windows users, we recommend using Windows Subsystem for Linux (`WSL`).
