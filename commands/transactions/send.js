@@ -14,6 +14,17 @@ module.exports = {
             desc: 'Amount of NEAR tokens to send',
             type: 'string',
         })
+        .option('signWithLedger', {
+            alias: ['useLedgerKey'],
+            desc: 'Use Ledger for signing',
+            type: 'boolean',
+            default: false
+        })
+        .option('ledgerPath', {
+            desc: 'HD key path',
+            type: 'string',
+            default: "44'/397'/0'/0'/1'"
+        })
         .option('networkId', {
             desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
@@ -23,10 +34,11 @@ module.exports = {
 };
 
 async function sendMoney(options) {
-    await assertCredentials(options.sender, options.networkId, options.keyStore);
+    await assertCredentials(options);
 
     const near = await connect(options);
     const account = await near.account(options.sender);
+
     try {
         console.log(`Sending ${options.amount} NEAR to ${options.receiver} from ${options.sender}`);
         const result = await account.sendMoney(options.receiver, utils.format.parseNearAmount(options.amount));

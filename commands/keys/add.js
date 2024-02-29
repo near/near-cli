@@ -24,6 +24,17 @@ module.exports = {
             required: false,
             default: '0'
         })
+        .option('signWithLedger', {
+            alias: ['useLedgerKey'],
+            desc: 'Use Ledger for signing',
+            type: 'boolean',
+            default: false
+        })
+        .option('ledgerPath', {
+            desc: 'HD key path',
+            type: 'string',
+            default: "44'/397'/0'/0'/1'"
+        })
         .option('networkId', {
             desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
@@ -33,7 +44,7 @@ module.exports = {
 };
 
 async function addAccessKey(options) {
-    await assertCredentials(options.accountId, options.networkId, options.keyStore);
+    await assertCredentials(options);
 
     console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key ${options.publicKey} to ${options.accountId}.`);
     if (options.contractId) console.log(`Limited to: ${options.allowance} $NEAR and methods: ${options.methodNames.join(' ')}.`);

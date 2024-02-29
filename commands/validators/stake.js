@@ -26,6 +26,17 @@ module.exports = {
             type: 'string',
             required: true,
         })
+        .option('signWithLedger', {
+            alias: ['useLedgerKey'],
+            desc: 'Use Ledger for signing',
+            type: 'boolean',
+            default: false
+        })
+        .option('ledgerPath', {
+            desc: 'HD key path',
+            type: 'string',
+            default: "44'/397'/0'/0'/1'"
+        })
         .option('networkId', {
             desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
@@ -36,7 +47,7 @@ module.exports = {
 
 
 async function stake(options) {
-    await assertCredentials(options.accountId, options.networkId, options.keyStore);
+    await assertCredentials(options);
     console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}N) on ${options.accountId} with public key = ${qs.unescape(options.stakingKey)}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);
