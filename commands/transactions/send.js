@@ -34,7 +34,7 @@ module.exports = {
 };
 
 async function sendMoney(options) {
-    await assertCredentials(options);
+    await assertCredentials(options.sender, options.networkId, options.keyStore, options.useLedgerKey);
 
     const near = await connect(options);
     const account = await near.account(options.sender);

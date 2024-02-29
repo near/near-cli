@@ -69,7 +69,7 @@ async function scheduleFunctionCall(options) {
         options.keyStore.setKey(options.networkId, options.accountId, keyPair);
     }
 
-    await assertCredentials(options);
+    await assertCredentials(options.accountId, options.networkId, options.keyStore, options.useLedgerKey);
 
     const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +

@@ -47,7 +47,7 @@ module.exports = {
 
 
 async function stake(options) {
-    await assertCredentials(options);
+    await assertCredentials(options.accountId, options.networkId, options.keyStore, options.useLedgerKey);
     console.log(`Staking ${options.amount} (${utils.format.parseNearAmount(options.amount)}N) on ${options.accountId} with public key = ${qs.unescape(options.stakingKey)}.`);
     const near = await connect(options);
     const account = await near.account(options.accountId);

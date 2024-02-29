@@ -44,7 +44,7 @@ module.exports = {
 };
 
 async function addAccessKey(options) {
-    await assertCredentials(options);
+    await assertCredentials(options.accountId, options.networkId, options.keyStore, options.useLedgerKey);
 
     console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key ${options.publicKey} to ${options.accountId}.`);
     if (options.contractId) console.log(`Limited to: ${options.allowance} $NEAR and methods: ${options.methodNames.join(' ')}.`);

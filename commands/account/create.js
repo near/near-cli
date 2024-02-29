@@ -29,6 +29,11 @@ module.exports = {
             type: 'string',
             default: '1'
         })
+        .option('publicKey', {
+            desc: 'Public key to initialize the account with',
+            type: 'string',
+            required: false
+        })
         .option('signWithLedger', {
             alias: ['useLedgerKey'],
             desc: 'Use Ledger for signing',
@@ -36,20 +41,20 @@ module.exports = {
             default: false
         })
         .option('ledgerPath', {
-            desc: 'HD key path',
+            desc: 'Path to the Ledger key',
             type: 'string',
             default: "44'/397'/0'/0'/1'"
         })
-        .option('ledgerPK', {
+        .option('useLedgerPK', {
             alias: ['newLedgerKey'],
             desc: 'Initialize the account using the public key from the Ledger',
+            type: 'boolean',
+            default: false
+        })
+        .option('PkLedgerPath', {
+            desc: 'Path to the Ledger key that will be added to the account',
             type: 'string',
             default: "44'/397'/0'/0'/1'"
-        })
-        .option('publicKey', {
-            desc: 'Public key to initialize the account with',
-            type: 'string',
-            required: false
         })
         .option('networkId', {
             desc: 'Which network to use. Supports: mainnet, testnet, custom',
@@ -82,7 +87,7 @@ async function create(options) {
         throw new Error(chalk`Please specify if you want the account to be fund by a faucet (--useFaucet) or through an existing --accountId)`);
     }
 
-    if (options.ledgerPK && options.publicKey) {
+    if (options.useLedgerPK && options.publicKey) {
         throw new Error('Please specify only one of --publicKeyFromLedger or --publicKey');
     }
 
@@ -90,7 +95,7 @@ async function create(options) {
         if (options.networkId === 'mainnet') throw new Error('Pre-funding accounts is not possible on mainnet');
     } else {
         if (!options.useAccount) throw new Error('Please specify an account to sign the transaction (--useAccount)');
-        await assertCredentials(options);
+        await assertCredentials(options.useAccount, options.networkId, options.keyStore, options.useLedgerKey);
     }
 
     // assert account being created does not exist
@@ -98,7 +103,7 @@ async function create(options) {
     await assertAccountDoesNotExist(newAccountId, near);
 
     let keyPair;
-    let publicKey = options.ledgerPK ? await getPublicKeyForPath(options.ledgerPK) : options.publicKey;
+    let publicKey = options.useLedgerPK ? await getPublicKeyForPath(options.PkLedgerPath) : options.publicKey;
 
     if (!publicKey) {
         // If no public key is specified, create a random one

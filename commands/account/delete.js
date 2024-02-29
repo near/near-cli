@@ -41,7 +41,7 @@ const confirmDelete = function (accountId, beneficiaryId) {
 };
 
 async function deleteAccount(options) {
-    await assertCredentials(options);
+    await assertCredentials(options.accountId, options.networkId, options.keyStore, options.useLedgerKey);
     const near = await connect(options);
     const beneficiaryAccount = await near.account(options.beneficiaryId);
 
