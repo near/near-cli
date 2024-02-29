@@ -19,6 +19,17 @@ module.exports = {
             type: 'boolean',
             default: false
         })
+        .option('queryLedgerPK', {
+            alias: ['useLedgerKey'],
+            desc: 'Save the key as credentials for the implicit account',
+            type: 'boolean',
+            default: false
+        })
+        .option('ledgerPath', {
+            desc: 'Path to the Ledger key',
+            type: 'string',
+            default: "44'/397'/0'/0'/1'"
+        })
         .option('networkId', {
             desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
@@ -38,6 +49,14 @@ function pKtoAccountId(publicKey) {
 
 async function generateKey(options) {
     let secret;
+
+    if (options.queryLedgerPK) {
+        const { getPublicKeyForPath } = require('../../utils/ledger');
+        const publicKey = await getPublicKeyForPath(options.ledgerPath);
+        console.log(`Public key: ${publicKey}`);
+        console.log(`Implicit account: ${pKtoAccountId(publicKey.toString())}`);
+        return;
+    }
 
     if (options.fromSeedPhrase) {
         const { publicKey, secretKey } = parseSeedPhrase(options.fromSeedPhrase);

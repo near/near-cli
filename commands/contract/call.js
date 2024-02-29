@@ -16,6 +16,17 @@ module.exports = {
             desc: 'Account that will execute the actions',
             type: 'string'
         })
+        .option('signWithLedger', {
+            alias: ['useLedgerKey'],
+            desc: 'Use Ledger for signing',
+            type: 'boolean',
+            default: false
+        })
+        .option('ledgerPath', {
+            desc: 'HD key path',
+            type: 'string',
+            default: "44'/397'/0'/0'/1'"
+        })
         .option('networkId', {
             desc: 'Which network to use. Supports: mainnet, testnet, custom',
             type: 'string',
@@ -58,7 +69,7 @@ async function scheduleFunctionCall(options) {
         options.keyStore.setKey(options.networkId, options.accountId, keyPair);
     }
 
-    await assertCredentials(options.accountId, options.networkId, options.keyStore);
+    await assertCredentials(options.accountId, options.networkId, options.keyStore, options.useLedgerKey);
 
     const deposit = options.depositYocto != null ? options.depositYocto : utils.format.parseNearAmount(options.deposit);
     console.log(`Scheduling a call: ${options.contractName}.${options.methodName}(${options.args || ''})` +

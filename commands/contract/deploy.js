@@ -47,7 +47,7 @@ module.exports = {
     handler: deploy
 };
 
-const checkExistingContract = async function (prevCodeHash) {
+const askOverrideContract = async function (prevCodeHash) {
     if (prevCodeHash !== '11111111111111111111111111111111') {
         return await askYesNoQuestion(
             chalk`{bold.white This account already has a deployed contract [ {bold.blue ${prevCodeHash}} ]. Do you want to proceed? {bold.green (y/n) }}`,
@@ -58,15 +58,14 @@ const checkExistingContract = async function (prevCodeHash) {
 };
 
 async function deploy(options) {
-    await assertCredentials(options.accountId, options.networkId, options.keyStore);
+    await assertCredentials(options.accountId, options.networkId, options.keyStore, options.useLedgerKey);
 
     const near = await connect(options);
     const account = await near.account(options.accountId);
     let prevState = await account.state();
     let prevCodeHash = prevState.code_hash;
 
-    const answeredYes = await checkExistingContract(prevCodeHash);
-    if (!options.force && !answeredYes) return;
+    if(!options.force && !(await askOverrideContract(prevCodeHash))) return;
 
     console.log(`Deploying contract ${options.wasmFile} in ${options.accountId}`);
 

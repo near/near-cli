@@ -5,6 +5,8 @@ const inspectResponse = require('../../utils/inspect-response');
 const { assertCredentials, storeCredentials } = require('../../utils/credentials');
 const { DEFAULT_NETWORK } = require('../../config');
 const chalk = require('chalk');
+const { getPublicKeyForPath } = require('../../utils/ledger');
+const { parseSeedPhrase } = require('near-seed-phrase');
 
 module.exports = {
     command: 'create-account <new-account-id>',
@@ -32,6 +34,33 @@ module.exports = {
             desc: 'Public key to initialize the account with',
             type: 'string',
             required: false
+        })
+        .option('seedPhrase', {
+            desc: 'seedPhrase from which to derive the account\'s publicKey',
+            type: 'string',
+            required: false
+        })
+        .option('signWithLedger', {
+            alias: ['useLedgerKey'],
+            desc: 'Use Ledger for signing',
+            type: 'boolean',
+            default: false
+        })
+        .option('ledgerPath', {
+            desc: 'Path to the Ledger key',
+            type: 'string',
+            default: "44'/397'/0'/0'/1'"
+        })
+        .option('useLedgerPK', {
+            alias: ['newLedgerKey'],
+            desc: 'Initialize the account using the public key from the Ledger',
+            type: 'boolean',
+            default: false
+        })
+        .option('PkLedgerPath', {
+            desc: 'Path to the Ledger key that will be added to the account',
+            type: 'string',
+            default: "44'/397'/0'/0'/1'"
         })
         .option('networkId', {
             desc: 'Which network to use. Supports: mainnet, testnet, custom',
@@ -64,22 +93,32 @@ async function create(options) {
         throw new Error(chalk`Please specify if you want the account to be fund by a faucet (--useFaucet) or through an existing --accountId)`);
     }
 
+    if (options.useLedgerPK && options.publicKey) {
+        throw new Error('Please specify only one of --publicKeyFromLedger or --publicKey');
+    }
+
     if (options.useFaucet) {
         if (options.networkId === 'mainnet') throw new Error('Pre-funding accounts is not possible on mainnet');
     } else {
         if (!options.useAccount) throw new Error('Please specify an account to sign the transaction (--useAccount)');
-        await assertCredentials(options.useAccount, options.networkId, options.keyStore);
+        await assertCredentials(options.useAccount, options.networkId, options.keyStore, options.useLedgerKey);
     }
 
     // assert account being created does not exist
     const newAccountId = options.newAccountId;
     await assertAccountDoesNotExist(newAccountId, near);
 
-    // If no public key is specified, create a random one
     let keyPair;
-    let publicKey = options.publicKey;
+    let publicKey = options.useLedgerPK ? await getPublicKeyForPath(options.PkLedgerPath) : options.publicKey;
+
+    if (options.seedPhrase) {
+        const parsed = parseSeedPhrase(options.seedPhrase);
+        keyPair = KeyPair.fromString(parsed.secretKey);
+        publicKey = keyPair.getPublicKey();
+    }
 
     if (!publicKey) {
+        // If no public key is specified, create a random one
         keyPair = KeyPair.fromRandom('ed25519');
         publicKey = keyPair.getPublicKey();
     }
@@ -120,6 +159,9 @@ async function create(options) {
 
         if (keyPair) {
             storeCredentials(newAccountId, options.networkId, options.keyStore, keyPair, true);
+        } else {
+            console.log('Public key was provided, so we are not storing credentials (since we don\'t have the private key)');
+            console.log('If you have the private key, you can import it using `near add-credentials`');
         }
 
         // The faucet does not throw on error, so we force it here
