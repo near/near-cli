@@ -80,9 +80,9 @@ async function assertAccountDoesNotExist(accountId, near) {
         await account.state();
         throw new Error(`Sorry, account '${accountId}' already exists.`);
     } catch (e) {
-        if (!e.message.includes('does not exist while viewing')) {
-            throw e;
-        }
+        const opt1 = e.message.includes('does not exist');
+        const opt2 = e.message.includes('doesn\'t exist');
+        if (!opt1 && !opt2) throw e;
     }
 }
 
