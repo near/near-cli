@@ -1,4 +1,8 @@
-const DEFAULT_NETWORK = process.env.NEAR_ENV || process.env.NEAR_NETWORK || 'testnet';
+const DEFAULT_NETWORK = process.env.NEAR_NETWORK || process.env.NEAR_ENV || 'testnet';
+
+if (process.env.NEAR_NETWORK && process.env.NEAR_ENV){
+    console.log(`Warning: NEAR_NETWORK and NEAR_ENV are both set! We will use NEAR_NETWORK (${process.env.NEAR_NETWORK})\n`);
+}
 
 function getConfig(env) {
     let config;
