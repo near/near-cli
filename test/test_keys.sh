@@ -10,6 +10,9 @@ testaccount=test-keys-${timestamp}.testnet
 # Can create an account with a given public key
 ./bin/near add-key $testaccount "78MziB9aTNsu19MHHVrfWy762S5mAqXgCB6Vgvrv9uGV"
 
+# Add a function call key
+./bin/near add-key $testaccount "ed25519:DReZmNmnGhpsYcCFFeYgPsJ9YCm9xH16GGujCPe3KQEq" --contractId multichain-testnet-2.testnet --allowance 1
+
 RESULT=$(./bin/near list-keys $testaccount)
 EXPECTED=".*78MziB9aTNsu19MHHVrfWy762S5mAqXgCB6Vgvrv9uGV.*"
 if [[ ! "$RESULT" =~ $EXPECTED ]]; then
