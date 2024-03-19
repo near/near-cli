@@ -17,6 +17,7 @@ module.exports = {
             desc: 'Method names to limit access key to (example: --method-names meth1 meth2)',
             type: 'array',
             required: false,
+            default: []
         })
         .option('allowance', {
             desc: 'Allowance in $NEAR for the key (default 0)',
@@ -47,7 +48,7 @@ async function addAccessKey(options) {
     await assertCredentials(options.accountId, options.networkId, options.keyStore, options.useLedgerKey);
 
     console.log(`Adding ${options.contractId ? 'function call access' : 'full access'} key ${options.publicKey} to ${options.accountId}.`);
-    if (options.contractId) console.log(`Limited to: ${options.allowance} $NEAR and methods: ${options.methodNames.join(' ')}.`);
+    if (options.contractId) console.log(`Limited to: ${options.allowance} $NEAR and methods: [${options.methodNames.join(' ')}].`);
 
     const near = await connect(options);
     const account = await near.account(options.accountId);
