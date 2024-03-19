@@ -3,6 +3,12 @@
 ## [unreleased]
 - ...
 
+## `4.0.12` [03-19-2024]
+- New: Added back Ledger support, please notice that the `--useLedger` does not set the path anymore, use `--ledgerPath` for this.
+- New: Added back all `validator` commands.
+- New: Added `add-credentials` command to add credentials to the `near-cli` config file.
+- Fixes: Multitude of small fixes, see each release note for more details.
+
 ## `4.0.0` [01-23-2024]
 - Reorganized code to simplify its maintenance.
 - New: Fixed `create-account` can now create `TLA`, `sub-accounts` and `.testnet/.near` accounts.

@@ -1,14 +1,26 @@
 # NEAR CLI (command line interface)
 
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/near/near-cli)
-
 NEAR CLI is a Node.js application that relies on [`near-api-js`](https://github.com/near/near-api-js) to connect to and interact with the NEAR blockchain. Create accounts, access keys, sign & send transactions with this versatile command line interface tool.
 
 **Note:** Node.js version 16+ is required to run NEAR CLI.
 
+## 🚨 v4.0.0 Notes
+This release is a major reorganization of the codebase to simplify its maintenance. It also includes a few new features and a multitude of small fixes.
+
+The most notable changes are:
+- **Ledger users**, please notice that the `--useLedger` does not set the path anymore, use `--ledgerPath` for this
+  - Please check the commands that support Ledger for more details
+- Users can now import credentials using the `add-credentials` command
+- The `generate-key` command now has a `--saveImplicit` option to save the key as an implicit account
+- Users can create `testnet` pre-funded accounts using the `--useFaucet` option 
+- Accounts cannot create `TLA` with less than 32 characters anymore (this is a NEAR protocol change)
+- Removed unnecessary options from commands, e.g. `view` now does not take an `--accountId` or `--masterAccount`
+- If a command does not work, please first check the commands help to see if the options have changed
+  - For example, run `near create-account` to see how options might have changed
+
 ## Release notes
 
-**Release notes and unreleased changes can be found in the [CHANGELOG](CHANGELOG.md)**
+Release notes and unreleased changes can be found in the [CHANGELOG](CHANGELOG.md)
 
 ## Overview
 
@@ -36,7 +48,6 @@ _Click on a command for more information and examples._
 | [`near view`](#near-view)                       | makes a contract call which can **only** invoke a `view` method                           |
 | **TRANSACTIONS**                                |                                                                                           |
 | [`near tx-status`](#near-tx-status)             | queries a transaction's status by `txHash`                                                |
-
 
 ---
 
@@ -111,6 +122,9 @@ export NEAR_NETWORK=mainnet
 near send-near ... --networkId mainnet
 ```
 
+> [!WARNING]
+> In previous versions, `near-cli` used `NEAR_ENV` to set the network. This can still be used, but `NEAR_NETWORK` has priority over `NEAR_ENV` if both are set.
+
 ---
 
 ### Custom RPC server selection
@@ -123,7 +137,7 @@ Clear them in case you want to get back to the default RPC server.
 
 Example:
 ```bash
-export NEAR_TESTNET_RPC=<put_your_rpc_server_url_here>
+export NEAR_TESTNET_RPC=https://rpc.testnet.near.org
 ```
 ---
 
