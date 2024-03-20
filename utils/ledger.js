@@ -18,10 +18,12 @@ async function getPublicKeyForPath(hdKeyPath) {
     // cache keys to avoid confirming on Ledger multiple times
     if (cachedPublicKeys[hdKeyPath]) return cachedPublicKeys[hdKeyPath];
 
+    console.log('Trying to connect with Ledger...');
+
     transport = await TransportNodeHid.create();
     client = await createClient(transport);
 
-    console.log('Getting Public Key from Ledger...');
+    console.log('Getting public key from Ledger...');
 
     try {
         const rawPublicKey = await client.getPublicKey(hdKeyPath);
