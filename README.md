@@ -1,7 +1,7 @@
 # [DEPRECATED] NEAR CLI (command line interface)
 
-This project is no longer updated.
-Please use [`near-cli-rs`](https://github.com/near/near-cli-rs) instead.
+This project will no longer receive any updates.
+We strongly recommend everyone to migrate to [`near-cli-rs`](https://github.com/near/near-cli-rs) instead.
 
 ---
 
